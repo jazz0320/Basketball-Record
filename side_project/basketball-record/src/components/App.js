@@ -13,9 +13,9 @@ import RecordRoom from "./RecordRoom";
 
 function App() {
   const [teams, setTeams] = useState([]);
-  const [aTeam, setATeam] = useState();
+  const [aTeam, setATeam] = useState("default");
   const [aTeamPlayers, setATeamPlayers] = useState();
-  const [bTeam, setBTeam] = useState();
+  const [bTeam, setBTeam] = useState("default");
   const [bTeamPlayers, setBTeamPlayers] = useState();
   const [quarter, setQuarter] = useState(); //選擇賽制
   const [eachTime, setEachTime] = useState();
@@ -54,7 +54,7 @@ function App() {
         data[i].pts = 0;
         data[i].reb = 0;
         data[i].start = false;
-        data[i].position = 0;
+        data[i].position = 6;
         newData.push(data[i]);
       }
       setATeamPlayers(newData);
@@ -67,7 +67,7 @@ function App() {
         { merge: true }
       );
     }
-    if (aTeam) {
+    if (aTeam !== "default") {
       selectTeam();
     }
   }, [aTeam]);
@@ -83,7 +83,7 @@ function App() {
         data[i].pts = 0;
         data[i].reb = 0;
         data[i].start = false;
-        data[i].position = 0;
+        data[i].position = 6;
         newData.push(data[i]);
       }
       setBTeamPlayers(newData);
@@ -96,7 +96,7 @@ function App() {
         { merge: true }
       );
     }
-    if (bTeam) {
+    if (bTeam !== "default") {
       selectTeam();
     }
   }, [bTeam]);
@@ -135,9 +135,25 @@ function App() {
   const selectStartFive = function (player, position) {
     let players = [];
     let side = -1;
-    for (let i = 0; i < aTeamPlayers.length; i++) {
-      if (aTeamPlayers[i].name === player) {
-        side = 1;
+    let a_length = 0;
+    let b_length = 0;
+    let length;
+    if (aTeamPlayers) {
+      a_length = aTeamPlayers.length;
+    }
+    if (bTeamPlayers) {
+      b_length = bTeamPlayers.length;
+    }
+    if (a_length < b_length) {
+      length = b_length;
+    } else {
+      length = a_length;
+    }
+    for (let i = 0; i < length; i++) {
+      if (aTeamPlayers) {
+        if (aTeamPlayers[i].name === player) {
+          side = 1;
+        }
       }
     }
     if (side > 0) {
@@ -148,7 +164,7 @@ function App() {
 
     for (let i = 0; i < players.length; i++) {
       if (players[i].position === position) {
-        players[i].position = 0;
+        players[i].position = 6;
         players[i].start = false;
       }
       if (players[i].name === player) {
@@ -156,6 +172,10 @@ function App() {
         players[i].start = true;
       }
     }
+    players.sort(function (a, b) {
+      return a.position - b.position;
+    });
+
     if (side > 0) {
       setATeamPlayers(players);
     } else {
@@ -168,22 +188,37 @@ function App() {
       <div>
         <div>
           A隊
-          <select onChange={(e) => setATeam(e.target.value)}>
-            <option>Select team</option>
-            {teams.map((team, index) => (
-              <option key={index}>{team}</option>
-            ))}
+          <select value={aTeam} onChange={(e) => setATeam(e.target.value)}>
+            <option disabled value="default">
+              Select team
+            </option>
+            {teams.map((team, index) =>
+              team === bTeam ? (
+                <option disabled key={index}>
+                  {team}
+                </option>
+              ) : (
+                <option key={index}>{team}</option>
+              )
+            )}
           </select>
           {aTeam && (
             <div>
               {five.map((num) => (
-                <select onChange={(e) => selectStartFive(e.target.value, num)}>
-                  <option>Select Player</option>
-                  {aTeamPlayers?.map((player, index) =>
-                    player.position === 0 ? (
-                      <option>{player.name}</option>
+                <select
+                  defaultValue={"default"}
+                  onChange={(e) => selectStartFive(e.target.value, num)}
+                >
+                  <option disabled value="default">
+                    Select Player
+                  </option>
+                  {aTeamPlayers?.map((player) =>
+                    player.position === 6 ? (
+                      <option key={player.name}>{player.name}</option>
                     ) : (
-                      <option disabled>{player.name}</option>
+                      <option disabled key={player.name}>
+                        {player.name}
+                      </option>
                     )
                   )}
                 </select>
@@ -193,22 +228,37 @@ function App() {
         </div>
         <div>
           B隊
-          <select onChange={(e) => setBTeam(e.target.value)}>
-            <option>Select team</option>
-            {teams.map((team, index) => (
-              <option key={index}>{team}</option>
-            ))}
+          <select value={bTeam} onChange={(e) => setBTeam(e.target.value)}>
+            <option disabled value="default">
+              Select team
+            </option>
+            {teams.map((team, index) =>
+              team === aTeam ? (
+                <option disabled key={index}>
+                  {team}
+                </option>
+              ) : (
+                <option key={index}>{team}</option>
+              )
+            )}
           </select>
-          {aTeam && (
+          {bTeam && (
             <div>
               {five.map((num) => (
-                <select onChange={(e) => selectStartFive(e.target.value, num)}>
-                  <option>Select Player</option>
-                  {bTeamPlayers?.map((player, index) =>
-                    player.position === 0 ? (
-                      <option>{player.name}</option>
+                <select
+                  defaultValue={"default"}
+                  onChange={(e) => selectStartFive(e.target.value, num)}
+                >
+                  <option disabled value="default">
+                    Select Player
+                  </option>
+                  {bTeamPlayers?.map((player) =>
+                    player.position === 6 ? (
+                      <option key={player.name}>{player.name}</option>
                     ) : (
-                      <option disabled>{player.name}</option>
+                      <option disabled key={player.name}>
+                        {player.name}
+                      </option>
                     )
                   )}
                 </select>
