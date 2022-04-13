@@ -22,13 +22,7 @@ function App() {
   const [stopTime, setStopTime] = useState();
   const [finishSetting, setFinishSetting] = useState(false);
   const [quarterNow, setQuarterNow] = useState(1);
-  const [aTeamStartFive, setATeamStartFive] = useState([
-    "Select",
-    "Select",
-    "Select",
-    "Select",
-    "Select",
-  ]);
+  const five = [1, 2, 3, 4, 5];
 
   function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect();
@@ -59,6 +53,8 @@ function App() {
         data[i].ast = 0;
         data[i].pts = 0;
         data[i].reb = 0;
+        data[i].start = false;
+        data[i].position = 0;
         newData.push(data[i]);
       }
       setATeamPlayers(newData);
@@ -86,6 +82,8 @@ function App() {
         data[i].ast = 0;
         data[i].pts = 0;
         data[i].reb = 0;
+        data[i].start = false;
+        data[i].position = 0;
         newData.push(data[i]);
       }
       setBTeamPlayers(newData);
@@ -134,6 +132,37 @@ function App() {
     setFinishSetting(true);
   };
 
+  const selectStartFive = function (player, position) {
+    let players = [];
+    let side = -1;
+    for (let i = 0; i < aTeamPlayers.length; i++) {
+      if (aTeamPlayers[i].name === player) {
+        side = 1;
+      }
+    }
+    if (side > 0) {
+      players = [...aTeamPlayers];
+    } else {
+      players = [...bTeamPlayers];
+    }
+
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].position === position) {
+        players[i].position = 0;
+        players[i].start = false;
+      }
+      if (players[i].name === player) {
+        players[i].position = position;
+        players[i].start = true;
+      }
+    }
+    if (side > 0) {
+      setATeamPlayers(players);
+    } else {
+      setBTeamPlayers(players);
+    }
+  };
+
   return (
     <>
       <div>
@@ -145,31 +174,22 @@ function App() {
               <option key={index}>{team}</option>
             ))}
           </select>
-          {/* {aTeam && (
+          {aTeam && (
             <div>
-              <select>
-                <option>Select</option>
-                {aTeamPlayers.map((player) => (
-                  <option>{player.name}</option>
-                ))}
-              </select>
-              <select>
-                {aTeamPlayers.map((player) => (
-                  <option>{player.name}</option>
-                ))}
-              </select>
-              <select>
-                {aTeamPlayers.map((player) => (
-                  <option>{player.name}</option>
-                ))}
-              </select>
-              <select>
-                {aTeamPlayers.map((player) => (
-                  <option>{player.name}</option>
-                ))}
-              </select>
+              {five.map((num) => (
+                <select onChange={(e) => selectStartFive(e.target.value, num)}>
+                  <option>Select Player</option>
+                  {aTeamPlayers?.map((player, index) =>
+                    player.position === 0 ? (
+                      <option>{player.name}</option>
+                    ) : (
+                      <option disabled>{player.name}</option>
+                    )
+                  )}
+                </select>
+              ))}
             </div>
-          )} */}
+          )}
         </div>
         <div>
           B隊
@@ -179,6 +199,22 @@ function App() {
               <option key={index}>{team}</option>
             ))}
           </select>
+          {aTeam && (
+            <div>
+              {five.map((num) => (
+                <select onChange={(e) => selectStartFive(e.target.value, num)}>
+                  <option>Select Player</option>
+                  {bTeamPlayers?.map((player, index) =>
+                    player.position === 0 ? (
+                      <option>{player.name}</option>
+                    ) : (
+                      <option disabled>{player.name}</option>
+                    )
+                  )}
+                </select>
+              ))}
+            </div>
+          )}
         </div>
         賽制
         <select
