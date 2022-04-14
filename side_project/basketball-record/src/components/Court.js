@@ -14,7 +14,6 @@ function Court() {
     <div>
       <svg
         onClick={(e) => {
-          console.log(e.target);
           getCursorPosition(e.target, e);
         }}
         height="555"
@@ -47,6 +46,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="070D3C46-B60B-4728-983C-EB53E845BFAE"
             x="0"
             y="0"
@@ -66,6 +69,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="552AD0E7-74B7-47FA-9D15-7B2CCB3F2EB6"
             x="0"
             y="0"
@@ -85,6 +92,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="556D8D13-AAC0-48DE-9BAC-3B3684E013E6"
             x="0"
             y="0"
@@ -104,6 +115,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="DD34E371-09F5-4C0C-83F5-803C2A650731"
             x="0"
             y="0"
@@ -123,6 +138,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="3720E19B-99D8-46E2-A0FB-8D07689C8D28"
             x="0"
             y="0"
@@ -142,6 +161,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="1700B1FA-5AB9-4122-9580-906EFABBD52D"
             x="0"
             y="0"
@@ -161,6 +184,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="68A2B35B-A441-4B3C-8B44-FBE5753E2954"
             x="0"
             y="0"
@@ -180,6 +207,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="0E46E422-5151-485F-B201-1860DDE5649C"
             x="0"
             y="0"
@@ -199,6 +230,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="470D9FFB-0063-44C6-B210-E03C96403BA1"
             x="0"
             y="0"
@@ -218,6 +253,10 @@ function Court() {
             ></image>
           </pattern>
           <pattern
+            onClick={(e) => {
+              console.log("2222");
+              getCursorPosition(e.target, e);
+            }}
             id="8854DA75-26B7-4A07-A7AE-D21E6BEB91D6"
             x="0"
             y="0"
@@ -382,7 +421,7 @@ function Court() {
             <image
               x="0"
               y="0"
-              //   xlinkHref="./img/wood.jpg"
+              // xlinkHref="./img/wood.jpg"
               className="example1"
               width="275"
               height="281"
@@ -1246,7 +1285,7 @@ function Court() {
           opacity="0.4"
           className="example4"
         ></path>
-        <text
+        {/* <text
           x="277"
           y="55"
           textAnchor="middle"
@@ -1483,8 +1522,11 @@ function Court() {
           <tspan className="example1" dy="7.514908790588379">
             4.9%
           </tspan>
-        </text>
+        </text> */}
         <image
+          onClick={() => {
+            console.log("3333");
+          }}
           x="228"
           y="439"
           width="110"
