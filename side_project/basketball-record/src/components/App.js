@@ -9,6 +9,7 @@ import {
 } from "../utils/firebase";
 import "./App.css";
 import Clock from "./Clock";
+import Court from "./Court";
 import RecordRoom from "./RecordRoom";
 
 function App() {
@@ -24,11 +25,120 @@ function App() {
   const [quarterNow, setQuarterNow] = useState(1);
   const five = [1, 2, 3, 4, 5];
 
-  function getCursorPosition(canvas, event) {
-    const rect = canvas.getBoundingClientRect();
+  const [leftSide, setLeftSide] = useState(true);
+  const [activeTeam, setActiveTeam] = useState();
+  const [activePlayer, setActivePlayer] = useState();
+  const [playlocation, setPlayerLocation] = useState();
+  const [playerAction, setPlayerAction] = useState();
+  const [playerActionNumber, setPlayerActionNumber] = useState();
+
+  // useEffect(() => {
+  //   window.addEventListener("keydown", (e) => {
+  //     if (e.keyCode === 192) {
+  //       setLeftSide((prevState) => !prevState);
+  //       // setLeftSide(!leftSide);
+  //     }
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    const player = function (e) {
+      if (e.keyCode === 192) {
+        setLeftSide((prevState) => !prevState);
+      }
+      if (e.keyCode === 49) {
+        if (leftSide) {
+          setActiveTeam("a");
+          setActivePlayer(0);
+        } else {
+          setActiveTeam("b");
+          setActivePlayer(0);
+        }
+      }
+      if (e.keyCode === 50) {
+        if (leftSide) {
+          setActivePlayer("aTeamPlayers[1]");
+        } else {
+          setActivePlayer("bTeamPlayers[1]");
+        }
+      }
+      if (e.keyCode === 51) {
+        if (leftSide) {
+          setActivePlayer("aTeamPlayers[2]");
+        } else {
+          setActivePlayer("bTeamPlayers[2]");
+        }
+      }
+      if (e.keyCode === 52) {
+        if (leftSide) {
+          setActivePlayer("aTeamPlayers[3]");
+        } else {
+          setActivePlayer("bTeamPlayers[3]");
+        }
+      }
+      if (e.keyCode === 53) {
+        if (leftSide) {
+          setActivePlayer("aTeamPlayers[4]");
+        } else {
+          setActivePlayer("bTeamPlayers[4]");
+        }
+      }
+    };
+    window.addEventListener("keydown", player);
+    return () => {
+      window.removeEventListener("keydown", player);
+    };
+  }, [leftSide]);
+
+  //球員行為
+  useEffect(() => {
+    const action = function (e) {
+      if (e.ctrlKey && e.key === "q") {
+        console.log("333");
+        setPlayerAction("pts");
+        setPlayerActionNumber(3);
+      } else if (e.key === "q") {
+        console.log("000");
+        setPlayerAction("pts");
+        setPlayerActionNumber(3);
+      }
+    };
+    const submit = function (e) {
+      if (e.key === "Enter") {
+        console.log("aaa");
+        let data;
+        if (activeTeam === "a") {
+          data = aTeamPlayers;
+        } else {
+          data = bTeamPlayers;
+        }
+        console.log("eee", activePlayer);
+        console.log("ddd", data[activePlayer]);
+
+        // console.log("fff", activePlayer);
+        data[activePlayer][playerAction] = playerActionNumber;
+        console.log("zzzz", data[activePlayer][playerAction]);
+      }
+    };
+
+    window.addEventListener("keydown", action);
+    window.addEventListener("keydown", submit);
+    return () => {
+      window.removeEventListener("keydown", action);
+    };
+    return () => {
+      window.removeEventListener("keydown", submit);
+    };
+  }, [playerActionNumber]);
+
+  // 球場定點
+  function getCursorPosition(vas, event) {
+    const rect = vas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
+    let location = { x: x, y: y };
     console.log("x: " + x + " y: " + y);
+    setPlayerLocation(location);
   }
 
   async function chooseTeam() {
@@ -363,8 +473,12 @@ function App() {
           ))}
       </div>
       <div>
+        {leftSide ? <div>AAAAAAAAAA_team</div> : <div>BBBBBBBB_team</div>}
+      </div>
+      <div>
         <RecordRoom quarter={quarter} quarteNow={quarterNow} />
       </div>
+      <Court />
     </>
   );
 }
