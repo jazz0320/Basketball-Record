@@ -1,0 +1,99 @@
+* {
+  font-family: "Fjalla One";
+}
+
+svg {
+  height: 100vh;
+}
+
+path {
+  fill: transparent;
+  transition: 0.5s;
+  cursor: pointer;
+}
+/* path:hover {
+  fill: #b99362;
+  transform: translate(-5px, -5px);
+} */
+
+.title_area {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: white;
+  font-size: 30px;
+}
+
+.st0 {
+  fill: none;
+}
+.st1 {
+  clip-path: url(#SVGID_2_);
+}
+.st2 {
+  fill: none;
+}
+.st3 {
+  fill: url(#);
+}
+.st4 {
+  opacity: 0.6;
+  fill: #be9d53;
+  enable-background: new;
+}
+.st5 {
+  stroke: white;
+  opacity: 0.6;
+  fill: #be9d53;
+  enable-background: new;
+}
+.st6 {
+  opacity: 0.6;
+  fill: none;
+  enable-background: new;
+}
+.st7 {
+  fill: none;
+}
+
+.st8 {
+  fill: none;
+}
+.st9 {
+  clip-path: url(#SVGID_4_);
+}
+.st10 {
+  opacity: 0.6;
+  fill: none;
+  enable-background: new;
+}
+
+.st101 {
+  opacity: 0;
+  fill: #be9d53;
+  enable-background: new;
+}
+.st11 {
+  clip-path: url(#SVGID_6_);
+}
+.st12 {
+  clip-path: url(#SVGID_8_);
+}
+.st13 {
+  fill: none;
+}
+.st14 {
+  clip-path: url(#SVGID_10_);
+}
+.st15 {
+  fill: none;
+}
+.st16 {
+  fill: none;
+}
+.st17 {
+  clip-path: url(#SVGID_12_);
+}
+.st18 {
+  fill: none;
+}

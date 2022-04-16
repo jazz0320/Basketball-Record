@@ -9,7 +9,7 @@ import {
 } from "../utils/firebase";
 import "./App.css";
 import Clock from "./Clock";
-import Court from "./Court";
+import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
 
 function App() {
@@ -105,31 +105,48 @@ function App() {
         setPlayerActionNumber(0);
       }
     };
-    const submit = function (e) {
+    const submit = async function (e) {
       if (e.key === "Enter") {
         let data;
-        let teamData;
-
+        let teamDataNow;
         if (leftSide) {
           data = aTeamPlayers;
-          teamData = aTeamData;
-          console.log("left");
+          teamDataNow = [...aTeamData];
         } else {
           data = bTeamPlayers;
-          teamData = bTeamData;
-          console.log("right");
+          teamDataNow = [...bTeamData];
         }
 
         data[activePlayer][playerAction] =
           data[activePlayer][playerAction] + playerActionNumber;
-        teamData[quarterNow - 1][playerAction] =
-          teamData[quarterNow - 1][playerAction] + playerActionNumber;
+
+        teamDataNow[quarterNow - 1][playerAction] =
+          teamDataNow[quarterNow - 1][playerAction] + playerActionNumber;
+        console.log("aaa", quarter);
+        teamDataNow[quarter.length][playerAction] =
+          teamDataNow[quarter.length][playerAction] + playerActionNumber;
         if (leftSide) {
           setATeamPlayers([...data]);
-          setATeamData([...teamData]);
+          setATeamData([...teamDataNow]);
+          await setDoc(
+            doc(db, "game_data", "live_game"),
+            {
+              A_team_player: data,
+              A_team_data: teamDataNow,
+            },
+            { merge: true }
+          );
         } else {
           setBTeamPlayers([...data]);
-          setBTeamData([...teamData]);
+          setBTeamData([...teamDataNow]);
+          await setDoc(
+            doc(db, "game_data", "live_game"),
+            {
+              B_team_player: data,
+              B_team_data: teamDataNow,
+            },
+            { merge: true }
+          );
         }
       }
     };
@@ -145,6 +162,7 @@ function App() {
     bTeamData,
     aTeamData,
     quarterNow,
+    quarter,
     playerAction,
     playerActionNumber,
   ]);
@@ -202,17 +220,31 @@ function App() {
   }, [aTeam]);
 
   useEffect(() => {
-    let newTeamData = [];
-    for (let i = 0; i <= quarter.length; i++) {
-      let a = {
-        ast: 0,
-        pts: 0,
-        reb: 0,
-      };
-      newTeamData.push(a);
+    async function setTeamsData() {
+      let newATeamData = [];
+      let newBTeamData = [];
+      for (let i = 0; i <= quarter.length; i++) {
+        let a = {
+          ast: 0,
+          pts: 0,
+          reb: 0,
+        };
+        newATeamData.push({ ...a });
+        newBTeamData.push({ ...a });
+      }
+      setATeamData([...newATeamData]);
+      setBTeamData([...newBTeamData]);
+
+      await setDoc(
+        doc(db, "game_data", "live_game"),
+        {
+          A_team_data: newATeamData,
+          B_team_data: newBTeamData,
+        },
+        { merge: true }
+      );
     }
-    setATeamData(newTeamData);
-    setBTeamData(newTeamData);
+    setTeamsData();
   }, [quarter]);
 
   useEffect(() => {
@@ -245,18 +277,6 @@ function App() {
   }, [bTeam]);
 
   const finishGameSetting = function () {
-    let teamData = [];
-    for (let i = 1; i <= quarter; i++) {
-      let x = {
-        ast: 0,
-        fouls: 0,
-        pts: 0,
-        quarter: i,
-        reb: 0,
-      };
-      teamData.push(x);
-    }
-
     async function systemSetting() {
       await setDoc(
         doc(db, "game_data", "live_game"),
@@ -265,8 +285,6 @@ function App() {
           quarterNow: quarterNow,
           quarter_minutes: Number(eachTime),
           stop_ime: stopTime,
-          A_team_data: teamData,
-          B_team_data: teamData,
         },
         { merge: true }
       );
@@ -275,7 +293,7 @@ function App() {
     setFinishSetting(true);
   };
 
-  const selectStartFive = function (player, position) {
+  const selectStartFive = async function (player, position) {
     let players = [];
     let side = -1;
     let a_length = 0;
@@ -321,8 +339,22 @@ function App() {
 
     if (side > 0) {
       setATeamPlayers(players);
+      await setDoc(
+        doc(db, "game_data", "live_game"),
+        {
+          A_team_player: players,
+        },
+        { merge: true }
+      );
     } else {
       setBTeamPlayers(players);
+      await setDoc(
+        doc(db, "game_data", "live_game"),
+        {
+          B_team_player: players,
+        },
+        { merge: true }
+      );
     }
   };
 
@@ -424,7 +456,7 @@ function App() {
                 quarters.push("4th");
               }
             }
-            setQuarter(quarters);
+            setQuarter([...quarters]);
           }}
         >
           <option>Select</option>
@@ -498,16 +530,36 @@ function App() {
           ))}
       </div>
       <div>
+        {quarter &&
+          quarter.map((item, index) => (
+            <div>
+              {item}
+              <br />
+              {playerAction && aTeamData[index][playerAction]}
+              <br />
+              {playerAction && bTeamData[index][playerAction]}
+            </div>
+          ))}
+        <div>
+          Total
+          <br />
+          {playerAction && aTeamData[quarter.length][playerAction]}
+          <br />
+          {playerAction && bTeamData[quarter.length][playerAction]}
+        </div>
+      </div>
+
+      <div>
         {aTeamPlayers ? aTeamPlayers[0][playerAction] : ""}
         <br />
         {bTeamPlayers ? bTeamPlayers[0][playerAction] : ""}
-        {/* {aTeamPlayers ? Object.values(aTeamPlayers[0]) : ""} */}
+
         {leftSide ? <div>AAAAAAAAAA_team</div> : <div>BBBBBBBB_team</div>}
       </div>
       <div>
         <RecordRoom quarter={quarter} quarteNow={quarterNow} />
       </div>
-      <Court />
+      <Court3 />
     </>
   );
 }
