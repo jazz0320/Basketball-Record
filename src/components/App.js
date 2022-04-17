@@ -9,6 +9,7 @@ import {
 } from "../utils/firebase";
 import "./App.css";
 import Clock from "./Clock";
+import Court from "./Court";
 import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
 
@@ -30,9 +31,11 @@ function App() {
 
   const [leftSide, setLeftSide] = useState(true);
   const [activePlayer, setActivePlayer] = useState();
-  const [playlocation, setPlayerLocation] = useState();
+  const [playLocation, setPlayerLocation] = useState();
+  const [playAxis, setPlayerAxis] = useState();
   const [playerAction, setPlayerAction] = useState();
   const [playerActionNumber, setPlayerActionNumber] = useState();
+  const [liveAction, setLiveAction] = useState();
 
   useEffect(() => {
     const player = function (e) {
@@ -88,7 +91,6 @@ function App() {
       if (e.ctrlKey && e.key === "q") {
         console.log("333");
         setPlayerAction("pts");
-        setPlayerActionNumber(3);
       } else if (e.key === "q") {
         console.log("000");
         setPlayerAction("pts");
@@ -98,7 +100,6 @@ function App() {
       if (e.ctrlKey && e.key === "w") {
         console.log("333");
         setPlayerAction("pts");
-        setPlayerActionNumber(2);
       } else if (e.key === "w") {
         console.log("000");
         setPlayerAction("pts");
@@ -148,6 +149,16 @@ function App() {
             { merge: true }
           );
         }
+        setLiveAction([
+          ...leftSide,
+          ...activePlayer,
+          ...playerAction,
+          ...playerActionNumber,
+        ]);
+        //clear all action for next time
+        setActivePlayer();
+        setPlayerAction();
+        setPlayerActionNumber();
       }
     };
 
@@ -166,16 +177,6 @@ function App() {
     playerAction,
     playerActionNumber,
   ]);
-
-  // 球場定點
-  function getCursorPosition(vas, event) {
-    const rect = vas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    let location = { x: x, y: y };
-    console.log("x: " + x + " y: " + y);
-    setPlayerLocation(location);
-  }
 
   async function chooseTeam() {
     const querySnapshot = await getDocs(collection(db, "team_data"));
@@ -553,13 +554,34 @@ function App() {
         {aTeamPlayers ? aTeamPlayers[0][playerAction] : ""}
         <br />
         {bTeamPlayers ? bTeamPlayers[0][playerAction] : ""}
+      </div>
 
-        {leftSide ? <div>AAAAAAAAAA_team</div> : <div>BBBBBBBB_team</div>}
-      </div>
       <div>
-        <RecordRoom quarter={quarter} quarteNow={quarterNow} />
+        <span>{leftSide ? "AAAAAAAAAA_team" : "BBBBBBBB_team"}</span>
+        <span> , </span>
+        <span>
+          {activePlayer !== undefined
+            ? aTeamPlayers
+              ? aTeamPlayers[activePlayer].name
+              : ""
+            : ""}
+        </span>
+        <span> , </span>
+        <span> {playLocation} </span>
+        <span> {playerAction} </span>
       </div>
-      <Court3 />
+      <Court3
+        setPlayerLocation={setPlayerLocation}
+        setPlayerAxis={setPlayerAxis}
+        setPlayerActionNumber={setPlayerActionNumber}
+      />
+      <div>
+        <RecordRoom
+          quarter={quarter}
+          quarteNow={quarterNow}
+          playLocation={playLocation}
+        />
+      </div>
     </>
   );
 }
