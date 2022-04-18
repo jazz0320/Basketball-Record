@@ -1,3 +1,9 @@
 div {
   border: black 1px solid;
 }
+
+#teambox {
+  height: 650px;
+  width: 200px;
+  overflow: scroll;
+}

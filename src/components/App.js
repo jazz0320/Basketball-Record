@@ -9,6 +9,7 @@ import {
 } from "../utils/firebase";
 import "./App.css";
 import Clock from "./Clock";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
 
@@ -37,6 +38,33 @@ function App() {
   const [playerActionNumber, setPlayerActionNumber] = useState();
   const [liveAction, setLiveAction] = useState([]);
 
+  //time
+  const [timerMinutes, setTimerMinutes] = useState(0);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+
+  //dnd
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+    const items = Array.from([...aTeamPlayers]);
+    const itemsLength = items.length;
+    const [reorderedItemSource] = items.splice(result.source.index, 1);
+    let reorderedItemDestination;
+    if (result.destination.index === itemsLength - 1) {
+      let reorderedItemDestinations = [
+        ...items.splice(result.destination.index - 1, 1),
+      ];
+      reorderedItemDestination = reorderedItemDestinations[0];
+    } else {
+      let reorderedItemDestinations = [
+        ...items.splice(result.destination.index, 1),
+      ];
+      reorderedItemDestination = reorderedItemDestinations[0];
+    }
+    items.splice(result.destination.index, 0, reorderedItemSource);
+    items.splice(result.source.index, 0, reorderedItemDestination);
+    setATeamPlayers(items);
+  }
+
   useEffect(() => {
     const player = function (e) {
       if (e.keyCode === 192) {
@@ -51,30 +79,30 @@ function App() {
       }
       if (e.keyCode === 50) {
         if (leftSide) {
-          setActivePlayer("aTeamPlayers[1]");
+          setActivePlayer(1);
         } else {
-          setActivePlayer("bTeamPlayers[1]");
+          setActivePlayer(1);
         }
       }
       if (e.keyCode === 51) {
         if (leftSide) {
-          setActivePlayer("aTeamPlayers[2]");
+          setActivePlayer(2);
         } else {
-          setActivePlayer("bTeamPlayers[2]");
+          setActivePlayer(2);
         }
       }
       if (e.keyCode === 52) {
         if (leftSide) {
-          setActivePlayer("aTeamPlayers[3]");
+          setActivePlayer(3);
         } else {
-          setActivePlayer("bTeamPlayers[3]");
+          setActivePlayer(3);
         }
       }
       if (e.keyCode === 53) {
         if (leftSide) {
-          setActivePlayer("aTeamPlayers[4]");
+          setActivePlayer(4);
         } else {
-          setActivePlayer("bTeamPlayers[4]");
+          setActivePlayer(4);
         }
       }
     };
@@ -161,6 +189,8 @@ function App() {
             axis: playerAxis,
             action: playerActionWord,
             count: playerActionNumber,
+            minutes: timerMinutes,
+            seconds: timerSeconds,
           },
         ]);
         let actionLive = [
@@ -172,6 +202,8 @@ function App() {
             location: playerLocation,
             action: playerActionWord,
             count: playerActionNumber,
+            minutes: timerMinutes,
+            seconds: timerSeconds,
           },
         ];
 
@@ -528,43 +560,95 @@ function App() {
               quarter={quarter}
               quarteNow={quarterNow}
               setQuarterNow={setQuarterNow}
+              timerMinutes={timerMinutes}
+              setTimerMinutes={setTimerMinutes}
+              timerSeconds={timerSeconds}
+              setTimerSeconds={setTimerSeconds}
             />
           </div>
         </div>
       </div>
       <div>OnTheGround</div>
-      <div style={{ display: "flex" }}>
-        {aTeamPlayers &&
-          aTeamPlayers.map((player, index) => (
-            <span key={index}>
-              <div
-                style={{
-                  backgroundSize: "cover",
-                  height: "100px",
-                  width: "130px",
-                  backgroundImage: `url(${player.pic})`,
-                }}
-              ></div>
-              {player.name}
-            </span>
-          ))}
-      </div>
-      <div style={{ display: "flex" }}>
-        {bTeamPlayers &&
-          bTeamPlayers.map((player, index) => (
-            <span key={index}>
-              <div
-                style={{
-                  backgroundSize: "cover",
-                  height: "100px",
-                  width: "130px",
-                  backgroundImage: `url(${player.pic})`,
-                }}
-              ></div>
-              {player.name}
-            </span>
-          ))}
-      </div>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="teamA">
+          {(provided) => (
+            <div
+              id="teambox"
+              // style={{ display: "flex" }}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {aTeamPlayers &&
+                aTeamPlayers.map((player, index) => (
+                  <Draggable
+                    key={player.name}
+                    draggableId={player.name}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        // key={index}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <div
+                          style={{
+                            backgroundSize: "cover",
+                            height: "100px",
+                            width: "130px",
+                            backgroundImage: `url(${player.pic})`,
+                          }}
+                        ></div>
+                        {player.name}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <DragDropContext>
+        <Droppable droppableId="teamB">
+          {(provided) => (
+            <div
+              id="teambox"
+              {...provided.draggableProps}
+              ref={provided.innerRef}
+            >
+              {bTeamPlayers &&
+                bTeamPlayers.map((player, index) => (
+                  <Draggable
+                    key={player.name}
+                    draggableId={player.name}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <div
+                          style={{
+                            backgroundSize: "cover",
+                            height: "100px",
+                            width: "130px",
+                            backgroundImage: `url(${player.pic})`,
+                          }}
+                        ></div>
+                        {player.name}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <div>
         {quarter &&
           quarter.map((item, index) => (
@@ -629,6 +713,8 @@ function App() {
           bTeam={bTeam}
           aTeamPlayers={aTeamPlayers}
           bTeamPlayers={bTeamPlayers}
+          timerSeconds={timerSeconds}
+          timerMinutes={timerMinutes}
         />
       </div>
     </>

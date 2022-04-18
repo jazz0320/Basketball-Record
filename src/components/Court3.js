@@ -10,38 +10,38 @@ function Court3(props) {
     console.log("x: " + x + " y: " + y);
     props.setPlayerAxis(axis);
   }
-  // useEffect(() => {
-  //   console.log("pic11");
-  //   let cvs = document.getElementById("cvs");
-  //   let ctx = cvs.getContext("2d");
+  useEffect(() => {
+    console.log("pic11");
+    let cvs = document.getElementById("cvs");
+    let ctx = cvs.getContext("2d");
 
-  //   function make_base() {
-  //     let base_image = new Image();
-  //     base_image.src =
-  //       "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04Niw0Ny44ODc2N2w1Mi40ODg2Nyw4MS4xMTIzM2gtMTA0Ljk3NzMzbDUyLjQ4ODY3LC04MS4xMTIzM004NiwyMS41bC03OC44MzMzMywxMjEuODMzMzNoMTU3LjY2NjY3bC03OC44MzMzMywtMTIxLjgzMzMzeiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+";
-  //     console.log("c1", props.playerAxis);
-  //     if (props.playerAxis !== undefined) {
-  //       const imageBlock = (function () {
-  //         // ctx.fillStyle = "000";
-  //         console.log("cccccccc");
-  //         ctx.drawImage(
-  //           base_image,
-  //           Number(props.playerAxis.x),
-  //           Number(props.playerAxis.y),
-  //           10,
-  //           10
-  //         );
+    function make_base() {
+      let base_image = new Image();
+      base_image.src =
+        "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04Niw0Ny44ODc2N2w1Mi40ODg2Nyw4MS4xMTIzM2gtMTA0Ljk3NzMzbDUyLjQ4ODY3LC04MS4xMTIzM004NiwyMS41bC03OC44MzMzMywxMjEuODMzMzNoMTU3LjY2NjY3bC03OC44MzMzMywtMTIxLjgzMzMzeiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+";
+      console.log("c1", props.playerAxis);
+      if (props.playerAxis !== undefined) {
+        const imageBlock = (function () {
+          // ctx.fillStyle = "000";
+          console.log("cccccccc");
+          ctx.drawImage(
+            base_image,
+            Number(props.playerAxis.x / 2.53),
+            Number(props.playerAxis.y / 5.1),
+            8,
+            8
+          );
 
-  //         console.log("x", props.playerAxis.x, "y", props.playerAxis.y);
-  //       })();
-  //     }
-  //   }
-  //   make_base();
-  // }, [props.playerAxis]);
+          console.log("zx", props.playerAxis.x, "zy", props.playerAxis.y);
+        })();
+      }
+    }
+    make_base();
+  }, [props.playerAxis]);
 
   return (
-    <>
-      {/* <canvas id="cvs"></canvas> */}
+    <div style={{ position: "relative" }}>
+      <canvas id="cvs"></canvas>
 
       <div id="myObjss">
         <svg
@@ -777,7 +777,7 @@ function Court3(props) {
           </g>
         </svg>
       </div>
-    </>
+    </div>
   );
 }
 

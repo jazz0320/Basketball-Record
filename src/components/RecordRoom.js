@@ -10,6 +10,10 @@ function RecordRoom(props) {
       <div>
         {props.liveAction?.map((item, index) => (
           <div key={index}>
+            <span>
+              {item.minutes}:{item.seconds}
+            </span>
+            <span> , </span>
             <span>{item.team ? props.aTeam : props.bTeam}</span>
             <span> , </span>
             <span>

@@ -5,8 +5,8 @@ function Clock(props) {
   const [restTime, setRestTime] = useState();
   const [shotClockRestTime, setShotClockRestTime] = useState();
   const [shotClock, setShotClock] = useState(0);
-  const [timerMinutes, setTimerMinutes] = useState(0);
-  const [timerSeconds, setTimerSeconds] = useState(0);
+  // const [timerMinutes, props.setTimerMinutes] = useState(0);
+  // const [timerSeconds, props.setTimerSeconds] = useState(0);
   //timer
   let interval = useRef();
   let timePast = 0;
@@ -15,8 +15,8 @@ function Clock(props) {
 
   useEffect(() => {
     if (props.eachTime) {
-      setTimerMinutes(props.eachTime);
-      setTimerSeconds(0);
+      props.setTimerMinutes(props.eachTime);
+      props.setTimerSeconds(0);
       setShotClock(24);
     }
   }, [props.eachTime]);
@@ -42,8 +42,8 @@ function Clock(props) {
         } else {
           //update timer
           setShotClock(shotClockDistance);
-          setTimerMinutes(minutes);
-          setTimerSeconds(seconds);
+          props.setTimerMinutes(minutes);
+          props.setTimerSeconds(seconds);
         }
       }, 1000);
     }
@@ -69,8 +69,8 @@ function Clock(props) {
       } else {
         //update timer
         setShotClock(shotClockDistance);
-        setTimerMinutes(minutes);
-        setTimerSeconds(seconds);
+        props.setTimerMinutes(minutes);
+        props.setTimerSeconds(seconds);
       }
     }, 1000);
   };
@@ -103,14 +103,14 @@ function Clock(props) {
       await setDoc(
         doc(db, "game_data", "live_game"),
         {
-          time_minutes: Number(timerMinutes),
-          time_seconds: Number(timerSeconds),
+          time_minutes: Number(props.timerMinutes),
+          time_seconds: Number(props.timerSeconds),
         },
         { merge: true }
       );
     }
     gameTime();
-  }, [timerSeconds]);
+  }, [props.timerSeconds]);
 
   return (
     <div>
@@ -121,27 +121,29 @@ function Clock(props) {
         <option value={4}>4th</option>
       </select>
 
-      <div className={`clock_tick ${timerSeconds === false ? "none" : ""}`}>
+      <div
+        className={`clock_tick ${props.timerSeconds === false ? "none" : ""}`}
+      >
         大錶
         <span>
-          {timerMinutes < 10 ? "0" : ""}
-          {timerMinutes}
+          {props.timerMinutes < 10 ? "0" : ""}
+          {props.timerMinutes}
         </span>
         :
         <span>
-          {timerSeconds < 10 ? "0" : ""}
-          {timerSeconds}
+          {props.timerSeconds < 10 ? "0" : ""}
+          {props.timerSeconds}
         </span>
         <span> </span>
         <span>
           <button
             onClick={() => {
               setRestTime(restTime + 1000);
-              if (timerSeconds < 59) {
-                setTimerSeconds(timerSeconds + 1);
+              if (props.timerSeconds < 59) {
+                props.setTimerSeconds(props.timerSeconds + 1);
               } else {
-                setTimerMinutes(timerMinutes + 1);
-                setTimerSeconds(0);
+                props.setTimerMinutes(props.timerMinutes + 1);
+                props.setTimerSeconds(0);
               }
             }}
           >
@@ -152,11 +154,11 @@ function Clock(props) {
           <button
             onClick={() => {
               setRestTime(restTime - 1000);
-              if (timerSeconds > 0) {
-                setTimerSeconds(timerSeconds - 1);
+              if (props.timerSeconds > 0) {
+                props.setTimerSeconds(props.timerSeconds - 1);
               } else {
-                setTimerMinutes(timerMinutes - 1);
-                setTimerSeconds(59);
+                props.setTimerMinutes(props.timerMinutes - 1);
+                props.setTimerSeconds(59);
               }
             }}
           >
