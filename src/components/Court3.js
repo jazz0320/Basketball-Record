@@ -2,28 +2,6 @@ import { useEffect, useState } from "react";
 import "./Court2.css";
 
 function Court3(props) {
-  const [add, setAdd] = useState([]);
-
-  //   useEffect(() => {
-  //     const level1 = document.getElementById("myObjss");
-  //     const level2 = document.getElementById("obj2");
-  //     level1.addEventListener(
-  //       "click",
-  //       (e) => {
-  //         // getCursorPosition(e.target, e);
-  //         alert(e.target.nodeName);
-  //       },
-  //       true
-  //     );
-  //     level2.addEventListener(
-  //       "click",
-  //       (e) => {
-  //         alert("path");
-  //       },
-  //       true
-  //     );
-  //   }, []);
-
   function getCursorPosition(vas, event) {
     const rect = vas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -31,24 +9,45 @@ function Court3(props) {
     let axis = { x: x, y: y };
     console.log("x: " + x + " y: " + y);
     props.setPlayerAxis(axis);
-
-    let a = add;
-    a = [...a, 1];
-    setAdd(a);
   }
+  // useEffect(() => {
+  //   console.log("pic11");
+  //   let cvs = document.getElementById("cvs");
+  //   let ctx = cvs.getContext("2d");
+
+  //   function make_base() {
+  //     let base_image = new Image();
+  //     base_image.src =
+  //       "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04Niw0Ny44ODc2N2w1Mi40ODg2Nyw4MS4xMTIzM2gtMTA0Ljk3NzMzbDUyLjQ4ODY3LC04MS4xMTIzM004NiwyMS41bC03OC44MzMzMywxMjEuODMzMzNoMTU3LjY2NjY3bC03OC44MzMzMywtMTIxLjgzMzMzeiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+";
+  //     console.log("c1", props.playerAxis);
+  //     if (props.playerAxis !== undefined) {
+  //       const imageBlock = (function () {
+  //         // ctx.fillStyle = "000";
+  //         console.log("cccccccc");
+  //         ctx.drawImage(
+  //           base_image,
+  //           Number(props.playerAxis.x),
+  //           Number(props.playerAxis.y),
+  //           10,
+  //           10
+  //         );
+
+  //         console.log("x", props.playerAxis.x, "y", props.playerAxis.y);
+  //       })();
+  //     }
+  //   }
+  //   make_base();
+  // }, [props.playerAxis]);
+
   return (
     <>
-      {/* <div>
-        {add.map((item) => (
-          <img src="src/img/tri.png" style={{ zIndex: "10" }}></img>
-        ))}
-      </div> */}
+      {/* <canvas id="cvs"></canvas> */}
+
       <div id="myObjss">
         <svg
-          onClick={(e) => {
-            console.log("bbb");
-            console.log(e.target.nodeName);
-            getCursorPosition(e.target, e);
+          onClickCapture={(e) => {
+            console.log(e.currentTarget.nodeName);
+            getCursorPosition(e.currentTarget, e);
           }}
           version="1.1"
           id="myObj"
@@ -63,9 +62,6 @@ function Court3(props) {
           <g>
             <path
               onClick={(e) => {
-                console.log("ccc");
-                console.log(e.target.nodeName);
-                getCursorPosition(e.target, e);
                 console.log("中場半圓");
                 props.setPlayerLocation("中場半圓");
                 props.setPlayerActionNumber(2);

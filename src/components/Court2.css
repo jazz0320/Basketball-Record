@@ -3,9 +3,22 @@
 }
 
 svg {
-  height: 100vh;
+  height: 50vh;
 }
 
+/* #myObj {
+  pointer-events: auto;
+} */
+canvas {
+  height: 50vh;
+  width: 50vh;
+  background-color: none;
+  opacity: 1;
+}
+
+img {
+  color: black;
+}
 path {
   fill: transparent;
   transition: 0.5s;

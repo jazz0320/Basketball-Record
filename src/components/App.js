@@ -9,7 +9,6 @@ import {
 } from "../utils/firebase";
 import "./App.css";
 import Clock from "./Clock";
-import Court from "./Court";
 import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
 
@@ -31,11 +30,12 @@ function App() {
 
   const [leftSide, setLeftSide] = useState(true);
   const [activePlayer, setActivePlayer] = useState();
-  const [playLocation, setPlayerLocation] = useState();
-  const [playAxis, setPlayerAxis] = useState();
+  const [playerLocation, setPlayerLocation] = useState();
+  const [playerAxis, setPlayerAxis] = useState();
   const [playerAction, setPlayerAction] = useState();
+  const [playerActionWord, setPlayerActionWord] = useState();
   const [playerActionNumber, setPlayerActionNumber] = useState();
-  const [liveAction, setLiveAction] = useState();
+  const [liveAction, setLiveAction] = useState([]);
 
   useEffect(() => {
     const player = function (e) {
@@ -91,20 +91,22 @@ function App() {
       if (e.ctrlKey && e.key === "q") {
         console.log("333");
         setPlayerAction("pts");
+        setPlayerActionWord("得分");
       } else if (e.key === "q") {
         console.log("000");
         setPlayerAction("pts");
+        setPlayerActionWord("得分");
         setPlayerActionNumber(0);
       }
 
-      if (e.ctrlKey && e.key === "w") {
-        console.log("333");
-        setPlayerAction("pts");
-      } else if (e.key === "w") {
-        console.log("000");
-        setPlayerAction("pts");
-        setPlayerActionNumber(0);
-      }
+      // if (e.ctrlKey && e.key === "w") {
+      //   console.log("333");
+      //   setPlayerAction("pts");
+      // } else if (e.key === "w") {
+      //   console.log("000");
+      //   setPlayerAction("pts");
+      //   setPlayerActionNumber(0);
+      // }
     };
     const submit = async function (e) {
       if (e.key === "Enter") {
@@ -149,15 +151,44 @@ function App() {
             { merge: true }
           );
         }
-        setLiveAction([
-          ...leftSide,
-          ...activePlayer,
-          ...playerAction,
-          ...playerActionNumber,
+
+        setLiveAction((prev) => [
+          ...prev,
+          {
+            team: leftSide,
+            player: activePlayer,
+            location: playerLocation,
+            axis: playerAxis,
+            action: playerActionWord,
+            count: playerActionNumber,
+          },
         ]);
+        let actionLive = [
+          ...liveAction,
+          {
+            team: leftSide,
+            player: activePlayer,
+            axis: playerAxis,
+            location: playerLocation,
+            action: playerActionWord,
+            count: playerActionNumber,
+          },
+        ];
+
+        await setDoc(
+          doc(db, "game_data", "live_game"),
+          {
+            live_action: actionLive,
+          },
+          { merge: true }
+        );
         //clear all action for next time
+
         setActivePlayer();
         setPlayerAction();
+        setPlayerActionWord();
+        setPlayerAxis();
+        setPlayerLocation();
         setPlayerActionNumber();
       }
     };
@@ -174,8 +205,12 @@ function App() {
     aTeamData,
     quarterNow,
     quarter,
+    playerAxis,
+    playerLocation,
     playerAction,
+    playerActionWord,
     playerActionNumber,
+    liveAction,
   ]);
 
   async function chooseTeam() {
@@ -536,17 +571,17 @@ function App() {
             <div>
               {item}
               <br />
-              {playerAction && aTeamData[index][playerAction]}
+              {aTeamData[0] ? aTeamData[index].pts : 0}
               <br />
-              {playerAction && bTeamData[index][playerAction]}
+              {bTeamData[0] ? bTeamData[index].pts : 0}
             </div>
           ))}
         <div>
           Total
           <br />
-          {playerAction && aTeamData[quarter.length][playerAction]}
+          {quarter && aTeamData[0] ? aTeamData[quarter.length].pts : 0}
           <br />
-          {playerAction && bTeamData[quarter.length][playerAction]}
+          {quarter && aTeamData[0] ? bTeamData[quarter.length].pts : 0}
         </div>
       </div>
 
@@ -557,29 +592,43 @@ function App() {
       </div>
 
       <div>
-        <span>{leftSide ? "AAAAAAAAAA_team" : "BBBBBBBB_team"}</span>
+        <span>{leftSide ? aTeam : bTeam}</span>
         <span> , </span>
         <span>
-          {activePlayer !== undefined
-            ? aTeamPlayers
-              ? aTeamPlayers[activePlayer].name
+          {leftSide
+            ? activePlayer !== undefined
+              ? aTeamPlayers
+                ? aTeamPlayers[activePlayer].name
+                : ""
+              : ""
+            : activePlayer !== undefined
+            ? bTeamPlayers
+              ? bTeamPlayers[activePlayer].name
               : ""
             : ""}
         </span>
-        <span> , </span>
-        <span> {playLocation} </span>
-        <span> {playerAction} </span>
+        <span> {activePlayer !== undefined ? " , " : ""} </span>
+        <span> {playerLocation} </span>
+        <span> {playerLocation !== undefined ? " , " : ""} </span>
+        <span> {playerActionWord} </span>
+        <span> {playerActionWord !== undefined ? " , " : ""} </span>
+        <span> {playerActionWord ? playerActionNumber : ""} </span>
       </div>
       <Court3
         setPlayerLocation={setPlayerLocation}
         setPlayerAxis={setPlayerAxis}
         setPlayerActionNumber={setPlayerActionNumber}
+        playerAxis={playerAxis}
       />
       <div>
         <RecordRoom
           quarter={quarter}
           quarteNow={quarterNow}
-          playLocation={playLocation}
+          liveAction={liveAction}
+          aTeam={aTeam}
+          bTeam={bTeam}
+          aTeamPlayers={aTeamPlayers}
+          bTeamPlayers={bTeamPlayers}
         />
       </div>
     </>
