@@ -179,51 +179,6 @@ function App() {
   const [timerMinutes, setTimerMinutes] = useState(0);
   const [timerSeconds, setTimerSeconds] = useState(0);
 
-  //dnd
-  function handleOnDragEndAteam(result) {
-    if (!result.destination) return;
-    const items = Array.from([...aTeamPlayers]);
-    const itemsLength = items.length;
-    const [reorderedItemSource] = items.splice(result.source.index, 1);
-    let reorderedItemDestination;
-    if (result.destination.index === itemsLength - 1) {
-      let reorderedItemDestinations = [
-        ...items.splice(result.destination.index - 1, 1),
-      ];
-      reorderedItemDestination = reorderedItemDestinations[0];
-    } else {
-      let reorderedItemDestinations = [
-        ...items.splice(result.destination.index, 1),
-      ];
-      reorderedItemDestination = reorderedItemDestinations[0];
-    }
-    items.splice(result.destination.index, 0, reorderedItemSource);
-    items.splice(result.source.index, 0, reorderedItemDestination);
-    setATeamPlayers(items);
-  }
-
-  function handleOnDragEndBteam(result) {
-    if (!result.destination) return;
-    const items = Array.from([...bTeamPlayers]);
-    const itemsLength = items.length;
-    const [reorderedItemSource] = items.splice(result.source.index, 1);
-    let reorderedItemDestination;
-    if (result.destination.index === itemsLength - 1) {
-      let reorderedItemDestinations = [
-        ...items.splice(result.destination.index - 1, 1),
-      ];
-      reorderedItemDestination = reorderedItemDestinations[0];
-    } else {
-      let reorderedItemDestinations = [
-        ...items.splice(result.destination.index, 1),
-      ];
-      reorderedItemDestination = reorderedItemDestinations[0];
-    }
-    items.splice(result.destination.index, 0, reorderedItemSource);
-    items.splice(result.source.index, 0, reorderedItemDestination);
-    setBTeamPlayers(items);
-  }
-
   useEffect(() => {
     const player = function (e) {
       if (e.keyCode === 192) {
@@ -911,95 +866,20 @@ function App() {
       <div>OnTheGround</div>
 
       <div id="groundContainer">
-        <DragDropContext onDragEnd={handleOnDragEndAteam}>
-          <Droppable droppableId="teamA">
-            {(provided) => (
-              <div
-                id="teambox"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {aTeamPlayers &&
-                  aTeamPlayers.map((player, index) => (
-                    <Draggable
-                      key={player.name}
-                      draggableId={player.name}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          key={index}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                          style={{ textAlign: "center" }}
-                        >
-                          <div
-                            style={{
-                              backgroundSize: "cover",
-                              height: "100px",
-                              width: "145px",
-                              backgroundImage: `url(${player.pic})`,
-                            }}
-                          ></div>
-                          {player.id}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <TeamBox
+          teamPlayers={aTeamPlayers}
+          setTeamPlayers={setATeamPlayers}
+        ></TeamBox>
         <Court3
           setPlayerLocation={setPlayerLocation}
           setPlayerAxis={setPlayerAxis}
           setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
           playerAxis={playerAxis}
         />
-        <div>
-          <DragDropContext onDragEnd={handleOnDragEndBteam}>
-            <Droppable droppableId="teamB">
-              {(provided) => (
-                <div
-                  id="teambox"
-                  {...provided.draggableProps}
-                  ref={provided.innerRef}
-                >
-                  {bTeamPlayers &&
-                    bTeamPlayers.map((player, index) => (
-                      <Draggable
-                        key={player.id}
-                        draggableId={player.id}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{ textAlign: "center" }}
-                          >
-                            <div
-                              style={{
-                                backgroundSize: "cover",
-                                height: "100px",
-                                width: "145px",
-                                backgroundImage: `url(${player.pic})`,
-                              }}
-                            ></div>
-                            {player.id}
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
+        <TeamBox
+          teamPlayers={bTeamPlayers}
+          setTeamPlayers={setBTeamPlayers}
+        ></TeamBox>
       </div>
 
       <div>
@@ -1065,6 +945,73 @@ function App() {
       </div>
       {/* <LiveRoom></LiveRoom> */}
     </>
+  );
+}
+
+function TeamBox(props) {
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+    const items = Array.from([...props.teamPlayers]);
+    const itemsLength = items.length;
+    const [reorderedItemSource] = items.splice(result.source.index, 1);
+    let reorderedItemDestination;
+    if (result.destination.index === itemsLength - 1) {
+      let reorderedItemDestinations = [
+        ...items.splice(result.destination.index - 1, 1),
+      ];
+      reorderedItemDestination = reorderedItemDestinations[0];
+    } else {
+      let reorderedItemDestinations = [
+        ...items.splice(result.destination.index, 1),
+      ];
+      reorderedItemDestination = reorderedItemDestinations[0];
+    }
+    items.splice(result.destination.index, 0, reorderedItemSource);
+    items.splice(result.source.index, 0, reorderedItemDestination);
+    props.setTeamPlayers(items);
+  }
+  return (
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <Droppable droppableId="team">
+        {(provided) => (
+          <div
+            id="teambox"
+            // style={{ display: "flex" }}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {props.teamPlayers &&
+              props.teamPlayers.map((player, index) => (
+                <Draggable
+                  key={player.name}
+                  draggableId={player.name}
+                  index={index}
+                >
+                  {(provided) => (
+                    <div
+                      // key={index}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <div
+                        style={{
+                          backgroundSize: "cover",
+                          height: "100px",
+                          width: "130px",
+                          backgroundImage: `url(${player.pic})`,
+                        }}
+                      ></div>
+                      {player.name}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 }
 

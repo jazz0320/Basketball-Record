@@ -3,13 +3,13 @@ import { collection, doc, onSnapshot, db } from "../utils/firebase";
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
-  // useEffect(() => {
-  //   const unsub = onSnapshot(doc(db, "game_data", "live_game"), (doc) => {
-  //     console.log("Current data: ", doc.data().live_action);
-  //     setLiveAction(doc.data().live_action);
-  //   });
-  //   unsub();
-  // }, []);
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "game_data", "live_game"), (doc) => {
+      console.log("Current data: ", doc.data().live_action);
+      setLiveAction(doc.data().live_action);
+    });
+    // unsub();
+  }, []);
 
   return (
     <>
