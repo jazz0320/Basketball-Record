@@ -3,382 +3,360 @@ import "./Court2.css";
 
 function Court3(props) {
   function getCursorPosition(vas, event) {
+    //clear 上一個定點
+    let cvs = document.getElementById("cvs");
+    let ctx = cvs.getContext("2d");
+    if (props.playerAxis !== undefined) {
+      ctx.clearRect(props.playerAxis.x / 2.53, props.playerAxis.y / 5.1, 8, 8);
+    }
     const rect = vas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     let axis = { x: x, y: y };
     console.log("x: " + x + " y: " + y);
     props.setPlayerAxis(axis);
+
+    //add point
+
+    let base_image = new Image();
+    base_image.src =
+      "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04Niw0Ny44ODc2N2w1Mi40ODg2Nyw4MS4xMTIzM2gtMTA0Ljk3NzMzbDUyLjQ4ODY3LC04MS4xMTIzM004NiwyMS41bC03OC44MzMzMywxMjEuODMzMzNoMTU3LjY2NjY3bC03OC44MzMzMywtMTIxLjgzMzMzeiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+";
+    base_image.onload = () =>
+      ctx.drawImage(base_image, Number(x / 2.53), Number(y / 5.1), 8, 8);
   }
-  useEffect(() => {
-    console.log("pic11");
-    let cvs = document.getElementById("cvs");
-    let ctx = cvs.getContext("2d");
-
-    function make_base() {
-      let base_image = new Image();
-      base_image.src =
-        "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04Niw0Ny44ODc2N2w1Mi40ODg2Nyw4MS4xMTIzM2gtMTA0Ljk3NzMzbDUyLjQ4ODY3LC04MS4xMTIzM004NiwyMS41bC03OC44MzMzMywxMjEuODMzMzNoMTU3LjY2NjY3bC03OC44MzMzMywtMTIxLjgzMzMzeiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+";
-      console.log("c1", props.playerAxis);
-      if (props.playerAxis !== undefined) {
-        const imageBlock = (function () {
-          // ctx.fillStyle = "000";
-          console.log("cccccccc");
-          ctx.drawImage(
-            base_image,
-            Number(props.playerAxis.x / 2.53),
-            Number(props.playerAxis.y / 5.1),
-            8,
-            8
-          );
-
-          console.log("zx", props.playerAxis.x, "zy", props.playerAxis.y);
-        })();
-      }
-    }
-    make_base();
-  }, [props.playerAxis]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", width: "630px" }}>
       <canvas id="cvs"></canvas>
-
-      <div id="myObjss">
-        <svg
-          onClickCapture={(e) => {
-            console.log(e.currentTarget.nodeName);
-            getCursorPosition(e.currentTarget, e);
-          }}
-          version="1.1"
-          id="myObj"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          x="0px"
-          y="0px"
-          viewBox="0 0 555 555"
-          //   style="enable-background:new 0 0 555 555;"
-          xmlSpace="preserve"
-        >
-          <g>
-            <path
-              onClick={(e) => {
-                console.log("中場半圓");
-                props.setPlayerLocation("中場半圓");
-                props.setPlayerActionNumber(2);
-              }}
-              className="st0"
-              id="obj2"
-              d="M278.5,419.6c42.7,0,76,33.4,78.3,73.3h-9.9c-1.7-33.2-31.4-63.9-68.4-63.3c-37,0.5-65.5,29.4-67.1,63.2H201
+      <svg
+        onClickCapture={(e) => {
+          console.log(e.currentTarget.nodeName);
+          getCursorPosition(e.currentTarget, e);
+        }}
+        version="1.1"
+        id="myObj"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 555 555"
+        //   style="enable-background:new 0 0 555 555;"
+        xmlSpace="preserve"
+      >
+        <g>
+          <path
+            onClick={(e) => {
+              console.log("中場半圓");
+              props.setPlayerLocation("中場半圓");
+              props.setPlayerLocationScoreNumber(2);
+            }}
+            className="st0"
+            id="obj2"
+            d="M278.5,419.6c42.7,0,76,33.4,78.3,73.3h-9.9c-1.7-33.2-31.4-63.9-68.4-63.3c-37,0.5-65.5,29.4-67.1,63.2H201
 		C203.7,453.7,235.8,419.6,278.5,419.6z"
-            />
-          </g>
-          <g>
-            <defs>
-              <rect id="SVGID_1_" x="168.6" y="102" width="241" height="59.9" />
-            </defs>
-            <clipPath id="SVGID_2_">
-              <use xlinkHref="#SVGID_1_" style={{ overflow: "visible" }} />
-            </clipPath>
-            <g className="st1">
-              <path
-                onClick={() => {
-                  console.log("禁區弧線");
-                  props.setPlayerLocation("禁區弧線");
-                  props.setPlayerActionNumber(2);
-                }}
-                className="st2"
-                d="M277,156.5c-53.1,0-96.3-41.3-96.3-92c0-50.7,43.2-92,96.3-92c53.1,0,96.3,41.3,96.3,92
+          />
+        </g>
+        <g>
+          <defs>
+            <rect id="SVGID_1_" x="168.6" y="102" width="241" height="59.9" />
+          </defs>
+          <clipPath id="SVGID_2_">
+            <use xlinkHref="#SVGID_1_" style={{ overflow: "visible" }} />
+          </clipPath>
+          <g className="st1">
+            <path
+              onClick={() => {
+                console.log("禁區弧線");
+                props.setPlayerLocation("禁區弧線");
+                props.setPlayerLocationScoreNumber(2);
+              }}
+              className="st2"
+              d="M277,156.5c-53.1,0-96.3-41.3-96.3-92c0-50.7,43.2-92,96.3-92c53.1,0,96.3,41.3,96.3,92
 			C373.3,115.3,330.1,156.5,277,156.5z M277-23.5c-50.9,0-92.3,39.5-92.3,88c0,48.5,41.4,88,92.3,88s92.3-39.5,92.3-88
 			C369.3,16,327.9-23.5,277-23.5z"
-              />
-            </g>
+            />
           </g>
-          <path
-            onClick={() => {
-              console.log("左側45度角中距離");
-              props.setPlayerLocation("左側45度角中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            id="lc1624_1_1_"
-            className="st4"
-            d="M134.3,162.3l-77.2,60c10,11.6,25.1,27.2,44.9,42.5c23,17.9,47.9,32.2,74.1,42.4
+        </g>
+        <path
+          onClick={() => {
+            console.log("左側45度角中距離");
+            props.setPlayerLocation("左側45度角中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="lc1624_1_1_"
+          className="st4"
+          d="M134.3,162.3l-77.2,60c10,11.6,25.1,27.2,44.9,42.5c23,17.9,47.9,32.2,74.1,42.4
 	c2.7,1,5.4,2,7.9,2.9l26.2-72.9c-2.6-5.7-4.5-11.7-5.5-18c-5.1-2.3-10-4.8-14.8-7.4h-6.1v-3.7C164.6,196.1,147.7,180.5,134.3,162.3z
 	"
-          />
-          <path
-            onClick={() => {
-              console.log("弧頂三分線");
-              props.setPlayerLocation("弧頂三分線");
-              props.setPlayerActionNumber(3);
-            }}
-            id="c24Plus_1_1_"
-            className="st4"
-            d="M396.4,492.9l-46-165.3c-23,5.9-46.9,8.7-71.3,8.7c-24.9,0-49.4-3.1-73-9l-44.7,165.6H201
+        />
+        <path
+          onClick={() => {
+            console.log("弧頂三分線");
+            props.setPlayerLocation("弧頂三分線");
+            props.setPlayerLocationScoreNumber(3);
+          }}
+          id="c24Plus_1_1_"
+          className="st4"
+          d="M396.4,492.9l-46-165.3c-23,5.9-46.9,8.7-71.3,8.7c-24.9,0-49.4-3.1-73-9l-44.7,165.6H201
 	c2.5-40.8,36.5-73.3,77.9-73.3c41.3,0,75.4,32.5,77.8,73.3H396.4z"
-          />
-          <path
-            onClick={() => {
-              console.log("終場半圓內");
-              props.setPlayerLocation("終場半圓內");
-              props.setPlayerActionNumber(3);
-            }}
-            id="c24Plus_2_1_"
-            className="st4"
-            d="M279,429.5c-36,0-65.5,28.1-68,63.4h135.9C344.4,457.6,314.9,429.5,279,429.5z"
-          />
-          <path
-            onClick={() => {
-              console.log("左側45度角三分");
-              props.setPlayerLocation("左側45度角三分");
-              props.setPlayerActionNumber(3);
-            }}
-            id="lc24Plus_1_1_"
-            className="st4"
-            d="M202.2,326.2c-10.1-2.7-20.1-5.9-30-9.8c-27.1-10.6-52.9-25.4-76.6-43.9
+        />
+        <path
+          onClick={() => {
+            console.log("終場半圓內");
+            props.setPlayerLocation("終場半圓內");
+            props.setPlayerLocationScoreNumber(3);
+          }}
+          id="c24Plus_2_1_"
+          className="st4"
+          d="M279,429.5c-36,0-65.5,28.1-68,63.4h135.9C344.4,457.6,314.9,429.5,279,429.5z"
+        />
+        <path
+          onClick={() => {
+            console.log("左側45度角三分");
+            props.setPlayerLocation("左側45度角三分");
+            props.setPlayerLocationScoreNumber(3);
+          }}
+          id="lc24Plus_1_1_"
+          className="st4"
+          d="M202.2,326.2c-10.1-2.7-20.1-5.9-30-9.8c-27.1-10.6-52.9-25.4-76.6-43.9
 	c-40.5-31.6-61-62.8-61.8-64.1l-0.5-0.8H1v285.3h156.2L202.2,326.2z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區弧線內");
-              props.setPlayerLocation("禁區弧線內");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c08_1_1_"
-            className="st4"
-            d="M305.1,148.2c-8.2-3.8-17.5-5.9-27.1-5.9c-10,0-19.4,2.3-27.9,6.3c8.6,2.6,17.7,4,27,4
+        />
+        <path
+          onClick={() => {
+            console.log("禁區弧線內");
+            props.setPlayerLocation("禁區弧線內");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c08_1_1_"
+          className="st4"
+          d="M305.1,148.2c-8.2-3.8-17.5-5.9-27.1-5.9c-10,0-19.4,2.3-27.9,6.3c8.6,2.6,17.7,4,27,4
 	C286.7,152.6,296.1,151,305.1,148.2z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區弧線外,罰球線內");
-              props.setPlayerLocation("禁區弧線外,罰球線內");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c816_2_1_"
-            className="st4"
-            d="M213.7,201.9h128.4c-1.6-21.8-14.2-40.7-32.1-51c-10.5,3.7-21.6,5.7-32.9,5.7l0,0
+        />
+        <path
+          onClick={() => {
+            console.log("禁區弧線外,罰球線內");
+            props.setPlayerLocation("禁區弧線外,罰球線內");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c816_2_1_"
+          className="st4"
+          d="M213.7,201.9h128.4c-1.6-21.8-14.2-40.7-32.1-51c-10.5,3.7-21.6,5.7-32.9,5.7l0,0
 	c-11,0-21.7-1.9-31.8-5.4C227.6,161.7,215.4,180.2,213.7,201.9z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區弧線外右側,禁區內");
-              props.setPlayerLocation("禁區弧線外右側,禁區內");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c816_3_3_"
-            className="st4"
-            d="M342.3,169.7V132c-3.6,3.2-7.4,6.1-11.6,8.8c-3.1,2-6.3,3.8-9.6,5.5
+        />
+        <path
+          onClick={() => {
+            console.log("禁區弧線外右側,禁區內");
+            props.setPlayerLocation("禁區弧線外右側,禁區內");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c816_3_3_"
+          className="st4"
+          d="M342.3,169.7V132c-3.6,3.2-7.4,6.1-11.6,8.8c-3.1,2-6.3,3.8-9.6,5.5
 	C329.7,152.4,337.1,160.4,342.3,169.7z"
-          />
-          <path
-            onClick={() => {
-              console.log("中距離弧頂");
-              props.setPlayerLocation("中距離弧頂");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c1624_1_1_"
-            className="st4"
-            d="M278,271.3c29.9,0,55.1-20.5,62.4-48.3c-20.1,7.6-41.5,11.6-63.3,11.6
+        />
+        <path
+          onClick={() => {
+            console.log("中距離弧頂");
+            props.setPlayerLocation("中距離弧頂");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c1624_1_1_"
+          className="st4"
+          d="M278,271.3c29.9,0,55.1-20.5,62.4-48.3c-20.1,7.6-41.5,11.6-63.3,11.6
 	c-21,0-41.7-3.7-61.3-10.9c0.5,1.8,1,3.5,1.6,5.2l0,0l0,0C226.4,253.6,250.2,271.3,278,271.3z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區弧線外左側,禁區內");
-              props.setPlayerLocation("禁區弧線外左側,禁區內");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c816_3_2_"
-            className="st4"
-            d="M213.5,169.7c5.3-9.1,12.3-17,20.6-23.1c-7.3-3.5-14.3-7.9-20.6-13.2V169.7z"
-          />
-          <path
-            onClick={() => {
-              console.log("罰球線");
-              props.setPlayerLocation("罰球線");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c816_4_1_"
-            className="st4"
-            d="M342.1,211.8H213.7c0.2,2.5,0.5,4.9,1,7.2c19.7,7.6,40.9,11.6,62.4,11.6
+        />
+        <path
+          onClick={() => {
+            console.log("禁區弧線外左側,禁區內");
+            props.setPlayerLocation("禁區弧線外左側,禁區內");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c816_3_2_"
+          className="st4"
+          d="M213.5,169.7c5.3-9.1,12.3-17,20.6-23.1c-7.3-3.5-14.3-7.9-20.6-13.2V169.7z"
+        />
+        <path
+          onClick={() => {
+            console.log("罰球線");
+            props.setPlayerLocation("罰球線");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c816_4_1_"
+          className="st4"
+          d="M342.1,211.8H213.7c0.2,2.5,0.5,4.9,1,7.2c19.7,7.6,40.9,11.6,62.4,11.6
 	c22.1,0,43.9-4.2,64.3-12.3C341.7,216.1,342,214,342.1,211.8z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區左側");
-              props.setPlayerLocation("禁區左側");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c08_2_1_"
-            className="st4"
-            d="M203.6,118V1.2h-9.9v102.3C196.6,108.7,199.9,113.5,203.6,118z"
-          />
-          <path
-            onClick={() => {
-              console.log("弧頂遠中距離");
-              props.setPlayerLocation("弧頂遠中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c1624_2_1_"
-            className="st4"
-            d="M187.8,311.5c29.2,9.9,59.8,14.9,91.3,14.9c31.1,0,61.4-4.9,90-14.7l-25.3-70.5
+        />
+        <path
+          onClick={() => {
+            console.log("禁區左側");
+            props.setPlayerLocation("禁區左側");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c08_2_1_"
+          className="st4"
+          d="M203.6,118V1.2h-9.9v102.3C196.6,108.7,199.9,113.5,203.6,118z"
+        />
+        <path
+          onClick={() => {
+            console.log("弧頂遠中距離");
+            props.setPlayerLocation("弧頂遠中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c1624_2_1_"
+          className="st4"
+          d="M187.8,311.5c29.2,9.9,59.8,14.9,91.3,14.9c31.1,0,61.4-4.9,90-14.7l-25.3-70.5
 	c-12.5,23.8-37.3,40-65.8,40c-28.2,0-52.8-15.8-65.3-39L187.8,311.5z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區弧線外左側45度,禁區內");
-              props.setPlayerLocation("禁區弧線外左側45度,禁區內");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c816_5_1_"
-            className="st4"
-            d="M193.7,201.9h9.9v-77.9c-3.6-3.9-6.9-8.2-9.9-12.7V201.9z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區右側");
-              props.setPlayerLocation("禁區右側");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c08_3_1_"
-            className="st4"
-            d="M352.3,115.7c2.9-3.6,5.5-7.4,7.7-11.5V1.2h-7.7V115.7z"
-          />
-          <path
-            onClick={() => {
-              console.log("右側遠中距離");
-              props.setPlayerLocation("右側遠中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            id="r1624_1_1_"
-            className="st4"
-            d="M454.3,57.1c0,31-8,61.5-23.4,88.3c-2.7,4.7-5.6,9.1-8.6,13.6l78.1,60.7
+        />
+        <path
+          onClick={() => {
+            console.log("禁區弧線外左側45度,禁區內");
+            props.setPlayerLocation("禁區弧線外左側45度,禁區內");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c816_5_1_"
+          className="st4"
+          d="M193.7,201.9h9.9v-77.9c-3.6-3.9-6.9-8.2-9.9-12.7V201.9z"
+        />
+        <path
+          onClick={() => {
+            console.log("禁區右側");
+            props.setPlayerLocation("禁區右側");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c08_3_1_"
+          className="st4"
+          d="M352.3,115.7c2.9-3.6,5.5-7.4,7.7-11.5V1.2h-7.7V115.7z"
+        />
+        <path
+          onClick={() => {
+            console.log("右側遠中距離");
+            props.setPlayerLocation("右側遠中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="r1624_1_1_"
+          className="st4"
+          d="M454.3,57.1c0,31-8,61.5-23.4,88.3c-2.7,4.7-5.6,9.1-8.6,13.6l78.1,60.7
 	c6.2-7.5,10-13.1,11.6-15.4V1.2h-66.7C451.3,19.2,454.3,38,454.3,57.1z"
-          />
-          <path
-            onClick={() => {
-              console.log("右側中距離");
-              props.setPlayerLocation("右側中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            id="r816_1_1_"
-            className="st4"
-            d="M369.9,203.6c23.7-15.1,43.6-35.9,57.6-60.3c14.9-26.1,22.8-55.9,22.8-86.3
+        />
+        <path
+          onClick={() => {
+            console.log("右側中距離");
+            props.setPlayerLocation("右側中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="r816_1_1_"
+          className="st4"
+          d="M369.9,203.6c23.7-15.1,43.6-35.9,57.6-60.3c14.9-26.1,22.8-55.9,22.8-86.3
 	c0-19.1-3.1-37.9-9.2-55.9h-71.2V203.6z"
-          />
-          <path
-            onClick={() => {
-              console.log("藍下禁區");
-              props.setPlayerLocation("藍下禁區");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c08_4_1_"
-            className="st4"
-            d="M237.9,144.1c11.6-7.4,25.3-11.7,40.1-11.7c14.4,0,27.8,4.1,39.2,11.2c9.2-4.3,17.7-10,25.2-17.1
+        />
+        <path
+          onClick={() => {
+            console.log("藍下禁區");
+            props.setPlayerLocation("藍下禁區");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c08_4_1_"
+          className="st4"
+          d="M237.9,144.1c11.6-7.4,25.3-11.7,40.1-11.7c14.4,0,27.8,4.1,39.2,11.2c9.2-4.3,17.7-10,25.2-17.1
 	V1.2H213.5v127C220.9,134.7,229.1,140.1,237.9,144.1z"
-          />
-          <path
-            onClick={() => {
-              console.log("左側中距離");
-              props.setPlayerLocation("左側中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            id="l816_1_1_"
-            className="st4"
-            d="M103.8,57.1c0,30.2,7.9,60,22.8,86.1c13.9,24.4,33.6,45.1,57.2,60.2V1.2H113
+        />
+        <path
+          onClick={() => {
+            console.log("左側中距離");
+            props.setPlayerLocation("左側中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="l816_1_1_"
+          className="st4"
+          d="M103.8,57.1c0,30.2,7.9,60,22.8,86.1c13.9,24.4,33.6,45.1,57.2,60.2V1.2H113
 	C106.9,19.1,103.8,38,103.8,57.1z"
-          />
-          <path
-            onClick={() => {
-              console.log("禁區弧線外左側45度,禁區內");
-              props.setPlayerLocation("禁區弧線外左側45度,禁區內");
-              props.setPlayerActionNumber(2);
-            }}
-            id="c816_8_1_"
-            className="st4"
-            d="M352.3,201.9h7.7v-90c-2.3,3.6-5,6.9-7.7,10.1V201.9z"
-          />
-          <path
-            onClick={() => {
-              console.log("右側45度角中距離");
-              props.setPlayerLocation("右側45度角中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            id="rc1624_1_1_"
-            className="st4"
-            d="M346.2,236.3l26.7,74.2c3-1,5.9-2.2,8.9-3.3c25.9-10.3,50.5-24.6,73-42.5
+        />
+        <path
+          onClick={() => {
+            console.log("禁區弧線外左側45度,禁區內");
+            props.setPlayerLocation("禁區弧線外左側45度,禁區內");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="c816_8_1_"
+          className="st4"
+          d="M352.3,201.9h7.7v-90c-2.3,3.6-5,6.9-7.7,10.1V201.9z"
+        />
+        <path
+          onClick={() => {
+            console.log("右側45度角中距離");
+            props.setPlayerLocation("右側45度角中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="rc1624_1_1_"
+          className="st4"
+          d="M346.2,236.3l26.7,74.2c3-1,5.9-2.2,8.9-3.3c25.9-10.3,50.5-24.6,73-42.5
 	c19.1-15.2,33.5-30.4,43.1-41.9L420,162.1c-13.6,18.4-30.5,34.2-50.1,46.2v3.5h-5.8c-4.2,2.3-8.4,4.5-12.7,6.4
 	C350.5,224.6,348.7,230.6,346.2,236.3z"
-          />
-          <path
-            onClick={() => {
-              console.log("左側遠中距離");
-              props.setPlayerLocation("左側遠中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            id="l1624_1_1_"
-            className="st4"
-            d="M99.8,57.1c0-19.1,3.1-37.9,9-55.9H42.9v203c1.6,2.3,5.5,7.7,11.6,15.1l77.4-60.2
+        />
+        <path
+          onClick={() => {
+            console.log("左側遠中距離");
+            props.setPlayerLocation("左側遠中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          id="l1624_1_1_"
+          className="st4"
+          d="M99.8,57.1c0-19.1,3.1-37.9,9-55.9H42.9v203c1.6,2.3,5.5,7.7,11.6,15.1l77.4-60.2
 	c-3.2-4.5-6-9.1-8.8-13.9C107.9,118.5,99.8,88,99.8,57.1z"
-          />
-          <path
-            onClick={() => {
-              console.log("右側45度三分");
-              props.setPlayerLocation("右側45度三分");
-              props.setPlayerActionNumber(3);
-            }}
-            id="rc24Plus_1_1_"
-            className="st4"
-            d="M556,492.9V207.6h-34.5l-0.4,0.7c-0.8,1.3-20.4,32.5-60.2,64.1
+        />
+        <path
+          onClick={() => {
+            console.log("右側45度三分");
+            props.setPlayerLocation("右側45度三分");
+            props.setPlayerLocationScoreNumber(3);
+          }}
+          id="rc24Plus_1_1_"
+          className="st4"
+          d="M556,492.9V207.6h-34.5l-0.4,0.7c-0.8,1.3-20.4,32.5-60.2,64.1
 	c-23.3,18.6-48.7,33.4-75.6,44c-10.1,4-20.6,7.4-31.2,10.2l46.3,166.3H556z"
-          />
-          <path
-            onClick={() => {
-              console.log("左邊底角三分線上");
-              props.setPlayerLocation("左邊底角三分線上");
-              props.setPlayerActionNumber(2);
-            }}
-            className="st77"
-            d="M42.9,1.7c0,0.4,0,0.8,0,1.2c0,67.8,0,135.6,0,203.4c0,0.4,0,0.8,0,1.2c-3.3,0-6.6,0-10,0c0-0.6,0-1.1,0-1.7
+        />
+        <path
+          onClick={() => {
+            console.log("左邊底角三分線上");
+            props.setPlayerLocation("左邊底角三分線上");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          className="st77"
+          d="M42.9,1.7c0,0.4,0,0.8,0,1.2c0,67.8,0,135.6,0,203.4c0,0.4,0,0.8,0,1.2c-3.3,0-6.6,0-10,0c0-0.6,0-1.1,0-1.7
 	c0-67.5,0-135,0-202.4c0-0.6,0-1.1,0-1.7C36.3,1.7,39.6,1.7,42.9,1.7z"
-          />
-          <path
-            // style={{ border: "none" }}
-            onClick={() => {
-              console.log("右邊底角三分線上");
-              props.setPlayerLocation("右邊底角三分線上");
-              props.setPlayerActionNumber(2);
-            }}
-            className="st77"
-            id="ts77"
-            d="M522,1.2c0,0.4,0,0.8,0,1.2c0,67.8,0,135.6,0,203.4c0,0.4,0,0.8,0,1.2c-3.3,0-6.6,0-10,0c0-0.6,0-1.1,0-1.7
+        />
+        <path
+          // style={{ border: "none" }}
+          onClick={() => {
+            console.log("右邊底角三分線上");
+            props.setPlayerLocation("右邊底角三分線上");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          className="st77"
+          id="ts77"
+          d="M522,1.2c0,0.4,0,0.8,0,1.2c0,67.8,0,135.6,0,203.4c0,0.4,0,0.8,0,1.2c-3.3,0-6.6,0-10,0c0-0.6,0-1.1,0-1.7
 	c0-67.5,0-135,0-202.4c0-0.6,0-1.1,0-1.7C515.4,1.2,518.7,1.2,522,1.2z"
-          />
-          <path
-            className="st8"
-            d="M32.9,207.5c3.3,0,6.6,0,10,0c0,0.1,0,0.2,0,0.2c-3.3,0-6.7,0-10,0C32.9,207.7,32.9,207.6,32.9,207.5z"
-          />
-          <g>
-            <defs>
-              <rect
-                id="SVGID_3_"
-                x="1.4"
-                y="196.8"
-                width="31.2"
-                height="13.2"
-              />
-            </defs>
-            <clipPath id="SVGID_4_">
-              <use xlinkHref="#SVGID_3_" style={{ overflow: "visible" }} />
-            </clipPath>
-            <g className="st9">
-              <path
-                onClick={() => {
-                  console.log("左側三分");
-                  props.setPlayerLocation("左側三分");
-                  props.setPlayerActionNumber(3);
-                }}
-                className="st10"
-                d="M521.8,203.6V1.1h25.8v-1.2H-2.2v550.4h549.9v-57.4H400.4l-46.3-166.3c10.6-2.8,21.1-6.2,31.2-10.2
+        />
+        <path
+          className="st8"
+          d="M32.9,207.5c3.3,0,6.6,0,10,0c0,0.1,0,0.2,0,0.2c-3.3,0-6.7,0-10,0C32.9,207.7,32.9,207.6,32.9,207.5z"
+        />
+        <g>
+          <defs>
+            <rect id="SVGID_3_" x="1.4" y="196.8" width="31.2" height="13.2" />
+          </defs>
+          <clipPath id="SVGID_4_">
+            <use xlinkHref="#SVGID_3_" style={{ overflow: "visible" }} />
+          </clipPath>
+          <g className="st9">
+            <path
+              onClick={() => {
+                console.log("左側三分");
+                props.setPlayerLocation("左側三分");
+                props.setPlayerLocationScoreNumber(3);
+              }}
+              className="st10"
+              d="M521.8,203.6V1.1h25.8v-1.2H-2.2v550.4h549.9v-57.4H400.4l-46.3-166.3c10.6-2.8,21.1-6.2,31.2-10.2
 			c26.9-10.6,52.3-25.4,75.6-44c39.8-31.5,59.4-62.8,60.2-64.1l0.4-0.7h26.2v-4H521.8z M441,1.1c6.1,18,9.2,36.8,9.2,55.9
 			c0,30.3-7.9,60.2-22.8,86.3c-14,24.4-33.9,45.2-57.6,60.3V1.1H441z M359.9,1.1v103c-2.3,4.1-4.9,7.9-7.7,11.5V1.1H359.9z
 			 M352.2,121.9c2.8-3.2,5.5-6.5,7.7-10.1v90h-7.7V121.9z M342.3,1.1v125.3c-7.4,7-16,12.8-25.2,17.1c-11.4-7.1-24.8-11.2-39.2-11.2
@@ -402,45 +380,45 @@ function Court3(props) {
 			c-3,1.1-5.9,2.3-8.9,3.3l-26.7-74.2c2.5-5.7,4.3-11.7,5.3-18c4.3-2,8.5-4.2,12.7-6.4h5.8v-3.5c19.5-12,36.5-27.8,50.1-46.2
 			l77.9,60.6C488.2,234.2,473.8,249.4,454.7,264.6z M511.9,204.2c-1.6,2.3-5.4,7.8-11.6,15.4l-78.1-60.7c3.1-4.5,5.9-8.9,8.6-13.6
 			c15.4-26.8,23.4-57.2,23.4-88.3c0-19.1-3-37.9-9-55.9h66.7V204.2z"
-              />
-              <rect
-                x="547.7"
-                y="1.1"
-                className="st6"
-                width="8.3"
-                height="202.5"
-              />
-              <rect
-                x="547.7"
-                y="207.6"
-                className="st6"
-                width="8.3"
-                height="285.3"
-              />
-            </g>
+            />
+            <rect
+              x="547.7"
+              y="1.1"
+              className="st6"
+              width="8.3"
+              height="202.5"
+            />
+            <rect
+              x="547.7"
+              y="207.6"
+              className="st6"
+              width="8.3"
+              height="285.3"
+            />
           </g>
-          <g>
-            <defs>
-              <rect
-                id="SVGID_5_"
-                x="521.9"
-                y="196.9"
-                width="34.3"
-                height="13.2"
-              />
-            </defs>
-            <clipPath id="SVGID_6_">
-              <use xlinkHref="#SVGID_5_" style={{ overflow: "visible" }} />
-            </clipPath>
-            <g className="st11">
-              <path
-                onClick={() => {
-                  console.log("右側三分");
-                  props.setPlayerLocation("右側三分");
-                  props.setPlayerActionNumber(3);
-                }}
-                className="st10"
-                d="M1094.3,203.7V1.3h28.4V0H518v550.4h604.7V493h-162l-50.9-166.3c11.7-2.8,23.2-6.2,34.3-10.2
+        </g>
+        <g>
+          <defs>
+            <rect
+              id="SVGID_5_"
+              x="521.9"
+              y="196.9"
+              width="34.3"
+              height="13.2"
+            />
+          </defs>
+          <clipPath id="SVGID_6_">
+            <use xlinkHref="#SVGID_5_" style={{ overflow: "visible" }} />
+          </clipPath>
+          <g className="st11">
+            <path
+              onClick={() => {
+                console.log("右側三分");
+                props.setPlayerLocation("右側三分");
+                props.setPlayerLocationScoreNumber(3);
+              }}
+              className="st10"
+              d="M1094.3,203.7V1.3h28.4V0H518v550.4h604.7V493h-162l-50.9-166.3c11.7-2.8,23.2-6.2,34.3-10.2
 			c29.6-10.6,57.5-25.4,83.1-44c43.7-31.5,65.3-62.8,66.2-64.1l0.4-0.7h28.8v-4H1094.3z M1005.4,1.3c6.8,18,10.1,36.8,10.1,55.9
 			c0,30.3-8.7,60.2-25.1,86.3c-15.4,24.4-37.3,45.2-63.4,60.3V1.3H1005.4z M916.2,1.3v103c-2.5,4.1-5.3,7.9-8.5,11.5V1.3H916.2z
 			 M907.7,122c3.1-3.2,6-6.5,8.5-10.1v90h-8.5V122z M896.8,1.3v125.3c-8.2,7-17.6,12.8-27.7,17.1c-12.5-7.1-27.3-11.2-43.1-11.2
@@ -464,28 +442,28 @@ function Court3(props) {
 			c-24.8,17.9-51.8,32.2-80.3,42.5c-3.3,1.1-6.5,2.3-9.8,3.3l-29.3-74.2c2.7-5.7,4.7-11.7,5.8-18c4.7-2,9.4-4.2,14-6.4h6.3v-3.5
 			c21.5-12,40.1-27.8,55.1-46.2l85.7,60.6C1057.3,234.3,1041.5,249.5,1020.5,264.7z M1083.4,204.3c-1.7,2.3-5.9,7.8-12.8,15.4
 			L984.7,159c3.4-4.5,6.5-8.9,9.5-13.6c16.9-26.8,25.7-57.2,25.7-88.3c0-19.1-3.3-37.9-9.9-55.9h73.4V204.3z"
-              />
-            </g>
+            />
           </g>
-          <g>
-            <defs>
-              <polygon
-                id="SVGID_9_"
-                points="201.8,326.5 206.9,327.8 162.3,493 155.3,493 		"
-              />
-            </defs>
-            <clipPath id="SVGID_8_">
-              <use xlinkHref="#SVGID_9_" style={{ overflow: "visible" }} />
-            </clipPath>
-            <g className="st12">
-              <path
-                onClick={() => {
-                  console.log("左側45度三分");
-                  props.setPlayerLocation("左側45度三分");
-                  props.setPlayerActionNumber(3);
-                }}
-                className="st10"
-                d="M518.8,203.9V1.4h25.6V0.2H-0.8v550.4h545.2v-57.4H398.4l-45.9-166.3c10.5-2.8,20.9-6.2,31-10.2
+        </g>
+        <g>
+          <defs>
+            <polygon
+              id="SVGID_9_"
+              points="201.8,326.5 206.9,327.8 162.3,493 155.3,493 		"
+            />
+          </defs>
+          <clipPath id="SVGID_8_">
+            <use xlinkHref="#SVGID_9_" style={{ overflow: "visible" }} />
+          </clipPath>
+          <g className="st12">
+            <path
+              onClick={() => {
+                console.log("左側45度三分");
+                props.setPlayerLocation("左側45度三分");
+                props.setPlayerLocationScoreNumber(3);
+              }}
+              className="st10"
+              d="M518.8,203.9V1.4h25.6V0.2H-0.8v550.4h545.2v-57.4H398.4l-45.9-166.3c10.5-2.8,20.9-6.2,31-10.2
 			c26.6-10.6,51.8-25.4,74.9-44c39.4-31.5,58.9-62.8,59.7-64.1l0.4-0.7h26v-4H518.8z M438.7,1.4c6.1,18,9.1,36.8,9.1,55.9
 			c0,30.3-7.9,60.2-22.6,86.3c-13.9,24.4-33.6,45.2-57.1,60.3V1.4H438.7z M358.2,1.4v103c-2.3,4.1-4.8,7.9-7.7,11.5V1.4H358.2z
 			 M350.6,122.2c2.8-3.2,5.4-6.5,7.7-10.1v90h-7.7V122.2z M340.7,1.4v125.3c-7.4,7-15.8,12.8-25,17.1c-11.3-7.1-24.6-11.2-38.8-11.2
@@ -509,274 +487,267 @@ function Court3(props) {
 			c2.5-5.7,4.2-11.7,5.2-18c4.2-2,8.5-4.2,12.6-6.4h5.7v-3.5c19.4-12,36.2-27.8,49.6-46.2l77.3,60.6
 			C485.5,234.4,471.2,249.7,452.2,264.9z M509,204.5c-1.6,2.3-5.3,7.8-11.5,15.4L420,159.2c3-4.5,5.9-8.9,8.6-13.6
 			c15.2-26.8,23.2-57.2,23.2-88.3c0-19.1-2.9-37.9-8.9-55.9H509V204.5z"
-              />
-              <rect
-                x="544.4"
-                y="1.4"
-                className="st6"
-                width="8.2"
-                height="202.5"
-              />
-              <rect
-                x="544.4"
-                y="207.9"
-                className="st6"
-                width="8.2"
-                height="285.3"
-              />
-            </g>
+            />
+            <rect
+              x="544.4"
+              y="1.4"
+              className="st6"
+              width="8.2"
+              height="202.5"
+            />
+            <rect
+              x="544.4"
+              y="207.9"
+              className="st6"
+              width="8.2"
+              height="285.3"
+            />
           </g>
-          <polygon
+        </g>
+        <polygon
+          onClick={() => {
+            console.log("右側45度三分");
+            props.setPlayerLocation("右側45度三分");
+            props.setPlayerLocationScoreNumber(3);
+          }}
+          className="st10"
+          points="354.2,327 400.4,492.9 396.4,492.9 350.5,328.1 "
+        />
+        <g>
+          <path
             onClick={() => {
-              console.log("右側45度三分");
-              props.setPlayerLocation("右側45度三分");
-              props.setPlayerActionNumber(3);
+              console.log("禁區圓弧");
+              props.setPlayerLocation("禁區圓弧");
+              props.setPlayerLocationScoreNumber(2);
             }}
-            className="st10"
-            points="354.2,327 400.4,492.9 396.4,492.9 350.5,328.1 "
-          />
-          <g>
-            <path
-              onClick={() => {
-                console.log("禁區圓弧");
-                props.setPlayerLocation("禁區圓弧");
-                props.setPlayerActionNumber(2);
-              }}
-              className="st0"
-              d="M277.9,132.8c40.6,0,73.6,31.3,73.6,69.9h-9.8c0-33-28.6-59.9-63.7-59.9s-63.7,26.9-63.7,59.9h-9.8
+            className="st0"
+            d="M277.9,132.8c40.6,0,73.6,31.3,73.6,69.9h-9.8c0-33-28.6-59.9-63.7-59.9s-63.7,26.9-63.7,59.9h-9.8
 		C204.3,164.1,237.3,132.8,277.9,132.8z"
+          />
+        </g>
+        <rect
+          onClick={() => {
+            console.log("罰球線上");
+            props.setPlayerLocation("罰球線上");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          x="183.6"
+          y="202.1"
+          className="st15"
+          width="186.4"
+          height="9.5"
+        />
+        <rect
+          onClick={() => {
+            console.log("左側禁區線上");
+            props.setPlayerLocation("左側禁區線上");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          x="183.8"
+          y="1.2"
+          className="st16"
+          width="9.9"
+          height="200.7"
+        />
+        <rect
+          onClick={() => {
+            console.log("左側禁區靠內線上");
+            props.setPlayerLocation("左側禁區靠內線上");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          x="203.8"
+          y="1.2"
+          className="st16"
+          width="9.9"
+          height="200.7"
+        />
+        <rect
+          onClick={() => {
+            console.log("右側禁區靠內線上");
+            props.setPlayerLocation("右側禁區靠內線上");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          x="341.9"
+          y="0.8"
+          className="st16"
+          width="9.9"
+          height="200.7"
+        />
+        <rect
+          onClick={() => {
+            console.log("右側禁區線上");
+            props.setPlayerLocation("右側禁區線上");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          x="360.2"
+          y="0.8"
+          className="st16"
+          width="9.9"
+          height="200.7"
+        />
+        <polygon
+          onClick={() => {
+            console.log("左側45度偏底角中距離");
+            props.setPlayerLocation("左側45度偏底角中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          className="st16"
+          points="131.9,159 54.5,219.2 57.2,222.8 134.3,162.3 "
+        />
+        <polygon
+          onClick={() => {
+            console.log("左側45度偏弧頂中距離");
+            props.setPlayerLocation("左側45度偏弧頂中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          className="st16"
+          points="213.2,229.6 183.4,310 187.8,311.5 216.9,231.1 "
+        />
+        <polygon
+          onClick={() => {
+            console.log("右側45度偏弧頂中距離");
+            props.setPlayerLocation("右側45度偏弧頂中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          className="st16"
+          points="342.3,237.6 369.1,311.7 373.9,310.3 346.2,236.3 "
+        />
+        <polygon
+          onClick={() => {
+            console.log("右側45度偏底角中距離");
+            props.setPlayerLocation("右側45度偏底角中距離");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          className="st16"
+          points="419.7,162.2 497.9,222.7 500.4,219.6 422.1,159 "
+        />
+        <g>
+          <path
+            onClick={() => {
+              console.log("弧頂中距離");
+              props.setPlayerLocation("弧頂中距離");
+              props.setPlayerLocationScoreNumber(2);
+            }}
+            className="st0"
+            d="M277.6,281c-40.5,0-73.5-31.3-73.5-69.9h9.8c0,33,28.6,59.9,63.7,59.9s63.7-26.9,63.7-59.9h9.8
+		C351.1,249.6,318.2,281,277.6,281z"
+          />
+        </g>
+        <g>
+          <defs>
+            <rect
+              id="SVGID_11_"
+              x="83.7"
+              y="1.1"
+              width="411.7"
+              height="238.3"
             />
-          </g>
-          <rect
-            onClick={() => {
-              console.log("罰球線上");
-              props.setPlayerLocation("罰球線上");
-              props.setPlayerActionNumber(2);
-            }}
-            x="183.6"
-            y="202.1"
-            className="st15"
-            width="186.4"
-            height="9.5"
-          />
-          <rect
-            onClick={() => {
-              console.log("左側禁區線上");
-              props.setPlayerLocation("左側禁區線上");
-              props.setPlayerActionNumber(2);
-            }}
-            x="183.8"
-            y="1.2"
-            className="st16"
-            width="9.9"
-            height="200.7"
-          />
-          <rect
-            onClick={() => {
-              console.log("左側禁區靠內線上");
-              props.setPlayerLocation("左側禁區靠內線上");
-              props.setPlayerActionNumber(2);
-            }}
-            x="203.8"
-            y="1.2"
-            className="st16"
-            width="9.9"
-            height="200.7"
-          />
-          <rect
-            onClick={() => {
-              console.log("右側禁區靠內線上");
-              props.setPlayerLocation("右側禁區靠內線上");
-              props.setPlayerActionNumber(2);
-            }}
-            x="341.9"
-            y="0.8"
-            className="st16"
-            width="9.9"
-            height="200.7"
-          />
-          <rect
-            onClick={() => {
-              console.log("右側禁區線上");
-              props.setPlayerLocation("右側禁區線上");
-              props.setPlayerActionNumber(2);
-            }}
-            x="360.2"
-            y="0.8"
-            className="st16"
-            width="9.9"
-            height="200.7"
-          />
-          <polygon
-            onClick={() => {
-              console.log("左側45度偏底角中距離");
-              props.setPlayerLocation("左側45度偏底角中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            className="st16"
-            points="131.9,159 54.5,219.2 57.2,222.8 134.3,162.3 "
-          />
-          <polygon
-            onClick={() => {
-              console.log("左側45度偏弧頂中距離");
-              props.setPlayerLocation("左側45度偏弧頂中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            className="st16"
-            points="213.2,229.6 183.4,310 187.8,311.5 216.9,231.1 "
-          />
-          <polygon
-            onClick={() => {
-              console.log("右側45度偏弧頂中距離");
-              props.setPlayerLocation("右側45度偏弧頂中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            className="st16"
-            points="342.3,237.6 369.1,311.7 373.9,310.3 346.2,236.3 "
-          />
-          <polygon
-            onClick={() => {
-              console.log("右側45度偏底角中距離");
-              props.setPlayerLocation("右側45度偏底角中距離");
-              props.setPlayerActionNumber(2);
-            }}
-            className="st16"
-            points="419.7,162.2 497.9,222.7 500.4,219.6 422.1,159 "
-          />
-          <g>
+          </defs>
+          <clipPath id="SVGID_10_">
+            <use xlinkHref="#SVGID_11_" style={{ overflow: "visible" }} />
+          </clipPath>
+          <g className="st14">
             <path
               onClick={() => {
-                console.log("弧頂中距離");
-                props.setPlayerLocation("弧頂中距離");
-                props.setPlayerActionNumber(2);
+                console.log("中距離弧線");
+                props.setPlayerLocation("中距離弧線");
+                props.setPlayerLocationScoreNumber(2);
               }}
-              className="st0"
-              d="M277.6,281c-40.5,0-73.5-31.3-73.5-69.9h9.8c0,33,28.6,59.9,63.7,59.9s63.7-26.9,63.7-59.9h9.8
-		C351.1,249.6,318.2,281,277.6,281z"
-            />
-          </g>
-          <g>
-            <defs>
-              <rect
-                id="SVGID_11_"
-                x="83.7"
-                y="1.1"
-                width="411.7"
-                height="238.3"
-              />
-            </defs>
-            <clipPath id="SVGID_10_">
-              <use xlinkHref="#SVGID_11_" style={{ overflow: "visible" }} />
-            </clipPath>
-            <g className="st14">
-              <path
-                onClick={() => {
-                  console.log("中距離弧線");
-                  props.setPlayerLocation("中距離弧線");
-                  props.setPlayerActionNumber(2);
-                }}
-                className="st2"
-                d="M277,234.6c-97.9,0-177.5-79.2-177.5-176.5S179.2-118.4,277-118.4S454.5-39.2,454.5,58.1
+              className="st2"
+              d="M277,234.6c-97.9,0-177.5-79.2-177.5-176.5S179.2-118.4,277-118.4S454.5-39.2,454.5,58.1
 			S374.9,234.6,277,234.6z M277-114.4c-95.7,0-173.5,77.4-173.5,172.5S181.4,230.6,277,230.6s173.5-77.4,173.5-172.5
 			S372.7-114.4,277-114.4z"
-              />
-            </g>
+            />
           </g>
-          <path
-            onClick={() => {
-              console.log("右側45度三分踩線");
-              props.setPlayerLocation("右側45度三分踩線");
-              props.setPlayerActionNumber(2);
-            }}
-            d="M522,207c-10.1,16.3-23.7,30.7-37.2,44.4c-21.5,21.8-46,39.4-73.3,53.2c-11.5,5.8-23.5,10.7-35.7,15c-1,0.4-1.4,0.2-1.8-0.9
+        </g>
+        <path
+          onClick={() => {
+            console.log("右側45度三分踩線");
+            props.setPlayerLocation("右側45度三分踩線");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          d="M522,207c-10.1,16.3-23.7,30.7-37.2,44.4c-21.5,21.8-46,39.4-73.3,53.2c-11.5,5.8-23.5,10.7-35.7,15c-1,0.4-1.4,0.2-1.8-0.9
 	c-0.7-2.6-1.6-5.2-2.5-7.9c3.2-1.2,6.3-2.3,9.4-3.4c25.6-9.7,49.3-22.8,70.9-39.6c17.8-15,34.7-30.7,48.7-48.4
 	c4.4-4.9,7.9-9.8,11.5-15.1"
-          />
-          <path
-            onClick={() => {
-              console.log("左側45度三分踩線");
-              props.setPlayerLocation("左側45度三分踩線");
-              props.setPlayerActionNumber(2);
-            }}
-            d="M32.8,206.7c10.1,16.3,23.7,30.7,37.2,44.4c21.5,21.8,46,39.4,73.3,53.2c11.5,5.8,26.1,11.3,38.3,15.6
+        />
+        <path
+          onClick={() => {
+            console.log("左側45度三分踩線");
+            props.setPlayerLocation("左側45度三分踩線");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          d="M32.8,206.7c10.1,16.3,23.7,30.7,37.2,44.4c21.5,21.8,46,39.4,73.3,53.2c11.5,5.8,26.1,11.3,38.3,15.6
 	c0.5-1,0.3-1.3,0.6-2.4c0.7-2.6,0.9-4.5,1.8-7.2c-3.2-1.2-7.2-2-10.2-3.2c-25.3-10.9-47.5-24.7-70.3-40.6
 	c-17.8-15-35.3-29.7-49.2-47.4c-4.4-4.9-7.9-9.8-11.5-15.1"
-          />
-          <path
-            onClick={() => {
-              console.log("弧頂三分踩線");
-              props.setPlayerLocation("弧頂三分踩線");
-              props.setPlayerActionNumber(2);
-            }}
-            className="st18"
-            d="M181.9,319.8c17.9,6.9,41.4,11.5,60.4,14.2c30.3,4.4,61.6,2.8,91.7-2.7c11.9-2.2,26.5-6.5,38.4-10.3
+        />
+        <path
+          onClick={() => {
+            console.log("弧頂三分踩線");
+            props.setPlayerLocation("弧頂三分踩線");
+            props.setPlayerLocationScoreNumber(2);
+          }}
+          className="st18"
+          d="M181.9,319.8c17.9,6.9,41.4,11.5,60.4,14.2c30.3,4.4,61.6,2.8,91.7-2.7c11.9-2.2,26.5-6.5,38.4-10.3
 	c1.3-0.4,2-1.9,1.5-3.2c0,0,0,0,0,0c-0.7-1.7-1-3.1-1.5-4.7c-0.4-1.3-1.8-2-3.1-1.6c-3,1-6.5,2.3-9,3.1
 	c-25.3,8.2-50.1,11.3-79.2,11.8c-0.1,0-6.5-0.1-6.6-0.1c-24-0.8-41.9-2.4-63.7-8c-6.5-1.2-20.8-6-26.8-8.1"
-          />
-          <rect
+        />
+        <rect
+          onClick={() => {
+            console.log("前場");
+            props.setPlayerLocation("前場");
+            props.setPlayerLocationScoreNumber(3);
+          }}
+          className="st5"
+          x="1"
+          y="492.9"
+          width="553.6"
+          height="61.9"
+        />
+        <g>
+          <defs>
+            <rect id="SVGID_13_" x="1.1" y="1.3" width="31.9" height="202.5" />
+          </defs>
+          <clipPath id="SVGID_12_">
+            <use xlinkHref="#SVGID_13_" style={{ overflow: "visible" }} />
+          </clipPath>
+          <path
             onClick={() => {
-              console.log("前場");
-              props.setPlayerLocation("前場");
-              props.setPlayerActionNumber(3);
+              console.log("左邊底角三分");
+              props.setPlayerLocation("左邊底角三分");
+              props.setPlayerLocationScoreNumber(3);
             }}
-            className="st5"
-            x="1"
-            y="492.9"
-            width="553.6"
-            height="61.9"
-          />
-          <g>
-            <defs>
-              <rect
-                id="SVGID_13_"
-                x="1.1"
-                y="1.3"
-                width="31.9"
-                height="202.5"
-              />
-            </defs>
-            <clipPath id="SVGID_12_">
-              <use xlinkHref="#SVGID_13_" style={{ overflow: "visible" }} />
-            </clipPath>
-            <path
-              onClick={() => {
-                console.log("左邊底角三分");
-                props.setPlayerLocation("左邊底角三分");
-                props.setPlayerActionNumber(3);
-              }}
-              className="st4"
-              //   id="r24Plus_1_1_"
-              //   style="opacity:0.6;clip-path:url(#SVGID_12_);fill:#9E9E9E;enable-background:new    ;"
-              d="M522,1.3v202.5
+            className="st4"
+            //   id="r24Plus_1_1_"
+            //   style="opacity:0.6;clip-path:url(#SVGID_12_);fill:#9E9E9E;enable-background:new    ;"
+            d="M522,1.3v202.5
 		h34.1V1.3H522H1.1l31.9-0.1l0,202.5H1.1V1.3"
+          />
+        </g>
+        <g>
+          <defs>
+            <rect
+              id="SVGID_15_"
+              x="522.1"
+              y="1.1"
+              width="31.9"
+              height="202.5"
             />
-          </g>
-          <g>
-            <defs>
-              <rect
-                id="SVGID_15_"
-                x="522.1"
-                y="1.1"
-                width="31.9"
-                height="202.5"
-              />
-            </defs>
-            <clipPath id="SVGID_14_">
-              <use xlinkHref="#SVGID_15_" style={{ overflow: "visible" }} />
-            </clipPath>
-            <path
-              onClick={() => {
-                console.log("右邊底角三分");
-                props.setPlayerLocation("右邊底角三分");
-                props.setPlayerActionNumber(3);
-              }}
-              id="r24Plus_1_2_"
-              className="st101"
-              d="M1043,1.1v202.5h34.1V1.1H1043H522.1L554.1,1l0,202.5h-31.9V1.1"
-            />
-          </g>
-        </svg>
-      </div>
+          </defs>
+          <clipPath id="SVGID_14_">
+            <use xlinkHref="#SVGID_15_" style={{ overflow: "visible" }} />
+          </clipPath>
+          <path
+            onClick={() => {
+              console.log("右邊底角三分");
+              props.setPlayerLocation("右邊底角三分");
+              props.setPlayerLocationScoreNumber(3);
+            }}
+            id="r24Plus_1_2_"
+            className="st101"
+            d="M1043,1.1v202.5h34.1V1.1H1043H522.1L554.1,1l0,202.5h-31.9V1.1"
+          />
+        </g>
+      </svg>
     </div>
   );
 }

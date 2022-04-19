@@ -6,4 +6,11 @@ div {
   height: 650px;
   width: 200px;
   overflow: scroll;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#groundContainer {
+  display: flex;
 }

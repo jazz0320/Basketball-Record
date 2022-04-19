@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import {
   getDoc,
   getDocs,
@@ -32,18 +32,126 @@ function App() {
   const [leftSide, setLeftSide] = useState(true);
   const [activePlayer, setActivePlayer] = useState();
   const [playerLocation, setPlayerLocation] = useState();
+  const [playerLocationScoreNumber, setPlayerLocationScoreNumber] = useState();
   const [playerAxis, setPlayerAxis] = useState();
-  const [playerAction, setPlayerAction] = useState();
-  const [playerActionWord, setPlayerActionWord] = useState();
-  const [playerActionNumber, setPlayerActionNumber] = useState();
+
   const [liveAction, setLiveAction] = useState([]);
+
+  //playactions
+  const playerActionInitialState = {
+    action: "",
+    type: "none",
+    actionWord: "",
+    actionNumber: 0,
+  };
+  const reducerPlayActions = (state, action) => {
+    switch (action.type) {
+      case "initial":
+        return { action: "", type: "none", actionWord: "", actionNumber: 0 };
+      case "score2":
+        return {
+          action: "pts",
+          type: "2pt",
+          actionWord: "出手得分",
+          actionNumber: 2,
+        };
+      case "score3":
+        return {
+          action: "pts",
+          type: "3pt",
+          actionWord: "出手得分",
+          actionNumber: 3,
+        };
+      case "ft":
+        return {
+          action: "pts",
+          type: "ft",
+          actionWord: "罰球得分",
+          actionNumber: 1,
+        };
+      case "miss3pt":
+        return {
+          action: "pts",
+          type: "3pt",
+          actionWord: "投籃未進",
+          actionNumber: 0,
+        };
+      case "miss2pt":
+        return {
+          action: "pts",
+          type: "2pt",
+          actionWord: "投籃未進",
+          actionNumber: 0,
+        };
+      case "missFt":
+        return {
+          action: "pts",
+          type: "ft",
+          actionWord: "罰球未進",
+          actionNumber: 0,
+        };
+      case "defReb":
+        return {
+          action: "reb",
+          type: "def",
+          actionWord: "防守籃板",
+          actionNumber: 1,
+        };
+      case "offReb":
+        return {
+          action: "reb",
+          type: "off",
+          actionWord: "進攻籃板",
+          actionNumber: 1,
+        };
+      case "assist":
+        return {
+          action: "ast",
+          type: "none",
+          actionWord: "助攻",
+          actionNumber: 1,
+        };
+      case "steal":
+        return {
+          action: "stl",
+          type: "none",
+          actionWord: "抄截",
+          actionNumber: 1,
+        };
+      case "block":
+        return {
+          action: "blk",
+          type: "none",
+          actionWord: "火鍋",
+          actionNumber: 1,
+        };
+      case "turnover":
+        return {
+          action: "to",
+          type: "none",
+          actionWord: "失誤",
+          actionNumber: 1,
+        };
+      case "personalFoul":
+        return {
+          action: "pf",
+          type: "none",
+          actionWord: "犯規",
+          actionNumber: 1,
+        };
+    }
+  };
+  const [playerActions, dispatchPlayerActions] = useReducer(
+    reducerPlayActions,
+    playerActionInitialState
+  );
 
   //time
   const [timerMinutes, setTimerMinutes] = useState(0);
   const [timerSeconds, setTimerSeconds] = useState(0);
 
   //dnd
-  function handleOnDragEnd(result) {
+  function handleOnDragEndAteam(result) {
     if (!result.destination) return;
     const items = Array.from([...aTeamPlayers]);
     const itemsLength = items.length;
@@ -63,6 +171,28 @@ function App() {
     items.splice(result.destination.index, 0, reorderedItemSource);
     items.splice(result.source.index, 0, reorderedItemDestination);
     setATeamPlayers(items);
+  }
+
+  function handleOnDragEndBteam(result) {
+    if (!result.destination) return;
+    const items = Array.from([...bTeamPlayers]);
+    const itemsLength = items.length;
+    const [reorderedItemSource] = items.splice(result.source.index, 1);
+    let reorderedItemDestination;
+    if (result.destination.index === itemsLength - 1) {
+      let reorderedItemDestinations = [
+        ...items.splice(result.destination.index - 1, 1),
+      ];
+      reorderedItemDestination = reorderedItemDestinations[0];
+    } else {
+      let reorderedItemDestinations = [
+        ...items.splice(result.destination.index, 1),
+      ];
+      reorderedItemDestination = reorderedItemDestinations[0];
+    }
+    items.splice(result.destination.index, 0, reorderedItemSource);
+    items.splice(result.source.index, 0, reorderedItemDestination);
+    setBTeamPlayers(items);
   }
 
   useEffect(() => {
@@ -114,27 +244,24 @@ function App() {
 
   //球員行為
   useEffect(() => {
-    console.log("aaa");
     const action = function (e) {
-      if (e.ctrlKey && e.key === "q") {
-        console.log("333");
-        setPlayerAction("pts");
-        setPlayerActionWord("得分");
-      } else if (e.key === "q") {
-        console.log("000");
-        setPlayerAction("pts");
-        setPlayerActionWord("得分");
-        setPlayerActionNumber(0);
+      if (playerLocationScoreNumber === 2) {
+        if (e.ctrlKey && e.key === "q") {
+          console.log("222");
+          dispatchPlayerActions({ type: "score2" });
+        } else if (e.key === "q") {
+          console.log("000");
+          dispatchPlayerActions({ type: "score0" });
+        }
+      } else if (playerLocationScoreNumber === 3) {
+        if (e.ctrlKey && e.key === "q") {
+          console.log("333");
+          dispatchPlayerActions({ type: "score3" });
+        } else if (e.key === "q") {
+          console.log("000");
+          dispatchPlayerActions({ type: "score0" });
+        }
       }
-
-      // if (e.ctrlKey && e.key === "w") {
-      //   console.log("333");
-      //   setPlayerAction("pts");
-      // } else if (e.key === "w") {
-      //   console.log("000");
-      //   setPlayerAction("pts");
-      //   setPlayerActionNumber(0);
-      // }
     };
     const submit = async function (e) {
       if (e.key === "Enter") {
@@ -148,14 +275,16 @@ function App() {
           teamDataNow = [...bTeamData];
         }
 
-        data[activePlayer][playerAction] =
-          data[activePlayer][playerAction] + playerActionNumber;
+        data[activePlayer][playerActions.action] =
+          data[activePlayer][playerActions.action] + playerActions.actionNumber;
 
-        teamDataNow[quarterNow - 1][playerAction] =
-          teamDataNow[quarterNow - 1][playerAction] + playerActionNumber;
+        teamDataNow[quarterNow - 1][playerActions.action] =
+          teamDataNow[quarterNow - 1][playerActions.action] +
+          playerActions.actionNumber;
         console.log("aaa", quarter);
-        teamDataNow[quarter.length][playerAction] =
-          teamDataNow[quarter.length][playerAction] + playerActionNumber;
+        teamDataNow[quarter.length][playerActions.action] =
+          teamDataNow[quarter.length][playerActions.action] +
+          playerActions.actionNumber;
         if (leftSide) {
           setATeamPlayers([...data]);
           setATeamData([...teamDataNow]);
@@ -187,8 +316,9 @@ function App() {
             player: activePlayer,
             location: playerLocation,
             axis: playerAxis,
-            action: playerActionWord,
-            count: playerActionNumber,
+            action: playerActions.action,
+            actionWord: playerActions.actionWord,
+            count: playerActions.actionNumber,
             minutes: timerMinutes,
             seconds: timerSeconds,
           },
@@ -200,8 +330,9 @@ function App() {
             player: activePlayer,
             axis: playerAxis,
             location: playerLocation,
-            action: playerActionWord,
-            count: playerActionNumber,
+            action: playerActions.action,
+            actionWord: playerActions.actionWord,
+            count: playerActions.actionNumber,
             minutes: timerMinutes,
             seconds: timerSeconds,
           },
@@ -217,11 +348,9 @@ function App() {
         //clear all action for next time
 
         setActivePlayer();
-        setPlayerAction();
-        setPlayerActionWord();
+        dispatchPlayerActions({ type: "intial" });
         setPlayerAxis();
         setPlayerLocation();
-        setPlayerActionNumber();
       }
     };
 
@@ -239,9 +368,8 @@ function App() {
     quarter,
     playerAxis,
     playerLocation,
-    playerAction,
-    playerActionWord,
-    playerActionNumber,
+    playerLocationScoreNumber,
+    playerActions,
     liveAction,
   ]);
 
@@ -569,86 +697,95 @@ function App() {
         </div>
       </div>
       <div>OnTheGround</div>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
-        <Droppable droppableId="teamA">
-          {(provided) => (
-            <div
-              id="teambox"
-              // style={{ display: "flex" }}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {aTeamPlayers &&
-                aTeamPlayers.map((player, index) => (
-                  <Draggable
-                    key={player.name}
-                    draggableId={player.name}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        // key={index}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
+      <div id="groundContainer">
+        <DragDropContext onDragEnd={handleOnDragEndAteam}>
+          <Droppable droppableId="teamA">
+            {(provided) => (
+              <div
+                id="teambox"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {aTeamPlayers &&
+                  aTeamPlayers.map((player, index) => (
+                    <Draggable
+                      key={player.name}
+                      draggableId={player.name}
+                      index={index}
+                    >
+                      {(provided) => (
                         <div
-                          style={{
-                            backgroundSize: "cover",
-                            height: "100px",
-                            width: "130px",
-                            backgroundImage: `url(${player.pic})`,
-                          }}
-                        ></div>
-                        {player.name}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <DragDropContext>
-        <Droppable droppableId="teamB">
-          {(provided) => (
-            <div
-              id="teambox"
-              {...provided.draggableProps}
-              ref={provided.innerRef}
-            >
-              {bTeamPlayers &&
-                bTeamPlayers.map((player, index) => (
-                  <Draggable
-                    key={player.name}
-                    draggableId={player.name}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
+                          // key={index}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{ textAlign: "center" }}
+                        >
+                          <div
+                            style={{
+                              backgroundSize: "cover",
+                              height: "100px",
+                              width: "145px",
+                              backgroundImage: `url(${player.pic})`,
+                            }}
+                          ></div>
+                          {player.name}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <Court3
+          setPlayerLocation={setPlayerLocation}
+          setPlayerAxis={setPlayerAxis}
+          setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
+          playerAxis={playerAxis}
+        />
+        <DragDropContext onDragEnd={handleOnDragEndBteam}>
+          <Droppable droppableId="teamB">
+            {(provided) => (
+              <div
+                id="teambox"
+                {...provided.draggableProps}
+                ref={provided.innerRef}
+              >
+                {bTeamPlayers &&
+                  bTeamPlayers.map((player, index) => (
+                    <Draggable
+                      key={player.name}
+                      draggableId={player.name}
+                      index={index}
+                    >
+                      {(provided) => (
                         <div
-                          style={{
-                            backgroundSize: "cover",
-                            height: "100px",
-                            width: "130px",
-                            backgroundImage: `url(${player.pic})`,
-                          }}
-                        ></div>
-                        {player.name}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{ textAlign: "center" }}
+                        >
+                          <div
+                            style={{
+                              backgroundSize: "cover",
+                              height: "100px",
+                              width: "145px",
+                              backgroundImage: `url(${player.pic})`,
+                            }}
+                          ></div>
+                          {player.name}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
       <div>
         {quarter &&
           quarter.map((item, index) => (
@@ -670,11 +807,19 @@ function App() {
       </div>
 
       <div>
-        {aTeamPlayers ? aTeamPlayers[0][playerAction] : ""}
+        {aTeamPlayers
+          ? playerActions
+            ? aTeamPlayers[0][playerActions.action]
+            : ""
+          : ""}
         <br />
-        {bTeamPlayers ? bTeamPlayers[0][playerAction] : ""}
+        {bTeamPlayers
+          ? playerActions
+            ? bTeamPlayers[0][playerActions.action]
+            : ""
+          : ""}
       </div>
-
+      <div>{playerActions ? playerActions.actionWord : ""}</div>
       <div>
         <span>{leftSide ? aTeam : bTeam}</span>
         <span> , </span>
@@ -694,16 +839,21 @@ function App() {
         <span> {activePlayer !== undefined ? " , " : ""} </span>
         <span> {playerLocation} </span>
         <span> {playerLocation !== undefined ? " , " : ""} </span>
-        <span> {playerActionWord} </span>
-        <span> {playerActionWord !== undefined ? " , " : ""} </span>
-        <span> {playerActionWord ? playerActionNumber : ""} </span>
+        <span> {playerActions && playerActions.actionWord} </span>
+        <span>
+          {" "}
+          {playerActions && playerActions.actionWord !== undefined
+            ? " , "
+            : ""}{" "}
+        </span>
+        <span>
+          {" "}
+          {playerActions && playerActions.actionWord
+            ? playerActions.actionNumber
+            : ""}{" "}
+        </span>
       </div>
-      <Court3
-        setPlayerLocation={setPlayerLocation}
-        setPlayerAxis={setPlayerAxis}
-        setPlayerActionNumber={setPlayerActionNumber}
-        playerAxis={playerAxis}
-      />
+
       <div>
         <RecordRoom
           quarter={quarter}
