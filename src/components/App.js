@@ -12,6 +12,7 @@ import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
+import LiveRoom from "./LiveRoom";
 
 function App() {
   const [teams, setTeams] = useState([]);
@@ -31,6 +32,7 @@ function App() {
 
   const [leftSide, setLeftSide] = useState(true);
   const [activePlayer, setActivePlayer] = useState();
+  const [activePlayerId, setActivePlayerId] = useState();
   const [playerLocation, setPlayerLocation] = useState();
   const [playerLocationScoreNumber, setPlayerLocationScoreNumber] = useState();
   const [playerAxis, setPlayerAxis] = useState();
@@ -69,14 +71,14 @@ function App() {
           actionWord: "罰球得分",
           actionNumber: 1,
         };
-      case "miss3pt":
+      case "miss3pts":
         return {
           action: "pts",
           type: "3pt",
           actionWord: "投籃未進",
           actionNumber: 0,
         };
-      case "miss2pt":
+      case "miss2pts":
         return {
           action: "pts",
           type: "2pt",
@@ -200,47 +202,50 @@ function App() {
       if (e.keyCode === 192) {
         setLeftSide((prevState) => !prevState);
       }
+      let activeTeam;
+      if (leftSide) {
+        console.log("active");
+        activeTeam = aTeamPlayers;
+      } else {
+        activeTeam = bTeamPlayers;
+      }
+
       if (e.keyCode === 49) {
-        if (leftSide) {
-          setActivePlayer(0);
-        } else {
-          setActivePlayer(0);
-        }
+        setActivePlayer(0);
+        console.log("at", activeTeam);
+        setActivePlayerId(activeTeam[0].id);
       }
       if (e.keyCode === 50) {
-        if (leftSide) {
-          setActivePlayer(1);
-        } else {
-          setActivePlayer(1);
-        }
+        setActivePlayer(1);
+        setActivePlayerId(activeTeam[1].id);
       }
       if (e.keyCode === 51) {
-        if (leftSide) {
-          setActivePlayer(2);
-        } else {
-          setActivePlayer(2);
-        }
+        setActivePlayer(2);
+        setActivePlayerId(activeTeam[2].id);
       }
       if (e.keyCode === 52) {
-        if (leftSide) {
-          setActivePlayer(3);
-        } else {
-          setActivePlayer(3);
-        }
+        setActivePlayer(3);
+        setActivePlayerId(activeTeam[3].id);
       }
       if (e.keyCode === 53) {
-        if (leftSide) {
-          setActivePlayer(4);
-        } else {
-          setActivePlayer(4);
-        }
+        setActivePlayer(4);
+        setActivePlayerId(activeTeam[4].id);
       }
     };
+
+    if (activePlayer !== undefined) {
+      if (leftSide) {
+        setActivePlayerId(aTeamPlayers[activePlayer].id);
+      } else {
+        setActivePlayerId(bTeamPlayers[activePlayer].id);
+      }
+    }
+
     window.addEventListener("keydown", player);
     return () => {
       window.removeEventListener("keydown", player);
     };
-  }, [leftSide]);
+  }, [leftSide, aTeamPlayers, bTeamPlayers]);
 
   //球員行為
   useEffect(() => {
@@ -251,7 +256,7 @@ function App() {
           dispatchPlayerActions({ type: "score2" });
         } else if (e.key === "q") {
           console.log("000");
-          dispatchPlayerActions({ type: "score0" });
+          dispatchPlayerActions({ type: "miss2pts" });
         }
       } else if (playerLocationScoreNumber === 3) {
         if (e.ctrlKey && e.key === "q") {
@@ -259,8 +264,42 @@ function App() {
           dispatchPlayerActions({ type: "score3" });
         } else if (e.key === "q") {
           console.log("000");
-          dispatchPlayerActions({ type: "score0" });
+          dispatchPlayerActions({ type: "miss3pts" });
         }
+      }
+      if (e.ctrlKey && e.key === "z") {
+        console.log("ft1");
+        dispatchPlayerActions({ type: "ft" });
+      } else if (e.key === "z") {
+        console.log("ft0");
+        dispatchPlayerActions({ type: "missFt" });
+      }
+      if (e.ctrlKey && e.key === "w") {
+        console.log("offReb");
+        dispatchPlayerActions({ type: "offReb" });
+      } else if (e.key === "w") {
+        console.log("defReb");
+        dispatchPlayerActions({ type: "defReb" });
+      }
+      if (e.key === "a") {
+        console.log("assist");
+        dispatchPlayerActions({ type: "assist" });
+      }
+      if (e.key === "s") {
+        console.log("steal");
+        dispatchPlayerActions({ type: "steal" });
+      }
+      if (e.key === "d") {
+        console.log("block");
+        dispatchPlayerActions({ type: "block" });
+      }
+      if (e.key === "e") {
+        console.log("turnover");
+        dispatchPlayerActions({ type: "turnover" });
+      }
+      if (e.key === "f") {
+        console.log("personalFoul");
+        dispatchPlayerActions({ type: "personalFoul" });
       }
     };
     const submit = async function (e) {
@@ -275,16 +314,70 @@ function App() {
           teamDataNow = [...bTeamData];
         }
 
-        data[activePlayer][playerActions.action] =
-          data[activePlayer][playerActions.action] + playerActions.actionNumber;
+        const recordData = function (inf, num) {
+          data[activePlayer][inf] += num;
+          teamDataNow[quarterNow - 1][inf] += num;
+          teamDataNow[quarter.length][inf] += num;
+        };
+        const recordPercent = function (rate, num, dem) {
+          data[activePlayer][rate] =
+            data[activePlayer][num] / data[activePlayer][dem];
+          teamDataNow[quarterNow - 1][rate] =
+            teamDataNow[quarterNow - 1][num] / teamDataNow[quarterNow - 1][dem];
+          teamDataNow[quarter.length][rate] =
+            teamDataNow[quarter.length][num] / teamDataNow[quarter.length][dem];
+          console.log("rrr", teamDataNow[quarter.length][rate]);
+        };
 
-        teamDataNow[quarterNow - 1][playerActions.action] =
-          teamDataNow[quarterNow - 1][playerActions.action] +
-          playerActions.actionNumber;
-        console.log("aaa", quarter);
-        teamDataNow[quarter.length][playerActions.action] =
-          teamDataNow[quarter.length][playerActions.action] +
-          playerActions.actionNumber;
+        if (playerActions.action === "pts") {
+          if (playerActions.type === "ft") {
+            if (playerActions.actionNumber === 1) {
+              recordData("ftm", 1);
+            }
+            recordData("fta", 1);
+            recordPercent("ftRate", "ftm", "fta");
+          } else {
+            if (playerActions.type === "3pt") {
+              if (playerActions.actionNumber === 3) {
+                recordData("threePtm", 1);
+              }
+              recordData("threePta", 1);
+              recordPercent("threePtRate", "threePtm", "threePta");
+            }
+            if (playerActions.actionNumber > 0) {
+              recordData("fgm", 1);
+            }
+            recordData("fga", 1);
+            recordPercent("fgRate", "fgm", "fga");
+          }
+          // data[activePlayer][playerActions.action] +=
+          //   playerActions.actionNumber;
+
+          // teamDataNow[quarterNow - 1][playerActions.action] +=
+          //   playerActions.actionNumber;
+
+          // teamDataNow[quarter.length][playerActions.action] +=
+          //   playerActions.actionNumber;
+          recordData("pts", playerActions.actionNumber);
+        } else if (playerActions.action === "reb") {
+          if (playerActions.type === "def") {
+            recordData("dreb", 1);
+          } else {
+            recordData("oreb", 1);
+          }
+          recordData("reb", 1);
+        } else if (playerActions.action === "ast") {
+          recordData("ast", 1);
+        } else if (playerActions.action === "stl") {
+          recordData("stl", 1);
+        } else if (playerActions.action === "blk") {
+          recordData("blk", 1);
+        } else if (playerActions.action === "to") {
+          recordData("to", 1);
+        } else if (playerActions.action === "pf") {
+          recordData("pf", 1);
+        }
+
         if (leftSide) {
           setATeamPlayers([...data]);
           setATeamData([...teamDataNow]);
@@ -314,6 +407,7 @@ function App() {
           {
             team: leftSide,
             player: activePlayer,
+            playerId: activePlayerId,
             location: playerLocation,
             axis: playerAxis,
             action: playerActions.action,
@@ -328,6 +422,7 @@ function App() {
           {
             team: leftSide,
             player: activePlayer,
+            playerId: activePlayerId,
             axis: playerAxis,
             location: playerLocation,
             action: playerActions.action,
@@ -348,6 +443,7 @@ function App() {
         //clear all action for next time
 
         setActivePlayer();
+        setActivePlayerId();
         dispatchPlayerActions({ type: "intial" });
         setPlayerAxis();
         setPlayerLocation();
@@ -392,9 +488,25 @@ function App() {
       let data = docSnap.data().players;
       let newData = [];
       for (let i = 0; i < data.length; i++) {
-        data[i].ast = 0;
-        data[i].pts = 0;
+        data[i].min = 0;
+        data[i].fgm = 0;
+        data[i].fga = 0;
+        data[i].fgRate = 0;
+        data[i].threePtm = 0;
+        data[i].threePta = 0;
+        data[i].threePtRate = 0;
+        data[i].ftm = 0;
+        data[i].fta = 0;
+        data[i].ftRate = 0;
+        data[i].oreb = 0;
+        data[i].dreb = 0;
         data[i].reb = 0;
+        data[i].ast = 0;
+        data[i].stl = 0;
+        data[i].blk = 0;
+        data[i].to = 0;
+        data[i].pf = 0;
+        data[i].pts = 0;
         data[i].start = false;
         data[i].position = 6;
         newData.push(data[i]);
@@ -421,9 +533,24 @@ function App() {
       let newBTeamData = [];
       for (let i = 0; i <= quarter.length; i++) {
         let a = {
-          ast: 0,
-          pts: 0,
+          fgm: 0,
+          fga: 0,
+          fgRate: 0,
+          threePtm: 0,
+          threePta: 0,
+          threePtRate: 0,
+          ftm: 0,
+          fta: 0,
+          ftRate: 0,
+          oreb: 0,
+          dreb: 0,
           reb: 0,
+          ast: 0,
+          stl: 0,
+          blk: 0,
+          to: 0,
+          pf: 0,
+          pts: 0,
         };
         newATeamData.push({ ...a });
         newBTeamData.push({ ...a });
@@ -450,9 +577,25 @@ function App() {
       let data = docSnap.data().players;
       let newData = [];
       for (let i = 0; i < data.length; i++) {
-        data[i].ast = 0;
-        data[i].pts = 0;
+        data[i].min = 0;
+        data[i].fgm = 0;
+        data[i].fga = 0;
+        data[i].fgRate = 0;
+        data[i].threePtm = 0;
+        data[i].threePta = 0;
+        data[i].threePtRate = 0;
+        data[i].ftm = 0;
+        data[i].fta = 0;
+        data[i].ftRate = 0;
+        data[i].oreb = 0;
+        data[i].dreb = 0;
         data[i].reb = 0;
+        data[i].ast = 0;
+        data[i].stl = 0;
+        data[i].blk = 0;
+        data[i].to = 0;
+        data[i].pf = 0;
+        data[i].pts = 0;
         data[i].start = false;
         data[i].position = 6;
         newData.push(data[i]);
@@ -729,7 +872,7 @@ function App() {
                               backgroundImage: `url(${player.pic})`,
                             }}
                           ></div>
-                          {player.name}
+                          {player.id}
                         </div>
                       )}
                     </Draggable>
@@ -775,7 +918,7 @@ function App() {
                               backgroundImage: `url(${player.pic})`,
                             }}
                           ></div>
-                          {player.name}
+                          {player.id}
                         </div>
                       )}
                     </Draggable>
@@ -867,6 +1010,7 @@ function App() {
           timerMinutes={timerMinutes}
         />
       </div>
+      <LiveRoom></LiveRoom>
     </>
   );
 }

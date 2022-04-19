@@ -1,6 +1,13 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getDoc, getDocs, doc, collection, setDoc } from "firebase/firestore";
+import {
+  getDoc,
+  getDocs,
+  doc,
+  collection,
+  setDoc,
+  onSnapshot,
+} from "firebase/firestore";
 
 // Set the configuration for your app
 // TODO: Replace with your app's config object
@@ -30,4 +37,5 @@ export {
   setDoc,
   getDoc,
   getDocs,
+  onSnapshot,
 };

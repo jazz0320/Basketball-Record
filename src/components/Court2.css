@@ -3,15 +3,15 @@
 }
 
 svg {
-  height: 50vh;
+  height: 800px;
 }
 
 /* #myObj {
   pointer-events: auto;
 } */
 canvas {
-  height: 743px;
-  width: 50vh;
+  height: 800px;
+  width: 800px;
   background-color: none;
   opacity: 0.3;
   position: absolute;

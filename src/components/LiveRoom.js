@@ -1,9 +1,20 @@
-// import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { collection, doc, onSnapshot, db } from "../utils/firebase";
 
-function RecordRoom(props) {
+function LiveRoom(props) {
+  const [liveAction, setLiveAction] = useState();
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "game_data", "live_game"), (doc) => {
+      console.log("Current data: ", doc.data().live_action);
+      setLiveAction(doc.data().live_action);
+    });
+    // unsub();
+  }, []);
+
   return (
     <>
-      <div>
+      <div>{liveAction ? liveAction[0].action : ""}</div>
+      {/* <div>
         {props.quarter &&
           props.quarter.map((q, index) => <span key={index}>{q}</span>)}
       </div>
@@ -23,9 +34,9 @@ function RecordRoom(props) {
             <span>得{item.count}分</span>
           </div>
         ))}
-      </div>
+      </div> */}
     </>
   );
 }
 
-export default RecordRoom;
+export default LiveRoom;

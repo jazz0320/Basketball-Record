@@ -26,7 +26,7 @@ function RecordRoom(props) {
             <span> , </span>
             <span>{item.actionWord}</span>
             <span> , </span>
-            <span>得{item.count}分</span>
+            <span>+{item.count}</span>
           </div>
         ))}
       </div>
