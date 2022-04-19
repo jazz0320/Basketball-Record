@@ -3,18 +3,24 @@ import { collection, doc, onSnapshot, db } from "../utils/firebase";
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
-  useEffect(() => {
-    const unsub = onSnapshot(doc(db, "game_data", "live_game"), (doc) => {
-      console.log("Current data: ", doc.data().live_action);
-      setLiveAction(doc.data().live_action);
-    });
-    // unsub();
-  }, []);
+  // useEffect(() => {
+  //   const unsub = onSnapshot(doc(db, "game_data", "live_game"), (doc) => {
+  //     console.log("Current data: ", doc.data().live_action);
+  //     setLiveAction(doc.data().live_action);
+  //   });
+  //   unsub();
+  // }, []);
 
   return (
     <>
       <div>{liveAction ? liveAction[0].action : ""}</div>
-      {/* <div>
+    </>
+  );
+}
+
+export default LiveRoom;
+
+/* <div>
         {props.quarter &&
           props.quarter.map((q, index) => <span key={index}>{q}</span>)}
       </div>
@@ -34,9 +40,4 @@ function LiveRoom(props) {
             <span>得{item.count}分</span>
           </div>
         ))}
-      </div> */}
-    </>
-  );
-}
-
-export default LiveRoom;
+      </div> */

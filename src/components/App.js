@@ -7,12 +7,39 @@ import {
   db,
   setDoc,
 } from "../utils/firebase";
+import { Routes, Route, Link } from "react-router-dom";
+import styled from "styled-components";
 import "./App.css";
 import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
 import LiveRoom from "./LiveRoom";
+
+function Nav() {
+  const NavBar = styled.div`
+    padding: 10px;
+    background-color: #f44336;
+    font-size: 30px;
+
+    @media screen and (max-width: 992px) {
+      width: 100vw;
+    }
+  `;
+  return (
+    <>
+      <NavBar>
+        <Link to="/">Record</Link>
+        <span> | </span>
+        <Link to="/live-room">LiveRoom</Link>
+      </NavBar>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/live-room" element={<LiveRoom />} />
+      </Routes>
+    </>
+  );
+}
 
 function App() {
   const [teams, setTeams] = useState([]);
@@ -839,7 +866,50 @@ function App() {
           </div>
         </div>
       </div>
+      <table>
+        <thead>
+          <tr>
+            <th>隊伍</th>
+            {quarter ? quarter.map((item, index) => <th>{item}</th>) : null}
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{aTeam}</td>
+            {quarter
+              ? quarter.map((item, index) => (
+                  <td>{aTeamData[0] ? aTeamData[index].pts : 0}</td>
+                ))
+              : null}
+            <td>
+              {quarter
+                ? aTeamData[0]
+                  ? aTeamData[quarter.length].pts
+                  : 0
+                : null}
+            </td>
+          </tr>
+          <tr>
+            <td>{bTeam}</td>
+            {quarter
+              ? quarter.map((item, index) => (
+                  <td>{bTeamData[0] ? bTeamData[index].pts : 0}</td>
+                ))
+              : null}
+            <td>
+              {quarter
+                ? bTeamData[0]
+                  ? bTeamData[quarter.length].pts
+                  : 0
+                : null}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
       <div>OnTheGround</div>
+
       <div id="groundContainer">
         <DragDropContext onDragEnd={handleOnDragEndAteam}>
           <Droppable droppableId="teamA">
@@ -858,10 +928,10 @@ function App() {
                     >
                       {(provided) => (
                         <div
-                          // key={index}
-                          ref={provided.innerRef}
+                          key={index}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
+                          ref={provided.innerRef}
                           style={{ textAlign: "center" }}
                         >
                           <div
@@ -888,64 +958,47 @@ function App() {
           setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
           playerAxis={playerAxis}
         />
-        <DragDropContext onDragEnd={handleOnDragEndBteam}>
-          <Droppable droppableId="teamB">
-            {(provided) => (
-              <div
-                id="teambox"
-                {...provided.draggableProps}
-                ref={provided.innerRef}
-              >
-                {bTeamPlayers &&
-                  bTeamPlayers.map((player, index) => (
-                    <Draggable
-                      key={player.name}
-                      draggableId={player.name}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{ textAlign: "center" }}
-                        >
-                          <div
-                            style={{
-                              backgroundSize: "cover",
-                              height: "100px",
-                              width: "145px",
-                              backgroundImage: `url(${player.pic})`,
-                            }}
-                          ></div>
-                          {player.id}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </div>
-      <div>
-        {quarter &&
-          quarter.map((item, index) => (
-            <div>
-              {item}
-              <br />
-              {aTeamData[0] ? aTeamData[index].pts : 0}
-              <br />
-              {bTeamData[0] ? bTeamData[index].pts : 0}
-            </div>
-          ))}
         <div>
-          Total
-          <br />
-          {quarter && aTeamData[0] ? aTeamData[quarter.length].pts : 0}
-          <br />
-          {quarter && aTeamData[0] ? bTeamData[quarter.length].pts : 0}
+          <DragDropContext onDragEnd={handleOnDragEndBteam}>
+            <Droppable droppableId="teamB">
+              {(provided) => (
+                <div
+                  id="teambox"
+                  {...provided.draggableProps}
+                  ref={provided.innerRef}
+                >
+                  {bTeamPlayers &&
+                    bTeamPlayers.map((player, index) => (
+                      <Draggable
+                        key={player.id}
+                        draggableId={player.id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{ textAlign: "center" }}
+                          >
+                            <div
+                              style={{
+                                backgroundSize: "cover",
+                                height: "100px",
+                                width: "145px",
+                                backgroundImage: `url(${player.pic})`,
+                              }}
+                            ></div>
+                            {player.id}
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
       </div>
 
@@ -1010,9 +1063,9 @@ function App() {
           timerMinutes={timerMinutes}
         />
       </div>
-      <LiveRoom></LiveRoom>
+      {/* <LiveRoom></LiveRoom> */}
     </>
   );
 }
 
-export default App;
+export default Nav;
