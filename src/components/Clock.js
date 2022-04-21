@@ -3,26 +3,19 @@ import { doc, db, setDoc } from "../utils/firebase";
 
 function Clock(props) {
   const [restTime, setRestTime] = useState();
-  const [shotClockRestTime, setShotClockRestTime] = useState();
+  const [shotClockRestTime, setShotClockRestTime] = useState(24);
   const [shotClock, setShotClock] = useState(0);
-  // const [timerMinutes, props.setTimerMinutes] = useState(0);
-  // const [timerSeconds, props.setTimerSeconds] = useState(0);
+  const [timeStop, setTimeStop] = useState(true);
+
   //timer
   let interval = useRef();
   let timePast = 0;
   let shotClockTimepast = 0;
   const shotClockDuration = 24000;
 
-  useEffect(() => {
-    if (props.eachTime) {
-      props.setTimerMinutes(props.eachTime);
-      props.setTimerSeconds(0);
-      setShotClock(24);
-    }
-  }, [props.eachTime]);
-
   const startQuarterTimer = () => {
     if (props.eachTime) {
+      setTimeStop(false);
       interval.current = setInterval(() => {
         const duration = props.eachTime * 60 * 1000;
         const distance = duration - timePast;
@@ -49,32 +42,6 @@ function Clock(props) {
     }
   };
 
-  const restartTime = function () {
-    timePast = 0;
-    shotClockTimepast = 0;
-    interval.current = setInterval(() => {
-      const distance = restTime - timePast;
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      timePast += 1000;
-      setRestTime(distance);
-
-      const shotClockDistance = (shotClockRestTime - shotClockTimepast) / 1000;
-      shotClockTimepast += 1000;
-      setShotClockRestTime(shotClockDistance);
-
-      if ((distance < 0) | (shotClockDistance < 0)) {
-        //stop timer
-        clearInterval(interval.current);
-      } else {
-        //update timer
-        setShotClock(shotClockDistance);
-        props.setTimerMinutes(minutes);
-        props.setTimerSeconds(seconds);
-      }
-    }, 1000);
-  };
-
   const start = function () {
     alert("開始");
     startQuarterTimer();
@@ -83,38 +50,69 @@ function Clock(props) {
   const stop = function () {
     alert("暫停");
     clearInterval(interval.current);
+    setTimeStop(true);
   };
 
-  useEffect(() => {
-    async function gameTime() {
-      await setDoc(
-        doc(db, "game_data", "live_game"),
-        {
-          time_shotClock: Number(shotClock),
-        },
-        { merge: true }
-      );
-    }
-    gameTime();
-  }, [shotClock]);
+  const reStartTime = function () {
+    if (timeStop === true) {
+      setTimeStop(false);
+      timePast = 0;
+      shotClockTimepast = 0;
+      interval.current = setInterval(() => {
+        const distance = restTime - timePast;
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        timePast += 1000;
+        setRestTime(distance);
 
-  useEffect(() => {
-    async function gameTime() {
-      await setDoc(
-        doc(db, "game_data", "live_game"),
-        {
-          time_minutes: Number(props.timerMinutes),
-          time_seconds: Number(props.timerSeconds),
-        },
-        { merge: true }
-      );
+        const shotClockDistance =
+          (shotClockRestTime - shotClockTimepast) / 1000;
+        shotClockTimepast += 1000;
+        setShotClockRestTime(shotClockDistance);
+
+        if ((distance < 0) | (shotClockDistance < 0)) {
+          //stop timer
+          clearInterval(interval.current);
+        } else {
+          //update timer
+          setShotClock(shotClockDistance);
+          props.setTimerMinutes(minutes);
+          props.setTimerSeconds(seconds);
+        }
+      }, 1000);
     }
-    gameTime();
-  }, [props.timerSeconds]);
+  };
+
+  // useEffect(() => {
+  //   async function gameTime() {
+  //     await setDoc(
+  //       doc(db, "game_data", "live_game"),
+  //       {
+  //         time_shotClock: Number(shotClock),
+  //       },
+  //       { merge: true }
+  //     );
+  //   }
+  //   gameTime();
+  // }, [shotClock]);
+
+  // useEffect(() => {
+  //   async function gameTime() {
+  //     await setDoc(
+  //       doc(db, "game_data", "live_game"),
+  //       {
+  //         time_minutes: Number(props.timerMinutes),
+  //         time_seconds: Number(props.timerSeconds),
+  //       },
+  //       { merge: true }
+  //     );
+  //   }
+  //   gameTime();
+  // }, [props.timerSeconds]);
 
   return (
     <div>
-      <select onChange={(e) => props.setQuarterNow(e.target.value)}>
+      <select onChange={(e) => props.setQuarterNow(Number(e.target.value))}>
         <option value={1}>1st</option>
         <option value={2}>2nd</option>
         <option value={3}>3rd</option>
@@ -197,21 +195,21 @@ function Clock(props) {
           start();
         }}
       >
-        開始
+        比賽開始
       </button>
       <button
         onClick={() => {
           stop();
         }}
       >
-        暫停
+        時間暫停
       </button>
       <button
         onClick={() => {
-          restartTime();
+          reStartTime();
         }}
       >
-        再開始
+        時間再開始
       </button>
     </div>
   );

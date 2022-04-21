@@ -16,11 +16,7 @@ function RecordRoom(props) {
             <span> , </span>
             <span>{item.team ? props.aTeam : props.bTeam}</span>
             <span> , </span>
-            <span>
-              {item.team
-                ? props.aTeamPlayers[item.player]["name"]
-                : props.bTeamPlayers[item.player]["name"]}
-            </span>
+            <span>{item.playerId}</span>
             <span> , </span>
             <span>{item.location}</span>
             <span> , </span>

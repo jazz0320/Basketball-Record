@@ -9,6 +9,11 @@ import {
 } from "../utils/firebase";
 import { Routes, Route, Link } from "react-router-dom";
 import styled from "styled-components";
+import {
+  Div_Record,
+  DivBeforeGame_Record,
+  DivGameStart_Record,
+} from "../utils/StyleComponent";
 import "./App.css";
 import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -44,14 +49,20 @@ function Nav() {
 function App() {
   const [teams, setTeams] = useState([]);
   const [aTeam, setATeam] = useState("default");
+  const [aTeamLogo, setATeamLogo] = useState();
   const [aTeamPlayers, setATeamPlayers] = useState();
   const [aTeamData, setATeamData] = useState();
 
   const [bTeam, setBTeam] = useState("default");
+  const [bTeamLogo, setBTeamLogo] = useState();
   const [bTeamPlayers, setBTeamPlayers] = useState();
   const [bTeamData, setBTeamData] = useState();
   const [quarter, setQuarter] = useState(0); //選擇賽制
   const [eachTime, setEachTime] = useState();
+  //time
+  const [timerMinutes, setTimerMinutes] = useState(0);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+
   const [stopTime, setStopTime] = useState();
   const [finishSetting, setFinishSetting] = useState(false);
   const [quarterNow, setQuarterNow] = useState(1);
@@ -174,10 +185,6 @@ function App() {
     reducerPlayActions,
     playerActionInitialState
   );
-
-  //time
-  const [timerMinutes, setTimerMinutes] = useState(0);
-  const [timerSeconds, setTimerSeconds] = useState(0);
 
   useEffect(() => {
     const player = function (e) {
@@ -387,6 +394,7 @@ function App() {
         setLiveAction((prev) => [
           ...prev,
           {
+            quarterNow: quarterNow,
             team: leftSide,
             player: activePlayer,
             playerId: activePlayerId,
@@ -402,6 +410,7 @@ function App() {
         let actionLive = [
           ...liveAction,
           {
+            quarterNow: quarterNow,
             team: leftSide,
             player: activePlayer,
             playerId: activePlayerId,
@@ -468,6 +477,7 @@ function App() {
       const docRef = doc(db, "team_data", aTeam);
       const docSnap = await getDoc(docRef);
       let data = docSnap.data().players;
+      let logo = docSnap.data().logo;
       let newData = [];
       for (let i = 0; i < data.length; i++) {
         data[i].min = 0;
@@ -494,12 +504,14 @@ function App() {
         newData.push(data[i]);
       }
       setATeamPlayers(newData);
+      setATeamLogo(logo);
 
       await setDoc(
         doc(db, "game_data", "live_game"),
         {
           A_team: aTeam,
           A_team_player: newData,
+          A_team_logo: logo,
         },
         { merge: true }
       );
@@ -557,6 +569,7 @@ function App() {
       const docRef = doc(db, "team_data", bTeam);
       const docSnap = await getDoc(docRef);
       let data = docSnap.data().players;
+      let logo = docSnap.data().logo;
       let newData = [];
       for (let i = 0; i < data.length; i++) {
         data[i].min = 0;
@@ -583,11 +596,13 @@ function App() {
         newData.push(data[i]);
       }
       setBTeamPlayers(newData);
+      setBTeamLogo(logo);
       await setDoc(
         doc(db, "game_data", "live_game"),
         {
           B_team: bTeam,
           B_team_player: newData,
+          B_team_logo: logo,
         },
         { merge: true }
       );
@@ -598,6 +613,33 @@ function App() {
   }, [bTeam]);
 
   const finishGameSetting = function () {
+    if ((aTeam === "default") | (bTeam === "default")) {
+      alert("請選擇球隊");
+      return;
+    }
+
+    for (let i = 0; i < 5; i++) {
+      if (
+        (aTeamPlayers[i].position - 1 !== i) |
+        (bTeamPlayers[i].position - 1 !== i)
+      ) {
+        alert("請選擇先發球員");
+        return;
+      }
+    }
+    if (quarter === 0) {
+      alert("請選擇賽制");
+      return;
+    }
+    if (eachTime === undefined) {
+      alert("請選擇單節時間");
+      return;
+    }
+    if (stopTime === undefined) {
+      alert("停錶模式");
+      return;
+    }
+
     async function systemSetting() {
       await setDoc(
         doc(db, "game_data", "live_game"),
@@ -606,6 +648,7 @@ function App() {
           quarterNow: quarterNow,
           quarter_minutes: Number(eachTime),
           stop_ime: stopTime,
+          finishSetting: true,
         },
         { merge: true }
       );
@@ -681,275 +724,308 @@ function App() {
 
   return (
     <>
-      <div>
-        <div>
-          A隊
-          <select value={aTeam} onChange={(e) => setATeam(e.target.value)}>
-            <option disabled value="default">
-              Select team
-            </option>
-            {teams.map((team, index) =>
-              team === bTeam ? (
-                <option disabled key={index}>
-                  {team}
-                </option>
-              ) : (
-                <option key={index}>{team}</option>
-              )
-            )}
-          </select>
-          {aTeam && (
-            <div>
-              {five.map((num) => (
-                <select
-                  defaultValue={"default"}
-                  onChange={(e) => selectStartFive(e.target.value, num)}
-                >
-                  <option disabled value="default">
-                    Select Player
-                  </option>
-                  {aTeamPlayers?.map((player) =>
-                    player.position === 6 ? (
-                      <option key={player.name}>{player.name}</option>
-                    ) : (
-                      <option disabled key={player.name}>
-                        {player.name}
-                      </option>
-                    )
-                  )}
-                </select>
-              ))}
-            </div>
-          )}
-        </div>
-        <div>
-          B隊
-          <select value={bTeam} onChange={(e) => setBTeam(e.target.value)}>
-            <option disabled value="default">
-              Select team
-            </option>
-            {teams.map((team, index) =>
-              team === aTeam ? (
-                <option disabled key={index}>
-                  {team}
-                </option>
-              ) : (
-                <option key={index}>{team}</option>
-              )
-            )}
-          </select>
-          {bTeam && (
-            <div>
-              {five.map((num) => (
-                <select
-                  defaultValue={"default"}
-                  onChange={(e) => selectStartFive(e.target.value, num)}
-                >
-                  <option disabled value="default">
-                    Select Player
-                  </option>
-                  {bTeamPlayers?.map((player) =>
-                    player.position === 6 ? (
-                      <option key={player.name}>{player.name}</option>
-                    ) : (
-                      <option disabled key={player.name}>
-                        {player.name}
-                      </option>
-                    )
-                  )}
-                </select>
-              ))}
-            </div>
-          )}
-        </div>
-        賽制
-        <select
-          onChange={(e) => {
-            let quarters = [];
-            for (let i = 1; i <= e.target.value; i++) {
-              if (i === 1) {
-                quarters.push("1st");
-              } else if (i === 2) {
-                quarters.push("2nd");
-              } else if (i === 3) {
-                quarters.push("3rd");
-              } else if (i === 4) {
-                quarters.push("4th");
-              }
-            }
-            setQuarter([...quarters]);
-          }}
-        >
-          <option>Select</option>
-          <option value={4}>4 quarter</option>
-          <option value={2}>2 half</option>
-        </select>
-        <select onChange={(e) => setEachTime(e.target.value)}>
-          <option>Select</option>
-          <option value={10}>10 mins</option>
-          <option value={12}>12 mins</option>
-        </select>
-        <select onChange={(e) => setStopTime(e.target.value)}>
-          <option>Select</option>
-          <option value={0}>停錶</option>
-          <option value={1}>各節最後三分鐘停錶</option>
-          <option value={2}>不停錶</option>
-        </select>
-        <button
-          onClick={() => {
-            finishGameSetting();
-          }}
-        >
-          送出
-        </button>
-      </div>
-
-      <div>
-        <div>
+      <Div_Record>
+        <DivBeforeGame_Record $setGame={finishSetting}>
           <div>
-            <Clock
-              finishSetting={finishSetting}
-              eachTime={eachTime}
+            A隊
+            <select value={aTeam} onChange={(e) => setATeam(e.target.value)}>
+              <option disabled value="default">
+                Select team
+              </option>
+              {teams.map((team, index) =>
+                team === bTeam ? (
+                  <option disabled key={index}>
+                    {team}
+                  </option>
+                ) : (
+                  <option key={index}>{team}</option>
+                )
+              )}
+            </select>
+            {aTeam && (
+              <div>
+                {five.map((num, index) => (
+                  <select
+                    key={index}
+                    defaultValue={"default"}
+                    onChange={(e) => selectStartFive(e.target.value, num)}
+                  >
+                    <option disabled value="default">
+                      Select Player
+                    </option>
+                    {aTeamPlayers?.map((player) =>
+                      player.position === 6 ? (
+                        <option key={player.name}>{player.name}</option>
+                      ) : (
+                        <option disabled key={player.name}>
+                          {player.name}
+                        </option>
+                      )
+                    )}
+                  </select>
+                ))}
+              </div>
+            )}
+          </div>
+          <div>
+            B隊
+            <select value={bTeam} onChange={(e) => setBTeam(e.target.value)}>
+              <option disabled value="default">
+                Select team
+              </option>
+              {teams.map((team, index) =>
+                team === aTeam ? (
+                  <option disabled key={index}>
+                    {team}
+                  </option>
+                ) : (
+                  <option key={index}>{team}</option>
+                )
+              )}
+            </select>
+            {bTeam && (
+              <div>
+                {five.map((num) => (
+                  <select
+                    defaultValue={"default"}
+                    onChange={(e) => selectStartFive(e.target.value, num)}
+                  >
+                    <option disabled value="default">
+                      Select Player
+                    </option>
+                    {bTeamPlayers?.map((player) =>
+                      player.position === 6 ? (
+                        <option key={player.name}>{player.name}</option>
+                      ) : (
+                        <option disabled key={player.name}>
+                          {player.name}
+                        </option>
+                      )
+                    )}
+                  </select>
+                ))}
+              </div>
+            )}
+          </div>
+          賽制
+          <select
+            onChange={(e) => {
+              let quarters = [];
+              for (let i = 1; i <= e.target.value; i++) {
+                if (i === 1) {
+                  quarters.push("1st");
+                } else if (i === 2) {
+                  quarters.push("2nd");
+                } else if (i === 3) {
+                  quarters.push("3rd");
+                } else if (i === 4) {
+                  quarters.push("4th");
+                }
+              }
+              setQuarter([...quarters]);
+            }}
+          >
+            <option>Select</option>
+            <option value={4}>4 quarter</option>
+            <option value={2}>2 half</option>
+          </select>
+          <select
+            onChange={(e) => {
+              setEachTime(e.target.value);
+              setTimerMinutes(e.target.value);
+            }}
+          >
+            <option>Select</option>
+            <option value={10}>10 mins</option>
+            <option value={12}>12 mins</option>
+          </select>
+          <select onChange={(e) => setStopTime(e.target.value)}>
+            <option>Select</option>
+            <option value={0}>停錶</option>
+            <option value={1}>各節最後三分鐘停錶</option>
+            <option value={2}>不停錶</option>
+          </select>
+          <button
+            onClick={() => {
+              finishGameSetting();
+            }}
+          >
+            送出
+          </button>
+        </DivBeforeGame_Record>
+        <DivGameStart_Record $set={finishSetting}>
+          <div>
+            <div>
+              <div>
+                <Clock
+                  finishSetting={finishSetting}
+                  eachTime={eachTime}
+                  quarter={quarter}
+                  quarteNow={quarterNow}
+                  setQuarterNow={setQuarterNow}
+                  timerMinutes={timerMinutes}
+                  setTimerMinutes={setTimerMinutes}
+                  timerSeconds={timerSeconds}
+                  setTimerSeconds={setTimerSeconds}
+                />
+              </div>
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <div
+              style={{
+                backgroundSize: "cover",
+                height: "130px",
+                width: "130px",
+                backgroundImage: `url(${aTeamLogo})`,
+              }}
+            ></div>
+            <table>
+              <thead>
+                <tr>
+                  <th>隊伍</th>
+                  {quarter
+                    ? quarter.map((item, index) => <th key={index}>{item}</th>)
+                    : null}
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{aTeam}</td>
+                  {quarter
+                    ? quarter.map((item, index) => (
+                        <td key={index}>
+                          {aTeamData[0] ? aTeamData[index].pts : 0}
+                        </td>
+                      ))
+                    : null}
+                  <td>
+                    {quarter
+                      ? aTeamData[0]
+                        ? aTeamData[quarter.length].pts
+                        : 0
+                      : null}
+                  </td>
+                </tr>
+                <tr>
+                  <td>{bTeam}</td>
+                  {quarter
+                    ? quarter.map((item, index) => (
+                        <td key={index}>
+                          {bTeamData[0] ? bTeamData[index].pts : 0}
+                        </td>
+                      ))
+                    : null}
+                  <td>
+                    {quarter
+                      ? bTeamData[0]
+                        ? bTeamData[quarter.length].pts
+                        : 0
+                      : null}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div
+              style={{
+                backgroundSize: "cover",
+                height: "130px",
+                width: "130px",
+                backgroundImage: `url(${bTeamLogo})`,
+              }}
+            ></div>
+          </div>
+          <div>OnTheGround</div>
+
+          <div id="groundContainer">
+            <TeamBox
+              teamPlayers={aTeamPlayers}
+              setTeamPlayers={setATeamPlayers}
+            ></TeamBox>
+            <Court3
+              setPlayerLocation={setPlayerLocation}
+              setPlayerAxis={setPlayerAxis}
+              setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
+              playerAxis={playerAxis}
+            />
+            <TeamBox
+              teamPlayers={bTeamPlayers}
+              setTeamPlayers={setBTeamPlayers}
+            ></TeamBox>
+          </div>
+
+          <div>
+            {aTeamPlayers
+              ? playerActions
+                ? aTeamPlayers[0][playerActions.action]
+                : ""
+              : ""}
+            <br />
+            {bTeamPlayers
+              ? playerActions
+                ? bTeamPlayers[0][playerActions.action]
+                : ""
+              : ""}
+          </div>
+          <div>{playerActions ? playerActions.actionWord : ""}</div>
+          <div>
+            <span>{leftSide ? aTeam : bTeam}</span>
+            <span> , </span>
+            <span>
+              {leftSide
+                ? activePlayer !== undefined
+                  ? aTeamPlayers
+                    ? aTeamPlayers[activePlayer].name
+                    : ""
+                  : ""
+                : activePlayer !== undefined
+                ? bTeamPlayers
+                  ? bTeamPlayers[activePlayer].name
+                  : ""
+                : ""}
+            </span>
+            <span> {activePlayer !== undefined ? " , " : ""} </span>
+            <span> {playerLocation} </span>
+            <span> {playerLocation !== undefined ? " , " : ""} </span>
+            <span> {playerActions && playerActions.actionWord} </span>
+            <span>
+              {" "}
+              {playerActions && playerActions.actionWord !== undefined
+                ? " , "
+                : ""}{" "}
+            </span>
+            <span>
+              {" "}
+              {playerActions && playerActions.actionWord
+                ? playerActions.actionNumber
+                : ""}{" "}
+            </span>
+          </div>
+
+          <div>
+            <RecordRoom
               quarter={quarter}
               quarteNow={quarterNow}
-              setQuarterNow={setQuarterNow}
-              timerMinutes={timerMinutes}
-              setTimerMinutes={setTimerMinutes}
+              liveAction={liveAction}
+              aTeam={aTeam}
+              bTeam={bTeam}
+              aTeamPlayers={aTeamPlayers}
+              bTeamPlayers={bTeamPlayers}
               timerSeconds={timerSeconds}
-              setTimerSeconds={setTimerSeconds}
+              timerMinutes={timerMinutes}
             />
           </div>
-        </div>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>隊伍</th>
-            {quarter ? quarter.map((item, index) => <th>{item}</th>) : null}
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{aTeam}</td>
-            {quarter
-              ? quarter.map((item, index) => (
-                  <td>{aTeamData[0] ? aTeamData[index].pts : 0}</td>
-                ))
-              : null}
-            <td>
-              {quarter
-                ? aTeamData[0]
-                  ? aTeamData[quarter.length].pts
-                  : 0
-                : null}
-            </td>
-          </tr>
-          <tr>
-            <td>{bTeam}</td>
-            {quarter
-              ? quarter.map((item, index) => (
-                  <td>{bTeamData[0] ? bTeamData[index].pts : 0}</td>
-                ))
-              : null}
-            <td>
-              {quarter
-                ? bTeamData[0]
-                  ? bTeamData[quarter.length].pts
-                  : 0
-                : null}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div>OnTheGround</div>
-
-      <div id="groundContainer">
-        <TeamBox
-          teamPlayers={aTeamPlayers}
-          setTeamPlayers={setATeamPlayers}
-        ></TeamBox>
-        <Court3
-          setPlayerLocation={setPlayerLocation}
-          setPlayerAxis={setPlayerAxis}
-          setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
-          playerAxis={playerAxis}
-        />
-        <TeamBox
-          teamPlayers={bTeamPlayers}
-          setTeamPlayers={setBTeamPlayers}
-        ></TeamBox>
-      </div>
-
-      <div>
-        {aTeamPlayers
-          ? playerActions
-            ? aTeamPlayers[0][playerActions.action]
-            : ""
-          : ""}
-        <br />
-        {bTeamPlayers
-          ? playerActions
-            ? bTeamPlayers[0][playerActions.action]
-            : ""
-          : ""}
-      </div>
-      <div>{playerActions ? playerActions.actionWord : ""}</div>
-      <div>
-        <span>{leftSide ? aTeam : bTeam}</span>
-        <span> , </span>
-        <span>
-          {leftSide
-            ? activePlayer !== undefined
-              ? aTeamPlayers
-                ? aTeamPlayers[activePlayer].name
-                : ""
-              : ""
-            : activePlayer !== undefined
-            ? bTeamPlayers
-              ? bTeamPlayers[activePlayer].name
-              : ""
-            : ""}
-        </span>
-        <span> {activePlayer !== undefined ? " , " : ""} </span>
-        <span> {playerLocation} </span>
-        <span> {playerLocation !== undefined ? " , " : ""} </span>
-        <span> {playerActions && playerActions.actionWord} </span>
-        <span>
-          {" "}
-          {playerActions && playerActions.actionWord !== undefined
-            ? " , "
-            : ""}{" "}
-        </span>
-        <span>
-          {" "}
-          {playerActions && playerActions.actionWord
-            ? playerActions.actionNumber
-            : ""}{" "}
-        </span>
-      </div>
-
-      <div>
-        <RecordRoom
-          quarter={quarter}
-          quarteNow={quarterNow}
-          liveAction={liveAction}
-          aTeam={aTeam}
-          bTeam={bTeam}
-          aTeamPlayers={aTeamPlayers}
-          bTeamPlayers={bTeamPlayers}
-          timerSeconds={timerSeconds}
-          timerMinutes={timerMinutes}
-        />
-      </div>
-      {/* <LiveRoom></LiveRoom> */}
+          {/* <LiveRoom></LiveRoom> */}
+        </DivGameStart_Record>
+      </Div_Record>
     </>
   );
 }
 
 function TeamBox(props) {
   function handleOnDragEnd(result) {
+    console.log("gdfgdg", result);
     if (!result.destination) return;
     const items = Array.from([...props.teamPlayers]);
     const itemsLength = items.length;
