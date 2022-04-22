@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState, useReducer, useRef } from "react";
 import {
   getDoc,
   getDocs,
@@ -59,9 +59,12 @@ function App() {
   const [bTeamData, setBTeamData] = useState();
   const [quarter, setQuarter] = useState(0); //選擇賽制
   const [eachTime, setEachTime] = useState();
+  const eachQuarterTime = useRef();
   //time
   const [timerMinutes, setTimerMinutes] = useState(0);
   const [timerSeconds, setTimerSeconds] = useState(0);
+  const [affectTimeStopBehavior, setAffectTimeStopBehavior] = useState(true);
+  const [affectShotClockBehavior, setAffectShotClockBehavior] = useState(true);
 
   const [stopTime, setStopTime] = useState();
   const [finishSetting, setFinishSetting] = useState(false);
@@ -328,12 +331,16 @@ function App() {
           } else {
             if (playerActions.type === "3pt") {
               if (playerActions.actionNumber === 3) {
+                setAffectShotClockBehavior((prev) => !prev);
+                setAffectTimeStopBehavior((prev) => !prev);
                 recordData("threePtm", 1);
               }
               recordData("threePta", 1);
               recordPercent("threePtRate", "threePtm", "threePta");
             }
             if (playerActions.actionNumber > 0) {
+              setAffectShotClockBehavior((prev) => !prev);
+              setAffectTimeStopBehavior((prev) => !prev);
               recordData("fgm", 1);
             }
             recordData("fga", 1);
@@ -350,6 +357,7 @@ function App() {
           recordData("pts", playerActions.actionNumber);
         } else if (playerActions.action === "reb") {
           if (playerActions.type === "def") {
+            setAffectShotClockBehavior((prev) => !prev);
             recordData("dreb", 1);
           } else {
             recordData("oreb", 1);
@@ -358,12 +366,14 @@ function App() {
         } else if (playerActions.action === "ast") {
           recordData("ast", 1);
         } else if (playerActions.action === "stl") {
+          setAffectShotClockBehavior((prev) => !prev);
           recordData("stl", 1);
         } else if (playerActions.action === "blk") {
           recordData("blk", 1);
         } else if (playerActions.action === "to") {
           recordData("to", 1);
         } else if (playerActions.action === "pf") {
+          setAffectTimeStopBehavior((prev) => !prev);
           recordData("pf", 1);
         }
 
@@ -631,7 +641,7 @@ function App() {
       alert("請選擇賽制");
       return;
     }
-    if (eachTime === undefined) {
+    if (eachQuarterTime.current === undefined) {
       alert("請選擇單節時間");
       return;
     }
@@ -646,7 +656,7 @@ function App() {
         {
           quarter: quarter,
           quarterNow: quarterNow,
-          quarter_minutes: Number(eachTime),
+          quarter_minutes: Number(eachQuarterTime.current),
           stop_ime: stopTime,
           finishSetting: true,
         },
@@ -831,7 +841,7 @@ function App() {
           </select>
           <select
             onChange={(e) => {
-              setEachTime(e.target.value);
+              eachQuarterTime.current = Number(e.target.value);
               setTimerMinutes(e.target.value);
             }}
           >
@@ -859,7 +869,7 @@ function App() {
               <div>
                 <Clock
                   finishSetting={finishSetting}
-                  eachTime={eachTime}
+                  eachQuarterTime={Number(eachQuarterTime.current)}
                   quarter={quarter}
                   quarteNow={quarterNow}
                   setQuarterNow={setQuarterNow}
@@ -867,6 +877,8 @@ function App() {
                   setTimerMinutes={setTimerMinutes}
                   timerSeconds={timerSeconds}
                   setTimerSeconds={setTimerSeconds}
+                  affectTimeStopBehavior={affectTimeStopBehavior}
+                  affectShotClockBehavior={affectShotClockBehavior}
                 />
               </div>
             </div>

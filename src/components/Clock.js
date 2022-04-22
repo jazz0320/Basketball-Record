@@ -5,40 +5,32 @@ function Clock(props) {
   const [restTime, setRestTime] = useState();
   const [shotClockRestTime, setShotClockRestTime] = useState(0);
   const [shotClock, setShotClock] = useState(24);
-  const [timeStop, setTimeStop] = useState(true);
+  // const [timeStop, setTimeStop] = useState(true);
+  const timeFreeze = useRef(true);
+  const QuarterTime = useRef(props.eachQuarterTime);
   const [gameStart, setGameStart] = useState(false);
 
+  console.log("before", props.eachQuarterTime);
   //timer
   let interval = useRef();
   let timePast = 0;
   let shotClockTimepast = 0;
   const shotClockDuration = 24000;
 
-  const action = function (e) {
-    if (e.ctrlKey && e.key === "c") {
-      if (timeStop === true) {
-        startTime();
-      } else if (timeStop === false) {
-        stop();
-      }
-    } else if (e.key === "c") {
-      reset24seconds();
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", action);
-  }, []);
-
   const startTime = function () {
     if (gameStart === false) {
       setGameStart(true);
       alert("開始");
-      setTimeStop(false);
+      // setTimeStop(false);
+      timeFreeze.current = false;
       interval.current = setInterval(() => {
-        const duration = props.eachTime * 60 * 1000;
+        const duration = Number(QuarterTime.current) * 60 * 1000;
+        console.log("pt", props.eachQuarterTime);
+        console.log("pt", QuarterTime.current);
         const distance = duration - timePast;
+        console.log("pt", timePast);
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         const shotClockDistance =
@@ -52,7 +44,8 @@ function Clock(props) {
           //stop timer
           console.log("startTTT");
           clearInterval(interval.current);
-          setTimeStop(true);
+          // setTimeStop(true);
+          timeFreeze.current = true;
         } else {
           //update timer
           setShotClock(shotClockDistance);
@@ -61,9 +54,10 @@ function Clock(props) {
         }
       }, 100);
     } else {
-      if (timeStop === true) {
+      if (timeFreeze.current === true) {
         alert("繼續");
-        setTimeStop(false);
+        // setTimeStop(false);
+        timeFreeze.current = false;
         timePast = 0;
         shotClockTimepast = 0;
         interval.current = setInterval(() => {
@@ -88,7 +82,8 @@ function Clock(props) {
             //stop timer
             console.log("startCCCC");
             clearInterval(interval.current);
-            setTimeStop(true);
+            // setTimeStop(true);
+            timeFreeze.current = true;
           } else {
             //update timer
 
@@ -102,15 +97,18 @@ function Clock(props) {
   };
 
   const stop = function () {
-    alert("暫停");
-    clearInterval(interval.current);
-    setTimeStop(true);
+    if (timeFreeze.current === false) {
+      alert("暫停");
+      clearInterval(interval.current);
+      // setTimeStop(true);
+      timeFreeze.current = true;
+    }
   };
 
   const reset24seconds = function () {
     setShotClockRestTime(24000);
     setShotClock(24);
-    if (timeStop === false) {
+    if (timeFreeze.current === false) {
       console.log("work");
       clearInterval(interval.current);
 
@@ -130,7 +128,8 @@ function Clock(props) {
         if ((distance < 0) | (shotClockDistance < 0)) {
           //stop timer
           clearInterval(interval.current);
-          setTimeStop(true);
+          // setTimeStop(true);
+          timeFreeze.current = true;
         } else {
           //update timer
 
@@ -141,6 +140,35 @@ function Clock(props) {
       }, 100);
     }
   };
+
+  const action = function (e) {
+    console.log("action");
+    if (e.key === "k") {
+      startTime();
+    }
+
+    if (e.key === "l") {
+      stop();
+    }
+    if (e.key === "j") {
+      reset24seconds();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", action);
+    // return () => {
+    //   window.removeEventListener("keydown", action);
+    // };
+  }, []);
+  //behavior affect time
+  useEffect(() => {
+    stop();
+  }, [props.affectTimeStopBehavior]);
+  //behavior affect shotClock
+  useEffect(() => {
+    reset24seconds();
+  }, [props.affectShotClockBehavior]);
 
   // useEffect(() => {
   //   async function gameTime() {
@@ -252,20 +280,8 @@ function Clock(props) {
         </span>
       </div>
 
-      <button
-        onClick={() => {
-          stop();
-        }}
-      >
-        暫停
-      </button>
-      <button
-        onClick={() => {
-          startTime();
-        }}
-      >
-        開始
-      </button>
+      <button onClick={stop}>暫停</button>
+      <button onClick={startTime}>開始</button>
     </div>
   );
 }
