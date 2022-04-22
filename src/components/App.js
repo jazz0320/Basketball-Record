@@ -869,7 +869,7 @@ function App() {
               <div>
                 <Clock
                   finishSetting={finishSetting}
-                  eachQuarterTime={Number(eachQuarterTime.current)}
+                  eachQuarterTime={eachQuarterTime}
                   quarter={quarter}
                   quarteNow={quarterNow}
                   setQuarterNow={setQuarterNow}

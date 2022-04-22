@@ -5,12 +5,9 @@ function Clock(props) {
   const [restTime, setRestTime] = useState();
   const [shotClockRestTime, setShotClockRestTime] = useState(0);
   const [shotClock, setShotClock] = useState(24);
-  // const [timeStop, setTimeStop] = useState(true);
   const timeFreeze = useRef(true);
-  const QuarterTime = useRef(props.eachQuarterTime);
   const [gameStart, setGameStart] = useState(false);
 
-  console.log("before", props.eachQuarterTime);
   //timer
   let interval = useRef();
   let timePast = 0;
@@ -21,18 +18,12 @@ function Clock(props) {
     if (gameStart === false) {
       setGameStart(true);
       alert("開始");
-      // setTimeStop(false);
       timeFreeze.current = false;
       interval.current = setInterval(() => {
-        const duration = Number(QuarterTime.current) * 60 * 1000;
-        console.log("pt", props.eachQuarterTime);
-        console.log("pt", QuarterTime.current);
+        const duration = Number(props.eachQuarterTime.current) * 60 * 1000;
         const distance = duration - timePast;
-        console.log("pt", timePast);
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
         const shotClockDistance =
           (shotClockDuration - shotClockTimepast) / 1000;
 
@@ -42,7 +33,6 @@ function Clock(props) {
         setShotClockRestTime(shotClockDistance * 1000);
         if ((distance < 0) | (shotClockDistance < 0)) {
           //stop timer
-          console.log("startTTT");
           clearInterval(interval.current);
           // setTimeStop(true);
           timeFreeze.current = true;
@@ -68,19 +58,11 @@ function Clock(props) {
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
           timePast += 100;
           setRestTime(distance);
-
-          console.log("ssssccccc", shotClockTimepast);
           const shotClockDistance = shotClockRestTime - shotClockTimepast;
           shotClockTimepast += 100;
           setShotClockRestTime(shotClockDistance);
-
-          console.log("ssss1", shotClockRestTime);
-          console.log("ssss2", shotClockTimepast);
-          console.log("ssss3", shotClockDistance);
-
           if ((distance < 0) | (shotClockDistance < 0)) {
             //stop timer
-            console.log("startCCCC");
             clearInterval(interval.current);
             // setTimeStop(true);
             timeFreeze.current = true;
@@ -109,7 +91,6 @@ function Clock(props) {
     setShotClockRestTime(24000);
     setShotClock(24);
     if (timeFreeze.current === false) {
-      console.log("work");
       clearInterval(interval.current);
 
       timePast = 0;
@@ -142,7 +123,6 @@ function Clock(props) {
   };
 
   const action = function (e) {
-    console.log("action");
     if (e.key === "k") {
       startTime();
     }
@@ -157,9 +137,6 @@ function Clock(props) {
 
   useEffect(() => {
     window.addEventListener("keydown", action);
-    // return () => {
-    //   window.removeEventListener("keydown", action);
-    // };
   }, []);
   //behavior affect time
   useEffect(() => {
