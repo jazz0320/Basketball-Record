@@ -15,7 +15,7 @@ function Clock(props) {
   const shotClockDuration = 24000;
 
   const startTime = function () {
-    if (gameStart === false) {
+    if (gameStart === false && timeFreeze.current === true) {
       setGameStart(true);
       alert("開始");
       timeFreeze.current = false;
@@ -113,7 +113,6 @@ function Clock(props) {
           timeFreeze.current = true;
         } else {
           //update timer
-
           setShotClock(shotClockDistance / 1000);
           props.setTimerMinutes(minutes);
           props.setTimerSeconds(seconds);
@@ -137,7 +136,10 @@ function Clock(props) {
 
   useEffect(() => {
     window.addEventListener("keydown", action);
-  }, []);
+    return () => {
+      window.removeEventListener("keydown", action);
+    };
+  }, [shotClockRestTime]);
   //behavior affect time
   useEffect(() => {
     stop();

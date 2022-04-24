@@ -7,7 +7,6 @@ import {
   db,
   setDoc,
 } from "../utils/firebase";
-import { Routes, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 import {
   Div_Record,
@@ -19,32 +18,6 @@ import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
-import LiveRoom from "./LiveRoom";
-
-function Nav() {
-  const NavBar = styled.div`
-    padding: 10px;
-    background-color: #f44336;
-    font-size: 30px;
-
-    @media screen and (max-width: 992px) {
-      width: 100vw;
-    }
-  `;
-  return (
-    <>
-      <NavBar>
-        <Link to="/">Record</Link>
-        <span> | </span>
-        <Link to="/live-room">LiveRoom</Link>
-      </NavBar>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/live-room" element={<LiveRoom />} />
-      </Routes>
-    </>
-  );
-}
 
 function App() {
   const [teams, setTeams] = useState([]);
@@ -1103,4 +1076,4 @@ function TeamBox(props) {
   );
 }
 
-export default Nav;
+export default App;
