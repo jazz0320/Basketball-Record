@@ -19,7 +19,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court3 from "./Court3";
 import RecordRoom from "./RecordRoom";
 
-function App() {
+function App(props) {
   const [teams, setTeams] = useState([]);
   const [aTeam, setATeam] = useState("default");
   const [aTeamLogo, setATeamLogo] = useState();
@@ -52,6 +52,9 @@ function App() {
   const [playerAxis, setPlayerAxis] = useState();
 
   const [liveAction, setLiveAction] = useState([]);
+
+  const [wantToCloseGame, setWantToCloseGame] = useState();
+  const [endGame, setEndGame] = useState();
 
   //playactions
   const playerActionInitialState = {
@@ -354,7 +357,7 @@ function App() {
           setATeamPlayers([...data]);
           setATeamData([...teamDataNow]);
           await setDoc(
-            doc(db, "game_data", "live_game"),
+            doc(db, "live_game", `${props.commingGame}`),
             {
               A_team_player: data,
               A_team_data: teamDataNow,
@@ -365,7 +368,7 @@ function App() {
           setBTeamPlayers([...data]);
           setBTeamData([...teamDataNow]);
           await setDoc(
-            doc(db, "game_data", "live_game"),
+            doc(db, "live_game", `${props.commingGame}`),
             {
               B_team_player: data,
               B_team_data: teamDataNow,
@@ -408,7 +411,7 @@ function App() {
         ];
 
         await setDoc(
-          doc(db, "game_data", "live_game"),
+          doc(db, "live_game", `${props.commingGame}`),
           {
             live_action: actionLive,
           },
@@ -490,7 +493,7 @@ function App() {
       setATeamLogo(logo);
 
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", `${props.commingGame}`),
         {
           A_team: aTeam,
           A_team_player: newData,
@@ -536,7 +539,7 @@ function App() {
       setBTeamData([...newBTeamData]);
 
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", `${props.commingGame}`),
         {
           A_team_data: newATeamData,
           B_team_data: newBTeamData,
@@ -581,7 +584,7 @@ function App() {
       setBTeamPlayers(newData);
       setBTeamLogo(logo);
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", `${props.commingGame}`),
         {
           B_team: bTeam,
           B_team_player: newData,
@@ -625,13 +628,15 @@ function App() {
 
     async function systemSetting() {
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", `${props.commingGame}`),
         {
+          live_action: [],
           quarter: quarter,
           quarterNow: quarterNow,
           quarter_minutes: Number(eachQuarterTime.current),
           stop_ime: stopTime,
           finishSetting: true,
+          endGame: false,
         },
         { merge: true }
       );
@@ -687,7 +692,7 @@ function App() {
     if (side > 0) {
       setATeamPlayers(players);
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", `${props.commingGame}`),
         {
           A_team_player: players,
         },
@@ -696,13 +701,55 @@ function App() {
     } else {
       setBTeamPlayers(players);
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", `${props.commingGame}`),
         {
           B_team_player: players,
         },
         { merge: true }
       );
     }
+  };
+
+  const EndGame = async function () {
+    await setDoc(
+      doc(db, "live_game", `${props.commingGame}`),
+      {
+        endGame: true,
+      },
+      { merge: true }
+    );
+    const transitionGameData = async function () {
+      const docSnap = await getDoc(
+        doc(db, "live_game", `${props.commingGame}`)
+      );
+      let data = docSnap.data();
+
+      const saveGameData = async function () {
+        await setDoc(
+          doc(db, "past_data", `${props.commingGame}`),
+          {
+            ...data,
+          },
+          { merge: true }
+        );
+        await setDoc(
+          doc(db, "team_data", aTeam, "past_data", `${props.commingGame}`),
+          {
+            player_data: data.A_team_player,
+          },
+          { merge: true }
+        );
+        await setDoc(
+          doc(db, "team_data", bTeam, "past_data", `${props.commingGame}`),
+          {
+            player_data: data.B_team_player,
+          },
+          { merge: true }
+        );
+      };
+      saveGameData();
+    };
+    transitionGameData();
   };
 
   return (
@@ -838,23 +885,28 @@ function App() {
         </DivBeforeGame_Record>
         <DivGameStart_Record $set={finishSetting}>
           <div>
+            <button onClick={() => setWantToCloseGame(true)}>結束比賽</button>
+          </div>
+          {wantToCloseGame ? (
             <div>
-              <div>
-                <Clock
-                  finishSetting={finishSetting}
-                  eachQuarterTime={eachQuarterTime}
-                  quarter={quarter}
-                  quarteNow={quarterNow}
-                  setQuarterNow={setQuarterNow}
-                  timerMinutes={timerMinutes}
-                  setTimerMinutes={setTimerMinutes}
-                  timerSeconds={timerSeconds}
-                  setTimerSeconds={setTimerSeconds}
-                  affectTimeStopBehavior={affectTimeStopBehavior}
-                  affectShotClockBehavior={affectShotClockBehavior}
-                />
-              </div>
+              <button onClick={EndGame}>確定結束比賽？</button>
+              <button onClick={() => setWantToCloseGame(false)}>取消</button>
             </div>
+          ) : null}
+          <div>
+            <Clock
+              finishSetting={finishSetting}
+              eachQuarterTime={eachQuarterTime}
+              quarter={quarter}
+              quarteNow={quarterNow}
+              setQuarterNow={setQuarterNow}
+              timerMinutes={timerMinutes}
+              setTimerMinutes={setTimerMinutes}
+              timerSeconds={timerSeconds}
+              setTimerSeconds={setTimerSeconds}
+              affectTimeStopBehavior={affectTimeStopBehavior}
+              affectShotClockBehavior={affectShotClockBehavior}
+            />
           </div>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
             <div

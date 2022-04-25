@@ -53,6 +53,7 @@ function Nav() {
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
+  const [commingGame, setCommingGame] = useState("20220425_laker_nets");
   let redirect = useNavigate();
 
   const monitorAuthState = async () => {
@@ -126,8 +127,11 @@ function Nav() {
 
       <Routes>
         <Route path="/team-inf" element={<TeamInf userId={userId} />} />
-        <Route path="/record" element={<App />} />
-        <Route path="/live-room" element={<LiveRoom />} />
+        <Route path="/record" element={<App commingGame={commingGame} />} />
+        <Route
+          path="/live-room"
+          element={<LiveRoom commingGame={commingGame} />}
+        />
         <Route path="/profile" element={<Profile userId={userId} />} />
         <Route
           path="/login"

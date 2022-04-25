@@ -14,23 +14,28 @@ function LiveRoom(props) {
   const [bTeamPlayers, setBTeamPlayers] = useState();
   const [bTeamData, setBTeamData] = useState();
   const [finishSetting, setFinishSetting] = useState();
+  const [endGame, setEndGame] = useState();
   const [watchBox, setWatchBox] = useState("livestream");
 
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, "game_data", "live_game"), (doc) => {
-      console.log("Current data: ", doc.data().A_team_data);
-      setLiveAction(doc.data().live_action);
-      setQuarter(doc.data().quarter);
-      setATeam(doc.data().A_team);
-      setATeamLogo(doc.data().A_team_logo);
-      setATeamPlayers(doc.data().A_team_player);
-      setBTeamPlayers(doc.data().B_team_player);
-      setATeamData(doc.data().A_team_data);
-      setBTeam(doc.data().B_team);
-      setBTeamLogo(doc.data().B_team_logo);
-      setBTeamData(doc.data().B_team_data);
-      setFinishSetting(doc.data().finishSetting);
-    });
+    const unsub = onSnapshot(
+      doc(db, "live_game", `${props.commingGame}`),
+      (doc) => {
+        console.log("Current data: ", doc.data().A_team_data);
+        setLiveAction(doc.data().live_action);
+        setQuarter(doc.data().quarter);
+        setATeam(doc.data().A_team);
+        setATeamLogo(doc.data().A_team_logo);
+        setATeamPlayers(doc.data().A_team_player);
+        setBTeamPlayers(doc.data().B_team_player);
+        setATeamData(doc.data().A_team_data);
+        setBTeam(doc.data().B_team);
+        setBTeamLogo(doc.data().B_team_logo);
+        setBTeamData(doc.data().B_team_data);
+        setFinishSetting(doc.data().finishSetting);
+        setEndGame(doc.data().endGame);
+      }
+    );
     // unsub();
   }, []);
 
@@ -51,7 +56,9 @@ function LiveRoom(props) {
 
   return (
     <>
-      {finishSetting ? (
+      {endGame ? (
+        <div>比賽結束</div>
+      ) : finishSetting ? (
         <div>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
             <div
