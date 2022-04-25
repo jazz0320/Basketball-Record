@@ -12,6 +12,14 @@ import {
   collection,
 } from "../utils/firebase";
 import "./TeamInf.css";
+import styled from "styled-components";
+
+const PlayerChangeBlock = styled.div`
+  display: ${(props) => (props.$focus ? "none" : "block")};
+`;
+const PlayerButton = styled.button`
+  display: ${(props) => (props.$check ? "none" : "block")};
+`;
 
 function TeamInf(props) {
   const [teamMemberNumbers, setTeamMemberNumbers] = useState([1, 2, 3, 4, 5]);
@@ -19,13 +27,15 @@ function TeamInf(props) {
   const teamName = useRef();
   const teamMembers = useRef({});
   const [imgSrc, setImgSrc] = useState({});
-  const memberTeamExist = useRef();
+  const [memberTeamExist, setMemberTeamExist] = useState();
 
   async function teamExistCheck() {
     const querySnapshot = await getDoc(
       doc(db, "member_data", `${props.userId}`)
     );
-    memberTeamExist.current = querySnapshot.data().team;
+    if (querySnapshot.data()) {
+      setMemberTeamExist(querySnapshot.data().team);
+    }
   }
 
   teamExistCheck();
@@ -37,14 +47,10 @@ function TeamInf(props) {
   };
 
   const deletePlayer = function (itemIndex) {
-    console.log("iiii", itemIndex);
     const cc = [...teamMemberNumbers];
-    console.log("123", cc);
     const newTeam = cc.filter((_, index) => index !== itemIndex);
-    console.log("nt", newTeam);
     setTeamMemberNumbers([...newTeam]);
   };
-  console.log("teamName", teamName.current);
 
   const upload = async function (e) {
     const file = e.target.files[0];
@@ -52,7 +58,6 @@ function TeamInf(props) {
     const imgRef = ref(storage, `${props.userId}/${path}`);
     await uploadBytes(imgRef, file).then((snapshot) => {
       console.log("Uploaded a blob or file!");
-      console.log("Uccc", snapshot);
     });
     await getDownloadURL(ref(storage, `${props.userId}/${path}`))
       .then((url) => {
@@ -81,8 +86,6 @@ function TeamInf(props) {
 
   const submitTeamInf = async function () {
     let abc = [];
-    console.log("aaa", abc);
-    console.log("sadas", Object.keys(teamMembers.current).length);
     for (let i = 0; i < Object.keys(teamMembers.current).length; i++) {
       console.log("bbb", abc);
       let b = {
@@ -111,6 +114,7 @@ function TeamInf(props) {
         to: 0,
         pf: 0,
         pts: 0,
+        data_situation: "done",
       };
       abc.push(b);
       console.log("ccc", abc);
@@ -134,12 +138,11 @@ function TeamInf(props) {
       { merge: true }
     );
   };
-  console.log("before", memberTeamExist.current);
 
   return (
     <>
       {memberTeamExist ? (
-        <ExistTeam memberTeamExist={memberTeamExist} />
+        <ExistTeam memberTeamExist={memberTeamExist} userId={props.userId} />
       ) : (
         <div>
           <div>
@@ -219,25 +222,218 @@ function ExistTeam(props) {
   const [teamLogo, setTeamLogo] = useState();
   const [teamPics, setTeamPics] = useState();
   const [teamPlayers, setTeamPlayers] = useState();
-  console.log("now", props.memberTeamExist.current);
-  if (props.memberTeamExist.current) {
-    async function getExistTeamData() {
+  const [revisePlayer, setRevisePlayer] = useState();
+  const [checkDelete, setCheckDelete] = useState();
+  const [deletePlayerIndex, setDeletePlayerIndex] = useState();
+
+  async function getExistTeamData() {
+    if (props.memberTeamExist !== undefined) {
       const querySnapshot = await getDoc(
-        doc(db, "team_data", `${props.memberTeamExist.current}`)
+        doc(db, "team_data", `${props.memberTeamExist}`)
       );
       setTeamLogo(querySnapshot.data().logo);
       setTeamPics(querySnapshot.data().team_pic);
       setTeamPlayers(querySnapshot.data().players);
     }
-    getExistTeamData();
   }
+  useEffect(() => {
+    getExistTeamData();
+  }, []);
+
+  const deletePlayer = async function (itemIndex) {
+    const cc = [...teamPlayers];
+    const newTeam = cc.filter((_, index) => index !== itemIndex);
+    setTeamPlayers(newTeam);
+    await setDoc(
+      doc(db, "team_data", `${props.memberTeamExist}`),
+      {
+        players: newTeam,
+      },
+      { merge: true }
+    );
+  };
+
+  const upload = async function (e) {
+    const inputName = e.target.name;
+    const file = e.target.files[0];
+    const path = file.name;
+    const imgRef = ref(storage, `${props.userId}/${path}`);
+    let a;
+    await uploadBytes(imgRef, file).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+    await getDownloadURL(ref(storage, `${props.userId}/${path}`))
+      .then((url) => {
+        // `url` is the download URL for 'images/stars.jpg'
+        setTeamLogo(url);
+        const picUpload = async function () {
+          await setDoc(
+            doc(db, "team_data", `${props.memberTeamExist}`),
+            {
+              [`${inputName}`]: url,
+            },
+            { merge: true }
+          );
+        };
+        picUpload();
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+  };
+
   return (
     <>
       <div>隊伍已存在</div>
+      {checkDelete ? (
+        <div>
+          確認刪除？
+          <button
+            onClick={() => {
+              setCheckDelete(false);
+              deletePlayer(deletePlayerIndex);
+            }}
+          >
+            確認
+          </button>
+          <button onClick={() => setCheckDelete(false)}>取消</button>
+        </div>
+      ) : null}
+
       <div>
         <img src={teamLogo}></img>
+        <input type="file" name="logo" onChange={(e) => upload(e)}></input>
+      </div>
+      <div>
+        <img src={teamPics}></img>
+        <input type="file" name="team_pic" onChange={(e) => upload(e)}></input>
+      </div>
+      <div>
+        {teamPlayers?.map((player, index) => (
+          <div>
+            <PlayerChangeBlock $focus={revisePlayer === index}>
+              <div>名字:{player.name}</div>
+              <div>
+                背號:
+                {player.num}
+              </div>
+              <div>
+                照片:
+                <img src={player.pic}></img>
+              </div>
+            </PlayerChangeBlock>
+            <PlayerChangeBlock $focus={revisePlayer !== index}>
+              <ModifyPlayer
+                player={player}
+                userId={props.userId}
+                setTeamPlayers={setTeamPlayers}
+                teamPlayers={teamPlayers}
+                playerOrder={index}
+                setRevisePlayer={setRevisePlayer}
+                memberTeamExist={props.memberTeamExist}
+              />
+            </PlayerChangeBlock>
+            <PlayerButton
+              $check={revisePlayer === index}
+              onClick={() => {
+                setRevisePlayer(index);
+              }}
+            >
+              修改
+            </PlayerButton>
+            <PlayerButton
+              $check={revisePlayer === index}
+              onClick={() => {
+                setCheckDelete(true);
+                setDeletePlayerIndex(index);
+              }}
+            >
+              移除球員
+            </PlayerButton>
+          </div>
+        ))}
       </div>
     </>
+  );
+}
+
+function ModifyPlayer(props) {
+  const oldState = {
+    ...props.player,
+    name: props.player.name,
+    id: props.player.id,
+    pic: props.player.pic,
+    num: props.player.num,
+  };
+
+  const [newPlayer, setNewPlayer] = useState(oldState);
+
+  const upload = async function (e, data) {
+    const file = e.target.files[0];
+    const path = file.name;
+    const imgRef = ref(storage, `${props.userId}/${path}`);
+    let a;
+    await uploadBytes(imgRef, file).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+    await getDownloadURL(ref(storage, `${props.userId}/${path}`))
+      .then((url) => {
+        // `url` is the download URL for 'images/stars.jpg'
+        data.pic = url;
+        setNewPlayer(data);
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+  };
+  let data = { ...newPlayer };
+  const writePlayers = function (e) {
+    if (e.target.name === "pic") {
+      upload(e, data);
+    } else {
+      data[e.target.name] = e.target.value;
+      setNewPlayer(data);
+    }
+  };
+
+  const submitCorrection = async function () {
+    let oldTeamPlayer = [...props.teamPlayers];
+    oldTeamPlayer[props.playerOrder] = newPlayer;
+    props.setTeamPlayers(oldTeamPlayer);
+    props.setRevisePlayer();
+    await setDoc(
+      doc(db, "team_data", `${props.memberTeamExist}`),
+      {
+        players: oldTeamPlayer,
+      },
+      { merge: true }
+    );
+  };
+  return (
+    <div>
+      <div>
+        名字:
+        <input
+          name="name"
+          value={newPlayer.name}
+          onChange={(e) => writePlayers(e)}
+        ></input>
+      </div>
+      <div>
+        背號:
+        <input
+          name="num"
+          value={newPlayer.num}
+          onChange={(e) => writePlayers(e)}
+        />
+      </div>
+      <div>
+        照片:
+        <img src={newPlayer.pic}></img>
+        <input type="file" name="pic" onChange={(e) => writePlayers(e)}></input>
+      </div>
+      <button onClick={submitCorrection}>確認修改</button>
+    </div>
   );
 }
 

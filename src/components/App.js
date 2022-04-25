@@ -458,7 +458,7 @@ function App() {
   useEffect(() => {
     async function selectTeam() {
       const docRef = doc(db, "team_data", aTeam);
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(doc(db, "team_data", aTeam));
       let data = docSnap.data().players;
       let logo = docSnap.data().logo;
       let newData = [];
