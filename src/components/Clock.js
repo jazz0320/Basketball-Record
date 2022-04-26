@@ -149,32 +149,32 @@ function Clock(props) {
     reset24seconds();
   }, [props.affectShotClockBehavior]);
 
-  // useEffect(() => {
-  //   async function gameTime() {
-  //     await setDoc(
-  //       doc(db, "game_data", "live_game"),
-  //       {
-  //         time_shotClock: Number(shotClock),
-  //       },
-  //       { merge: true }
-  //     );
-  //   }
-  //   gameTime();
-  // }, [shotClock]);
+  useEffect(() => {
+    async function gameTime() {
+      await setDoc(
+        doc(db, "game_data", "live_game"),
+        {
+          time_shotClock: Number(shotClock),
+        },
+        { merge: true }
+      );
+    }
+    gameTime();
+  }, [shotClock]);
 
-  // useEffect(() => {
-  //   async function gameTime() {
-  //     await setDoc(
-  //       doc(db, "game_data", "live_game"),
-  //       {
-  //         time_minutes: Number(props.timerMinutes),
-  //         time_seconds: Number(props.timerSeconds),
-  //       },
-  //       { merge: true }
-  //     );
-  //   }
-  //   gameTime();
-  // }, [props.timerSeconds]);
+  useEffect(() => {
+    async function gameTime() {
+      await setDoc(
+        doc(db, "game_data", "live_game"),
+        {
+          time_minutes: Number(props.timerMinutes),
+          time_seconds: Number(props.timerSeconds),
+        },
+        { merge: true }
+      );
+    }
+    gameTime();
+  }, [props.timerSeconds]);
 
   return (
     <div>

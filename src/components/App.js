@@ -54,7 +54,7 @@ function App(props) {
   const [liveAction, setLiveAction] = useState([]);
 
   const [wantToCloseGame, setWantToCloseGame] = useState();
-  const [endGame, setEndGame] = useState();
+  // const [endGame, setEndGame] = useState();
 
   //playactions
   const playerActionInitialState = {

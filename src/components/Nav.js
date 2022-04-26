@@ -1,7 +1,10 @@
 import LiveRoom from "./LiveRoom";
+import PastGame from "./PastGame";
 import TeamInf from "./TeamInf";
 import Login from "./Login";
 import App from "./App";
+import Test from "./Test";
+import GameData from "./GameData";
 import Profile from "./Profile";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { auth, onAuthStateChanged, signOut } from "../utils/firebase";
@@ -53,7 +56,8 @@ function Nav() {
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
-  const [commingGame, setCommingGame] = useState("20220425_laker_nets");
+  const [commingGame, setCommingGame] = useState("20220426_laker_nets");
+  const [pastGameRoutes, setPastGameRoutes] = useState();
   let redirect = useNavigate();
 
   const monitorAuthState = async () => {
@@ -94,6 +98,17 @@ function Nav() {
   return (
     <>
       <NavBar>
+        <LinkComponet to="/test">Test</LinkComponet>
+        <LinkComponet
+          $focus={navActive === 1}
+          onClick={() => {
+            setNavActive(1);
+          }}
+          to="/game-data"
+        >
+          GameData
+        </LinkComponet>
+        <span> | </span>
         <LinkComponet
           $focus={navActive === 2}
           onClick={() => {
@@ -126,8 +141,26 @@ function Nav() {
       </NavBar>
 
       <Routes>
+        <Route path="/test" element={<Test />} />
         <Route path="/team-inf" element={<TeamInf userId={userId} />} />
         <Route path="/record" element={<App commingGame={commingGame} />} />
+        <Route
+          path="/game-data"
+          element={
+            <GameData
+              pastGameRoutes={pastGameRoutes}
+              setPastGameRoutes={setPastGameRoutes}
+            />
+          }
+        >
+          {pastGameRoutes?.map((gameName) => (
+            <Route
+              path={`${gameName}`}
+              element={<PastGame gameName={gameName} />}
+            />
+          ))}
+        </Route>
+
         <Route
           path="/live-room"
           element={<LiveRoom commingGame={commingGame} />}
