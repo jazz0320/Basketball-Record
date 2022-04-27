@@ -36,7 +36,7 @@ function PastGame(props) {
       setEndGame(docSnap.data().endGame);
     }
     loading();
-  }, []);
+  }, [props.gameName]);
 
   return (
     <>
@@ -299,8 +299,14 @@ function Boxscore(props) {
 }
 
 function Livestream(props) {
-  const [quarteNowLive, setQuarterNowLive] = useState(props.quarter.length);
+  const [quarteNowLive, setQuarterNowLive] = useState();
   const [actionNow, setActionNow] = useState();
+  useEffect(() => {
+    if (props.quarter) {
+      setQuarterNowLive(props.quarter.length);
+    }
+  }, [props.quarter]);
+
   useEffect(() => {
     console.log("qN", quarteNowLive);
     if (
@@ -338,7 +344,13 @@ function Livestream(props) {
           ))}
         <span
           className="round button"
-          id={quarteNowLive === props.quarter.length ? "checkbutton" : null}
+          id={
+            props.quarter
+              ? quarteNowLive === props.quarter.length
+                ? "checkbutton"
+                : null
+              : null
+          }
           onClick={() => {
             setQuarterNowLive(props.quarter.length);
           }}
@@ -350,99 +362,101 @@ function Livestream(props) {
       <div
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
-        {quarteNowLive === props.quarter.length
-          ? props.liveAction
-              .slice()
-              .reverse()
-              ?.map((item, index) => (
-                <div key={index} style={{ display: "flex" }}>
-                  <div style={{ width: "43vw" }}>
-                    {item.team === true ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
+        {props.quarter
+          ? quarteNowLive === props.quarter.length
+            ? props.liveAction
+                .slice()
+                .reverse()
+                ?.map((item, index) => (
+                  <div key={index} style={{ display: "flex" }}>
+                    <div style={{ width: "43vw" }}>
+                      {item.team === true ? (
+                        <>
+                          <span>{item.team ? props.aTeam : props.bTeam}</span>
+                          <span> , </span>
+                          <span>{item.playerId}</span>
+                          <span> , </span>
+                          <span>{item.location}</span>
+                          <span> , </span>
+                          <span>得{item.count}分</span>
+                        </>
+                      ) : null}
+                    </div>
 
+                    <div
+                      style={{
+                        width: "14vw",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <span>第{item.quarterNow}節</span>
+                      <span>
+                        {item.minutes}:{item.seconds}
+                      </span>
+                    </div>
+
+                    <div style={{ width: "43vw" }}>
+                      {item.team === false ? (
+                        <>
+                          <span>{item.team ? props.aTeam : props.bTeam}</span>
+                          <span> , </span>
+                          <span>{item.playerId}</span>
+                          <span> , </span>
+                          <span>{item.location}</span>
+                          <span> , </span>
+                          <span>得{item.count}分</span>
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+                ))
+            : actionNow
+            ? actionNow
+                .slice()
+                .reverse()
+                ?.map((item, index) => (
                   <div
-                    style={{
-                      width: "14vw",
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "center",
-                    }}
+                    key={index}
+                    style={{ display: "flex", textAlign: "center" }}
                   >
-                    <span>第{item.quarterNow}節</span>
-                    <span>
-                      {item.minutes}:{item.seconds}
-                    </span>
-                  </div>
+                    <div style={{ width: "43vw" }}>
+                      {item.team === true ? (
+                        <>
+                          <span>{item.team ? props.aTeam : props.bTeam}</span>
+                          <span> , </span>
+                          <span>{item.playerId}</span>
+                          <span> , </span>
+                          <span>{item.location}</span>
+                          <span> , </span>
+                          <span>得{item.count}分</span>
+                        </>
+                      ) : null}
+                    </div>
 
-                  <div style={{ width: "43vw" }}>
-                    {item.team === false ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
-                </div>
-              ))
-          : actionNow
-          ? actionNow
-              .slice()
-              .reverse()
-              ?.map((item, index) => (
-                <div
-                  key={index}
-                  style={{ display: "flex", textAlign: "center" }}
-                >
-                  <div style={{ width: "43vw" }}>
-                    {item.team === true ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
+                    <div style={{ width: "14vw" }}>
+                      <span>
+                        {item.minutes}:{item.seconds}
+                      </span>
+                    </div>
 
-                  <div style={{ width: "14vw" }}>
-                    <span>
-                      {item.minutes}:{item.seconds}
-                    </span>
+                    <div style={{ width: "43vw" }}>
+                      {item.team === false ? (
+                        <>
+                          <span>{item.team ? props.aTeam : props.bTeam}</span>
+                          <span> , </span>
+                          <span>{item.playerId}</span>
+                          <span> , </span>
+                          <span>{item.location}</span>
+                          <span> , </span>
+                          <span>得{item.count}分</span>
+                        </>
+                      ) : null}
+                    </div>
                   </div>
-
-                  <div style={{ width: "43vw" }}>
-                    {item.team === false ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
-                </div>
-              ))
+                ))
+            : null
           : null}
       </div>
     </>

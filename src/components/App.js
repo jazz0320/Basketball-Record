@@ -31,7 +31,6 @@ function App(props) {
   const [bTeamPlayers, setBTeamPlayers] = useState();
   const [bTeamData, setBTeamData] = useState();
   const [quarter, setQuarter] = useState(0); //選擇賽制
-  const [eachTime, setEachTime] = useState();
   const eachQuarterTime = useRef();
   //time
   const [timerMinutes, setTimerMinutes] = useState(0);

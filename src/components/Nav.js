@@ -3,6 +3,7 @@ import PastGame from "./PastGame";
 import TeamInf from "./TeamInf";
 import Login from "./Login";
 import App from "./App";
+import Home from "./Home";
 import Test from "./Test";
 import GameData from "./GameData";
 import Profile from "./Profile";
@@ -10,6 +11,8 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { auth, onAuthStateChanged, signOut } from "../utils/firebase";
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
+import GameSchedule from "./GameSchedule";
+import GameArrange from "./GameArrange";
 
 const NavBar = styled.div`
   padding: 10px;
@@ -98,7 +101,24 @@ function Nav() {
   return (
     <>
       <NavBar>
+        <LinkComponet
+          $focus={navActive === -1}
+          onClick={() => setNavActive(-1)}
+          to="/"
+        >
+          Home
+        </LinkComponet>
+        <span> | </span>
+        <LinkComponet
+          $focus={navActive === 0}
+          onClick={() => setNavActive(0)}
+          to="/record"
+        >
+          Record
+        </LinkComponet>
+        <span> | </span>
         <LinkComponet to="/test">Test</LinkComponet>
+        <span> | </span>
         <LinkComponet
           $focus={navActive === 1}
           onClick={() => {
@@ -141,8 +161,9 @@ function Nav() {
       </NavBar>
 
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/test" element={<Test />} />
-        <Route path="/team-inf" element={<TeamInf userId={userId} />} />
+
         <Route path="/record" element={<App commingGame={commingGame} />} />
         <Route
           path="/game-data"
@@ -165,7 +186,11 @@ function Nav() {
           path="/live-room"
           element={<LiveRoom commingGame={commingGame} />}
         />
-        <Route path="/profile" element={<Profile userId={userId} />} />
+        <Route path="/profile" element={<Profile userId={userId} />}>
+          <Route path="game-schedule" element={<GameSchedule />} />
+          <Route path="game-arrange" element={<GameArrange />} />
+          <Route path="team-inf" element={<TeamInf userId={userId} />} />
+        </Route>
         <Route
           path="/login"
           element={
