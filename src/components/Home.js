@@ -86,6 +86,7 @@ function Home() {
                 <div key={Object.keys(game)}>
                   {/* {game[Object.keys(game)[0]].time_date} */}
                   <BoxComing data={game[Object.keys(game)[0]]} />
+                  {/* <BoxEnd data={game[Object.keys(game)[0]]} /> */}
                 </div>
               ) : null
             )}
@@ -101,25 +102,25 @@ export default Home;
 const CarousellContainer = styled.div`
   height: 230px;
   width: 90vw;
-  margin: 0 5vw 0 5vw;
+  margin: 0 2vw 0 2vw;
   display: inline-flex;
   ${"" /* align-items: center; */}
   overflow: scroll;
+  color: #495057;
 `;
 
 const GameContainer_L1 = styled.div`
   height: 160px;
   width: 180px;
   padding: 10px;
-  background-color: #f44336;
   display: flex;
   flex-wrap: wrap;
+  border: 1px solid #ced4da;
 `;
 
 const GameContainer_L2 = styled.div`
   width: 180px;
   height: 50px;
-  background-color: orange;
   font-size: 14px;
   line-height: 50px;
   display: flex;
@@ -166,7 +167,7 @@ function BoxEnd(props) {
       <GameContainer_L2>
         <LogoDiv img={props.data.aTeamLogo} />
         <TeamDiv>
-          <div>{props.data.aTeam}</div>
+          <div style={{ color: "black" }}>{props.data.aTeam}</div>
           <div>
             {props.data.aTeam_winloss[0]}-{props.data.aTeam_winloss[1]}
           </div>
@@ -176,7 +177,7 @@ function BoxEnd(props) {
       <GameContainer_L2>
         <LogoDiv img={props.data.bTeamLogo} />
         <TeamDiv>
-          <div>{props.data.bTeam}</div>
+          <div style={{ color: "black" }}>{props.data.bTeam}</div>
           <div>
             {props.data.bTeam_winloss[0]}-{props.data.bTeam_winloss[1]}
           </div>
@@ -190,7 +191,6 @@ function BoxEnd(props) {
 const GameContainer_L2_forComing = styled.div`
   width: 60px;
   height: 100px;
-  background-color: orange;
   font-size: 14px;
   display: flex;
   justify-content: center;
@@ -222,7 +222,7 @@ function BoxComing(props) {
       <GameContainer_L2_forComing>
         <LogoDiv_forComing img={props.data.aTeamLogo} />
         <TeamDiv>
-          <div>{props.data.aTeam}</div>
+          <div style={{ color: "black" }}>{props.data.aTeam}</div>
           <div>
             {props.data.aTeam_winloss[0]}-{props.data.aTeam_winloss[1]}
           </div>
@@ -234,7 +234,7 @@ function BoxComing(props) {
       <GameContainer_L2_forComing>
         <LogoDiv_forComing img={props.data.bTeamLogo} />
         <TeamDiv>
-          <div>{props.data.bTeam}</div>
+          <div style={{ color: "black" }}>{props.data.bTeam}</div>
           <div>
             {props.data.bTeam_winloss[0]}-{props.data.bTeam_winloss[1]}
           </div>
@@ -250,7 +250,7 @@ const TimeContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  background-color: #0079cd;
+  background-color: #343a40;
   div {
     color: white;
     margin-top: 40px;
@@ -303,7 +303,7 @@ function TimeBox(props) {
         <br />
         {days[`0${props.weekday}`]}
         <br />
-        比賽數{props.gameTimeCount}
+        {props.gameTimeCount}場比賽
       </div>
     </TimeContainer>
   );

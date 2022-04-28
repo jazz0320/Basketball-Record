@@ -22,13 +22,29 @@ import RecordRoom from "./RecordRoom";
 function App(props) {
   const [teams, setTeams] = useState([]);
   const [aTeam, setATeam] = useState("default");
+  const [aTeamStartFive, setATeamStartFive] = useState([
+    "default",
+    "default",
+    "default",
+    "default",
+    "default",
+  ]);
   const [aTeamLogo, setATeamLogo] = useState();
   const [aTeamPlayers, setATeamPlayers] = useState();
+  const aTeamPlayersName = useRef();
   const [aTeamData, setATeamData] = useState();
 
   const [bTeam, setBTeam] = useState("default");
+  const [bTeamStartFive, setBTeamStartFive] = useState([
+    "default",
+    "default",
+    "default",
+    "default",
+    "default",
+  ]);
   const [bTeamLogo, setBTeamLogo] = useState();
   const [bTeamPlayers, setBTeamPlayers] = useState();
+  const bTeamPlayersName = useRef();
   const [bTeamData, setBTeamData] = useState();
   const [quarter, setQuarter] = useState(0); //選擇賽制
 
@@ -490,6 +506,7 @@ function App(props) {
         newData.push(data[i]);
       }
       setATeamPlayers(newData);
+      aTeamPlayersName.current = newData.map((player) => player.name);
       setATeamLogo(logo);
 
       await setDoc(
@@ -582,6 +599,7 @@ function App(props) {
         newData.push(data[i]);
       }
       setBTeamPlayers(newData);
+      bTeamPlayersName.current = newData.map((player) => player.name);
       setBTeamLogo(logo);
       await setDoc(
         doc(db, "live_game", `${props.commingGame}`),
@@ -645,36 +663,82 @@ function App(props) {
     setFinishSetting(true);
   };
 
-  const selectStartFive = async function (player, position) {
-    let players = [];
-    let side = -1;
-    let a_length = 0;
-    let b_length = 0;
-    let length;
-    if (aTeamPlayers) {
-      a_length = aTeamPlayers.length;
-    }
-    if (bTeamPlayers) {
-      b_length = bTeamPlayers.length;
-    }
-    if (a_length < b_length) {
-      length = b_length;
-    } else {
-      length = a_length;
-    }
-    for (let i = 0; i < length; i++) {
-      if (aTeamPlayers) {
-        if (aTeamPlayers[i].name === player) {
-          side = 1;
-        }
-      }
-    }
-    if (side > 0) {
-      players = [...aTeamPlayers];
-    } else {
-      players = [...bTeamPlayers];
-    }
+  // const selectStartFive = async function (player, position) {
+  //   let players = [];
+  //   let side = -1;
+  //   let a_length = 0;
+  //   let b_length = 0;
+  //   let length;
+  //   if (aTeamPlayers) {
+  //     a_length = aTeamPlayers.length;
+  //   }
+  //   if (bTeamPlayers) {
+  //     b_length = bTeamPlayers.length;
+  //   }
+  //   if (a_length < b_length) {
+  //     length = b_length;
+  //   } else {
+  //     length = a_length;
+  //   }
+  //   for (let i = 0; i < length; i++) {
+  //     if (aTeamPlayers) {
+  //       console.log("aN", aTeamPlayers[i].name);
+  //       if (aTeamPlayers[i].name === player) {
+  //         console.log("ok");
+  //         side = 1;
+  //       } else {
+  //         side = -1;
+  //       }
+  //     }
+  //   }
+  //   console.log("side", side);
+  //   if (side > 0) {
+  //     console.log("obbbbk");
+  //     players = [...aTeamPlayers];
+  //   } else if (side < 0) {
+  //     console.log("oaaaaak");
+  //     players = [...bTeamPlayers];
+  //   }
 
+  //   for (let i = 0; i < players.length; i++) {
+  //     if (players[i].position === position) {
+  //       players[i].position = 6;
+  //       players[i].start = false;
+  //     }
+  //     if (players[i].name === player) {
+  //       players[i].position = position;
+  //       players[i].start = true;
+  //     }
+  //   }
+  //   players.sort(function (a, b) {
+  //     return a.position - b.position;
+  //   });
+
+  //   if (side > 0) {
+  //     setATeamPlayers(players);
+  //     await setDoc(
+  //       doc(db, "live_game", `${props.commingGame}`),
+  //       {
+  //         A_team_player: players,
+  //       },
+  //       { merge: true }
+  //     );
+  //   } else {
+  //     setBTeamPlayers(players);
+  //     await setDoc(
+  //       doc(db, "live_game", `${props.commingGame}`),
+  //       {
+  //         B_team_player: players,
+  //       },
+  //       { merge: true }
+  //     );
+  //   }
+  // };
+
+  const selectAStartFive = async function (player, position) {
+    console.log("player", player);
+    console.log("position", position);
+    let players = [...aTeamPlayers];
     for (let i = 0; i < players.length; i++) {
       if (players[i].position === position) {
         players[i].position = 6;
@@ -689,25 +753,41 @@ function App(props) {
       return a.position - b.position;
     });
 
-    if (side > 0) {
-      setATeamPlayers(players);
-      await setDoc(
-        doc(db, "live_game", `${props.commingGame}`),
-        {
-          A_team_player: players,
-        },
-        { merge: true }
-      );
-    } else {
-      setBTeamPlayers(players);
-      await setDoc(
-        doc(db, "live_game", `${props.commingGame}`),
-        {
-          B_team_player: players,
-        },
-        { merge: true }
-      );
+    setATeamPlayers(players);
+    await setDoc(
+      doc(db, "live_game", `${props.commingGame}`),
+      {
+        A_team_player: players,
+      },
+      { merge: true }
+    );
+  };
+
+  const selectBStartFive = async function (player, position) {
+    let players = [];
+    players = [...bTeamPlayers];
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].position === position) {
+        players[i].position = 6;
+        players[i].start = false;
+      }
+      if (players[i].name === player) {
+        players[i].position = position;
+        players[i].start = true;
+      }
     }
+    players.sort(function (a, b) {
+      return a.position - b.position;
+    });
+
+    setBTeamPlayers(players);
+    await setDoc(
+      doc(db, "live_game", `${props.commingGame}`),
+      {
+        B_team_player: players,
+      },
+      { merge: true }
+    );
   };
 
   const EndGame = async function () {
@@ -752,13 +832,120 @@ function App(props) {
     transitionGameData();
   };
 
+  const change = function (
+    type,
+    target,
+    oppTarget,
+    source,
+    setTarget,
+    setStartFive
+  ) {
+    let value = target;
+    let listOri = [...source];
+    let list = listOri.filter((item) => item !== oppTarget);
+    let index = list.indexOf(value);
+    if (type === "next") {
+      index += 1;
+      if (index >= list.length) {
+        index = 0;
+      }
+    } else if (type === "last") {
+      if (index <= 0) {
+        index = list.length - 1;
+      } else {
+        index -= 1;
+      }
+    }
+    setTarget(list[index]);
+    setStartFive(["default", "default", "default", "default", "default"]);
+  };
+  const changePlayer = function (type, target, targetGroup, source, setTarget) {
+    let value = targetGroup[target];
+    let listOri = source.current;
+    console.log("1");
+    if (value === "default") {
+      console.log("2");
+      let list = listOri.filter((player) => !targetGroup.includes(player));
+      let index = list.indexOf(value);
+      if (type === "next") {
+        index += 1;
+        if (index >= list.length) {
+          index = 0;
+        }
+      } else if (type === "last") {
+        if (index <= 0) {
+          index = list.length - 1;
+        } else {
+          index -= 1;
+        }
+      }
+      let start = [...targetGroup];
+      start[target] = list[index];
+      setTarget(start);
+      if (source === aTeamPlayersName) {
+        console.log("a1 work");
+        selectAStartFive(list[index], target + 1);
+      } else {
+        console.log("b1 work");
+        selectBStartFive(list[index], target + 1);
+      }
+    } else {
+      console.log("3");
+      let startForFilter = [...targetGroup];
+      startForFilter[target] = "deafult";
+      let list = listOri.filter((player) => !startForFilter.includes(player));
+      let index = list.indexOf(value);
+      if (type === "next") {
+        index += 1;
+        if (index >= list.length) {
+          index = 0;
+        }
+      } else if (type === "last") {
+        if (index <= 0) {
+          index = list.length - 1;
+        } else {
+          index -= 1;
+        }
+      }
+      let start = [...targetGroup];
+      start[target] = list[index];
+      setTarget(start);
+      if (source === aTeamPlayersName) {
+        console.log("a2 work");
+        selectAStartFive(list[index], target + 1);
+      } else {
+        console.log("b2 work");
+        selectBStartFive(list[index], target + 1);
+      }
+    }
+  };
+
   return (
     <>
       <Div_Record>
         <DivBeforeGame_Record $setGame={finishSetting}>
           <div>
             A隊
-            <select value={aTeam} onChange={(e) => setATeam(e.target.value)}>
+            <button
+              onClick={() =>
+                change("last", aTeam, bTeam, teams, setATeam, setATeamStartFive)
+              }
+            >
+              上一隊
+            </button>
+            <select
+              value={aTeam}
+              onChange={(e) => {
+                setATeam(e.target.value);
+                setATeamStartFive([
+                  "default",
+                  "default",
+                  "default",
+                  "default",
+                  "default",
+                ]);
+              }}
+            >
               <option disabled value="default">
                 Select team
               </option>
@@ -772,34 +959,96 @@ function App(props) {
                 )
               )}
             </select>
+            <button
+              onClick={() =>
+                change("next", aTeam, bTeam, teams, setATeam, setATeamStartFive)
+              }
+            >
+              下一隊
+            </button>
             {aTeam && (
               <div>
                 {five.map((num, index) => (
-                  <select
-                    key={index}
-                    defaultValue={"default"}
-                    onChange={(e) => selectStartFive(e.target.value, num)}
-                  >
-                    <option disabled value="default">
-                      Select Player
-                    </option>
-                    {aTeamPlayers?.map((player) =>
-                      player.position === 6 ? (
-                        <option key={player.name}>{player.name}</option>
-                      ) : (
-                        <option disabled key={player.name}>
-                          {player.name}
-                        </option>
-                      )
-                    )}
-                  </select>
+                  <div>
+                    <button
+                      onClick={() =>
+                        changePlayer(
+                          "last",
+                          index,
+                          aTeamStartFive,
+                          aTeamPlayersName,
+                          setATeamStartFive
+                        )
+                      }
+                    >
+                      上一位
+                    </button>
+                    <select
+                      key={index}
+                      value={aTeamStartFive[index]}
+                      onChange={(e) => {
+                        selectAStartFive(e.target.value, num);
+                        setATeamStartFive((pre) => [
+                          ...pre,
+                          (aTeamStartFive[index] = e.target.value),
+                        ]);
+                      }}
+                    >
+                      <option disabled value="default">
+                        Select Player
+                      </option>
+                      {aTeamPlayers?.map((player) =>
+                        player.position === 6 ? (
+                          <option key={player.name} value={player.name}>
+                            {player.name}
+                          </option>
+                        ) : (
+                          <option disabled key={player.name}>
+                            {player.name}
+                          </option>
+                        )
+                      )}
+                    </select>
+                    <button
+                      onClick={() =>
+                        changePlayer(
+                          "next",
+                          index,
+                          aTeamStartFive,
+                          aTeamPlayersName,
+                          setATeamStartFive
+                        )
+                      }
+                    >
+                      下一位
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
           </div>
           <div>
             B隊
-            <select value={bTeam} onChange={(e) => setBTeam(e.target.value)}>
+            <button
+              onClick={() =>
+                change("last", bTeam, aTeam, teams, setBTeam, setBTeamStartFive)
+              }
+            >
+              上一隊
+            </button>
+            <select
+              value={bTeam}
+              onChange={(e) => {
+                setBTeam(e.target.value);
+                setBTeamStartFive([
+                  "default",
+                  "default",
+                  "default",
+                  "default",
+                  "default",
+                ]);
+              }}
+            >
               <option disabled value="default">
                 Select team
               </option>
@@ -813,26 +1062,68 @@ function App(props) {
                 )
               )}
             </select>
+            <button
+              onClick={() =>
+                change("next", bTeam, aTeam, teams, setBTeam, setBTeamStartFive)
+              }
+            >
+              下一隊
+            </button>
             {bTeam && (
               <div>
-                {five.map((num) => (
-                  <select
-                    defaultValue={"default"}
-                    onChange={(e) => selectStartFive(e.target.value, num)}
-                  >
-                    <option disabled value="default">
-                      Select Player
-                    </option>
-                    {bTeamPlayers?.map((player) =>
-                      player.position === 6 ? (
-                        <option key={player.name}>{player.name}</option>
-                      ) : (
-                        <option disabled key={player.name}>
-                          {player.name}
-                        </option>
-                      )
-                    )}
-                  </select>
+                {five.map((num, index) => (
+                  <div>
+                    <button
+                      onClick={() =>
+                        changePlayer(
+                          "last",
+                          index,
+                          bTeamStartFive,
+                          bTeamPlayersName,
+                          setBTeamStartFive
+                        )
+                      }
+                    >
+                      上一位
+                    </button>
+                    <select
+                      key={index}
+                      value={bTeamStartFive[index]}
+                      onChange={(e) => {
+                        selectBStartFive(e.target.value, num);
+                        setBTeamStartFive((pre) => [
+                          ...pre,
+                          (bTeamStartFive[index] = e.target.value),
+                        ]);
+                      }}
+                    >
+                      <option disabled value="default">
+                        Select Player
+                      </option>
+                      {bTeamPlayers?.map((player) =>
+                        player.position === 6 ? (
+                          <option key={player.name}>{player.name}</option>
+                        ) : (
+                          <option disabled key={player.name}>
+                            {player.name}
+                          </option>
+                        )
+                      )}
+                    </select>
+                    <button
+                      onClick={() =>
+                        changePlayer(
+                          "next",
+                          index,
+                          bTeamStartFive,
+                          bTeamPlayersName,
+                          setBTeamStartFive
+                        )
+                      }
+                    >
+                      下一位
+                    </button>
+                  </div>
                 ))}
               </div>
             )}

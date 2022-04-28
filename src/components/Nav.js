@@ -16,7 +16,7 @@ import GameArrange from "./GameArrange";
 
 const NavBar = styled.div`
   padding: 10px;
-  background-color: #f44336;
+  background-color: #212529;
   font-size: 30px;
 
   @media screen and (max-width: 992px) {
@@ -40,10 +40,10 @@ const HeadContainer = styled.div`
 
 const LinkComponet = styled(Link)`
   width: 7vw;
-  border: 1px solid gray;
+  ${"" /* border: 1px solid gray; */}
   text-align: center;
-  background-color: ${(props) => (props.$focus ? "gray" : "white")};
-  color: black;
+  background-color: #212529;
+  color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
   text-decoration: none;
   :active {
     background-color: rgb(41, 41, 41);
