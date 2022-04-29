@@ -7,11 +7,22 @@ import {
   db,
   setDoc,
 } from "../utils/firebase";
-import styled from "styled-components";
 import {
   Div_Record,
   DivBeforeGame_Record,
+  TeamBlock,
   DivGameStart_Record,
+  RegulationBlock,
+  TeamBlockDetail,
+  TeamBlockDetail_Team,
+  TeamBlockDetail_Player,
+  ButtonBeforeGame,
+  TeamBlockDetail_Player_Div,
+  Select_Team,
+  Select_Player,
+  Select_PlayerImg,
+  RegulationBlock_Cell,
+  ButtonSubmitSetting,
 } from "../utils/StyleComponent";
 import "./App.css";
 import Clock from "./Clock";
@@ -70,6 +81,7 @@ function App(props) {
   const [liveAction, setLiveAction] = useState([]);
 
   const [wantToCloseGame, setWantToCloseGame] = useState();
+  const [scheduleGames, setScheduleGames] = useState([]);
   // const [endGame, setEndGame] = useState();
 
   //playactions
@@ -188,7 +200,6 @@ function App(props) {
       }
       let activeTeam;
       if (leftSide) {
-        console.log("active");
         activeTeam = aTeamPlayers;
       } else {
         activeTeam = bTeamPlayers;
@@ -196,7 +207,6 @@ function App(props) {
 
       if (e.keyCode === 49) {
         setActivePlayer(0);
-        console.log("at", activeTeam);
         setActivePlayerId(activeTeam[0].id);
       }
       if (e.keyCode === 50) {
@@ -462,6 +472,13 @@ function App(props) {
     liveAction,
   ]);
 
+  async function chooseGame() {
+    const querySnapshot = await getDocs(collection(db, "game_schedule"));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id);
+      setScheduleGames((games) => [...games, doc.id]);
+    });
+  }
   async function chooseTeam() {
     const querySnapshot = await getDocs(collection(db, "team_data"));
     querySnapshot.forEach((doc) => {
@@ -472,6 +489,7 @@ function App(props) {
 
   useEffect(() => {
     chooseTeam();
+    chooseGame();
   }, []);
 
   useEffect(() => {
@@ -865,6 +883,10 @@ function App(props) {
     console.log("1");
     if (value === "default") {
       console.log("2");
+      if (listOri === undefined) {
+        alert("請選擇隊伍");
+        return;
+      }
       let list = listOri.filter((player) => !targetGroup.includes(player));
       let index = list.indexOf(value);
       if (type === "next") {
@@ -923,429 +945,514 @@ function App(props) {
   return (
     <>
       <Div_Record>
-        <DivBeforeGame_Record $setGame={finishSetting}>
-          <div>
-            A隊
-            <button
-              onClick={() =>
-                change("last", aTeam, bTeam, teams, setATeam, setATeamStartFive)
-              }
-            >
-              上一隊
-            </button>
-            <select
-              value={aTeam}
-              onChange={(e) => {
-                setATeam(e.target.value);
-                setATeamStartFive([
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                ]);
-              }}
-            >
-              <option disabled value="default">
-                Select team
-              </option>
-              {teams.map((team, index) =>
-                team === bTeam ? (
-                  <option disabled key={index}>
-                    {team}
-                  </option>
-                ) : (
-                  <option key={index}>{team}</option>
-                )
-              )}
-            </select>
-            <button
-              onClick={() =>
-                change("next", aTeam, bTeam, teams, setATeam, setATeamStartFive)
-              }
-            >
-              下一隊
-            </button>
-            {aTeam && (
-              <div>
-                {five.map((num, index) => (
-                  <div>
-                    <button
-                      onClick={() =>
-                        changePlayer(
-                          "last",
-                          index,
-                          aTeamStartFive,
-                          aTeamPlayersName,
-                          setATeamStartFive
-                        )
+        {finishSetting === false ? (
+          <DivBeforeGame_Record>
+            <RegulationBlock>
+              <RegulationBlock_Cell>
+                <Select_Player>
+                  <option>Select Game</option>
+                  {scheduleGames?.map((game) => (
+                    <option>{game}</option>
+                  ))}
+                </Select_Player>
+              </RegulationBlock_Cell>
+              <RegulationBlock_Cell>
+                <Select_Player
+                  onChange={(e) => {
+                    let quarters = [];
+                    for (let i = 1; i <= e.target.value; i++) {
+                      if (i === 1) {
+                        quarters.push("1st");
+                      } else if (i === 2) {
+                        quarters.push("2nd");
+                      } else if (i === 3) {
+                        quarters.push("3rd");
+                      } else if (i === 4) {
+                        quarters.push("4th");
                       }
+                    }
+                    setQuarter([...quarters]);
+                  }}
+                >
+                  <option>Select Quar</option>
+                  <option value={4}>4 quarter</option>
+                  <option value={2}>2 half</option>
+                </Select_Player>
+              </RegulationBlock_Cell>
+              <RegulationBlock_Cell>
+                <Select_Player
+                  onChange={(e) => {
+                    eachQuarterTime.current = Number(e.target.value);
+                    setTimerMinutes(e.target.value);
+                  }}
+                >
+                  <option>Select Mins</option>
+                  <option value={10}>10 mins</option>
+                  <option value={12}>12 mins</option>
+                </Select_Player>
+              </RegulationBlock_Cell>
+              <RegulationBlock_Cell>
+                <Select_Player onChange={(e) => setStopTime(e.target.value)}>
+                  <option>Select Stop</option>
+                  <option value={0}>停錶</option>
+                  <option value={1}>各節最後三分鐘停錶</option>
+                  <option value={2}>不停錶</option>
+                </Select_Player>
+              </RegulationBlock_Cell>
+              <ButtonSubmitSetting
+                onClick={() => {
+                  finishGameSetting();
+                }}
+              >
+                Submit
+              </ButtonSubmitSetting>
+            </RegulationBlock>
+
+            <TeamBlock style={{ backgroundImage: `url(${aTeamLogo})` }}>
+              <TeamBlockDetail>
+                <TeamBlockDetail_Team>
+                  <ButtonBeforeGame
+                    onClick={() =>
+                      change(
+                        "last",
+                        aTeam,
+                        bTeam,
+                        teams,
+                        setATeam,
+                        setATeamStartFive
+                      )
+                    }
+                  >
+                    <i className="fa-solid fa-chevron-left carousel__btn_img_team"></i>
+                  </ButtonBeforeGame>
+                  <Select_Team
+                    value={aTeam}
+                    onChange={(e) => {
+                      setATeam(e.target.value);
+                      setATeamStartFive([
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                      ]);
+                    }}
+                  >
+                    <option disabled value="default">
+                      Select team
+                    </option>
+                    {teams.map((team, index) =>
+                      team === bTeam ? (
+                        <option disabled key={index}>
+                          {team}
+                        </option>
+                      ) : (
+                        <option key={index}>{team}</option>
+                      )
+                    )}
+                  </Select_Team>
+                  <ButtonBeforeGame
+                    onClick={() =>
+                      change(
+                        "next",
+                        aTeam,
+                        bTeam,
+                        teams,
+                        setATeam,
+                        setATeamStartFive
+                      )
+                    }
+                  >
+                    <i className="fa-solid fa-chevron-right carousel__btn_img_team"></i>
+                  </ButtonBeforeGame>
+                </TeamBlockDetail_Team>
+                <TeamBlockDetail_Player>
+                  {aTeam && (
+                    <div
+                    // style={{
+                    //   display: "flex",
+                    //   flexWrap: "wrap",
+                    //   justifyContent: "flex-end",
+                    // }}
                     >
-                      上一位
-                    </button>
-                    <select
-                      key={index}
-                      value={aTeamStartFive[index]}
-                      onChange={(e) => {
-                        selectAStartFive(e.target.value, num);
-                        setATeamStartFive((pre) => [
-                          ...pre,
-                          (aTeamStartFive[index] = e.target.value),
-                        ]);
-                      }}
-                    >
-                      <option disabled value="default">
-                        Select Player
-                      </option>
-                      {aTeamPlayers?.map((player) =>
-                        player.position === 6 ? (
-                          <option key={player.name} value={player.name}>
-                            {player.name}
-                          </option>
-                        ) : (
-                          <option disabled key={player.name}>
-                            {player.name}
-                          </option>
-                        )
-                      )}
-                    </select>
-                    <button
-                      onClick={() =>
-                        changePlayer(
-                          "next",
-                          index,
-                          aTeamStartFive,
-                          aTeamPlayersName,
-                          setATeamStartFive
-                        )
-                      }
-                    >
-                      下一位
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <div>
-            B隊
-            <button
-              onClick={() =>
-                change("last", bTeam, aTeam, teams, setBTeam, setBTeamStartFive)
-              }
-            >
-              上一隊
-            </button>
-            <select
-              value={bTeam}
-              onChange={(e) => {
-                setBTeam(e.target.value);
-                setBTeamStartFive([
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                ]);
-              }}
-            >
-              <option disabled value="default">
-                Select team
-              </option>
-              {teams.map((team, index) =>
-                team === aTeam ? (
-                  <option disabled key={index}>
-                    {team}
-                  </option>
-                ) : (
-                  <option key={index}>{team}</option>
-                )
-              )}
-            </select>
-            <button
-              onClick={() =>
-                change("next", bTeam, aTeam, teams, setBTeam, setBTeamStartFive)
-              }
-            >
-              下一隊
-            </button>
-            {bTeam && (
-              <div>
-                {five.map((num, index) => (
-                  <div>
-                    <button
-                      onClick={() =>
-                        changePlayer(
-                          "last",
-                          index,
-                          bTeamStartFive,
-                          bTeamPlayersName,
-                          setBTeamStartFive
-                        )
-                      }
-                    >
-                      上一位
-                    </button>
-                    <select
-                      key={index}
-                      value={bTeamStartFive[index]}
-                      onChange={(e) => {
-                        selectBStartFive(e.target.value, num);
-                        setBTeamStartFive((pre) => [
-                          ...pre,
-                          (bTeamStartFive[index] = e.target.value),
-                        ]);
-                      }}
-                    >
-                      <option disabled value="default">
-                        Select Player
-                      </option>
-                      {bTeamPlayers?.map((player) =>
-                        player.position === 6 ? (
-                          <option key={player.name}>{player.name}</option>
-                        ) : (
-                          <option disabled key={player.name}>
-                            {player.name}
-                          </option>
-                        )
-                      )}
-                    </select>
-                    <button
-                      onClick={() =>
-                        changePlayer(
-                          "next",
-                          index,
-                          bTeamStartFive,
-                          bTeamPlayersName,
-                          setBTeamStartFive
-                        )
-                      }
-                    >
-                      下一位
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          賽制
-          <select
-            onChange={(e) => {
-              let quarters = [];
-              for (let i = 1; i <= e.target.value; i++) {
-                if (i === 1) {
-                  quarters.push("1st");
-                } else if (i === 2) {
-                  quarters.push("2nd");
-                } else if (i === 3) {
-                  quarters.push("3rd");
-                } else if (i === 4) {
-                  quarters.push("4th");
-                }
-              }
-              setQuarter([...quarters]);
-            }}
-          >
-            <option>Select</option>
-            <option value={4}>4 quarter</option>
-            <option value={2}>2 half</option>
-          </select>
-          <select
-            onChange={(e) => {
-              eachQuarterTime.current = Number(e.target.value);
-              setTimerMinutes(e.target.value);
-            }}
-          >
-            <option>Select</option>
-            <option value={10}>10 mins</option>
-            <option value={12}>12 mins</option>
-          </select>
-          <select onChange={(e) => setStopTime(e.target.value)}>
-            <option>Select</option>
-            <option value={0}>停錶</option>
-            <option value={1}>各節最後三分鐘停錶</option>
-            <option value={2}>不停錶</option>
-          </select>
-          <button
-            onClick={() => {
-              finishGameSetting();
-            }}
-          >
-            送出
-          </button>
-        </DivBeforeGame_Record>
-        <DivGameStart_Record $set={finishSetting}>
-          <div>
-            <button onClick={() => setWantToCloseGame(true)}>結束比賽</button>
-          </div>
-          {wantToCloseGame ? (
+                      {five.map((num, index) => (
+                        <TeamBlockDetail_Player_Div>
+                          <ButtonBeforeGame
+                            onClick={() =>
+                              changePlayer(
+                                "last",
+                                index,
+                                aTeamStartFive,
+                                aTeamPlayersName,
+                                setATeamStartFive
+                              )
+                            }
+                          >
+                            <i className="fa-solid fa-chevron-left carousel__btn_img_player"></i>
+                          </ButtonBeforeGame>
+                          {aTeamStartFive[index] !== "default" ? (
+                            <Select_PlayerImg
+                              style={{
+                                backgroundImage: `url(${aTeamPlayers[index].pic})`,
+                              }}
+                            />
+                          ) : (
+                            <Select_PlayerImg />
+                          )}
+                          <Select_Player
+                            key={index}
+                            value={aTeamStartFive[index]}
+                            onChange={(e) => {
+                              selectAStartFive(e.target.value, num);
+                              setATeamStartFive((pre) => [
+                                ...pre,
+                                (aTeamStartFive[index] = e.target.value),
+                              ]);
+                            }}
+                          >
+                            <option disabled value="default">
+                              Select Player
+                            </option>
+                            {aTeamPlayers?.map((player) =>
+                              player.position === 6 ? (
+                                <option key={player.name} value={player.name}>
+                                  {player.name}
+                                </option>
+                              ) : (
+                                <option disabled key={player.name}>
+                                  {player.name}
+                                </option>
+                              )
+                            )}
+                          </Select_Player>
+                          <ButtonBeforeGame
+                            onClick={() =>
+                              changePlayer(
+                                "next",
+                                index,
+                                aTeamStartFive,
+                                aTeamPlayersName,
+                                setATeamStartFive
+                              )
+                            }
+                          >
+                            <i className="fa-solid fa-chevron-right carousel__btn_img_player"></i>
+                          </ButtonBeforeGame>
+                        </TeamBlockDetail_Player_Div>
+                      ))}
+                    </div>
+                  )}
+                </TeamBlockDetail_Player>
+              </TeamBlockDetail>
+            </TeamBlock>
+            <TeamBlock style={{ backgroundImage: `url(${bTeamLogo})` }}>
+              <TeamBlockDetail>
+                <TeamBlockDetail_Team>
+                  <ButtonBeforeGame
+                    onClick={() =>
+                      change(
+                        "last",
+                        bTeam,
+                        aTeam,
+                        teams,
+                        setBTeam,
+                        setBTeamStartFive
+                      )
+                    }
+                  >
+                    <i className="fa-solid fa-chevron-left carousel__btn_img_team"></i>
+                  </ButtonBeforeGame>
+
+                  <Select_Team
+                    value={bTeam}
+                    onChange={(e) => {
+                      setBTeam(e.target.value);
+                      setBTeamStartFive([
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                      ]);
+                    }}
+                  >
+                    <option disabled value="default">
+                      Select team
+                    </option>
+                    {teams.map((team, index) =>
+                      team === aTeam ? (
+                        <option disabled key={index}>
+                          {team}
+                        </option>
+                      ) : (
+                        <option key={index}>{team}</option>
+                      )
+                    )}
+                  </Select_Team>
+                  <ButtonBeforeGame
+                    onClick={() =>
+                      change(
+                        "next",
+                        bTeam,
+                        aTeam,
+                        teams,
+                        setBTeam,
+                        setBTeamStartFive
+                      )
+                    }
+                  >
+                    <i className="fa-solid fa-chevron-right carousel__btn_img_team"></i>
+                  </ButtonBeforeGame>
+                </TeamBlockDetail_Team>
+                <TeamBlockDetail_Player>
+                  {bTeam && (
+                    <div>
+                      {five.map((num, index) => (
+                        <TeamBlockDetail_Player_Div>
+                          <ButtonBeforeGame
+                            onClick={() =>
+                              changePlayer(
+                                "last",
+                                index,
+                                bTeamStartFive,
+                                bTeamPlayersName,
+                                setBTeamStartFive
+                              )
+                            }
+                          >
+                            <i className="fa-solid fa-chevron-left carousel__btn_img_player"></i>
+                          </ButtonBeforeGame>
+                          {bTeamStartFive[index] !== "default" ? (
+                            <Select_PlayerImg
+                              style={{
+                                backgroundImage: `url(${bTeamPlayers[index].pic})`,
+                              }}
+                            />
+                          ) : (
+                            <Select_PlayerImg />
+                          )}
+
+                          <Select_Player
+                            key={index}
+                            value={bTeamStartFive[index]}
+                            onChange={(e) => {
+                              selectBStartFive(e.target.value, num);
+                              setBTeamStartFive((pre) => [
+                                ...pre,
+                                (bTeamStartFive[index] = e.target.value),
+                              ]);
+                            }}
+                          >
+                            <option disabled value="default">
+                              Select Player
+                            </option>
+                            {bTeamPlayers?.map((player) =>
+                              player.position === 6 ? (
+                                <option key={player.name}>{player.name}</option>
+                              ) : (
+                                <option disabled key={player.name}>
+                                  {player.name}
+                                </option>
+                              )
+                            )}
+                          </Select_Player>
+                          <ButtonBeforeGame
+                            onClick={() =>
+                              changePlayer(
+                                "next",
+                                index,
+                                bTeamStartFive,
+                                bTeamPlayersName,
+                                setBTeamStartFive
+                              )
+                            }
+                          >
+                            <i className="fa-solid fa-chevron-right carousel__btn_img_player"></i>
+                          </ButtonBeforeGame>
+                        </TeamBlockDetail_Player_Div>
+                      ))}
+                    </div>
+                  )}
+                </TeamBlockDetail_Player>
+              </TeamBlockDetail>
+            </TeamBlock>
+          </DivBeforeGame_Record>
+        ) : (
+          <DivGameStart_Record>
             <div>
-              <button onClick={EndGame}>確定結束比賽？</button>
-              <button onClick={() => setWantToCloseGame(false)}>取消</button>
+              <button onClick={() => setWantToCloseGame(true)}>結束比賽</button>
             </div>
-          ) : null}
-          <div>
-            <Clock
-              finishSetting={finishSetting}
-              eachQuarterTime={eachQuarterTime}
-              quarter={quarter}
-              quarteNow={quarterNow}
-              setQuarterNow={setQuarterNow}
-              timerMinutes={timerMinutes}
-              setTimerMinutes={setTimerMinutes}
-              timerSeconds={timerSeconds}
-              setTimerSeconds={setTimerSeconds}
-              affectTimeStopBehavior={affectTimeStopBehavior}
-              affectShotClockBehavior={affectShotClockBehavior}
-            />
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <div
-              style={{
-                backgroundSize: "cover",
-                height: "130px",
-                width: "130px",
-                backgroundImage: `url(${aTeamLogo})`,
-              }}
-            ></div>
-            <table>
-              <thead>
-                <tr>
-                  <th>隊伍</th>
-                  {quarter
-                    ? quarter.map((item, index) => <th key={index}>{item}</th>)
-                    : null}
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{aTeam}</td>
-                  {quarter
-                    ? quarter.map((item, index) => (
-                        <td key={index}>
-                          {aTeamData[0] ? aTeamData[index].pts : 0}
-                        </td>
-                      ))
-                    : null}
-                  <td>
+            {wantToCloseGame ? (
+              <div>
+                <button onClick={EndGame}>確定結束比賽？</button>
+                <button onClick={() => setWantToCloseGame(false)}>取消</button>
+              </div>
+            ) : null}
+            <div>
+              <Clock
+                finishSetting={finishSetting}
+                eachQuarterTime={eachQuarterTime}
+                quarter={quarter}
+                quarteNow={quarterNow}
+                setQuarterNow={setQuarterNow}
+                timerMinutes={timerMinutes}
+                setTimerMinutes={setTimerMinutes}
+                timerSeconds={timerSeconds}
+                setTimerSeconds={setTimerSeconds}
+                affectTimeStopBehavior={affectTimeStopBehavior}
+                affectShotClockBehavior={affectShotClockBehavior}
+              />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <div
+                style={{
+                  backgroundSize: "cover",
+                  height: "130px",
+                  width: "130px",
+                  backgroundImage: `url(${aTeamLogo})`,
+                }}
+              ></div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>隊伍</th>
                     {quarter
-                      ? aTeamData[0]
-                        ? aTeamData[quarter.length].pts
-                        : 0
+                      ? quarter.map((item, index) => (
+                          <th key={index}>{item}</th>
+                        ))
                       : null}
-                  </td>
-                </tr>
-                <tr>
-                  <td>{bTeam}</td>
-                  {quarter
-                    ? quarter.map((item, index) => (
-                        <td key={index}>
-                          {bTeamData[0] ? bTeamData[index].pts : 0}
-                        </td>
-                      ))
-                    : null}
-                  <td>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{aTeam}</td>
                     {quarter
-                      ? bTeamData[0]
-                        ? bTeamData[quarter.length].pts
-                        : 0
+                      ? quarter.map((item, index) => (
+                          <td key={index}>
+                            {aTeamData[0] ? aTeamData[index].pts : 0}
+                          </td>
+                        ))
                       : null}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div
-              style={{
-                backgroundSize: "cover",
-                height: "130px",
-                width: "130px",
-                backgroundImage: `url(${bTeamLogo})`,
-              }}
-            ></div>
-          </div>
-          <div>OnTheGround</div>
+                    <td>
+                      {quarter
+                        ? aTeamData[0]
+                          ? aTeamData[quarter.length].pts
+                          : 0
+                        : null}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{bTeam}</td>
+                    {quarter
+                      ? quarter.map((item, index) => (
+                          <td key={index}>
+                            {bTeamData[0] ? bTeamData[index].pts : 0}
+                          </td>
+                        ))
+                      : null}
+                    <td>
+                      {quarter
+                        ? bTeamData[0]
+                          ? bTeamData[quarter.length].pts
+                          : 0
+                        : null}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div
+                style={{
+                  backgroundSize: "cover",
+                  height: "130px",
+                  width: "130px",
+                  backgroundImage: `url(${bTeamLogo})`,
+                }}
+              ></div>
+            </div>
+            <div>OnTheGround</div>
 
-          <div id="groundContainer">
-            <TeamBox
-              teamPlayers={aTeamPlayers}
-              setTeamPlayers={setATeamPlayers}
-            ></TeamBox>
-            <Court3
-              setPlayerLocation={setPlayerLocation}
-              setPlayerAxis={setPlayerAxis}
-              setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
-              playerAxis={playerAxis}
-            />
-            <TeamBox
-              teamPlayers={bTeamPlayers}
-              setTeamPlayers={setBTeamPlayers}
-            ></TeamBox>
-          </div>
+            <div id="groundContainer">
+              <TeamBox
+                teamPlayers={aTeamPlayers}
+                setTeamPlayers={setATeamPlayers}
+              ></TeamBox>
+              <Court3
+                setPlayerLocation={setPlayerLocation}
+                setPlayerAxis={setPlayerAxis}
+                setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
+                playerAxis={playerAxis}
+              />
+              <TeamBox
+                teamPlayers={bTeamPlayers}
+                setTeamPlayers={setBTeamPlayers}
+              ></TeamBox>
+            </div>
 
-          <div>
-            {aTeamPlayers
-              ? playerActions
-                ? aTeamPlayers[0][playerActions.action]
-                : ""
-              : ""}
-            <br />
-            {bTeamPlayers
-              ? playerActions
-                ? bTeamPlayers[0][playerActions.action]
-                : ""
-              : ""}
-          </div>
-          <div>{playerActions ? playerActions.actionWord : ""}</div>
-          <div>
-            <span>{leftSide ? aTeam : bTeam}</span>
-            <span> , </span>
-            <span>
-              {leftSide
-                ? activePlayer !== undefined
-                  ? aTeamPlayers
-                    ? aTeamPlayers[activePlayer].name
-                    : ""
-                  : ""
-                : activePlayer !== undefined
-                ? bTeamPlayers
-                  ? bTeamPlayers[activePlayer].name
+            <div>
+              {aTeamPlayers
+                ? playerActions
+                  ? aTeamPlayers[0][playerActions.action]
                   : ""
                 : ""}
-            </span>
-            <span> {activePlayer !== undefined ? " , " : ""} </span>
-            <span> {playerLocation} </span>
-            <span> {playerLocation !== undefined ? " , " : ""} </span>
-            <span> {playerActions && playerActions.actionWord} </span>
-            <span>
-              {" "}
-              {playerActions && playerActions.actionWord !== undefined
-                ? " , "
-                : ""}{" "}
-            </span>
-            <span>
-              {" "}
-              {playerActions && playerActions.actionWord
-                ? playerActions.actionNumber
-                : ""}{" "}
-            </span>
-          </div>
+              <br />
+              {bTeamPlayers
+                ? playerActions
+                  ? bTeamPlayers[0][playerActions.action]
+                  : ""
+                : ""}
+            </div>
+            <div>{playerActions ? playerActions.actionWord : ""}</div>
+            <div>
+              <span>{leftSide ? aTeam : bTeam}</span>
+              <span> , </span>
+              <span>
+                {leftSide
+                  ? activePlayer !== undefined
+                    ? aTeamPlayers
+                      ? aTeamPlayers[activePlayer].name
+                      : ""
+                    : ""
+                  : activePlayer !== undefined
+                  ? bTeamPlayers
+                    ? bTeamPlayers[activePlayer].name
+                    : ""
+                  : ""}
+              </span>
+              <span> {activePlayer !== undefined ? " , " : ""} </span>
+              <span> {playerLocation} </span>
+              <span> {playerLocation !== undefined ? " , " : ""} </span>
+              <span> {playerActions && playerActions.actionWord} </span>
+              <span>
+                {" "}
+                {playerActions && playerActions.actionWord !== undefined
+                  ? " , "
+                  : ""}{" "}
+              </span>
+              <span>
+                {" "}
+                {playerActions && playerActions.actionWord
+                  ? playerActions.actionNumber
+                  : ""}{" "}
+              </span>
+            </div>
 
-          <div>
-            <RecordRoom
-              quarter={quarter}
-              quarteNow={quarterNow}
-              liveAction={liveAction}
-              aTeam={aTeam}
-              bTeam={bTeam}
-              aTeamPlayers={aTeamPlayers}
-              bTeamPlayers={bTeamPlayers}
-              timerSeconds={timerSeconds}
-              timerMinutes={timerMinutes}
-            />
-          </div>
-          {/* <LiveRoom></LiveRoom> */}
-        </DivGameStart_Record>
+            <div>
+              <RecordRoom
+                quarter={quarter}
+                quarteNow={quarterNow}
+                liveAction={liveAction}
+                aTeam={aTeam}
+                bTeam={bTeam}
+                aTeamPlayers={aTeamPlayers}
+                bTeamPlayers={bTeamPlayers}
+                timerSeconds={timerSeconds}
+                timerMinutes={timerMinutes}
+              />
+            </div>
+            {/* <LiveRoom></LiveRoom> */}
+          </DivGameStart_Record>
+        )}
       </Div_Record>
     </>
   );

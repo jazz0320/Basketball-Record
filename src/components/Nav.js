@@ -15,7 +15,8 @@ import GameSchedule from "./GameSchedule";
 import GameArrange from "./GameArrange";
 
 const NavBar = styled.div`
-  padding: 10px;
+  height: 50px;
+  padding: 15px;
   background-color: #212529;
   font-size: 30px;
 
