@@ -6,13 +6,23 @@ import App from "./App";
 import Home from "./Home";
 import Test from "./Test";
 import GameData from "./GameData";
+import LivesNow from "./LivesNow";
 import Profile from "./Profile";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import { auth, onAuthStateChanged, signOut } from "../utils/firebase";
+import {
+  auth,
+  onAuthStateChanged,
+  signOut,
+  getDocs,
+  collection,
+  db,
+} from "../utils/firebase";
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
 import GameSchedule from "./GameSchedule";
 import GameArrange from "./GameArrange";
+
+import { GlobalStyle } from "../utils/StyleComponent";
 
 const NavBar = styled.div`
   height: 50px;
@@ -60,8 +70,10 @@ function Nav() {
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
-  const [commingGame, setCommingGame] = useState("20220426_laker_nets");
+  const [scheduleGames, setScheduleGames] = useState([]);
   const [pastGameRoutes, setPastGameRoutes] = useState();
+  const [liveGameRoutes, setLiveGameRoutes] = useState();
+  const liveGameName = useRef("none");
   let redirect = useNavigate();
 
   const monitorAuthState = async () => {
@@ -75,6 +87,7 @@ function Nav() {
       }
     });
   };
+
   useEffect(() => {
     monitorAuthState();
   }, [logStatus]);
@@ -99,8 +112,21 @@ function Nav() {
     }
   };
 
+  async function loadGames() {
+    const querySnapshot = await getDocs(collection(db, "game_schedule"));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id);
+      setScheduleGames((games) => [...games, doc.id]);
+    });
+  }
+
+  useEffect(() => {
+    loadGames();
+  }, []);
+
   return (
     <>
+      <GlobalStyle />
       <NavBar>
         <LinkComponet
           $focus={navActive === -1}
@@ -165,7 +191,12 @@ function Nav() {
         <Route path="/" element={<Home />} />
         <Route path="/test" element={<Test />} />
 
-        <Route path="/record" element={<App commingGame={commingGame} />} />
+        <Route
+          path="/record"
+          element={
+            <App scheduleGames={scheduleGames} liveGameName={liveGameName} />
+          }
+        />
         <Route
           path="/game-data"
           element={
@@ -175,8 +206,9 @@ function Nav() {
             />
           }
         >
-          {pastGameRoutes?.map((gameName) => (
+          {pastGameRoutes?.map((gameName, index) => (
             <Route
+              key={index}
               path={`${gameName}`}
               element={<PastGame gameName={gameName} />}
             />
@@ -185,8 +217,21 @@ function Nav() {
 
         <Route
           path="/live-room"
-          element={<LiveRoom commingGame={commingGame} />}
-        />
+          element={
+            <LivesNow
+              liveGameRoutes={liveGameRoutes}
+              setLiveGameRoutes={setLiveGameRoutes}
+            />
+          }
+        >
+          {liveGameRoutes?.map((gameName, index) => (
+            <Route
+              ley={index}
+              path={`${gameName}`}
+              element={<LiveRoom gameName={gameName} />}
+            />
+          ))}
+        </Route>
         <Route path="/profile" element={<Profile userId={userId} />}>
           <Route path="game-schedule" element={<GameSchedule />} />
           <Route path="game-arrange" element={<GameArrange />} />

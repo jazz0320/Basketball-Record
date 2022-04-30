@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes, createGlobalStyle } from "styled-components";
 
 const Div_Record = styled.div`
   display: fiexd;
@@ -104,11 +104,9 @@ const ButtonBeforeGame = styled.button`
     color: black;
   }
 `;
-const ButtonSubmitSetting = styled.button`
-  background-color: ${() => "hsla(347, 49%, 46%, 1)"};
-  border: 1px solid
-    ${({ buynow }) =>
-      buynow ? "hsla(40, 72%, 60%, 1)" : "hsla(0, 0%, 0%, 0.4)"};
+const ButtonSubmit = styled.button`
+  background-color: ${() => "#343A40"};
+  border: 1px solid ${() => "#212529"};
   white-space: nowrap;
   color: hsla(150, 14%, 97%, 1);
   cursor: pointer;
@@ -127,12 +125,12 @@ const ButtonSubmitSetting = styled.button`
   }
 
   &:hover {
-    background-color: ${() => "hsla(347, 49%, 51%, 1)"};
+    background-color: ${() => "#495057"};
     ${() => `transform: translateY(-3px)`}
   }
 
   &:active {
-    background-color: "hsla(347, 49%, 26%, 1)";
+    background-color: ${() => "#212529"};
   }
 `;
 
@@ -153,7 +151,43 @@ export {
   Select_Player,
   Select_PlayerImg,
   RegulationBlock_Cell,
-  ButtonSubmitSetting,
+  ButtonSubmit,
 };
 
+const PopupDiv = styled.div`
+  padding-top: 1.5vw;
+  position: fixed;
+  margin-top: 30vh;
+  margin-left: 40vw;
+  background-color: #495057;
+  height: 14vh;
+  width: 20vw;
+  z-index: 10;
+  color: #f8f9fa;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 6%;
+`;
+export { PopupDiv };
+
 // display: ${(props) => (props.$set ? "block" : "none")};
+
+//共用
+const GlobalStyle = createGlobalStyle`
+  * {
+    padding: 0;
+    margin: 0;
+    ${"" /* background: #f8f9fa; */}
+  }
+  body::-webkit-scrollbar {
+    display: none;
+}
+  body, html, #root {
+    height: 100%;
+    font-family: -apple-system, Ubuntu , BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;;
+  }
+`;
+export { GlobalStyle };

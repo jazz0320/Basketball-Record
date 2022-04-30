@@ -19,7 +19,7 @@ function LiveRoom(props) {
 
   useEffect(() => {
     const unsub = onSnapshot(
-      doc(db, "live_game", `${props.commingGame}`),
+      doc(db, "live_game", `${props.gameName}`),
       (doc) => {
         console.log("Current data: ", doc.data().A_team_data);
         setLiveAction(doc.data().live_action);
@@ -37,7 +37,7 @@ function LiveRoom(props) {
       }
     );
     // unsub();
-  }, []);
+  }, [props.gameName]);
 
   const data = [
     {

@@ -22,7 +22,8 @@ import {
   Select_Player,
   Select_PlayerImg,
   RegulationBlock_Cell,
-  ButtonSubmitSetting,
+  ButtonSubmit,
+  PopupDiv,
 } from "../utils/StyleComponent";
 import "./App.css";
 import Clock from "./Clock";
@@ -81,8 +82,6 @@ function App(props) {
   const [liveAction, setLiveAction] = useState([]);
 
   const [wantToCloseGame, setWantToCloseGame] = useState();
-  const [scheduleGames, setScheduleGames] = useState([]);
-  // const [endGame, setEndGame] = useState();
 
   //playactions
   const playerActionInitialState = {
@@ -383,7 +382,7 @@ function App(props) {
           setATeamPlayers([...data]);
           setATeamData([...teamDataNow]);
           await setDoc(
-            doc(db, "live_game", `${props.commingGame}`),
+            doc(db, "live_game", props.liveGameName.current),
             {
               A_team_player: data,
               A_team_data: teamDataNow,
@@ -394,7 +393,7 @@ function App(props) {
           setBTeamPlayers([...data]);
           setBTeamData([...teamDataNow]);
           await setDoc(
-            doc(db, "live_game", `${props.commingGame}`),
+            doc(db, "live_game", props.liveGameName.current),
             {
               B_team_player: data,
               B_team_data: teamDataNow,
@@ -437,7 +436,7 @@ function App(props) {
         ];
 
         await setDoc(
-          doc(db, "live_game", `${props.commingGame}`),
+          doc(db, "live_game", props.liveGameName.current),
           {
             live_action: actionLive,
           },
@@ -472,13 +471,6 @@ function App(props) {
     liveAction,
   ]);
 
-  async function chooseGame() {
-    const querySnapshot = await getDocs(collection(db, "game_schedule"));
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id);
-      setScheduleGames((games) => [...games, doc.id]);
-    });
-  }
   async function chooseTeam() {
     const querySnapshot = await getDocs(collection(db, "team_data"));
     querySnapshot.forEach((doc) => {
@@ -489,12 +481,10 @@ function App(props) {
 
   useEffect(() => {
     chooseTeam();
-    chooseGame();
   }, []);
 
   useEffect(() => {
     async function selectTeam() {
-      const docRef = doc(db, "team_data", aTeam);
       const docSnap = await getDoc(doc(db, "team_data", aTeam));
       let data = docSnap.data().players;
       let logo = docSnap.data().logo;
@@ -526,16 +516,6 @@ function App(props) {
       setATeamPlayers(newData);
       aTeamPlayersName.current = newData.map((player) => player.name);
       setATeamLogo(logo);
-
-      await setDoc(
-        doc(db, "live_game", `${props.commingGame}`),
-        {
-          A_team: aTeam,
-          A_team_player: newData,
-          A_team_logo: logo,
-        },
-        { merge: true }
-      );
     }
     if (aTeam !== "default") {
       selectTeam();
@@ -572,15 +552,6 @@ function App(props) {
       }
       setATeamData([...newATeamData]);
       setBTeamData([...newBTeamData]);
-
-      await setDoc(
-        doc(db, "live_game", `${props.commingGame}`),
-        {
-          A_team_data: newATeamData,
-          B_team_data: newBTeamData,
-        },
-        { merge: true }
-      );
     }
     setTeamsData();
   }, [quarter]);
@@ -619,15 +590,6 @@ function App(props) {
       setBTeamPlayers(newData);
       bTeamPlayersName.current = newData.map((player) => player.name);
       setBTeamLogo(logo);
-      await setDoc(
-        doc(db, "live_game", `${props.commingGame}`),
-        {
-          B_team: bTeam,
-          B_team_player: newData,
-          B_team_logo: logo,
-        },
-        { merge: true }
-      );
     }
     if (bTeam !== "default") {
       selectTeam();
@@ -664,7 +626,7 @@ function App(props) {
 
     async function systemSetting() {
       await setDoc(
-        doc(db, "live_game", `${props.commingGame}`),
+        doc(db, "live_game", props.liveGameName.current),
         {
           live_action: [],
           quarter: quarter,
@@ -673,6 +635,15 @@ function App(props) {
           stop_ime: stopTime,
           finishSetting: true,
           endGame: false,
+          //new
+          A_team: aTeam,
+          A_team_player: aTeamPlayers,
+          A_team_logo: aTeamLogo,
+          A_team_data: aTeamData,
+          B_team_data: bTeamData,
+          B_team: bTeam,
+          B_team_player: bTeamPlayers,
+          B_team_logo: bTeamLogo,
         },
         { merge: true }
       );
@@ -680,78 +651,6 @@ function App(props) {
     systemSetting();
     setFinishSetting(true);
   };
-
-  // const selectStartFive = async function (player, position) {
-  //   let players = [];
-  //   let side = -1;
-  //   let a_length = 0;
-  //   let b_length = 0;
-  //   let length;
-  //   if (aTeamPlayers) {
-  //     a_length = aTeamPlayers.length;
-  //   }
-  //   if (bTeamPlayers) {
-  //     b_length = bTeamPlayers.length;
-  //   }
-  //   if (a_length < b_length) {
-  //     length = b_length;
-  //   } else {
-  //     length = a_length;
-  //   }
-  //   for (let i = 0; i < length; i++) {
-  //     if (aTeamPlayers) {
-  //       console.log("aN", aTeamPlayers[i].name);
-  //       if (aTeamPlayers[i].name === player) {
-  //         console.log("ok");
-  //         side = 1;
-  //       } else {
-  //         side = -1;
-  //       }
-  //     }
-  //   }
-  //   console.log("side", side);
-  //   if (side > 0) {
-  //     console.log("obbbbk");
-  //     players = [...aTeamPlayers];
-  //   } else if (side < 0) {
-  //     console.log("oaaaaak");
-  //     players = [...bTeamPlayers];
-  //   }
-
-  //   for (let i = 0; i < players.length; i++) {
-  //     if (players[i].position === position) {
-  //       players[i].position = 6;
-  //       players[i].start = false;
-  //     }
-  //     if (players[i].name === player) {
-  //       players[i].position = position;
-  //       players[i].start = true;
-  //     }
-  //   }
-  //   players.sort(function (a, b) {
-  //     return a.position - b.position;
-  //   });
-
-  //   if (side > 0) {
-  //     setATeamPlayers(players);
-  //     await setDoc(
-  //       doc(db, "live_game", `${props.commingGame}`),
-  //       {
-  //         A_team_player: players,
-  //       },
-  //       { merge: true }
-  //     );
-  //   } else {
-  //     setBTeamPlayers(players);
-  //     await setDoc(
-  //       doc(db, "live_game", `${props.commingGame}`),
-  //       {
-  //         B_team_player: players,
-  //       },
-  //       { merge: true }
-  //     );
-  //   }
-  // };
 
   const selectAStartFive = async function (player, position) {
     console.log("player", player);
@@ -772,13 +671,6 @@ function App(props) {
     });
 
     setATeamPlayers(players);
-    await setDoc(
-      doc(db, "live_game", `${props.commingGame}`),
-      {
-        A_team_player: players,
-      },
-      { merge: true }
-    );
   };
 
   const selectBStartFive = async function (player, position) {
@@ -799,18 +691,11 @@ function App(props) {
     });
 
     setBTeamPlayers(players);
-    await setDoc(
-      doc(db, "live_game", `${props.commingGame}`),
-      {
-        B_team_player: players,
-      },
-      { merge: true }
-    );
   };
 
-  const EndGame = async function () {
+  const endGame = async function () {
     await setDoc(
-      doc(db, "live_game", `${props.commingGame}`),
+      doc(db, "live_game", props.liveGameName.current),
       {
         endGame: true,
       },
@@ -818,27 +703,27 @@ function App(props) {
     );
     const transitionGameData = async function () {
       const docSnap = await getDoc(
-        doc(db, "live_game", `${props.commingGame}`)
+        doc(db, "live_game", props.liveGameName.current)
       );
       let data = docSnap.data();
 
       const saveGameData = async function () {
         await setDoc(
-          doc(db, "past_data", `${props.commingGame}`),
+          doc(db, "past_data", props.liveGameName.current),
           {
             ...data,
           },
           { merge: true }
         );
         await setDoc(
-          doc(db, "team_data", aTeam, "past_data", `${props.commingGame}`),
+          doc(db, "team_data", aTeam, "past_data", props.liveGameName.current),
           {
             player_data: data.A_team_player,
           },
           { merge: true }
         );
         await setDoc(
-          doc(db, "team_data", bTeam, "past_data", `${props.commingGame}`),
+          doc(db, "team_data", bTeam, "past_data", props.liveGameName.current),
           {
             player_data: data.B_team_player,
           },
@@ -942,6 +827,15 @@ function App(props) {
     }
   };
 
+  const chooseSpecifiedGame = async function (e) {
+    const docSnap = await getDoc(doc(db, "game_schedule", e));
+    props.liveGameName.current = e;
+    console.log("e", e);
+    let data = docSnap.data();
+    setATeam(data.aTeam);
+    setBTeam(data.bTeam);
+  };
+
   return (
     <>
       <Div_Record>
@@ -949,10 +843,12 @@ function App(props) {
           <DivBeforeGame_Record>
             <RegulationBlock>
               <RegulationBlock_Cell>
-                <Select_Player>
+                <Select_Player
+                  onChange={(e) => chooseSpecifiedGame(e.target.value)}
+                >
                   <option>Select Game</option>
-                  {scheduleGames?.map((game) => (
-                    <option>{game}</option>
+                  {props.scheduleGames?.map((game) => (
+                    <option value={game}>{game}</option>
                   ))}
                 </Select_Player>
               </RegulationBlock_Cell>
@@ -999,13 +895,13 @@ function App(props) {
                   <option value={2}>不停錶</option>
                 </Select_Player>
               </RegulationBlock_Cell>
-              <ButtonSubmitSetting
+              <ButtonSubmit
                 onClick={() => {
                   finishGameSetting();
                 }}
               >
                 Submit
-              </ButtonSubmitSetting>
+              </ButtonSubmit>
             </RegulationBlock>
 
             <TeamBlock style={{ backgroundImage: `url(${aTeamLogo})` }}>
@@ -1068,13 +964,7 @@ function App(props) {
                 </TeamBlockDetail_Team>
                 <TeamBlockDetail_Player>
                   {aTeam && (
-                    <div
-                    // style={{
-                    //   display: "flex",
-                    //   flexWrap: "wrap",
-                    //   justifyContent: "flex-end",
-                    // }}
-                    >
+                    <div>
                       {five.map((num, index) => (
                         <TeamBlockDetail_Player_Div>
                           <ButtonBeforeGame
@@ -1280,13 +1170,18 @@ function App(props) {
         ) : (
           <DivGameStart_Record>
             <div>
-              <button onClick={() => setWantToCloseGame(true)}>結束比賽</button>
+              <ButtonSubmit
+                style={{ fontSize: "1rem", padding: "0.75rem 1rem" }}
+                onClick={() => setWantToCloseGame(true)}
+              >
+                結束比賽
+              </ButtonSubmit>
             </div>
             {wantToCloseGame ? (
-              <div>
-                <button onClick={EndGame}>確定結束比賽？</button>
-                <button onClick={() => setWantToCloseGame(false)}>取消</button>
-              </div>
+              <PopupEndGameBlock
+                endGame={endGame}
+                setWantToCloseGame={setWantToCloseGame}
+              />
             ) : null}
             <div>
               <Clock
@@ -1525,5 +1420,28 @@ function TeamBox(props) {
     </DragDropContext>
   );
 }
+
+const PopupEndGameBlock = function (props) {
+  return (
+    <PopupDiv>
+      確定結束比賽？
+      <br />
+      <div>
+        <ButtonSubmit
+          style={{ width: "120px", height: "80px", fontSize: "24px" }}
+          onClick={props.endGame}
+        >
+          Yes
+        </ButtonSubmit>
+        <ButtonSubmit
+          style={{ width: "120px", height: "80px", fontSize: "24px" }}
+          onClick={() => props.setWantToCloseGame(false)}
+        >
+          No
+        </ButtonSubmit>
+      </div>
+    </PopupDiv>
+  );
+};
 
 export default App;
