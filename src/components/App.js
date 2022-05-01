@@ -11,24 +11,28 @@ import {
   Div_Record,
   DivBeforeGame_Record,
   TeamBlock,
-  DivGameStart_Record,
   RegulationBlock,
   TeamBlockDetail,
   TeamBlockDetail_Team,
   TeamBlockDetail_Player,
-  ButtonBeforeGame,
+  ButtonForChange,
   TeamBlockDetail_Player_Div,
   Select_Team,
   Select_Player,
   Select_PlayerImg,
   RegulationBlock_Cell,
+  DivGameStart_Record,
+  DivGameStart_Container,
   ButtonSubmit,
   PopupDiv,
+  GroundContainer,
+  TeamOnTheGround,
+  LiveActionBolck,
 } from "../utils/StyleComponent";
 import "./App.css";
 import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Court3 from "./Court3";
+import Court from "./Court";
 import RecordRoom from "./RecordRoom";
 
 function App(props) {
@@ -196,6 +200,12 @@ function App(props) {
     const player = function (e) {
       if (e.keyCode === 192) {
         setLeftSide((prevState) => !prevState);
+        //換邊clear
+        setActivePlayer();
+        setActivePlayerId();
+        dispatchPlayerActions({ type: "intial" });
+        setPlayerAxis();
+        setPlayerLocation();
       }
       let activeTeam;
       if (leftSide) {
@@ -204,23 +214,41 @@ function App(props) {
         activeTeam = bTeamPlayers;
       }
 
+      const clearActionByChangePlayer = function () {
+        //換人clear
+        setActivePlayerId();
+        dispatchPlayerActions({ type: "intial" });
+        setPlayerAxis();
+        setPlayerLocation();
+      };
+
       if (e.keyCode === 49) {
+        setActivePlayer(); //for css animation effect 清空
+        clearActionByChangePlayer();
         setActivePlayer(0);
         setActivePlayerId(activeTeam[0].id);
       }
       if (e.keyCode === 50) {
+        setActivePlayer();
+        clearActionByChangePlayer();
         setActivePlayer(1);
         setActivePlayerId(activeTeam[1].id);
       }
       if (e.keyCode === 51) {
+        setActivePlayer();
+        clearActionByChangePlayer();
         setActivePlayer(2);
         setActivePlayerId(activeTeam[2].id);
       }
       if (e.keyCode === 52) {
+        setActivePlayer();
+        clearActionByChangePlayer();
         setActivePlayer(3);
         setActivePlayerId(activeTeam[3].id);
       }
       if (e.keyCode === 53) {
+        setActivePlayer();
+        clearActionByChangePlayer();
         setActivePlayer(4);
         setActivePlayerId(activeTeam[4].id);
       }
@@ -907,7 +935,7 @@ function App(props) {
             <TeamBlock style={{ backgroundImage: `url(${aTeamLogo})` }}>
               <TeamBlockDetail>
                 <TeamBlockDetail_Team>
-                  <ButtonBeforeGame
+                  <ButtonForChange
                     onClick={() =>
                       change(
                         "last",
@@ -920,7 +948,7 @@ function App(props) {
                     }
                   >
                     <i className="fa-solid fa-chevron-left carousel__btn_img_team"></i>
-                  </ButtonBeforeGame>
+                  </ButtonForChange>
                   <Select_Team
                     value={aTeam}
                     onChange={(e) => {
@@ -947,7 +975,7 @@ function App(props) {
                       )
                     )}
                   </Select_Team>
-                  <ButtonBeforeGame
+                  <ButtonForChange
                     onClick={() =>
                       change(
                         "next",
@@ -960,14 +988,14 @@ function App(props) {
                     }
                   >
                     <i className="fa-solid fa-chevron-right carousel__btn_img_team"></i>
-                  </ButtonBeforeGame>
+                  </ButtonForChange>
                 </TeamBlockDetail_Team>
                 <TeamBlockDetail_Player>
                   {aTeam && (
                     <div>
                       {five.map((num, index) => (
                         <TeamBlockDetail_Player_Div>
-                          <ButtonBeforeGame
+                          <ButtonForChange
                             onClick={() =>
                               changePlayer(
                                 "last",
@@ -979,7 +1007,7 @@ function App(props) {
                             }
                           >
                             <i className="fa-solid fa-chevron-left carousel__btn_img_player"></i>
-                          </ButtonBeforeGame>
+                          </ButtonForChange>
                           {aTeamStartFive[index] !== "default" ? (
                             <Select_PlayerImg
                               style={{
@@ -1015,7 +1043,7 @@ function App(props) {
                               )
                             )}
                           </Select_Player>
-                          <ButtonBeforeGame
+                          <ButtonForChange
                             onClick={() =>
                               changePlayer(
                                 "next",
@@ -1027,7 +1055,7 @@ function App(props) {
                             }
                           >
                             <i className="fa-solid fa-chevron-right carousel__btn_img_player"></i>
-                          </ButtonBeforeGame>
+                          </ButtonForChange>
                         </TeamBlockDetail_Player_Div>
                       ))}
                     </div>
@@ -1038,7 +1066,7 @@ function App(props) {
             <TeamBlock style={{ backgroundImage: `url(${bTeamLogo})` }}>
               <TeamBlockDetail>
                 <TeamBlockDetail_Team>
-                  <ButtonBeforeGame
+                  <ButtonForChange
                     onClick={() =>
                       change(
                         "last",
@@ -1051,7 +1079,7 @@ function App(props) {
                     }
                   >
                     <i className="fa-solid fa-chevron-left carousel__btn_img_team"></i>
-                  </ButtonBeforeGame>
+                  </ButtonForChange>
 
                   <Select_Team
                     value={bTeam}
@@ -1079,7 +1107,7 @@ function App(props) {
                       )
                     )}
                   </Select_Team>
-                  <ButtonBeforeGame
+                  <ButtonForChange
                     onClick={() =>
                       change(
                         "next",
@@ -1092,14 +1120,14 @@ function App(props) {
                     }
                   >
                     <i className="fa-solid fa-chevron-right carousel__btn_img_team"></i>
-                  </ButtonBeforeGame>
+                  </ButtonForChange>
                 </TeamBlockDetail_Team>
                 <TeamBlockDetail_Player>
                   {bTeam && (
                     <div>
                       {five.map((num, index) => (
                         <TeamBlockDetail_Player_Div>
-                          <ButtonBeforeGame
+                          <ButtonForChange
                             onClick={() =>
                               changePlayer(
                                 "last",
@@ -1111,7 +1139,7 @@ function App(props) {
                             }
                           >
                             <i className="fa-solid fa-chevron-left carousel__btn_img_player"></i>
-                          </ButtonBeforeGame>
+                          </ButtonForChange>
                           {bTeamStartFive[index] !== "default" ? (
                             <Select_PlayerImg
                               style={{
@@ -1146,7 +1174,7 @@ function App(props) {
                               )
                             )}
                           </Select_Player>
-                          <ButtonBeforeGame
+                          <ButtonForChange
                             onClick={() =>
                               changePlayer(
                                 "next",
@@ -1158,7 +1186,7 @@ function App(props) {
                             }
                           >
                             <i className="fa-solid fa-chevron-right carousel__btn_img_player"></i>
-                          </ButtonBeforeGame>
+                          </ButtonForChange>
                         </TeamBlockDetail_Player_Div>
                       ))}
                     </div>
@@ -1169,183 +1197,225 @@ function App(props) {
           </DivBeforeGame_Record>
         ) : (
           <DivGameStart_Record>
-            <div>
-              <ButtonSubmit
-                style={{ fontSize: "1rem", padding: "0.75rem 1rem" }}
-                onClick={() => setWantToCloseGame(true)}
-              >
-                結束比賽
-              </ButtonSubmit>
-            </div>
             {wantToCloseGame ? (
               <PopupEndGameBlock
                 endGame={endGame}
                 setWantToCloseGame={setWantToCloseGame}
               />
             ) : null}
-            <div>
-              <Clock
-                finishSetting={finishSetting}
-                eachQuarterTime={eachQuarterTime}
-                quarter={quarter}
-                quarteNow={quarterNow}
-                setQuarterNow={setQuarterNow}
-                timerMinutes={timerMinutes}
-                setTimerMinutes={setTimerMinutes}
-                timerSeconds={timerSeconds}
-                setTimerSeconds={setTimerSeconds}
-                affectTimeStopBehavior={affectTimeStopBehavior}
-                affectShotClockBehavior={affectShotClockBehavior}
-              />
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <DivGameStart_Container>
               <div
                 style={{
-                  backgroundSize: "cover",
-                  height: "130px",
-                  width: "130px",
-                  backgroundImage: `url(${aTeamLogo})`,
+                  marginTop: "10px",
+                  display: "flex",
+                  justifyContent: "space-around",
+                  width: "90vw",
+                  marginBottom: "10px",
                 }}
-              ></div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>隊伍</th>
-                    {quarter
-                      ? quarter.map((item, index) => (
-                          <th key={index}>{item}</th>
-                        ))
-                      : null}
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{aTeam}</td>
-                    {quarter
-                      ? quarter.map((item, index) => (
-                          <td key={index}>
-                            {aTeamData[0] ? aTeamData[index].pts : 0}
-                          </td>
-                        ))
-                      : null}
-                    <td>
-                      {quarter
-                        ? aTeamData[0]
-                          ? aTeamData[quarter.length].pts
-                          : 0
-                        : null}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>{bTeam}</td>
-                    {quarter
-                      ? quarter.map((item, index) => (
-                          <td key={index}>
-                            {bTeamData[0] ? bTeamData[index].pts : 0}
-                          </td>
-                        ))
-                      : null}
-                    <td>
-                      {quarter
-                        ? bTeamData[0]
-                          ? bTeamData[quarter.length].pts
-                          : 0
-                        : null}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div
-                style={{
-                  backgroundSize: "cover",
-                  height: "130px",
-                  width: "130px",
-                  backgroundImage: `url(${bTeamLogo})`,
-                }}
-              ></div>
-            </div>
-            <div>OnTheGround</div>
+              >
+                <div
+                  style={{
+                    margin: "0 2vw 0 5vw",
+                    backgroundSize: "cover",
+                    height: "170px",
+                    width: "170px",
+                    backgroundImage: `url(${aTeamLogo})`,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    width: "55vw",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div
+                  // style={{
+                  //   width: "100vw",
+                  //   display: "flex",
+                  //   justifyContent: "center",
+                  // }}
+                  >
+                    <Clock
+                      finishSetting={finishSetting}
+                      eachQuarterTime={eachQuarterTime}
+                      quarter={quarter}
+                      quarteNow={quarterNow}
+                      setQuarterNow={setQuarterNow}
+                      timerMinutes={timerMinutes}
+                      setTimerMinutes={setTimerMinutes}
+                      timerSeconds={timerSeconds}
+                      setTimerSeconds={setTimerSeconds}
+                      affectTimeStopBehavior={affectTimeStopBehavior}
+                      affectShotClockBehavior={affectShotClockBehavior}
+                    />
+                  </div>
+                  <ButtonSubmit
+                    style={{ fontSize: "1rem", padding: "0.75rem 1rem" }}
+                    onClick={() => setWantToCloseGame(true)}
+                  >
+                    結束比賽
+                  </ButtonSubmit>
+                  <table
+                    style={{
+                      width: "400px",
+                      border: "1px solid black",
+                      borderCollapse: "collapse",
+                      textAlign: "center",
+                    }}
+                    cellpadding="10"
+                    border="1"
+                  >
+                    <thead>
+                      <tr>
+                        <th>隊伍</th>
+                        {quarter
+                          ? quarter.map((item, index) => (
+                              <th style={{ width: "60px" }} key={index}>
+                                {item}
+                              </th>
+                            ))
+                          : null}
+                        <th style={{ width: "70px" }}>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{aTeam}</td>
+                        {quarter
+                          ? quarter.map((item, index) => (
+                              <td key={index}>
+                                {aTeamData[0] ? aTeamData[index].pts : 0}
+                              </td>
+                            ))
+                          : null}
+                        <td>
+                          {quarter
+                            ? aTeamData[0]
+                              ? aTeamData[quarter.length].pts
+                              : 0
+                            : null}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>{bTeam}</td>
+                        {quarter
+                          ? quarter.map((item, index) => (
+                              <td key={index}>
+                                {bTeamData[0] ? bTeamData[index].pts : 0}
+                              </td>
+                            ))
+                          : null}
+                        <td>
+                          {quarter
+                            ? bTeamData[0]
+                              ? bTeamData[quarter.length].pts
+                              : 0
+                            : null}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <LiveActionBolck>
+                    {leftSide && <div>{aTeam}</div>}
+                    {!leftSide && <div>{bTeam}</div>}
 
-            <div id="groundContainer">
-              <TeamBox
-                teamPlayers={aTeamPlayers}
-                setTeamPlayers={setATeamPlayers}
-              ></TeamBox>
-              <Court3
-                setPlayerLocation={setPlayerLocation}
-                setPlayerAxis={setPlayerAxis}
-                setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
-                playerAxis={playerAxis}
-              />
-              <TeamBox
-                teamPlayers={bTeamPlayers}
-                setTeamPlayers={setBTeamPlayers}
-              ></TeamBox>
-            </div>
+                    <span>{"   "}, </span>
 
-            <div>
-              {aTeamPlayers
-                ? playerActions
-                  ? aTeamPlayers[0][playerActions.action]
-                  : ""
-                : ""}
-              <br />
-              {bTeamPlayers
-                ? playerActions
-                  ? bTeamPlayers[0][playerActions.action]
-                  : ""
-                : ""}
-            </div>
-            <div>{playerActions ? playerActions.actionWord : ""}</div>
-            <div>
-              <span>{leftSide ? aTeam : bTeam}</span>
-              <span> , </span>
-              <span>
-                {leftSide
-                  ? activePlayer !== undefined
-                    ? aTeamPlayers
-                      ? aTeamPlayers[activePlayer].name
-                      : ""
-                    : ""
-                  : activePlayer !== undefined
-                  ? bTeamPlayers
-                    ? bTeamPlayers[activePlayer].name
+                    {leftSide && activePlayer !== undefined ? (
+                      aTeamPlayers ? (
+                        <div>{aTeamPlayers[activePlayer].id}</div>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                    {!leftSide && activePlayer !== undefined ? (
+                      bTeamPlayers ? (
+                        <div>{bTeamPlayers[activePlayer].id}</div>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+
+                    <span> {activePlayer !== undefined ? " , " : ""} </span>
+
+                    {playerLocation && <div> {playerLocation} </div>}
+
+                    <span> {playerLocation !== undefined ? " , " : ""} </span>
+                    {playerActions && <div>{playerActions.actionWord}</div>}
+                    <span>
+                      {playerActions && playerActions.actionWord !== undefined
+                        ? " , "
+                        : ""}
+                    </span>
+
+                    {playerActions && playerActions.actionWord && (
+                      <div>{playerActions.actionNumber}</div>
+                    )}
+                  </LiveActionBolck>
+                </div>
+                <div
+                  style={{
+                    margin: "0 5vw 0 2vw",
+                    backgroundSize: "cover",
+                    height: "170px",
+                    width: "170px",
+                    backgroundImage: `url(${bTeamLogo})`,
+                  }}
+                ></div>
+              </div>
+
+              <GroundContainer>
+                <TeamBox
+                  teamPlayers={aTeamPlayers}
+                  setTeamPlayers={setATeamPlayers}
+                ></TeamBox>
+                <Court
+                  setPlayerLocation={setPlayerLocation}
+                  setPlayerAxis={setPlayerAxis}
+                  setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
+                  playerAxis={playerAxis}
+                />
+                <TeamBox
+                  teamPlayers={bTeamPlayers}
+                  setTeamPlayers={setBTeamPlayers}
+                ></TeamBox>
+              </GroundContainer>
+
+              <div>
+                {aTeamPlayers
+                  ? playerActions
+                    ? aTeamPlayers[0][playerActions.action]
                     : ""
                   : ""}
-              </span>
-              <span> {activePlayer !== undefined ? " , " : ""} </span>
-              <span> {playerLocation} </span>
-              <span> {playerLocation !== undefined ? " , " : ""} </span>
-              <span> {playerActions && playerActions.actionWord} </span>
-              <span>
-                {" "}
-                {playerActions && playerActions.actionWord !== undefined
-                  ? " , "
-                  : ""}{" "}
-              </span>
-              <span>
-                {" "}
-                {playerActions && playerActions.actionWord
-                  ? playerActions.actionNumber
-                  : ""}{" "}
-              </span>
-            </div>
+                <br />
+                {bTeamPlayers
+                  ? playerActions
+                    ? bTeamPlayers[0][playerActions.action]
+                    : ""
+                  : ""}
+              </div>
+              <div>{playerActions ? playerActions.actionWord : ""}</div>
 
-            <div>
-              <RecordRoom
-                quarter={quarter}
-                quarteNow={quarterNow}
-                liveAction={liveAction}
-                aTeam={aTeam}
-                bTeam={bTeam}
-                aTeamPlayers={aTeamPlayers}
-                bTeamPlayers={bTeamPlayers}
-                timerSeconds={timerSeconds}
-                timerMinutes={timerMinutes}
-              />
-            </div>
-            {/* <LiveRoom></LiveRoom> */}
+              <div>
+                <RecordRoom
+                  quarter={quarter}
+                  quarteNow={quarterNow}
+                  liveAction={liveAction}
+                  aTeam={aTeam}
+                  bTeam={bTeam}
+                  aTeamPlayers={aTeamPlayers}
+                  bTeamPlayers={bTeamPlayers}
+                  timerSeconds={timerSeconds}
+                  timerMinutes={timerMinutes}
+                />
+              </div>
+            </DivGameStart_Container>
           </DivGameStart_Record>
         )}
       </Div_Record>
@@ -1380,8 +1450,7 @@ function TeamBox(props) {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="team">
         {(provided) => (
-          <div
-            id="teambox"
+          <TeamOnTheGround
             // style={{ display: "flex" }}
             {...provided.droppableProps}
             ref={provided.innerRef}
@@ -1403,18 +1472,18 @@ function TeamBox(props) {
                       <div
                         style={{
                           backgroundSize: "cover",
-                          height: "100px",
-                          width: "130px",
+                          height: "120px",
+                          width: "150px",
                           backgroundImage: `url(${player.pic})`,
                         }}
                       ></div>
-                      {player.name}
+                      {player.id}
                     </div>
                   )}
                 </Draggable>
               ))}
             {provided.placeholder}
-          </div>
+          </TeamOnTheGround>
         )}
       </Droppable>
     </DragDropContext>

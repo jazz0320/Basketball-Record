@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import "./Court2.css";
+import "./Court.css";
+import { useRef } from "react";
 
-function Court3(props) {
-  let adjustY = 5.71;
-  let adjustX = 2.75;
+function Court(props) {
+  const playerLastAxis = useRef();
+  let adjustY = 8;
+  let adjustX = 3.97;
 
   // function getCursorPositionsss(vas, event) {
   //   const rect = vas.getBoundingClientRect();
@@ -18,12 +19,12 @@ function Court3(props) {
     //clear 上一個定點
     let cvs = document.getElementById("cvs");
     let ctx = cvs.getContext("2d");
-    if (props.playerAxis !== undefined) {
+    if (playerLastAxis.current !== undefined) {
       ctx.clearRect(
-        props.playerAxis.x / adjustX,
-        props.playerAxis.y / adjustY,
-        8,
-        8
+        playerLastAxis.current.x / adjustX - 4,
+        playerLastAxis.current.y / adjustY - 4,
+        10,
+        10
       );
     }
     const rect = vas.getBoundingClientRect();
@@ -32,18 +33,24 @@ function Court3(props) {
     let axis = { x: x, y: y };
     console.log("x: " + x + " y: " + y);
     props.setPlayerAxis(axis);
-
+    playerLastAxis.current = axis;
     //add point
 
     let base_image = new Image();
     base_image.src =
       "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04Niw0Ny44ODc2N2w1Mi40ODg2Nyw4MS4xMTIzM2gtMTA0Ljk3NzMzbDUyLjQ4ODY3LC04MS4xMTIzM004NiwyMS41bC03OC44MzMzMywxMjEuODMzMzNoMTU3LjY2NjY3bC03OC44MzMzMywtMTIxLjgzMzMzeiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+";
     base_image.onload = () =>
-      ctx.drawImage(base_image, Number(x / adjustX), Number(y / adjustY), 8, 8);
+      ctx.drawImage(
+        base_image,
+        Number(x / adjustX - 4),
+        Number(y / adjustY - 4),
+        8,
+        8
+      );
   }
 
   return (
-    <div style={{ position: "relative", width: "800px" }}>
+    <div style={{ position: "relative", width: "55vw" }}>
       <canvas
         id="cvs"
         // onClickCapture={(e) => {
@@ -68,6 +75,8 @@ function Court3(props) {
         <g>
           <path
             onClick={(e) => {
+              props.setPlayerLocation();
+              props.setPlayerLocationScoreNumber();
               console.log("中場半圓");
               props.setPlayerLocation("中場半圓");
               props.setPlayerLocationScoreNumber(2);
@@ -88,6 +97,8 @@ function Court3(props) {
           <g className="st1">
             <path
               onClick={() => {
+                props.setPlayerLocation();
+                props.setPlayerLocationScoreNumber();
                 console.log("禁區弧線");
                 props.setPlayerLocation("禁區弧線");
                 props.setPlayerLocationScoreNumber(2);
@@ -101,6 +112,8 @@ function Court3(props) {
         </g>
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側45度角中距離");
             props.setPlayerLocation("左側45度角中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -113,6 +126,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("弧頂三分線");
             props.setPlayerLocation("弧頂三分線");
             props.setPlayerLocationScoreNumber(3);
@@ -124,6 +139,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("終場半圓內");
             props.setPlayerLocation("終場半圓內");
             props.setPlayerLocationScoreNumber(3);
@@ -134,6 +151,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側45度角三分");
             props.setPlayerLocation("左側45度角三分");
             props.setPlayerLocationScoreNumber(3);
@@ -145,6 +164,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區弧線內");
             props.setPlayerLocation("禁區弧線內");
             props.setPlayerLocationScoreNumber(2);
@@ -156,6 +177,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區弧線外,罰球線內");
             props.setPlayerLocation("禁區弧線外,罰球線內");
             props.setPlayerLocationScoreNumber(2);
@@ -167,6 +190,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區弧線外右側,禁區內");
             props.setPlayerLocation("禁區弧線外右側,禁區內");
             props.setPlayerLocationScoreNumber(2);
@@ -178,6 +203,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("中距離弧頂");
             props.setPlayerLocation("中距離弧頂");
             props.setPlayerLocationScoreNumber(2);
@@ -189,6 +216,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區弧線外左側,禁區內");
             props.setPlayerLocation("禁區弧線外左側,禁區內");
             props.setPlayerLocationScoreNumber(2);
@@ -199,6 +228,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("罰球線");
             props.setPlayerLocation("罰球線");
             props.setPlayerLocationScoreNumber(2);
@@ -210,6 +241,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區左側");
             props.setPlayerLocation("禁區左側");
             props.setPlayerLocationScoreNumber(2);
@@ -220,6 +253,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("弧頂遠中距離");
             props.setPlayerLocation("弧頂遠中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -231,6 +266,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區弧線外左側45度,禁區內");
             props.setPlayerLocation("禁區弧線外左側45度,禁區內");
             props.setPlayerLocationScoreNumber(2);
@@ -241,6 +278,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區右側");
             props.setPlayerLocation("禁區右側");
             props.setPlayerLocationScoreNumber(2);
@@ -251,6 +290,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側遠中距離");
             props.setPlayerLocation("右側遠中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -262,6 +303,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側中距離");
             props.setPlayerLocation("右側中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -273,8 +316,10 @@ function Court3(props) {
         />
         <path
           onClick={() => {
-            console.log("藍下禁區");
-            props.setPlayerLocation("藍下禁區");
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
+            console.log("籃下禁區");
+            props.setPlayerLocation("籃下禁區");
             props.setPlayerLocationScoreNumber(2);
           }}
           id="c08_4_1_"
@@ -284,6 +329,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側中距離");
             props.setPlayerLocation("左側中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -295,6 +342,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("禁區弧線外左側45度,禁區內");
             props.setPlayerLocation("禁區弧線外左側45度,禁區內");
             props.setPlayerLocationScoreNumber(2);
@@ -305,6 +354,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側45度角中距離");
             props.setPlayerLocation("右側45度角中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -317,6 +368,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側遠中距離");
             props.setPlayerLocation("左側遠中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -328,6 +381,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側45度三分");
             props.setPlayerLocation("右側45度三分");
             props.setPlayerLocationScoreNumber(3);
@@ -339,6 +394,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左邊底角三分線上");
             props.setPlayerLocation("左邊底角三分線上");
             props.setPlayerLocationScoreNumber(2);
@@ -350,6 +407,8 @@ function Court3(props) {
         <path
           // style={{ border: "none" }}
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右邊底角三分線上");
             props.setPlayerLocation("右邊底角三分線上");
             props.setPlayerLocationScoreNumber(2);
@@ -373,6 +432,8 @@ function Court3(props) {
           <g className="st9">
             <path
               onClick={() => {
+                props.setPlayerLocation();
+                props.setPlayerLocationScoreNumber();
                 console.log("左側三分");
                 props.setPlayerLocation("左側三分");
                 props.setPlayerLocationScoreNumber(3);
@@ -435,6 +496,8 @@ function Court3(props) {
           <g className="st11">
             <path
               onClick={() => {
+                props.setPlayerLocation();
+                props.setPlayerLocationScoreNumber();
                 console.log("右側三分");
                 props.setPlayerLocation("右側三分");
                 props.setPlayerLocationScoreNumber(3);
@@ -480,6 +543,8 @@ function Court3(props) {
           <g className="st12">
             <path
               onClick={() => {
+                props.setPlayerLocation();
+                props.setPlayerLocationScoreNumber();
                 console.log("左側45度三分");
                 props.setPlayerLocation("左側45度三分");
                 props.setPlayerLocationScoreNumber(3);
@@ -528,6 +593,8 @@ function Court3(props) {
         </g>
         <polygon
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側45度三分");
             props.setPlayerLocation("右側45度三分");
             props.setPlayerLocationScoreNumber(3);
@@ -538,6 +605,8 @@ function Court3(props) {
         <g>
           <path
             onClick={() => {
+              props.setPlayerLocation();
+              props.setPlayerLocationScoreNumber();
               console.log("禁區圓弧");
               props.setPlayerLocation("禁區圓弧");
               props.setPlayerLocationScoreNumber(2);
@@ -549,6 +618,8 @@ function Court3(props) {
         </g>
         <rect
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("罰球線上");
             props.setPlayerLocation("罰球線上");
             props.setPlayerLocationScoreNumber(2);
@@ -562,6 +633,8 @@ function Court3(props) {
         <rect
           onClick={() => {
             console.log("左側禁區線上");
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             props.setPlayerLocation("左側禁區線上");
             props.setPlayerLocationScoreNumber(2);
           }}
@@ -573,6 +646,8 @@ function Court3(props) {
         />
         <rect
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側禁區靠內線上");
             props.setPlayerLocation("左側禁區靠內線上");
             props.setPlayerLocationScoreNumber(2);
@@ -585,6 +660,8 @@ function Court3(props) {
         />
         <rect
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側禁區靠內線上");
             props.setPlayerLocation("右側禁區靠內線上");
             props.setPlayerLocationScoreNumber(2);
@@ -597,6 +674,8 @@ function Court3(props) {
         />
         <rect
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側禁區線上");
             props.setPlayerLocation("右側禁區線上");
             props.setPlayerLocationScoreNumber(2);
@@ -609,6 +688,8 @@ function Court3(props) {
         />
         <polygon
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側45度偏底角中距離");
             props.setPlayerLocation("左側45度偏底角中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -618,6 +699,8 @@ function Court3(props) {
         />
         <polygon
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側45度偏弧頂中距離");
             props.setPlayerLocation("左側45度偏弧頂中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -627,6 +710,8 @@ function Court3(props) {
         />
         <polygon
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側45度偏弧頂中距離");
             props.setPlayerLocation("右側45度偏弧頂中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -636,6 +721,8 @@ function Court3(props) {
         />
         <polygon
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側45度偏底角中距離");
             props.setPlayerLocation("右側45度偏底角中距離");
             props.setPlayerLocationScoreNumber(2);
@@ -646,6 +733,8 @@ function Court3(props) {
         <g>
           <path
             onClick={() => {
+              props.setPlayerLocation();
+              props.setPlayerLocationScoreNumber();
               console.log("弧頂中距離");
               props.setPlayerLocation("弧頂中距離");
               props.setPlayerLocationScoreNumber(2);
@@ -671,6 +760,8 @@ function Court3(props) {
           <g className="st14">
             <path
               onClick={() => {
+                props.setPlayerLocation();
+                props.setPlayerLocationScoreNumber();
                 console.log("中距離弧線");
                 props.setPlayerLocation("中距離弧線");
                 props.setPlayerLocationScoreNumber(2);
@@ -684,6 +775,8 @@ function Court3(props) {
         </g>
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("右側45度三分踩線");
             props.setPlayerLocation("右側45度三分踩線");
             props.setPlayerLocationScoreNumber(2);
@@ -694,6 +787,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("左側45度三分踩線");
             props.setPlayerLocation("左側45度三分踩線");
             props.setPlayerLocationScoreNumber(2);
@@ -704,6 +799,8 @@ function Court3(props) {
         />
         <path
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("弧頂三分踩線");
             props.setPlayerLocation("弧頂三分踩線");
             props.setPlayerLocationScoreNumber(2);
@@ -715,6 +812,8 @@ function Court3(props) {
         />
         <rect
           onClick={() => {
+            props.setPlayerLocation();
+            props.setPlayerLocationScoreNumber();
             console.log("前場");
             props.setPlayerLocation("前場");
             props.setPlayerLocationScoreNumber(3);
@@ -734,6 +833,8 @@ function Court3(props) {
           </clipPath>
           <path
             onClick={() => {
+              props.setPlayerLocation();
+              props.setPlayerLocationScoreNumber();
               console.log("左邊底角三分");
               props.setPlayerLocation("左邊底角三分");
               props.setPlayerLocationScoreNumber(3);
@@ -761,6 +862,8 @@ function Court3(props) {
           <path
             onClick={() => {
               console.log("右邊底角三分");
+              props.setPlayerLocation();
+              props.setPlayerLocationScoreNumber();
               props.setPlayerLocation("右邊底角三分");
               props.setPlayerLocationScoreNumber(3);
             }}
@@ -774,4 +877,4 @@ function Court3(props) {
   );
 }
 
-export default Court3;
+export default Court;

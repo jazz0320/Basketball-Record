@@ -3,15 +3,15 @@
 }
 
 svg {
-  height: 800px;
+  height: 55vw;
 }
 
 /* #myObj {
   pointer-events: auto;
 } */
 canvas {
-  height: 800px;
-  width: 800px;
+  height: 55vw;
+  width: 55vw;
   background-color: none;
   opacity: 0.3;
   position: absolute;
@@ -26,6 +26,10 @@ path {
   transition: 0.5s;
   cursor: pointer;
 }
+rect {
+  cursor: pointer;
+}
+
 /* path:hover {
   fill: #b99362;
   transform: translate(-5px, -5px);

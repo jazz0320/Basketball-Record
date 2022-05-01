@@ -12,17 +12,3 @@
   -webkit-text-stroke: 1px #495057;
   height: 40px;
 }
-
-#teambox {
-  height: 1000px;
-  width: 230px;
-  overflow: scroll;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-#groundContainer {
-  display: flex;
-}

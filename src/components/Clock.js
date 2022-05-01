@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { doc, db, setDoc } from "../utils/firebase";
+import styled from "styled-components";
+import {
+  ButtonForChange,
+  Select_Player,
+  ButtonSubmit,
+} from "../utils/StyleComponent";
 
 function Clock(props) {
   const [restTime, setRestTime] = useState();
@@ -176,31 +182,39 @@ function Clock(props) {
     gameTime();
   }, [props.timerSeconds]);
 
-  return (
-    <div>
-      <select onChange={(e) => props.setQuarterNow(Number(e.target.value))}>
-        <option value={1}>1st</option>
-        <option value={2}>2nd</option>
-        <option value={3}>3rd</option>
-        <option value={4}>4th</option>
-      </select>
+  const TimeBlock = styled.div`
+    height: 110px;
+    width: 18vw;
+    background-color: #343a40;
+    display: flex;
+    justify-content: center;
+    div {
+      color: #f8f9fa;
+    }
+  `;
+  const BigClock = styled.div`
+    /* position: "relative"; */
+  `;
 
-      <div
-        className={`clock_tick ${props.timerSeconds === false ? "none" : ""}`}
+  return (
+    <TimeBlock>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Select_Player
+          style={{ width: "80px" }}
+          onChange={(e) => props.setQuarterNow(Number(e.target.value))}
+        >
+          <option value={1}>1st</option>
+          <option value={2}>2nd</option>
+          <option value={3}>3rd</option>
+          <option value={4}>4th</option>
+        </Select_Player>
+      </div>
+
+      <BigClock
+      // className={`clock_tick ${props.timerSeconds === false ? "none" : ""}`}
       >
-        大錶
-        <span>
-          {props.timerMinutes < 10 ? "0" : ""}
-          {props.timerMinutes}
-        </span>
-        :
-        <span>
-          {props.timerSeconds < 10 ? "0" : ""}
-          {props.timerSeconds}
-        </span>
-        <span> </span>
-        <span>
-          <button
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <ButtonForChange
             onClick={() => {
               setRestTime(restTime + 1000);
               if (props.timerSeconds < 59) {
@@ -211,11 +225,19 @@ function Clock(props) {
               }
             }}
           >
-            +1
-          </button>
-        </span>
-        <span>
-          <button
+            <i
+              className="fa-solid fa-angle-up"
+              style={{ fontSize: "24px" }}
+            ></i>
+          </ButtonForChange>
+        </div>
+        <div style={{ fontSize: "36px" }}>
+          {props.timerMinutes < 10 ? "0" : ""}
+          {props.timerMinutes}:{props.timerSeconds < 10 ? "0" : ""}
+          {props.timerSeconds}
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <ButtonForChange
             onClick={() => {
               setRestTime(restTime - 1000);
               if (props.timerSeconds > 0) {
@@ -226,42 +248,97 @@ function Clock(props) {
               }
             }}
           >
-            -1
-          </button>
-        </span>
-      </div>
-      <div>
-        小錶
-        {shotClock}
-        <span> </span>
-        <span>
-          <button
+            <i
+              className="fa-solid fa-angle-down"
+              style={{ fontSize: "24px" }}
+            ></i>
+          </ButtonForChange>
+        </div>
+      </BigClock>
+      <div style={{ marginLeft: "15px" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <ButtonForChange
             onClick={() => {
               setShotClockRestTime(shotClockRestTime + 1000);
               setShotClock(shotClock + 1);
             }}
           >
-            +1
-          </button>
-        </span>
-        <span>
-          <button
+            <i
+              className="fa-solid fa-angle-up"
+              style={{ fontSize: "24px" }}
+            ></i>
+          </ButtonForChange>
+        </div>
+        <div style={{ fontSize: "36px" }}>{shotClock}</div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <ButtonForChange
             onClick={() => {
               setShotClockRestTime(shotClockRestTime - 1000);
               setShotClock(shotClock - 1);
             }}
           >
-            -1
-          </button>
-        </span>
-        <span>
-          <button onClick={reset24seconds}>重置24秒</button>
-        </span>
+            <i
+              className="fa-solid fa-angle-down"
+              style={{ fontSize: "24px" }}
+            ></i>
+          </ButtonForChange>
+        </div>
       </div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          width: "120px",
+          marginLeft: "20px",
+        }}
+      >
+        <div>
+          <ButtonSubmit
+            onClick={reset24seconds}
+            style={{
+              height: "30px",
+              padding: "0px",
+              fontSize: "20px",
+              margin: "0px",
+              marginTop: "15px",
+              border: "1px solid white",
+            }}
+          >
+            重置24秒
+          </ButtonSubmit>
+        </div>
+        <div>
+          <ButtonSubmit
+            style={{
+              height: "30px",
+              padding: "0px",
+              fontSize: "20px",
+              margin: "0px",
+              border: "1px solid white",
+            }}
+            onClick={stop}
+          >
+            暫停
+          </ButtonSubmit>
+        </div>
+        <div>
+          <ButtonSubmit
+            style={{
+              height: "30px",
+              padding: "0px",
+              fontSize: "20px",
 
-      <button onClick={stop}>暫停</button>
-      <button onClick={startTime}>開始</button>
-    </div>
+              margin: "0px",
+              marginLeft: "10px",
+              border: "1px solid white",
+            }}
+            onClick={startTime}
+          >
+            開始
+          </ButtonSubmit>
+        </div>
+      </div>
+    </TimeBlock>
   );
 }
 

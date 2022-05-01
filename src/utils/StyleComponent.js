@@ -1,4 +1,4 @@
-import styled, { keyframes, createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 const Div_Record = styled.div`
   display: fiexd;
@@ -95,7 +95,8 @@ const RegulationBlock_Cell = styled.div`
   display: flex;
 `;
 
-const ButtonBeforeGame = styled.button`
+const ButtonForChange = styled.button`
+  color: #f8f9fa;
   background-color: transparent;
   cursor: pointer;
   border: 0px;
@@ -134,18 +135,30 @@ const ButtonSubmit = styled.button`
   }
 `;
 
-const DivGameStart_Record = styled.div``;
+const DivGameStart_Record = styled.div`
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #e9ecef;
+`;
+const DivGameStart_Container = styled.div`
+  width: 90vw;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
 
 export {
   Div_Record,
   DivBeforeGame_Record,
-  DivGameStart_Record,
   TeamBlock,
   RegulationBlock,
   TeamBlockDetail,
   TeamBlockDetail_Team,
   TeamBlockDetail_Player,
-  ButtonBeforeGame,
+  ButtonForChange,
   TeamBlockDetail_Player_Div,
   Select_Team,
   Select_Player,
@@ -154,6 +167,7 @@ export {
   ButtonSubmit,
 };
 
+// 開始比賽
 const PopupDiv = styled.div`
   padding-top: 1.5vw;
   position: fixed;
@@ -171,9 +185,68 @@ const PopupDiv = styled.div`
   flex-wrap: wrap;
   border-radius: 6%;
 `;
-export { PopupDiv };
 
-// display: ${(props) => (props.$set ? "block" : "none")};
+const GroundContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+`;
+
+const TeamOnTheGround = styled.div`
+  height: 710px;
+  width: 270px;
+  overflow: scroll;
+  display: flex;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
+const LiveActionBolck = styled.div`
+  font-size: 36px;
+  margin: 0 0 0.25vw 0;
+  display: flex;
+  border: 2px solid #495057;
+  border-radius: 5px;
+  padding: 5px 0 5px 10px;
+  width: 54.5vw;
+  div {
+    padding: 1px 3px;
+    border: 1px solid #495057;
+    border-radius: 5px;
+    background-color: #ced4da;
+    animation-name: popup;
+    animation-duration: 0.3s;
+
+    @keyframes popup {
+      0% {
+        transform: translateY(20px);
+        background-color: #343a40;
+        color: white;
+      }
+      90% {
+        transform: translateY(-10px);
+        background-color: #6c757d;
+        color: white;
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  }
+`;
+
+export {
+  PopupDiv,
+  GroundContainer,
+  TeamOnTheGround,
+  LiveActionBolck,
+  DivGameStart_Record,
+  DivGameStart_Container,
+};
 
 //共用
 const GlobalStyle = createGlobalStyle`
@@ -182,9 +255,6 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     ${"" /* background: #f8f9fa; */}
   }
-  body::-webkit-scrollbar {
-    display: none;
-}
   body, html, #root {
     height: 100%;
     font-family: -apple-system, Ubuntu , BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;;

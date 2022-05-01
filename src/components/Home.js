@@ -39,11 +39,6 @@ function Home() {
     setGameTime(uniqueArr);
   }, [gameListName]);
 
-  let mobile_hotsales_x_axis = {
-    transform: `translate(${x_axis}vw)`,
-    transition: "transform .3s",
-  };
-
   const prevClick = function () {
     if (x_axis === -233) {
       setX_axis(-133);
@@ -104,9 +99,11 @@ const CarousellContainer = styled.div`
   width: 90vw;
   margin: 0 2vw 0 2vw;
   display: inline-flex;
-  ${"" /* align-items: center; */}
   overflow: scroll;
   color: #495057;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
 `;
 
 const GameContainer_L1 = styled.div`
