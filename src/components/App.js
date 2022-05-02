@@ -83,6 +83,7 @@ function App(props) {
   const [leftSide, setLeftSide] = useState(true);
   const [activePlayer, setActivePlayer] = useState();
   const [activePlayerId, setActivePlayerId] = useState();
+  const [activePlayerPic, setActivePlayerPic] = useState();
   const [playerLocation, setPlayerLocation] = useState();
   const [playerLocationScoreNumber, setPlayerLocationScoreNumber] = useState();
   const [playerAxis, setPlayerAxis] = useState();
@@ -208,6 +209,7 @@ function App(props) {
         //換邊clear
         setActivePlayer();
         setActivePlayerId();
+        setActivePlayerPic();
         dispatchPlayerActions({ type: "intial" });
         setPlayerAxis();
         setPlayerLocation();
@@ -222,6 +224,7 @@ function App(props) {
       const clearActionByChangePlayer = function () {
         //換人clear
         setActivePlayerId();
+        setActivePlayerPic();
         dispatchPlayerActions({ type: "intial" });
         setPlayerAxis();
         setPlayerLocation();
@@ -232,30 +235,35 @@ function App(props) {
         clearActionByChangePlayer();
         setActivePlayer(0);
         setActivePlayerId(activeTeam[0].id);
+        setActivePlayerPic(activeTeam[0].pic);
       }
       if (e.keyCode === 50) {
         setActivePlayer();
         clearActionByChangePlayer();
         setActivePlayer(1);
         setActivePlayerId(activeTeam[1].id);
+        setActivePlayerPic(activeTeam[1].pic);
       }
       if (e.keyCode === 51) {
         setActivePlayer();
         clearActionByChangePlayer();
         setActivePlayer(2);
         setActivePlayerId(activeTeam[2].id);
+        setActivePlayerPic(activeTeam[2].pic);
       }
       if (e.keyCode === 52) {
         setActivePlayer();
         clearActionByChangePlayer();
         setActivePlayer(3);
         setActivePlayerId(activeTeam[3].id);
+        setActivePlayerPic(activeTeam[3].pic);
       }
       if (e.keyCode === 53) {
         setActivePlayer();
         clearActionByChangePlayer();
         setActivePlayer(4);
         setActivePlayerId(activeTeam[4].id);
+        setActivePlayerPic(activeTeam[4].pic);
       }
     };
 
@@ -460,6 +468,7 @@ function App(props) {
             team: leftSide,
             player: activePlayer,
             playerId: activePlayerId,
+            playerPic: activePlayerPic,
             location: playerLocation,
             axis: playerAxis,
             action: playerActions.action,
@@ -476,6 +485,7 @@ function App(props) {
             team: leftSide,
             player: activePlayer,
             playerId: activePlayerId,
+            playerPic: activePlayerPic,
             axis: playerAxis,
             location: playerLocation,
             action: playerActions.action,
@@ -1539,6 +1549,7 @@ function TeamBox(props) {
                 >
                   {(provided) => (
                     <div
+                      className="text-center"
                       // key={index}
                       ref={provided.innerRef}
                       {...provided.draggableProps}

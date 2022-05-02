@@ -195,7 +195,7 @@ const GroundContainer = styled.div`
 `;
 
 const TeamOnTheGround = styled.div`
-  height: 710px;
+  height: 720px;
   width: 270px;
   overflow: scroll;
   display: flex;

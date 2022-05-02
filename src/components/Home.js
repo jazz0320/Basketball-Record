@@ -167,9 +167,13 @@ function BoxEnd(props) {
 
   return (
     <GameContainerL1>
-      <GameContainerL2>
-        時間：{props.data.time_time}
-        {props.data.end ? "End" : ""}
+      <GameContainerL2 className="flex justify-around">
+        <span>時間：{props.data.time_time}</span>
+        {props.data.gameStatus === "live" ? (
+          <span className="text-red-600 font-extrabold">live now</span>
+        ) : (
+          <span className="text-black font-extrabold">end</span>
+        )}
       </GameContainerL2>
       <GameContainerL2>
         <LogoDiv img={props.data.aTeamLogo} />
@@ -235,9 +239,9 @@ function BoxComing(props) {
   }, []);
   return (
     <GameContainerL1>
-      <GameContainerL2>
-        時間：{props.data.time_time}
-        {props.data.end ? "End" : ""}
+      <GameContainerL2 className="flex justify-around">
+        <span>時間：{props.data.time_time}</span>
+        <span className="text-black font-extrabold">coming soon</span>
       </GameContainerL2>
       <GameContainerL2forComing>
         <LogoDivForComing img={props.data.aTeamLogo} />

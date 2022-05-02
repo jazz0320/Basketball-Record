@@ -59,151 +59,163 @@ function LiveRoom(props) {
       {endGame ? (
         <div>比賽結束</div>
       ) : finishSetting ? (
-        <div>
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <div
-              style={{
-                backgroundSize: "cover",
-                height: "130px",
-                width: "130px",
-                backgroundImage: `url(${aTeamLogo})`,
-              }}
-            ></div>
-            <table>
-              <thead>
-                <tr>
-                  <th>隊伍</th>
-                  {quarter
-                    ? quarter.map((item, index) => <th>{item}</th>)
-                    : null}
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{aTeam}</td>
-                  {quarter
-                    ? quarter.map((item, index) => (
-                        <td>
-                          {aTeamData
-                            ? aTeamData[0]
-                              ? aTeamData[index].pts
-                              : 0
-                            : 0}
-                        </td>
-                      ))
-                    : null}
-                  <td>
+        <div
+          className="flex justify-center bg-coolors_6"
+          style={{ height: "calc(100vh - 200px)" }}
+        >
+          <div className="flex justify-center flex-wrap w-10/12 bg-white">
+            <div className="w-screen h-fit flex justify-around items-center">
+              <div
+                // className="h-"
+                style={{
+                  backgroundSize: "cover",
+                  height: "170px",
+                  width: "170px",
+                  backgroundImage: `url(${aTeamLogo})`,
+                }}
+              ></div>
+              <table
+                className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate w-4/12 h-28"
+                cellPadding="10"
+                border="1"
+              >
+                <thead>
+                  <tr>
+                    <th>隊伍</th>
                     {quarter
-                      ? aTeamData
-                        ? aTeamData[0]
-                          ? aTeamData[quarter.length].pts
-                          : 0
-                        : 0
+                      ? quarter.map((item, index) => <th>{item}</th>)
                       : null}
-                  </td>
-                </tr>
-                <tr>
-                  <td>{bTeam}</td>
-                  {quarter
-                    ? quarter.map((item, index) => (
-                        <td>
-                          {bTeamData
-                            ? bTeamData[0]
-                              ? bTeamData[index].pts
-                              : 0
-                            : 0}
-                        </td>
-                      ))
-                    : null}
-                  <td>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{aTeam}</td>
                     {quarter
-                      ? bTeamData
-                        ? bTeamData[0]
-                          ? bTeamData[quarter.length].pts
-                          : 0
-                        : 0
+                      ? quarter.map((item, index) => (
+                          <td>
+                            {aTeamData
+                              ? aTeamData[0]
+                                ? aTeamData[index].pts
+                                : 0
+                              : 0}
+                          </td>
+                        ))
                       : null}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    <td>
+                      {quarter
+                        ? aTeamData
+                          ? aTeamData[0]
+                            ? aTeamData[quarter.length].pts
+                            : 0
+                          : 0
+                        : null}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{bTeam}</td>
+                    {quarter
+                      ? quarter.map((item, index) => (
+                          <td>
+                            {bTeamData
+                              ? bTeamData[0]
+                                ? bTeamData[index].pts
+                                : 0
+                              : 0}
+                          </td>
+                        ))
+                      : null}
+                    <td>
+                      {quarter
+                        ? bTeamData
+                          ? bTeamData[0]
+                            ? bTeamData[quarter.length].pts
+                            : 0
+                          : 0
+                        : null}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div
+                style={{
+                  backgroundSize: "cover",
+                  height: "170px",
+                  width: "170px",
+                  backgroundImage: `url(${bTeamLogo})`,
+                }}
+              ></div>
+            </div>
             <div
-              style={{
-                backgroundSize: "cover",
-                height: "130px",
-                width: "130px",
-                backgroundImage: `url(${bTeamLogo})`,
-              }}
-            ></div>
-          </div>
-          <div id="radio">
-            <span
-              className="round button"
-              id={watchBox === "boxscore" ? "checkbutton" : null}
-              onClick={() => {
-                setWatchBox("boxscore");
-              }}
+              className="w-screen flex justify-center h-fit items-center mb-3"
+              id="radio"
             >
-              {" "}
-              Box-score{" "}
-            </span>
+              <span
+                className="round button flex justify-center items-center"
+                id={watchBox === "boxscore" ? "checkbutton" : null}
+                onClick={() => {
+                  setWatchBox("boxscore");
+                }}
+              >
+                {" "}
+                Box-score{" "}
+              </span>
 
-            <span
-              id={watchBox === "livestream" ? "checkbutton" : null}
-              className="round button"
-              onClick={() => {
-                setWatchBox("livestream");
-              }}
-            >
-              {" "}
-              文字直播{" "}
-            </span>
+              <span
+                id={watchBox === "livestream" ? "checkbutton" : null}
+                className="round button"
+                onClick={() => {
+                  setWatchBox("livestream");
+                }}
+              >
+                {" "}
+                Live-Stream{" "}
+              </span>
 
-            <span
-              className="round button"
-              id={watchBox === "teamdata" ? "checkbutton" : null}
-              onClick={() => {
-                setWatchBox("teamdata");
-              }}
-            >
-              {" "}
-              球隊數據{" "}
-            </span>
+              <span
+                className="round button"
+                id={watchBox === "teamdata" ? "checkbutton" : null}
+                onClick={() => {
+                  setWatchBox("teamdata");
+                }}
+              >
+                {" "}
+                Team-Data{" "}
+              </span>
+            </div>
+            <div className="h-5/6">
+              {watchBox === "boxscore" ? (
+                <div>
+                  <Boxscore
+                    aTeam={aTeam}
+                    bTeam={bTeam}
+                    aTeamPlayers={aTeamPlayers}
+                    bTeamPlayers={bTeamPlayers}
+                  />
+                </div>
+              ) : null}
+              {watchBox === "livestream" ? (
+                <div>
+                  <Livestream
+                    quarter={quarter}
+                    liveAction={liveAction}
+                    aTeam={aTeam}
+                    bTeam={bTeam}
+                  />
+                </div>
+              ) : null}
+              {watchBox === "teamdata" ? (
+                <div>
+                  <TeamData
+                    data={data}
+                    quarter={quarter}
+                    aTeamData={aTeamData}
+                    bTeamData={bTeamData}
+                  />
+                </div>
+              ) : null}
+            </div>
           </div>
-          {watchBox === "boxscore" ? (
-            <div>
-              Boxscroe
-              <Boxscore
-                aTeam={aTeam}
-                bTeam={bTeam}
-                aTeamPlayers={aTeamPlayers}
-                bTeamPlayers={bTeamPlayers}
-              />
-            </div>
-          ) : null}
-          {watchBox === "livestream" ? (
-            <div>
-              Livestream
-              <Livestream
-                quarter={quarter}
-                liveAction={liveAction}
-                aTeam={aTeam}
-                bTeam={bTeam}
-              />
-            </div>
-          ) : null}
-          {watchBox === "teamdata" ? (
-            <div>
-              Teamdata
-              <TeamData
-                data={data}
-                quarter={quarter}
-                aTeamData={aTeamData}
-                bTeamData={bTeamData}
-              />
-            </div>
-          ) : null}
         </div>
       ) : (
         <div>比賽尚未開始</div>
@@ -239,7 +251,12 @@ function Boxscore(props) {
           {props.bTeam}
         </span>
       </div>
-      <table>
+      <table
+        className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate"
+        style={{ width: "80vw" }}
+        cellPadding="10"
+        border="1"
+      >
         <thead>
           <tr>
             <th>PLAYER</th>
@@ -327,7 +344,6 @@ function Livestream(props) {
   const [quarteNowLive, setQuarterNowLive] = useState(props.quarter.length);
   const [actionNow, setActionNow] = useState();
   useEffect(() => {
-    console.log("qN", quarteNowLive);
     if (
       quarteNowLive === 0 ||
       quarteNowLive === 1 ||
@@ -346,7 +362,7 @@ function Livestream(props) {
 
   return (
     <>
-      <div>
+      <div className="flex justify-center">
         {props.quarter &&
           props.quarter.map((q, index) => (
             <span
@@ -380,24 +396,35 @@ function Livestream(props) {
               .slice()
               .reverse()
               ?.map((item, index) => (
-                <div key={index} style={{ display: "flex" }}>
-                  <div style={{ width: "43vw" }}>
-                    {item.team === true ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
+                <div key={index} className="flex mt-2 drop-shadow-lg">
+                  {item.team === true ? (
+                    <div
+                      className=" bg-coolors_2 flex justify-end items-center"
+                      style={{ width: "25vw" }}
+                    >
+                      <span>{item.team ? props.aTeam : props.bTeam}</span>
+                      <span> , </span>
+                      <span>{item.playerId}</span>
+                      <span> , </span>
+                      <span>{item.location}</span>
+                      <span> , </span>
+                      <span>得{item.count}分</span>
+
+                      <div className="pr-1 pl-5">
+                        <img
+                          className="h-14 w-16 rounded-full"
+                          src={`${item.playerPic}`}
+                        ></img>
+                      </div>
+                    </div>
+                  ) : (
+                    <div key={index} style={{ width: "25vw" }}></div>
+                  )}
 
                   <div
+                    className="bg-coolors_4 mx-5 py-1 items-center"
                     style={{
-                      width: "14vw",
+                      width: "8vw",
                       display: "flex",
                       flexWrap: "wrap",
                       justifyContent: "center",
@@ -409,19 +436,28 @@ function Livestream(props) {
                     </span>
                   </div>
 
-                  <div style={{ width: "43vw" }}>
-                    {item.team === false ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
+                  {item.team === false ? (
+                    <div
+                      className="text-left bg-coolors_2 flex items-center"
+                      style={{ width: "25vw" }}
+                    >
+                      <div className="pr-5 pl-1">
+                        <img
+                          className="h-14 w-16 rounded-full"
+                          src={`${item.playerPic}`}
+                        ></img>
+                      </div>
+                      <span>{item.team ? props.aTeam : props.bTeam}</span>
+                      <span> , </span>
+                      <span>{item.playerId}</span>
+                      <span> , </span>
+                      <span>{item.location}</span>
+                      <span> , </span>
+                      <span>得{item.count}分</span>
+                    </div>
+                  ) : (
+                    <div style={{ width: "25vw" }}></div>
+                  )}
                 </div>
               ))
           : actionNow
@@ -431,41 +467,64 @@ function Livestream(props) {
               ?.map((item, index) => (
                 <div
                   key={index}
+                  className="flex mt-2 drop-shadow-lg"
                   style={{ display: "flex", textAlign: "center" }}
                 >
-                  <div style={{ width: "43vw" }}>
-                    {item.team === true ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
+                  {item.team === true ? (
+                    <div
+                      className=" bg-coolors_2 flex justify-end items-center"
+                      style={{ width: "25vw" }}
+                    >
+                      <span>{item.team ? props.aTeam : props.bTeam}</span>
+                      <span> , </span>
+                      <span>{item.playerId}</span>
+                      <span> , </span>
+                      <span>{item.location}</span>
+                      <span> , </span>
+                      <span>得{item.count}分</span>
 
-                  <div style={{ width: "14vw" }}>
+                      <div className="pr-1 pl-5">
+                        <img
+                          className="h-14 w-16 rounded-full"
+                          src={`${item.playerPic}`}
+                        ></img>
+                      </div>
+                    </div>
+                  ) : (
+                    <div key={index} style={{ width: "25vw" }}></div>
+                  )}
+
+                  <div
+                    className="bg-coolors_4 mx-5 py-1 items-center flex justify-center"
+                    style={{ width: "8vw" }}
+                  >
                     <span>
                       {item.minutes}:{item.seconds}
                     </span>
                   </div>
 
-                  <div style={{ width: "43vw" }}>
-                    {item.team === false ? (
-                      <>
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
-                      </>
-                    ) : null}
-                  </div>
+                  {item.team === false ? (
+                    <div
+                      className="text-left bg-coolors_2 flex items-center"
+                      style={{ width: "25vw" }}
+                    >
+                      <div className="pr-5 pl-1">
+                        <img
+                          className="h-14 w-16 rounded-full"
+                          src={`${item.playerPic}`}
+                        ></img>
+                      </div>
+                      <span>{item.team ? props.aTeam : props.bTeam}</span>
+                      <span> , </span>
+                      <span>{item.playerId}</span>
+                      <span> , </span>
+                      <span>{item.location}</span>
+                      <span> , </span>
+                      <span>得{item.count}分</span>
+                    </div>
+                  ) : (
+                    <div style={{ width: "25vw" }}></div>
+                  )}
                 </div>
               ))
           : null}
@@ -540,7 +599,7 @@ function TeamData(props) {
             display: "flex",
           }}
         >
-          <div>
+          <div className="mt-5">
             {barData
               ? dataKeys?.map((item, index) => (
                   <Bar
@@ -560,7 +619,7 @@ function TeamData(props) {
 
 function Bar(props) {
   return (
-    <>
+    <div className="mb-3">
       <div
         style={{
           display: "flex",
@@ -568,16 +627,21 @@ function Bar(props) {
         }}
       >
         <div
+          className="mr-2"
           style={{
             width: `${props.widthA}px`,
             height: "12px",
             backgroundColor: "silver",
           }}
         />
-        <div style={{ height: "20px", width: "120px", textAlign: "center" }}>
+        <div
+          className="bg-coolors_2"
+          style={{ height: "25px", width: "120px", textAlign: "center" }}
+        >
           {props.label}
         </div>
         <div
+          className="ml-2"
           style={{
             width: `${props.widthB}px`,
             height: "12px",
@@ -585,7 +649,7 @@ function Bar(props) {
           }}
         />
       </div>
-    </>
+    </div>
   );
 }
 

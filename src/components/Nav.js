@@ -118,7 +118,6 @@ function Nav() {
   async function loadGames() {
     const querySnapshot = await getDocs(collection(db, "game_schedule"));
     querySnapshot.forEach((doc) => {
-      console.log("doc", doc.data());
       if (doc.data().gameStatus === "coming") {
         setScheduleGames((games) => [...games, doc.id]);
       } else if (doc.data().gameStatus === "live") {
