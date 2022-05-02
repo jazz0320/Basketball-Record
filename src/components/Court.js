@@ -50,7 +50,7 @@ function Court(props) {
   }
 
   return (
-    <div style={{ position: "relative", width: "55vw" }}>
+    <div style={{ position: "relative" }}>
       <canvas
         id="cvs"
         // onClickCapture={(e) => {

@@ -1,12 +1,5 @@
-import { useEffect, useState, useReducer, useRef } from "react";
-import {
-  getDoc,
-  getDocs,
-  collection,
-  doc,
-  db,
-  setDoc,
-} from "../utils/firebase";
+import { useEffect, useState } from "react";
+import { getDocs, collection, doc, db, setDoc } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 function GameArrange() {
   const [date, setDate] = useState([new Date().toISOString().slice(0, 10)]);
@@ -98,6 +91,7 @@ function GameArrange() {
           bTeam_score: 0,
           bTeam_winloss: [0, 0],
           whoWin: "default",
+          gameStatus: "coming",
         },
         { merge: true }
       );

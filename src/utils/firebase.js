@@ -10,11 +10,13 @@ import {
 import {
   getFirestore,
   getDoc,
+  deleteDoc,
   getDocs,
   doc,
   collection,
   setDoc,
   onSnapshot,
+  query,
 } from "firebase/firestore";
 
 // Set the configuration for your app
@@ -49,6 +51,8 @@ export {
   doc,
   setDoc,
   getDoc,
+  deleteDoc,
   getDocs,
   onSnapshot,
+  query,
 };

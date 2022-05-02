@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 const Div_Record = styled.div`
   display: fiexd;
 `;
-const DivBeforeGame_Record = styled.div`
+const DivBeforeGameRecord = styled.div`
   display: flex;
   background-color: #343a40;
   color: #f8f9fa;
@@ -12,7 +12,7 @@ const DivBeforeGame_Record = styled.div`
 
 const TeamBlock = styled.div`
   width: 50vw;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   height: calc(100vh - 110px);
 
   display: flex;
@@ -27,20 +27,21 @@ const TeamBlockDetail = styled.div`
   justify-content: space-between;
 `;
 
-const TeamBlockDetail_Team = styled.div`
+const TeamBlockDetailTeam = styled.div`
   margin-top: 3vh;
   width: 600px;
   display: flex;
   justify-content: center;
 `;
-const TeamBlockDetail_Player = styled.div`
-  height: 900px;
+const TeamBlockDetailPlayer = styled.div`
+  height: 40vh;
   width: 600px;
   display: flex;
   justify-content: center;
 `;
 
-const Select_Team = styled.select`
+const SelectTeam = styled.select`
+  cursor: pointer;
   -webkit-appearance: none;
   width: 500px;
   height: 60px;
@@ -52,18 +53,19 @@ const Select_Team = styled.select`
   border: none;
 `;
 
-const Select_PlayerImg = styled.div`
-  width: 140px;
-  height: 140px;
+const SelectPlayerImg = styled.div`
+  width: 5.5vh;
+  height: 5vh;
   background-size: contain;
   background-repeat: no-repeat;
 `;
 
-const Select_Player = styled.select`
+const SelectPlayer = styled.select`
+  cursor: pointer;
   -webkit-appearance: none;
   width: 320px;
-  height: 60px;
-  font-size: 40px;
+  height: 3rem;
+  font-size: 2rem;
   -webkit-text-stroke: 1px #495057;
   color: aliceblue;
   background-color: transparent;
@@ -71,26 +73,26 @@ const Select_Player = styled.select`
   border: none;
 `;
 
-const TeamBlockDetail_Player_Div = styled.div`
+const TeamBlockDetailPlayerDiv = styled.div`
   width: 600px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin-bottom: 40px;
+  margin-bottom: 0.5vh;
 `;
 
 const RegulationBlock = styled.div`
-  position: fixed;
+  position: absolute;
   width: 6vw;
   left: 47vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 17vh;
+  margin-top: 16vh;
 `;
-const RegulationBlock_Cell = styled.div`
+const RegulationBlockCell = styled.div`
   font-size: 44px;
-  margin-bottom: 60px;
+  margin-bottom: 2vh;
   justify-content: space-around;
   display: flex;
 `;
@@ -135,7 +137,7 @@ const ButtonSubmit = styled.button`
   }
 `;
 
-const DivGameStart_Record = styled.div`
+const DivGameStartRecord = styled.div`
   width: 100vw;
   display: flex;
   flex-wrap: wrap;
@@ -143,7 +145,7 @@ const DivGameStart_Record = styled.div`
   background-color: #e9ecef;
 `;
 const DivGameStart_Container = styled.div`
-  width: 90vw;
+  width: 80vw;
   background-color: #f8f9fa;
   display: flex;
   flex-wrap: wrap;
@@ -152,18 +154,18 @@ const DivGameStart_Container = styled.div`
 
 export {
   Div_Record,
-  DivBeforeGame_Record,
+  DivBeforeGameRecord,
   TeamBlock,
   RegulationBlock,
   TeamBlockDetail,
-  TeamBlockDetail_Team,
-  TeamBlockDetail_Player,
+  TeamBlockDetailTeam,
+  TeamBlockDetailPlayer,
   ButtonForChange,
-  TeamBlockDetail_Player_Div,
-  Select_Team,
-  Select_Player,
-  Select_PlayerImg,
-  RegulationBlock_Cell,
+  TeamBlockDetailPlayerDiv,
+  SelectTeam,
+  SelectPlayer,
+  SelectPlayerImg,
+  RegulationBlockCell,
   ButtonSubmit,
 };
 
@@ -189,7 +191,7 @@ const PopupDiv = styled.div`
 const GroundContainer = styled.div`
   width: 100vw;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 const TeamOnTheGround = styled.div`
@@ -207,7 +209,7 @@ const TeamOnTheGround = styled.div`
 
 const LiveActionBolck = styled.div`
   font-size: 36px;
-  margin: 0 0 0.25vw 0;
+  margin: 0.5vh 0 0 0;
   display: flex;
   border: 2px solid #495057;
   border-radius: 5px;
@@ -219,6 +221,7 @@ const LiveActionBolck = styled.div`
     border-radius: 5px;
     background-color: #ced4da;
     animation-name: popup;
+    /* transition: all 3s ease-out; */
     animation-duration: 0.3s;
 
     @keyframes popup {
@@ -244,7 +247,7 @@ export {
   GroundContainer,
   TeamOnTheGround,
   LiveActionBolck,
-  DivGameStart_Record,
+  DivGameStartRecord,
   DivGameStart_Container,
 };
 

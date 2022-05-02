@@ -1,5 +1,5 @@
-import { getDocs, collection, doc, db } from "../utils/firebase";
-import { useEffect, useState, useReducer, useRef } from "react";
+import { getDoc, doc, getDocs, collection, db } from "../utils/firebase";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 function Home() {
@@ -8,12 +8,10 @@ function Home() {
   const [gameTime, setGameTime] = useState([]);
   const [gameTimeCount, setGameTimeCount] = useState({});
   const [weekday, setWeekday] = useState({});
-  const [x_axis, setX_axis] = useState(0);
-  //   const [gameListByTime, setGameListByTime] = useState({});
+
   async function loadSchedule() {
     const querySnapshot = await getDocs(collection(db, "game_schedule"));
     querySnapshot.forEach((doc) => {
-      console.log("id", doc.id.slice(0, 10));
       setGameListName((pre) => [...pre, doc.id]);
       setGameList((pre) => [...pre, { [`${doc.id}`]: doc.data() }]);
       setWeekday((pre) => ({
@@ -25,6 +23,20 @@ function Home() {
 
   useEffect(() => {
     loadSchedule();
+
+    // const q = query(collection(db, "game_schedule"));
+    // const unsub = onSnapshot(q, (snapshot) => {
+    //   snapshot.docChanges().forEach((doc) => {
+    //     // console.log("id", doc.id.slice(0, 10));
+    //     setGameListName((pre) => [...pre, doc.id]);
+    //     setGameList((pre) => [...pre, { [`${doc.id}`]: doc.data() }]);
+    //     setWeekday((pre) => ({
+    //       ...pre,
+    //       [`${doc.id.slice(0, 10)}`]: doc.data().time_day,
+    //     }));
+    //   });
+    // });
+    // console.log("aaa", unsub);
   }, []);
 
   useEffect(() => {
@@ -38,25 +50,6 @@ function Home() {
     let uniqueArr = [...new Set(a)];
     setGameTime(uniqueArr);
   }, [gameListName]);
-
-  const prevClick = function () {
-    if (x_axis === -233) {
-      setX_axis(-133);
-    } else if (x_axis <= -133) {
-      setX_axis(-33);
-    } else if (x_axis <= -33) {
-      setX_axis(0);
-    }
-  };
-  const nextClick = function () {
-    if (x_axis === 0) {
-      setX_axis(-100);
-    } else if (x_axis >= -100) {
-      setX_axis(-200);
-    } else if (x_axis >= -200) {
-      setX_axis(-233);
-    }
-  };
 
   return (
     <>
@@ -79,9 +72,12 @@ function Home() {
             {gameList?.map((game) =>
               Object.keys(game)[0].slice(0, 10) === time ? (
                 <div key={Object.keys(game)}>
-                  {/* {game[Object.keys(game)[0]].time_date} */}
-                  <BoxComing data={game[Object.keys(game)[0]]} />
-                  {/* <BoxEnd data={game[Object.keys(game)[0]]} /> */}
+                  {/* {console.log("aaa", game[Object.keys(game)[0]])} */}
+                  {game[Object.keys(game)[0]].gameStatus === "coming" ? (
+                    <BoxComing data={game[Object.keys(game)[0]]} />
+                  ) : (
+                    <BoxEnd data={game[Object.keys(game)[0]]} />
+                  )}
                 </div>
               ) : null
             )}
@@ -106,16 +102,16 @@ const CarousellContainer = styled.div`
   }
 `;
 
-const GameContainer_L1 = styled.div`
+const GameContainerL1 = styled.div`
   height: 160px;
-  width: 180px;
+  width: 206px;
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
   border: 1px solid #ced4da;
 `;
 
-const GameContainer_L2 = styled.div`
+const GameContainerL2 = styled.div`
   width: 180px;
   height: 50px;
   font-size: 14px;
@@ -155,37 +151,51 @@ const ScoreBox = styled.div`
 `;
 
 function BoxEnd(props) {
+  const [aTeamWinloss, setATeamWinloss] = useState([]);
+  const [bTeamWinloss, setBTeamWinloss] = useState([]);
+  useEffect(() => {
+    const getTeamGrade = async function () {
+      const docSnap = await getDoc(doc(db, "team_data", props.data.aTeam));
+      let aTeamGrade = docSnap.data().winLoss;
+      setATeamWinloss(aTeamGrade);
+      const docSnap2 = await getDoc(doc(db, "team_data", props.data.bTeam));
+      let bTeamGrade = docSnap2.data().winLoss;
+      setBTeamWinloss(bTeamGrade);
+    };
+    getTeamGrade();
+  }, []);
+
   return (
-    <GameContainer_L1>
-      <GameContainer_L2>
+    <GameContainerL1>
+      <GameContainerL2>
         時間：{props.data.time_time}
         {props.data.end ? "End" : ""}
-      </GameContainer_L2>
-      <GameContainer_L2>
+      </GameContainerL2>
+      <GameContainerL2>
         <LogoDiv img={props.data.aTeamLogo} />
         <TeamDiv>
           <div style={{ color: "black" }}>{props.data.aTeam}</div>
           <div>
-            {props.data.aTeam_winloss[0]}-{props.data.aTeam_winloss[1]}
+            {aTeamWinloss[0]}-{aTeamWinloss[1]}
           </div>
         </TeamDiv>
         <ScoreBox>{props.data.aTeam_score}</ScoreBox>
-      </GameContainer_L2>
-      <GameContainer_L2>
+      </GameContainerL2>
+      <GameContainerL2>
         <LogoDiv img={props.data.bTeamLogo} />
         <TeamDiv>
           <div style={{ color: "black" }}>{props.data.bTeam}</div>
           <div>
-            {props.data.bTeam_winloss[0]}-{props.data.bTeam_winloss[1]}
+            {bTeamWinloss[0]}-{bTeamWinloss[1]}
           </div>
         </TeamDiv>
-        <ScoreBox>{props.data.aTeam_score}</ScoreBox>
-      </GameContainer_L2>
-    </GameContainer_L1>
+        <ScoreBox>{props.data.bTeam_score}</ScoreBox>
+      </GameContainerL2>
+    </GameContainerL1>
   );
 }
 
-const GameContainer_L2_forComing = styled.div`
+const GameContainerL2forComing = styled.div`
   width: 60px;
   height: 100px;
   font-size: 14px;
@@ -202,7 +212,7 @@ const GameContainer_L2_forComing = styled.div`
   }
 `;
 
-const LogoDiv_forComing = styled.div`
+const LogoDivForComing = styled.div`
   height: 50px;
   width: 50px;
   background-size: contain;
@@ -210,34 +220,47 @@ const LogoDiv_forComing = styled.div`
 `;
 
 function BoxComing(props) {
+  const [aTeamWinloss, setATeamWinloss] = useState([]);
+  const [bTeamWinloss, setBTeamWinloss] = useState([]);
+  useEffect(() => {
+    const getTeamGrade = async function () {
+      const docSnap = await getDoc(doc(db, "team_data", props.data.aTeam));
+      let aTeamGrade = docSnap.data().winLoss;
+      setATeamWinloss(aTeamGrade);
+      const docSnap2 = await getDoc(doc(db, "team_data", props.data.bTeam));
+      let bTeamGrade = docSnap2.data().winLoss;
+      setBTeamWinloss(bTeamGrade);
+    };
+    getTeamGrade();
+  }, []);
   return (
-    <GameContainer_L1>
-      <GameContainer_L2>
+    <GameContainerL1>
+      <GameContainerL2>
         時間：{props.data.time_time}
         {props.data.end ? "End" : ""}
-      </GameContainer_L2>
-      <GameContainer_L2_forComing>
-        <LogoDiv_forComing img={props.data.aTeamLogo} />
+      </GameContainerL2>
+      <GameContainerL2forComing>
+        <LogoDivForComing img={props.data.aTeamLogo} />
         <TeamDiv>
           <div style={{ color: "black" }}>{props.data.aTeam}</div>
           <div>
-            {props.data.aTeam_winloss[0]}-{props.data.aTeam_winloss[1]}
+            {aTeamWinloss[0]}-{aTeamWinloss[1]}
           </div>
         </TeamDiv>
-      </GameContainer_L2_forComing>
-      <GameContainer_L2_forComing>
+      </GameContainerL2forComing>
+      <GameContainerL2forComing>
         <div className="vs">VS</div>
-      </GameContainer_L2_forComing>
-      <GameContainer_L2_forComing>
-        <LogoDiv_forComing img={props.data.bTeamLogo} />
+      </GameContainerL2forComing>
+      <GameContainerL2forComing>
+        <LogoDivForComing img={props.data.bTeamLogo} />
         <TeamDiv>
           <div style={{ color: "black" }}>{props.data.bTeam}</div>
           <div>
-            {props.data.bTeam_winloss[0]}-{props.data.bTeam_winloss[1]}
+            {bTeamWinloss[0]}-{bTeamWinloss[1]}
           </div>
         </TeamDiv>
-      </GameContainer_L2_forComing>
-    </GameContainer_L1>
+      </GameContainerL2forComing>
+    </GameContainerL1>
   );
 }
 
@@ -262,7 +285,6 @@ function TimeBox(props) {
   useEffect(() => {
     let a = props.time.split("-");
     setTimeDate(a);
-    console.log("a", props.weekday);
   }, []);
 
   useEffect(() => {}, [props.weekday]);

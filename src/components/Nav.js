@@ -25,7 +25,8 @@ import GameArrange from "./GameArrange";
 import { GlobalStyle } from "../utils/StyleComponent";
 
 const NavBar = styled.div`
-  height: 50px;
+  width: 100vw;
+  height: 80px;
   padding: 15px;
   background-color: #212529;
   font-size: 30px;
@@ -61,7 +62,7 @@ const LinkComponet = styled(Link)`
   }
   :last-child {
     position: absolute;
-    right: 0px;
+    right: 15px;
   }
 `;
 
@@ -71,6 +72,7 @@ function Nav() {
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
   const [scheduleGames, setScheduleGames] = useState([]);
+  const [everyLiveGames, setEveryLiveGames] = useState([]);
   const [pastGameRoutes, setPastGameRoutes] = useState();
   const [liveGameRoutes, setLiveGameRoutes] = useState();
   const liveGameName = useRef("none");
@@ -92,11 +94,12 @@ function Nav() {
     monitorAuthState();
   }, [logStatus]);
 
-  useEffect(() => {
-    if (logStatus) {
-      redirect("/profile");
-    }
-  }, [logFirstTime]);
+  // useEffect(() => {
+  //   if (logStatus) {
+  //     console.log("111111");
+  //     redirect("/profile");
+  //   }
+  // }, [logFirstTime]);
 
   const logout = async () => {
     await signOut(auth);
@@ -115,8 +118,12 @@ function Nav() {
   async function loadGames() {
     const querySnapshot = await getDocs(collection(db, "game_schedule"));
     querySnapshot.forEach((doc) => {
-      console.log(doc.id);
-      setScheduleGames((games) => [...games, doc.id]);
+      console.log("doc", doc.data());
+      if (doc.data().gameStatus === "coming") {
+        setScheduleGames((games) => [...games, doc.id]);
+      } else if (doc.data().gameStatus === "live") {
+        setEveryLiveGames((games) => [...games, doc.id]);
+      }
     });
   }
 
@@ -144,8 +151,8 @@ function Nav() {
           Record
         </LinkComponet>
         <span> | </span>
-        <LinkComponet to="/test">Test</LinkComponet>
-        <span> | </span>
+        {/* <LinkComponet to="/test">Test</LinkComponet>
+        <span> | </span> */}
         <LinkComponet
           $focus={navActive === 1}
           onClick={() => {
@@ -159,7 +166,7 @@ function Nav() {
         <LinkComponet
           $focus={navActive === 2}
           onClick={() => {
-            logStatus ? setNavActive(2) : setNavActive(3);
+            setNavActive(2);
           }}
           to="/live-room"
         >
@@ -194,7 +201,11 @@ function Nav() {
         <Route
           path="/record"
           element={
-            <App scheduleGames={scheduleGames} liveGameName={liveGameName} />
+            <App
+              scheduleGames={scheduleGames}
+              everyLiveGames={everyLiveGames}
+              liveGameName={liveGameName}
+            />
           }
         />
         <Route

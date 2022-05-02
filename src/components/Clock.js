@@ -3,9 +3,24 @@ import { doc, db, setDoc } from "../utils/firebase";
 import styled from "styled-components";
 import {
   ButtonForChange,
-  Select_Player,
+  SelectPlayer,
   ButtonSubmit,
 } from "../utils/StyleComponent";
+
+const TimeBlock = styled.div`
+  height: 110px;
+  width: 100%;
+  background-color: #343a40;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  div {
+    color: #f8f9fa;
+  }
+`;
+const BigClock = styled.div`
+  /* position: "relative"; */
+`;
 
 function Clock(props) {
   const [restTime, setRestTime] = useState();
@@ -158,7 +173,7 @@ function Clock(props) {
   useEffect(() => {
     async function gameTime() {
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", props.liveGameName.current),
         {
           time_shotClock: Number(shotClock),
         },
@@ -171,7 +186,7 @@ function Clock(props) {
   useEffect(() => {
     async function gameTime() {
       await setDoc(
-        doc(db, "game_data", "live_game"),
+        doc(db, "live_game", props.liveGameName.current),
         {
           time_minutes: Number(props.timerMinutes),
           time_seconds: Number(props.timerSeconds),
@@ -182,24 +197,11 @@ function Clock(props) {
     gameTime();
   }, [props.timerSeconds]);
 
-  const TimeBlock = styled.div`
-    height: 110px;
-    width: 18vw;
-    background-color: #343a40;
-    display: flex;
-    justify-content: center;
-    div {
-      color: #f8f9fa;
-    }
-  `;
-  const BigClock = styled.div`
-    /* position: "relative"; */
-  `;
-
   return (
     <TimeBlock>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Select_Player
+      <div className="mr-4" style={{ display: "flex", alignItems: "center" }}>
+        <SelectPlayer
+          className="cursor-pointer"
           style={{ width: "80px" }}
           onChange={(e) => props.setQuarterNow(Number(e.target.value))}
         >
@@ -207,7 +209,7 @@ function Clock(props) {
           <option value={2}>2nd</option>
           <option value={3}>3rd</option>
           <option value={4}>4th</option>
-        </Select_Player>
+        </SelectPlayer>
       </div>
 
       <BigClock
@@ -231,7 +233,7 @@ function Clock(props) {
             ></i>
           </ButtonForChange>
         </div>
-        <div style={{ fontSize: "36px" }}>
+        <div className="cursor-default" style={{ fontSize: "36px" }}>
           {props.timerMinutes < 10 ? "0" : ""}
           {props.timerMinutes}:{props.timerSeconds < 10 ? "0" : ""}
           {props.timerSeconds}
@@ -269,7 +271,9 @@ function Clock(props) {
             ></i>
           </ButtonForChange>
         </div>
-        <div style={{ fontSize: "36px" }}>{shotClock}</div>
+        <div className="cursor-default" style={{ fontSize: "36px" }}>
+          {shotClock}
+        </div>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <ButtonForChange
             onClick={() => {

@@ -7,9 +7,7 @@ import {
   setDoc,
   doc,
   db,
-  getDocs,
   getDoc,
-  collection,
 } from "../utils/firebase";
 import "./TeamInf.css";
 import styled from "styled-components";
@@ -126,6 +124,7 @@ function TeamInf(props) {
         logo: `${imgSrc.logoPic}`,
         team_pic: `${imgSrc.teamRelated1}`,
         players: abc,
+        winLoss: [0, 0],
       },
       { merge: true }
     );

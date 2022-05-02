@@ -4,7 +4,8 @@ import {
   createUserWithEmailAndPassword,
 } from "../utils/firebase";
 import { useState } from "react";
-import styled, { keyframes, createGlobalStyle } from "styled-components";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 import { ButtonSubmit } from "../utils/StyleComponent";
 
@@ -12,6 +13,7 @@ function Login(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
+  let redirect = useNavigate();
 
   const loginEmailPassword = async () => {
     try {
@@ -20,10 +22,10 @@ function Login(props) {
         email,
         password
       );
-      console.log(userCredential.user);
       props.setUserId(userCredential.user.email);
       props.setLogFirstTime(true);
       props.setNavActive(3);
+      redirect("/profile");
     } catch (error) {
       if (error.code === "auth/invalid-email") {
         setError("無效信箱");
@@ -44,9 +46,9 @@ function Login(props) {
         email,
         password
       );
-      console.log(userCredential.user);
       props.setLogFirstTime(true);
-      props.setNavActive(2);
+      props.setNavActive(3);
+      redirect("/profile");
     } catch (error) {
       if (error.code === "auth/invalid-email") {
         setError("無效信箱");
