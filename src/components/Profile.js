@@ -1,17 +1,34 @@
-import { useEffect, useState } from "react";
-import App from "./App";
+import { useState } from "react";
 import styled from "styled-components";
-import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
+import { Link, useNavigate, Outlet } from "react-router-dom";
+import { GeneralDiv, GeneralButton } from "../utils/StyleComponent";
+
 const SideBar = styled.div`
-  background-color: green;
+  padding: 2vh 0;
+  height: calc(100vh - 180px);
+  width: 20vw;
+  background-color: #495057;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+`;
+const ContainDiv = styled.div`
+  margin: 20px;
+  border: #ced4da 2px solid;
+  border-radius: 10px;
+  padding: 20px;
+  height: 100%;
+  width: 80vw;
 `;
 
 const LinkComponet = styled(Link)`
+  font-size: 2rem;
+  margin: 1vh 5vw;
   width: 7vw;
-  border: 1px solid gray;
+  height: 40px;
   text-align: center;
-  background-color: ${(props) => (props.$focus ? "gray" : "white")};
-  color: black;
+  /* background-color: ${(props) => (props.$focus ? "gray" : "white")}; */
+  color: ${(props) => (props.$focus ? "#CED4DA" : "#F8F9FA")};
   text-decoration: none;
   :active {
     background-color: rgb(41, 41, 41);
@@ -19,11 +36,19 @@ const LinkComponet = styled(Link)`
 `;
 
 function Profile(props) {
-  const [navActive, setNavActive] = useState();
+  const [navActive, setNavActive] = useState(0);
   return (
     <>
-      <div>
+      <GeneralDiv height="100%" display="flex">
         <SideBar>
+          <LinkComponet
+            $focus={navActive === 0}
+            onClick={() => setNavActive(0)}
+            to="member-file"
+          >
+            會員資料
+          </LinkComponet>
+
           <LinkComponet
             $focus={navActive === 1}
             onClick={() => setNavActive(1)}
@@ -31,7 +56,7 @@ function Profile(props) {
           >
             安排比賽
           </LinkComponet>
-          <span> | </span>
+
           <LinkComponet
             $focus={navActive === 2}
             onClick={() => setNavActive(2)}
@@ -39,7 +64,7 @@ function Profile(props) {
           >
             球隊資訊
           </LinkComponet>
-          <span> | </span>
+
           <LinkComponet
             $focus={navActive === 3}
             onClick={() => setNavActive(3)}
@@ -48,8 +73,10 @@ function Profile(props) {
             賽程安排
           </LinkComponet>
         </SideBar>
-      </div>
-      <Outlet />
+        <ContainDiv>
+          <Outlet />
+        </ContainDiv>
+      </GeneralDiv>
     </>
   );
 }

@@ -1,12 +1,12 @@
 import LiveRoom from "./LiveRoom";
 import PastGame from "./PastGame";
 import TeamInf from "./TeamInf";
+import MemberFile from "./MemberFile";
 import Login from "./Login";
 import App from "./App";
 import Home from "./Home";
 import Test from "./Test";
-import GameData from "./GameData";
-import LivesNow from "./LivesNow";
+
 import Profile from "./Profile";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import {
@@ -22,8 +22,6 @@ import { useEffect, useState, useRef } from "react";
 import GameSchedule from "./GameSchedule";
 import GameArrange from "./GameArrange";
 
-import { GlobalStyle } from "../utils/StyleComponent";
-
 const NavBar = styled.div`
   width: 100vw;
   height: 80px;
@@ -36,23 +34,8 @@ const NavBar = styled.div`
   }
 `;
 
-const Container = styled.div`
-  width: 70vw;
-  margin: auto;
-  margin-top: 5vw;
-`;
-
-const HeadContainer = styled.div`
-  width: 70vw;
-  display: flex;
-  border: 1px solid gray;
-  border-radius: 5px;
-  position: relative;
-`;
-
 const LinkComponet = styled(Link)`
   width: 7vw;
-  ${"" /* border: 1px solid gray; */}
   text-align: center;
   background-color: #212529;
   color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
@@ -75,6 +58,7 @@ function Nav() {
   const [everyLiveGames, setEveryLiveGames] = useState([]);
   const [pastGameRoutes, setPastGameRoutes] = useState();
   const [liveGameRoutes, setLiveGameRoutes] = useState();
+  const [comingGameRoutes, setComingGameRoutes] = useState();
   const liveGameName = useRef("none");
   let redirect = useNavigate();
 
@@ -93,13 +77,6 @@ function Nav() {
   useEffect(() => {
     monitorAuthState();
   }, [logStatus]);
-
-  // useEffect(() => {
-  //   if (logStatus) {
-  //     console.log("111111");
-  //     redirect("/profile");
-  //   }
-  // }, [logFirstTime]);
 
   const logout = async () => {
     await signOut(auth);
@@ -126,13 +103,36 @@ function Nav() {
     });
   }
 
+  async function loadingDataLive() {
+    let data = {};
+    let gameIds = [];
+    const querySnapshot = await getDocs(collection(db, "live_game"));
+    querySnapshot.forEach((doc) => {
+      data[doc.id] = doc.data();
+      gameIds.push(doc.id);
+    });
+    setLiveGameRoutes(gameIds);
+  }
+
+  async function loadingDataPast() {
+    let data = {};
+    let gameIds = [];
+    const querySnapshot = await getDocs(collection(db, "past_data"));
+    querySnapshot.forEach((doc) => {
+      data[doc.id] = doc.data();
+      gameIds.push(doc.id);
+    });
+    setPastGameRoutes(gameIds);
+  }
+
   useEffect(() => {
     loadGames();
+    loadingDataLive();
+    loadingDataPast();
   }, []);
 
   return (
     <>
-      <GlobalStyle />
       <NavBar>
         <LinkComponet
           $focus={navActive === -1}
@@ -152,26 +152,7 @@ function Nav() {
         <span> | </span>
         {/* <LinkComponet to="/test">Test</LinkComponet>
         <span> | </span> */}
-        <LinkComponet
-          $focus={navActive === 1}
-          onClick={() => {
-            setNavActive(1);
-          }}
-          to="/game-data"
-        >
-          GameData
-        </LinkComponet>
-        <span> | </span>
-        <LinkComponet
-          $focus={navActive === 2}
-          onClick={() => {
-            setNavActive(2);
-          }}
-          to="/live-room"
-        >
-          LiveRoom
-        </LinkComponet>
-        <span> | </span>
+
         <LinkComponet
           $focus={navActive === 3}
           onClick={() => {
@@ -194,8 +175,38 @@ function Nav() {
       </NavBar>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/test" element={<Test />} />
+        <Route
+          path="/"
+          element={<Home setComingGameRoutes={setComingGameRoutes} />}
+        >
+          {liveGameRoutes?.map((gameName, index) => (
+            <Route
+              ley={index}
+              path={`live-now/${gameName}`}
+              element={
+                <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
+              }
+            />
+          ))}
+          {pastGameRoutes?.map((gameName, index) => (
+            <Route
+              key={index}
+              path={`past-game/${gameName}`}
+              element={<PastGame gameName={gameName} />}
+            />
+          ))}
+          {comingGameRoutes?.map((gameName, index) => (
+            <Route
+              key={index}
+              path={`coming-soon/${gameName}`}
+              element={
+                <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
+              }
+            />
+          ))}
+        </Route>
+
+        {/* <Route path="/test" element={<Test />} /> */}
 
         <Route
           path="/record"
@@ -207,42 +218,9 @@ function Nav() {
             />
           }
         />
-        <Route
-          path="/game-data"
-          element={
-            <GameData
-              pastGameRoutes={pastGameRoutes}
-              setPastGameRoutes={setPastGameRoutes}
-            />
-          }
-        >
-          {pastGameRoutes?.map((gameName, index) => (
-            <Route
-              key={index}
-              path={`${gameName}`}
-              element={<PastGame gameName={gameName} />}
-            />
-          ))}
-        </Route>
 
-        <Route
-          path="/live-room"
-          element={
-            <LivesNow
-              liveGameRoutes={liveGameRoutes}
-              setLiveGameRoutes={setLiveGameRoutes}
-            />
-          }
-        >
-          {liveGameRoutes?.map((gameName, index) => (
-            <Route
-              ley={index}
-              path={`${gameName}`}
-              element={<LiveRoom gameName={gameName} />}
-            />
-          ))}
-        </Route>
         <Route path="/profile" element={<Profile userId={userId} />}>
+          <Route path="member-file" element={<MemberFile />} />
           <Route path="game-schedule" element={<GameSchedule />} />
           <Route path="game-arrange" element={<GameArrange />} />
           <Route path="team-inf" element={<TeamInf userId={userId} />} />

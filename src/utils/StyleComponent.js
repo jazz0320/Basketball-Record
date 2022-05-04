@@ -1,5 +1,46 @@
 import styled, { createGlobalStyle } from "styled-components";
 
+//General
+const GeneralDiv = styled.div`
+  cursor: ${(props) => props.cursor};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  display: ${(props) => props.display};
+  flex-wrap: ${(props) => props.flexWrap};
+  align-items: ${(props) => props.alignItems};
+  justify-content: ${(props) => props.justifyContent};
+  margin: ${(props) => props.margin};
+  margin-top: ${(props) => props.marginTop};
+  margin-bottom: ${(props) => props.marginBottom};
+  margin-right: ${(props) => props.marginRight};
+  margin-left: ${(props) => props.marginLeft};
+  padding: ${(props) => props.padding};
+  background-color: ${(props) => props.backgroundColor};
+  color: ${(props) => props.color};
+  font-size: ${(props) => props.fontSize};
+  border: ${(props) => props.border};
+  border-radius: ${(props) => props.borderRadius};
+  background-image: ${(props) => props.backgroundImage};
+  background-size: ${(props) => props.backgroundSize};
+  text-align: ${(props) => props.textAling};
+`;
+
+const GeneralButton = styled.button`
+  border-radius: ${(props) => props.borderRadius};
+  cursor: ${(props) => props.cursor};
+  color: ${(props) => props.color};
+  display: ${(props) => props.display};
+  padding: ${(props) => props.padding};
+  background-color: ${(props) => props.backgroundColor};
+  &:hover {
+    background-color: ${(props) => props.hoverBackgroundColor};
+    color: ${(props) => props.hoverColor};
+  }
+`;
+
+export { GeneralDiv, GeneralButton };
+
+//Record Before Game
 const Div_Record = styled.div`
   display: fiexd;
 `;
@@ -12,6 +53,7 @@ const DivBeforeGameRecord = styled.div`
 
 const TeamBlock = styled.div`
   width: 50vw;
+  background-image: ${(props) => props.backgroundImage};
   /* border: 1px solid black; */
   height: calc(100vh - 110px);
 
@@ -88,7 +130,7 @@ const RegulationBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 16vh;
+  margin-top: 15vh;
 `;
 const RegulationBlockCell = styled.div`
   font-size: 44px;
@@ -114,13 +156,18 @@ const ButtonSubmit = styled.button`
   color: hsla(150, 14%, 97%, 1);
   cursor: pointer;
   outline: none;
-  font-size: 2rem;
+  font-size: ${(props) => props.fontSize};
+  /* font-size: 2rem; */
   text-shadow: 0.1rem 0.1rem 0.5rem hsla(0, 0%, 0%, 0.5);
   letter-spacing: 0.1rem;
   border-radius: 0.5rem;
   user-select: none;
-  padding: 1.5rem 2rem;
-  margin: 1rem;
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  /* padding: 1rem 1.5rem; */
+  /* margin: 0 0.5rem; */
   transition: all 0.1s ease-in;
 
   ::-moz-focus-inner {
@@ -250,17 +297,3 @@ export {
   DivGameStartRecord,
   DivGameStart_Container,
 };
-
-//共用
-const GlobalStyle = createGlobalStyle`
-  * {
-    padding: 0;
-    margin: 0;
-    ${"" /* background: #f8f9fa; */}
-  }
-  body, html, #root {
-    height: 100%;
-    font-family: -apple-system, Ubuntu , BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;;
-  }
-`;
-export { GlobalStyle };

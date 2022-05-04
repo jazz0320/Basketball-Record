@@ -9,6 +9,7 @@ import {
   deleteDoc,
 } from "../utils/firebase";
 import {
+  GeneralDiv,
   Div_Record,
   DivBeforeGameRecord,
   TeamBlock,
@@ -1022,6 +1023,8 @@ function App(props) {
                 </SelectPlayer>
               </RegulationBlockCell>
               <ButtonSubmit
+                fontSize="2rem"
+                padding="1rem 1.5rem"
                 onClick={() => {
                   finishGameSetting();
                 }}
@@ -1030,7 +1033,7 @@ function App(props) {
               </ButtonSubmit>
             </RegulationBlock>
 
-            <TeamBlock style={{ backgroundImage: `url(${aTeamLogo})` }}>
+            <TeamBlock backgroundImage={`url(${aTeamLogo})`}>
               <TeamBlockDetail>
                 <TeamBlockDetailTeam>
                   <ButtonForChange
@@ -1161,7 +1164,7 @@ function App(props) {
                 </TeamBlockDetailPlayer>
               </TeamBlockDetail>
             </TeamBlock>
-            <TeamBlock style={{ backgroundImage: `url(${bTeamLogo})` }}>
+            <TeamBlock backgroundImage={`url(${bTeamLogo})`}>
               <TeamBlockDetail>
                 <TeamBlockDetailTeam>
                   <ButtonForChange
@@ -1302,29 +1305,25 @@ function App(props) {
               />
             ) : null}
             <DivGameStart_Container>
-              <div
-                style={{
-                  marginTop: "10px",
-                  display: "flex",
-                  justifyContent: "space-around",
-                  width: "100%",
-                  marginBottom: "10px",
-                }}
+              <GeneralDiv
+                marginTop="10px"
+                display="flex"
+                justifyContent="space-around"
+                width="100%"
+                marginBottom="10px"
               >
-                <div
-                  style={{
-                    margin: "0 1vh 0 3vh",
-                    backgroundSize: "cover",
-                    height: "170px",
-                    width: "170px",
-                    backgroundImage: `url(${aTeamLogo})`,
-                  }}
-                ></div>
-                <div
-                  className="flex justify-between flex-wrap"
-                  style={{
-                    width: "70vh",
-                  }}
+                <GeneralDiv
+                  margin="0 1vh 0 3vh"
+                  backgroundSize="cover"
+                  height="170px"
+                  width="170px"
+                  backgroundImage={`url(${aTeamLogo})`}
+                />
+                <GeneralDiv
+                  display="flex"
+                  justifyContent="space-between"
+                  flexWrap="wrap"
+                  width="70vh"
                 >
                   <div className="w-5/12 flex justify-center">
                     <Clock
@@ -1343,12 +1342,9 @@ function App(props) {
                     />
                   </div>
                   <ButtonSubmit
-                    style={{
-                      fontSize: "1rem",
-                      padding: "0.5rem 1rem",
-                      marginLeft: "5px",
-                      marginRight: "5px",
-                    }}
+                    fontSize="1rem"
+                    padding="0.5rem 1rem"
+                    margin=" 0 5px"
                     onClick={() => {
                       if (
                         aTeamData[quarter.length]["pts"] ===
@@ -1458,17 +1454,15 @@ function App(props) {
                       <div>{playerActions.actionNumber}</div>
                     )}
                   </LiveActionBolck>
-                </div>
-                <div
-                  style={{
-                    margin: "0 3vh 0 1vh",
-                    backgroundSize: "cover",
-                    height: "170px",
-                    width: "170px",
-                    backgroundImage: `url(${bTeamLogo})`,
-                  }}
-                ></div>
-              </div>
+                </GeneralDiv>
+                <GeneralDiv
+                  margin="0 3vh 0 1vh"
+                  backgroundSize="cover"
+                  height="170px"
+                  width="170px"
+                  backgroundImage={`url(${bTeamLogo})`}
+                />
+              </GeneralDiv>
 
               <GroundContainer>
                 <TeamBox
@@ -1535,11 +1529,7 @@ function TeamBox(props) {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="team">
         {(provided) => (
-          <TeamOnTheGround
-            // style={{ display: "flex" }}
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
+          <TeamOnTheGround {...provided.droppableProps} ref={provided.innerRef}>
             {props.teamPlayers &&
               props.teamPlayers.map((player, index) => (
                 <Draggable
@@ -1555,14 +1545,12 @@ function TeamBox(props) {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <div
-                        style={{
-                          backgroundSize: "cover",
-                          height: "120px",
-                          width: "150px",
-                          backgroundImage: `url(${player.pic})`,
-                        }}
-                      ></div>
+                      <GeneralDiv
+                        backgroundSize="cover"
+                        height="120px"
+                        width="150px"
+                        backgroundImage={`url(${player.pic})`}
+                      />
                       {player.id}
                     </div>
                   )}
@@ -1583,13 +1571,18 @@ const PopupEndGameBlock = function (props) {
       <br />
       <div>
         <ButtonSubmit
-          style={{ width: "120px", height: "80px", fontSize: "24px" }}
+          width="120px"
+          height="80px"
+          fontSize="24px"
+          margin="0 10px 0 0"
           onClick={props.endGame}
         >
           Yes
         </ButtonSubmit>
         <ButtonSubmit
-          style={{ width: "120px", height: "80px", fontSize: "24px" }}
+          width="120px"
+          height="80px"
+          fontSize="24px"
           onClick={() => props.setWantToCloseGame(false)}
         >
           No

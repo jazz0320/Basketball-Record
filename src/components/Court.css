@@ -6,9 +6,6 @@ svg {
   height: 70vh;
 }
 
-/* #myObj {
-  pointer-events: auto;
-} */
 canvas {
   height: 70vh;
   width: 70vh;
@@ -29,11 +26,6 @@ path {
 rect {
   cursor: pointer;
 }
-
-/* path:hover {
-  fill: #b99362;
-  transform: translate(-5px, -5px);
-} */
 
 .title_area {
   position: absolute;

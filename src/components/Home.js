@@ -1,17 +1,21 @@
 import { getDoc, doc, getDocs, collection, db } from "../utils/firebase";
 import { useEffect, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 
-function Home() {
+function Home(props) {
   const [gameList, setGameList] = useState([]);
   const [gameListName, setGameListName] = useState([]);
   const [gameTime, setGameTime] = useState([]);
   const [gameTimeCount, setGameTimeCount] = useState({});
   const [weekday, setWeekday] = useState({});
-
+  let comingGame = [];
   async function loadSchedule() {
     const querySnapshot = await getDocs(collection(db, "game_schedule"));
     querySnapshot.forEach((doc) => {
+      if (doc.data().gameStatus === "coming") {
+        comingGame.push(doc.id);
+      }
       setGameListName((pre) => [...pre, doc.id]);
       setGameList((pre) => [...pre, { [`${doc.id}`]: doc.data() }]);
       setWeekday((pre) => ({
@@ -19,6 +23,7 @@ function Home() {
         [`${doc.id.slice(0, 10)}`]: doc.data().time_day,
       }));
     });
+    props.setComingGameRoutes(comingGame);
   }
 
   useEffect(() => {
@@ -37,7 +42,22 @@ function Home() {
     //   });
     // });
     // console.log("aaa", unsub);
+
+    // gameList.filter(=>)
   }, []);
+
+  // useEffect(() => {
+  //   let comingGame = [];
+  //   for (let i = 0; i < gameListName.length; i++) {
+  //     console.log("bbb", gameList[gameListName[i]]);
+  //     if (gameList[gameListName[i]].gameStatus === "coming") {
+  //       comingGame.push(gameListName[i]);
+  //       console.log(gameListName[i]);
+  //     }
+  //   }
+  //   props.setComingGameRoutes(comingGame);
+  //   console.log("aaa");
+  // }, [gameListName]);
 
   useEffect(() => {
     let a = gameListName.map((game) => game.slice(0, 10));
@@ -72,11 +92,20 @@ function Home() {
             {gameList?.map((game) =>
               Object.keys(game)[0].slice(0, 10) === time ? (
                 <div key={Object.keys(game)}>
-                  {/* {console.log("aaa", game[Object.keys(game)[0]])} */}
+                  {/* {console.log("ggg", game)} */}
+                  {/* {console.log("aaa", Object.keys(game)[0])} */}
                   {game[Object.keys(game)[0]].gameStatus === "coming" ? (
-                    <BoxComing data={game[Object.keys(game)[0]]} />
+                    <Link to={`coming-soon/${Object.keys(game)[0]}`} key={game}>
+                      <BoxComing data={game[Object.keys(game)[0]]} />
+                    </Link>
+                  ) : game[Object.keys(game)[0]].gameStatus === "live" ? (
+                    <Link to={`live-now/${Object.keys(game)[0]}`} key={game}>
+                      <BoxEnd data={game[Object.keys(game)[0]]} />
+                    </Link>
                   ) : (
-                    <BoxEnd data={game[Object.keys(game)[0]]} />
+                    <Link to={`past-game/${Object.keys(game)[0]}`} key={game}>
+                      <BoxEnd data={game[Object.keys(game)[0]]} />
+                    </Link>
                   )}
                 </div>
               ) : null
@@ -84,6 +113,7 @@ function Home() {
           </div>
         ))}
       </CarousellContainer>
+      <Outlet />
     </>
   );
 }

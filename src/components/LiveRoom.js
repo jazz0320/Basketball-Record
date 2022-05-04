@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { collection, doc, onSnapshot, db } from "../utils/firebase";
+import { doc, onSnapshot, db } from "../utils/firebase";
+import { GeneralDiv, GeneralButton } from "../utils/StyleComponent";
 import "./LiveRoom.css";
 
 function LiveRoom(props) {
@@ -18,41 +19,31 @@ function LiveRoom(props) {
   const [watchBox, setWatchBox] = useState("livestream");
 
   useEffect(() => {
-    const unsub = onSnapshot(
-      doc(db, "live_game", `${props.gameName}`),
-      (doc) => {
-        console.log("Current data: ", doc.data().A_team_data);
-        setLiveAction(doc.data().live_action);
-        setQuarter(doc.data().quarter);
-        setATeam(doc.data().A_team);
-        setATeamLogo(doc.data().A_team_logo);
-        setATeamPlayers(doc.data().A_team_player);
-        setBTeamPlayers(doc.data().B_team_player);
-        setATeamData(doc.data().A_team_data);
-        setBTeam(doc.data().B_team);
-        setBTeamLogo(doc.data().B_team_logo);
-        setBTeamData(doc.data().B_team_data);
-        setFinishSetting(doc.data().finishSetting);
-        setEndGame(doc.data().endGame);
-      }
-    );
+    if (props.liveGameRoutes.includes(props.gameName)) {
+      const unsub = onSnapshot(
+        doc(db, "live_game", `${props.gameName}`),
+        (doc) => {
+          console.log("Current data: ", doc.data().A_team_data);
+          setLiveAction(doc.data().live_action);
+          setQuarter(doc.data().quarter);
+          setATeam(doc.data().A_team);
+          setATeamLogo(doc.data().A_team_logo);
+          setATeamPlayers(doc.data().A_team_player);
+          setBTeamPlayers(doc.data().B_team_player);
+          setATeamData(doc.data().A_team_data);
+          setBTeam(doc.data().B_team);
+          setBTeamLogo(doc.data().B_team_logo);
+          setBTeamData(doc.data().B_team_data);
+          setFinishSetting(doc.data().finishSetting);
+          setEndGame(doc.data().endGame);
+        }
+      );
+    } else {
+      alert("比賽即將到來，敬請期待");
+    }
+
     // unsub();
   }, [props.gameName]);
-
-  const data = [
-    {
-      name: "Nike",
-      value: 90,
-    },
-    {
-      name: "Adidas",
-      value: 60,
-    },
-    {
-      name: "New Balance",
-      value: 114,
-    },
-  ];
 
   return (
     <>
@@ -207,7 +198,6 @@ function LiveRoom(props) {
               {watchBox === "teamdata" ? (
                 <div>
                   <TeamData
-                    data={data}
                     quarter={quarter}
                     aTeamData={aTeamData}
                     bTeamData={bTeamData}
@@ -559,7 +549,7 @@ function TeamData(props) {
 
   return (
     <>
-      <div>
+      <div className="flex justify-center">
         {props.quarter &&
           props.quarter.map((q, index) => (
             <span
@@ -592,71 +582,171 @@ function TeamData(props) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          overflow: "scroll",
         }}
       >
+        {/* <div
+          className="flex justify-center"
+          style={{ width: "60vw", border: "1px solid black" }}
+        > */}
         <div
+          className="mt-3"
           style={{
-            display: "flex",
+            border: "1px solid black",
+            padding: "0.5vh 0",
           }}
         >
-          <div className="mt-5">
-            {barData
-              ? dataKeys?.map((item, index) => (
+          {console.log("bbb", barData)}
+          {barData
+            ? dataKeys?.map((item, index) =>
+                (item !== "fgRate") &
+                (item !== "ftRate") &
+                (item !== "threePtRate") ? (
                   <Bar
                     widthA={barData[item]["A"]}
                     widthB={barData[item]["B"]}
                     label={item}
                     key={index}
                   />
-                ))
-              : null}
-          </div>
+                ) : (
+                  <BarPercent
+                    widthA={barData[item]["A"]}
+                    widthB={barData[item]["B"]}
+                    label={item}
+                    key={index}
+                  />
+                )
+              )
+            : null}
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 }
 
 function Bar(props) {
   return (
-    <div className="mb-3">
+    <div className="" style={{ marginBottom: "0.75vh" }}>
       <div
         style={{
           display: "flex",
-          maxWidth: "300px",
+          maxWidth: "90vw",
         }}
       >
         <div
-          className="mr-2"
-          style={{
-            width: `${props.widthA}px`,
-            height: "12px",
-            backgroundColor: "silver",
-          }}
-        />
+          className="flex items-center justify-center"
+          style={{ width: "60px" }}
+        >
+          {props.widthA}
+        </div>
         <div
-          className="bg-coolors_2"
-          style={{ height: "25px", width: "120px", textAlign: "center" }}
+          className="flex justify-end mr-2"
+          style={{
+            border: "1px solid red",
+            width: "25vw",
+          }}
+        >
+          <div
+            className=""
+            style={{
+              width: `${props.widthA}%`,
+              height: "2.7vh",
+              backgroundColor: "silver",
+            }}
+          />
+        </div>
+        <div
+          style={{ height: "2.7vh", width: "100px" }}
+          className="bg-coolors_2 items-center flex justify-center"
         >
           {props.label}
         </div>
         <div
-          className="ml-2"
+          className="ml-2 "
           style={{
-            width: `${props.widthB}px`,
-            height: "12px",
-            backgroundColor: "silver",
+            border: "1px solid blue",
+            width: "25vw",
           }}
-        />
+        >
+          <div
+            style={{
+              width: `${props.widthB}%`,
+              height: "2.7vh",
+              backgroundColor: "silver",
+            }}
+          />
+        </div>
+        <div
+          className="flex items-center justify-center"
+          style={{ width: "60px" }}
+        >
+          {props.widthB}
+        </div>
       </div>
     </div>
   );
 }
 
-{
-  /* <Bar
-  width={Object.values(barData[item])}
-  widthB={barData[item].B}
-  key={index}
-/>; */
+function BarPercent(props) {
+  return (
+    <div className="" style={{ marginBottom: "0.75vh" }}>
+      <div
+        style={{
+          display: "flex",
+          maxWidth: "90vw",
+        }}
+      >
+        <div
+          className="flex items-center justify-center"
+          style={{ width: "60px" }}
+        >
+          {props.widthA * 100}%
+        </div>
+        <div
+          className="flex justify-end mr-2"
+          style={{
+            border: "1px solid red",
+            width: "25vw",
+          }}
+        >
+          <div
+            className=""
+            style={{
+              width: `${props.widthA * 100}%`,
+              height: "2.7vh",
+              backgroundColor: "silver",
+            }}
+          />
+        </div>
+        <div
+          style={{ height: "2.7vh", width: "100px" }}
+          className="bg-coolors_2 items-center flex justify-center"
+        >
+          {props.label}
+        </div>
+        <div
+          className="ml-2 "
+          style={{
+            border: "1px solid blue",
+            width: "25vw",
+          }}
+        >
+          <div
+            style={{
+              width: `${props.widthB * 100}%`,
+              height: "2.7vh",
+              backgroundColor: "silver",
+            }}
+          />
+        </div>
+        <div
+          className="flex items-center justify-center"
+          style={{ width: "60px" }}
+        >
+          {props.widthB * 100}%
+        </div>
+      </div>
+    </div>
+  );
 }
