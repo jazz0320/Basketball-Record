@@ -181,7 +181,7 @@ function Nav() {
         >
           {liveGameRoutes?.map((gameName, index) => (
             <Route
-              ley={index}
+              key={index}
               path={`live-now/${gameName}`}
               element={
                 <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />

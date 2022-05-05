@@ -83,7 +83,27 @@ function Court(props) {
         //   style="enable-background:new 0 0 555 555;"
         xmlSpace="preserve"
       >
+        <defs>
+          <pattern
+            id="img1"
+            patternUnits="userSpaceOnUse"
+            width="250"
+            height="100%"
+          >
+            <image
+              xlinkHref="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fbasketball-floor.jpeg?alt=media&token=952a1355-3f13-4697-8f89-00819d4b247e"
+              x="0"
+              y="0"
+              width="70%"
+              height="100%"
+            />
+          </pattern>
+        </defs>
+
         <g>
+          <defs>
+            <rect id="SVGID_1_" x="168.6" y="102" width="241" height="59.9" />
+          </defs>
           <path
             onClick={() => {
               locationInf("中場半圓", 2);

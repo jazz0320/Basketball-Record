@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import "./ex.css";
 import {
   storage,
   ref,
@@ -9,14 +10,42 @@ import {
   db,
   getDoc,
 } from "../utils/firebase";
-import "./TeamInf.css";
 import styled from "styled-components";
+import {
+  PopupDiv,
+  ButtonSubmit,
+  GeneralDiv,
+  GeneralImg,
+  GeneralInput,
+  GeneralButton,
+} from "../utils/StyleComponent";
 
 const PlayerChangeBlock = styled.div`
-  display: ${(props) => (props.$focus ? "none" : "block")};
+  width: 25vw;
+  height: 250px;
+  display: flex;
+  padding: 0.5vh 0.5vw;
+  border: 1px solid #adb5bd;
+  display: ${(props) => (props.$focus ? "none" : "flex")};
 `;
 const PlayerButton = styled.button`
+  border-radius: 5px;
+  border: #495057 1px solid;
+  padding: 5px 10px;
+  margin: ${(props) => props.margin};
+  &:hover {
+    background-color: #e9ecef;
+  }
+  &:active {
+    back-groundcolor: #495057;
+    color: #f8f9fa;
+  }
   display: ${(props) => (props.$check ? "none" : "block")};
+`;
+const UserInput = styled.input`
+  border: 1px solid #adb5bd;
+  padding: 2px 4px;
+  font-size: {(props)=>props.fontSize};
 `;
 
 function TeamInf(props) {
@@ -143,75 +172,198 @@ function TeamInf(props) {
       {memberTeamExist ? (
         <ExistTeam memberTeamExist={memberTeamExist} userId={props.userId} />
       ) : (
-        <div>
-          <div>
+        <GeneralDiv position="relative" height="50vh">
+          <GeneralDiv fontSize="28px" marginBottom="0.5vh">
             球隊名稱{" "}
-            <input
+            <UserInput
               value={team.current}
               onChange={(e) => {
                 teamName.current = e.target.value;
               }}
-            ></input>
-          </div>
-          {props.userId}
-          <div>
-            {imgSrc.logoPic ? <img src={imgSrc.logoPic}></img> : null}
-            球隊Logo<input type="file" name="logoPic" onChange={upload}></input>
-          </div>
-          <div>
-            {imgSrc["teamRelated1"] ? (
-              <img src={imgSrc.teamRelated1}></img>
-            ) : null}
-            球隊相關照片
+            />
+          </GeneralDiv>
+          <GeneralDiv display="flex" alignItems="end">
+            <GeneralDiv marginBottom="0.5vh">
+              <GeneralDiv fontSize="28px" marginBottom="0.3vh">
+                球隊Logo
+              </GeneralDiv>
+              <GeneralDiv
+                margin="0 0.5vw 0 1vw"
+                border="1px solid #ced4da"
+                height="205px"
+                width="205px"
+              >
+                {imgSrc.logoPic ? (
+                  <GeneralImg
+                    height="200px"
+                    width="200px"
+                    src={imgSrc.logoPic}
+                  />
+                ) : (
+                  <GeneralImg
+                    height="200px"
+                    width="200px"
+                    src={
+                      "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fpic2.png?alt=media&token=71104548-b3f0-4d35-bd3b-fbd0a81912c3"
+                    }
+                  />
+                )}
+              </GeneralDiv>
+            </GeneralDiv>
+            <input type="file" name="logoPic" onChange={upload}></input>
+          </GeneralDiv>
+          <GeneralDiv display="flex" alignItems="end" marginBottom="0.5vh">
+            <GeneralDiv>
+              <GeneralDiv fontSize="28px" marginBottom="0.3vh">
+                {" "}
+                球隊相關照片
+              </GeneralDiv>
+              <GeneralDiv
+                margin="0 0.5vw 0 1vw"
+                border="1px solid #ced4da"
+                height="205px"
+                width="205px"
+              >
+                {imgSrc["teamRelated1"] ? (
+                  <GeneralImg
+                    height="200px"
+                    width="200px"
+                    src={imgSrc.teamRelated1}
+                  ></GeneralImg>
+                ) : (
+                  <GeneralImg
+                    height="200px"
+                    width="200px"
+                    src={
+                      "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fpic1.png?alt=media&token=2f5d86b4-5f5c-4283-b05d-2254b86264d7"
+                    }
+                  ></GeneralImg>
+                )}
+              </GeneralDiv>
+            </GeneralDiv>
+
             <input type="file" name="teamRelated1" onChange={upload}></input>
-          </div>
-          <div></div>
+          </GeneralDiv>
+
           <div>
-            球員登錄
-            {teamMemberNumbers.map((_, index) => (
-              <div key={index} style={{ paddingLeft: "10px" }}>
-                球員{index + 1}
-                <div style={{ paddingLeft: "10px" }}>
-                  <div>
-                    名字{" "}
-                    <input
-                      name="playername"
-                      onChange={(e) => wirtePlayersInf(e, index)}
-                    ></input>
-                  </div>
-                  <div>
-                    綽號(球衣上的名字){" "}
-                    <input
-                      name="playerNicname"
-                      onChange={(e) => wirtePlayersInf(e, index)}
-                    ></input>
-                  </div>
-                  <div>
-                    背號{" "}
-                    <input
-                      name="playernum"
-                      onChange={(e) => wirtePlayersInf(e, index)}
-                    ></input>
-                  </div>
-                  <div>
-                    {imgSrc[`playerPic${index}`] ? (
-                      <img src={imgSrc[`playerPic${index}`]}></img>
-                    ) : null}
-                    球員正面照
-                    <input
-                      type="file"
-                      name={`playerPic${index}`}
-                      onChange={upload}
-                    ></input>
-                  </div>
-                  <button onClick={() => deletePlayer(index)}>移除球員</button>
-                </div>
-              </div>
-            ))}
-            <button onClick={addPlayer}>新增球員</button>
+            <GeneralDiv fontSize="28px" boxShadow="0" marginBottom="1vh">
+              球員登錄
+            </GeneralDiv>
+
+            <GeneralDiv display="flex" flexWrap="wrap">
+              {teamMemberNumbers.map((_, index) => (
+                <GeneralDiv
+                  width="25vw"
+                  margin=" 0 1vw 1vh 1vw"
+                  border="1px solid #ced4da"
+                  borderRadius="10px"
+                  padding="5px"
+                  key={index}
+                >
+                  <GeneralDiv fontSize="20px">球員{index + 1}</GeneralDiv>
+
+                  <GeneralDiv padding="10px" display="flex" height="250px">
+                    <GeneralDiv
+                      border="1px solid #E9ECEF"
+                      height="205px"
+                      width="205px"
+                      marginRight="0.5vw"
+                      marginBottom="5px"
+                    >
+                      {imgSrc[`playerPic${index}`] ? (
+                        <GeneralImg
+                          height="200px"
+                          width="200px"
+                          src={imgSrc[`playerPic${index}`]}
+                        />
+                      ) : (
+                        <GeneralImg
+                          height="200px"
+                          width="200px"
+                          src={
+                            "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fperson.png?alt=media&token=ee15ed01-e153-41d6-a8a1-ed0528073690"
+                          }
+                        />
+                      )}
+
+                      <input
+                        type="file"
+                        name={`playerPic${index}`}
+                        onChange={upload}
+                      ></input>
+                    </GeneralDiv>
+                    <GeneralDiv
+                      display="flex"
+                      justifyContent="center"
+                      flexWrap="wrap"
+                      alignItems="start"
+                    >
+                      <GeneralDiv marginBottom="5px">
+                        名字{" "}
+                        <UserInput
+                          name="playername"
+                          onChange={(e) => wirtePlayersInf(e, index)}
+                        />
+                      </GeneralDiv>
+                      <GeneralDiv marginBottom="5px">
+                        綽號{" "}
+                        <UserInput
+                          name="playerNicname"
+                          onChange={(e) => wirtePlayersInf(e, index)}
+                        />
+                      </GeneralDiv>
+                      <GeneralDiv marginBottom="5px">
+                        背號{" "}
+                        <UserInput
+                          name="playernum"
+                          onChange={(e) => wirtePlayersInf(e, index)}
+                        />
+                      </GeneralDiv>
+                      <GeneralButton
+                        border="#495057 1px solid"
+                        padding="5px 10px"
+                        fontSize="18px"
+                        hoverBackgroundColor="#E9ECEF"
+                        activeBackgroundColor="#495057"
+                        activeColor="#F8F9FA"
+                        onClick={() => deletePlayer(index)}
+                      >
+                        移除球員
+                      </GeneralButton>
+                    </GeneralDiv>
+                  </GeneralDiv>
+                </GeneralDiv>
+              ))}
+
+              <GeneralButton
+                width="25vw"
+                margin=" 0 1vw 1vh 1vw"
+                border="1px solid #ced4da"
+                borderRadius="10px"
+                padding="5px"
+                onClick={addPlayer}
+                fontSize="40px"
+                hoverBackgroundColor="#E9ECEF"
+                activeBackgroundColor="#495057"
+                activeColor="#F8F9FA"
+                hoverFontSize="50px"
+              >
+                <i className="fa-solid fa-plus"></i>
+              </GeneralButton>
+            </GeneralDiv>
           </div>
-          <button onClick={submitTeamInf}>送出</button>
-        </div>
+          <ButtonSubmit
+            padding="10px"
+            width="100px"
+            margin="10px"
+            position="absolute"
+            onClick={submitTeamInf}
+            right="60px"
+            bottom="150px"
+          >
+            送出
+          </ButtonSubmit>
+        </GeneralDiv>
       )}
     </>
   );
@@ -283,43 +435,119 @@ function ExistTeam(props) {
 
   return (
     <>
-      <div>隊伍已存在</div>
+      <GeneralDiv fontSize="40px">隊名: {props.memberTeamExist}</GeneralDiv>
       {checkDelete ? (
-        <div>
-          確認刪除？
-          <button
-            onClick={() => {
-              setCheckDelete(false);
-              deletePlayer(deletePlayerIndex);
-            }}
+        <PopupDiv
+          position="fixed"
+          fontSize="28px"
+          height="10vh"
+          width="20vw"
+          flexWrap="wrap"
+          border="1px #adb5bd solid "
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <GeneralDiv
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="15vw"
+            fontSize="28px"
           >
-            確認
-          </button>
-          <button onClick={() => setCheckDelete(false)}>取消</button>
-        </div>
+            確認刪除？
+          </GeneralDiv>
+          <GeneralDiv
+            display="flex"
+            justifyContent="space-around"
+            alignItems="center"
+            width="10vw"
+            display="flex"
+          >
+            <PlayerButton
+              onClick={() => {
+                setCheckDelete(false);
+                deletePlayer(deletePlayerIndex);
+              }}
+            >
+              確認
+            </PlayerButton>
+            <PlayerButton onClick={() => setCheckDelete(false)}>
+              取消
+            </PlayerButton>
+          </GeneralDiv>
+        </PopupDiv>
       ) : null}
 
       <div>
-        <img src={teamLogo}></img>
+        <GeneralImg height="200px" width="200px" src={teamLogo} />
         <input type="file" name="logo" onChange={(e) => upload(e)}></input>
       </div>
       <div>
-        <img src={teamPics}></img>
+        <GeneralImg height="200px" width="200px" src={teamPics} />
         <input type="file" name="team_pic" onChange={(e) => upload(e)}></input>
       </div>
-      <div>
+      <GeneralDiv display="flex" flexWrap="wrap">
         {teamPlayers?.map((player, index) => (
-          <div>
+          <GeneralDiv
+            width="26vw"
+            margin=" 0 1vw 1vh 1vw"
+            border="1px solid #ced4da"
+            borderRadius="10px"
+            padding="5px"
+            key={index}
+          >
+            <GeneralDiv fontSize="20px">球員{index + 1}</GeneralDiv>
             <PlayerChangeBlock $focus={revisePlayer === index}>
-              <div>名字:{player.name}</div>
-              <div>
-                背號:
-                {player.num}
-              </div>
-              <div>
-                照片:
-                <img src={player.pic}></img>
-              </div>
+              <GeneralDiv
+                border="1px solid #E9ECEF"
+                height="205px"
+                width="205px"
+                marginRight="0.5vw"
+                marginBottom="5px"
+              >
+                <GeneralImg height="200px" width="200px" src={player.pic} />
+              </GeneralDiv>
+              <GeneralDiv
+                width="12vw"
+                display="flex"
+                padding="10px"
+                // justifyContent="center"
+                flexWrap="wrap"
+                alignItems="start"
+              >
+                <GeneralDiv fontSize="20px" marginBottom="5px" width="10vw">
+                  名字:{player.name}
+                </GeneralDiv>
+                <GeneralDiv fontSize="20px" marginBottom="5px" width="10vw">
+                  背號:
+                  {player.num}
+                </GeneralDiv>
+                <GeneralDiv
+                  width="10vw"
+                  display="flex"
+                  padding="2px 10px"
+                  justifyContent="space-between"
+                >
+                  <PlayerButton
+                    $check={revisePlayer === index}
+                    onClick={() => {
+                      setRevisePlayer(index);
+                    }}
+                  >
+                    修改
+                  </PlayerButton>
+                  <PlayerButton
+                    $check={revisePlayer === index}
+                    onClick={() => {
+                      setCheckDelete(true);
+                      setDeletePlayerIndex(index);
+                    }}
+                  >
+                    移除球員
+                  </PlayerButton>
+                </GeneralDiv>
+              </GeneralDiv>
             </PlayerChangeBlock>
             <PlayerChangeBlock $focus={revisePlayer !== index}>
               <ModifyPlayer
@@ -332,26 +560,9 @@ function ExistTeam(props) {
                 memberTeamExist={props.memberTeamExist}
               />
             </PlayerChangeBlock>
-            <PlayerButton
-              $check={revisePlayer === index}
-              onClick={() => {
-                setRevisePlayer(index);
-              }}
-            >
-              修改
-            </PlayerButton>
-            <PlayerButton
-              $check={revisePlayer === index}
-              onClick={() => {
-                setCheckDelete(true);
-                setDeletePlayerIndex(index);
-              }}
-            >
-              移除球員
-            </PlayerButton>
-          </div>
+          </GeneralDiv>
         ))}
-      </div>
+      </GeneralDiv>
     </>
   );
 }
@@ -409,30 +620,49 @@ function ModifyPlayer(props) {
     );
   };
   return (
-    <div>
-      <div>
-        名字:
-        <input
-          name="name"
-          value={newPlayer.name}
-          onChange={(e) => writePlayers(e)}
-        ></input>
-      </div>
-      <div>
-        背號:
-        <input
-          name="num"
-          value={newPlayer.num}
-          onChange={(e) => writePlayers(e)}
-        />
-      </div>
-      <div>
-        照片:
-        <img src={newPlayer.pic}></img>
+    <>
+      <GeneralDiv width="200px">
+        <GeneralImg
+          height="200px"
+          width="200px"
+          src={newPlayer.pic}
+        ></GeneralImg>
         <input type="file" name="pic" onChange={(e) => writePlayers(e)}></input>
-      </div>
-      <button onClick={submitCorrection}>確認修改</button>
-    </div>
+      </GeneralDiv>
+      <GeneralDiv
+        width="12vw"
+        display="flex"
+        padding="10px"
+        // justifyContent="center"
+        flexWrap="wrap"
+        alignItems="start"
+      >
+        <GeneralDiv width="11vw">
+          名字:
+          <UserInput
+            name="name"
+            value={newPlayer.name}
+            onChange={(e) => writePlayers(e)}
+          />
+        </GeneralDiv>
+        <GeneralDiv width="11vw">
+          背號:
+          <UserInput
+            name="num"
+            value={newPlayer.num}
+            onChange={(e) => writePlayers(e)}
+          />
+        </GeneralDiv>
+        <GeneralDiv
+          width="10vw"
+          display="flex"
+          padding="2px 10px"
+          justifyContent="center"
+        >
+          <PlayerButton onClick={submitCorrection}>確認修改</PlayerButton>
+        </GeneralDiv>
+      </GeneralDiv>
+    </>
   );
 }
 

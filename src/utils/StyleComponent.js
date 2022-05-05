@@ -2,6 +2,8 @@ import styled, { createGlobalStyle } from "styled-components";
 
 //General
 const GeneralDiv = styled.div`
+  overflow-y: ${(props) => props.overflowY};
+  box-shadow: ${(props) => props.boxShadow};
   cursor: ${(props) => props.cursor};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
@@ -26,19 +28,45 @@ const GeneralDiv = styled.div`
 `;
 
 const GeneralButton = styled.button`
+  margin: ${(props) => props.margin};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  border: ${(props) => props.border};
   border-radius: ${(props) => props.borderRadius};
   cursor: ${(props) => props.cursor};
   color: ${(props) => props.color};
   display: ${(props) => props.display};
   padding: ${(props) => props.padding};
+  font-size: ${(props) => props.fontSize};
   background-color: ${(props) => props.backgroundColor};
   &:hover {
     background-color: ${(props) => props.hoverBackgroundColor};
     color: ${(props) => props.hoverColor};
+    font-size: ${(props) => props.hoverFontSize};
+  }
+  &::active {
+    background-color: ${(props) => props.activeBackgroundColor};
+    color: ${(props) => props.activeColor};
   }
 `;
 
-export { GeneralDiv, GeneralButton };
+const GeneralImg = styled.img`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+`;
+
+const GeneralInput = styled.input`
+  border: ${(props) => props.border};
+  border-radius: ${(props) => props.borderRadius};
+  padding: ${(props) => props.padding};
+  ::placeholder {
+    color: ${(props) => props.placeholderColor};
+    font-size: ${(props) => props.placeholderFontSize};
+    font-style: ${(props) => props.placeholderStyle};
+  }
+`;
+
+export { GeneralDiv, GeneralButton, GeneralImg, GeneralInput };
 
 //Record Before Game
 const Div_Record = styled.div`
@@ -166,6 +194,10 @@ const ButtonSubmit = styled.button`
   margin: ${(props) => props.margin};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  position: ${(props) => props.position};
+  right: ${(props) => props.right};
+  bottom: ${(props) => props.bottom};
+
   /* padding: 1rem 1.5rem; */
   /* margin: 0 0.5rem; */
   transition: all 0.1s ease-in;
@@ -218,16 +250,15 @@ export {
 
 // 開始比賽
 const PopupDiv = styled.div`
-  padding-top: 1.5vw;
   position: fixed;
-  margin-top: 30vh;
-  margin-left: 40vw;
+  top: 30vh;
+  left: 40vw;
   background-color: #495057;
   height: 14vh;
   width: 20vw;
   z-index: 10;
   color: #f8f9fa;
-  font-size: 40px;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "40px")};
   display: flex;
   align-items: center;
   justify-content: center;

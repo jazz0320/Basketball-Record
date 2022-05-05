@@ -13,11 +13,12 @@ const SideBar = styled.div`
   flex-direction: column;
 `;
 const ContainDiv = styled.div`
-  margin: 20px;
+  overflow-y: scroll;
+  margin: 1vh 1vw;
   border: #ced4da 2px solid;
   border-radius: 10px;
-  padding: 20px;
-  height: 100%;
+  padding: 1vh 2vw;
+  height: calc(100vh - 220px);
   width: 80vw;
 `;
 
