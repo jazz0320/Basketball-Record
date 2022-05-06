@@ -13,6 +13,8 @@ import {
   Div_Record,
   DivBeforeGameRecord,
   TeamBlock,
+  TeamBlockLogo,
+  TeamBlockLogoBlur,
   RegulationBlock,
   TeamBlockDetail,
   TeamBlockDetailTeam,
@@ -1033,7 +1035,7 @@ function App(props) {
               </ButtonSubmit>
             </RegulationBlock>
 
-            <TeamBlock backgroundImage={`url(${aTeamLogo})`}>
+            <TeamBlock>
               <TeamBlockDetail>
                 <TeamBlockDetailTeam>
                   <ButtonForChange
@@ -1163,6 +1165,8 @@ function App(props) {
                   )}
                 </TeamBlockDetailPlayer>
               </TeamBlockDetail>
+
+              <TeamBlockLogo backgroundImage={`url(${aTeamLogo})`} />
             </TeamBlock>
             <TeamBlock backgroundImage={`url(${bTeamLogo})`}>
               <TeamBlockDetail>
@@ -1241,15 +1245,6 @@ function App(props) {
                           >
                             <i className="fa-solid fa-chevron-left carousel__btn_img_player"></i>
                           </ButtonForChange>
-                          {bTeamStartFive[index] !== "default" ? (
-                            <SelectPlayerImg
-                              style={{
-                                backgroundImage: `url(${bTeamPlayers[index].pic})`,
-                              }}
-                            />
-                          ) : (
-                            <SelectPlayerImg />
-                          )}
 
                           <SelectPlayer
                             key={index}
@@ -1275,6 +1270,15 @@ function App(props) {
                               )
                             )}
                           </SelectPlayer>
+                          {bTeamStartFive[index] !== "default" ? (
+                            <SelectPlayerImg
+                              style={{
+                                backgroundImage: `url(${bTeamPlayers[index].pic})`,
+                              }}
+                            />
+                          ) : (
+                            <SelectPlayerImg />
+                          )}
                           <ButtonForChange
                             onClick={() =>
                               changePlayer(
@@ -1294,6 +1298,7 @@ function App(props) {
                   )}
                 </TeamBlockDetailPlayer>
               </TeamBlockDetail>
+              <TeamBlockLogo backgroundImage={`url(${bTeamLogo})`} />
             </TeamBlock>
           </DivBeforeGameRecord>
         ) : (

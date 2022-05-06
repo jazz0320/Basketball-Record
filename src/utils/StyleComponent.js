@@ -91,7 +91,7 @@ const DivBeforeGameRecord = styled.div`
 
 const TeamBlock = styled.div`
   width: 50vw;
-  background-image: ${(props) => props.backgroundImage};
+
   /* border: 1px solid black; */
   height: calc(100vh - 110px);
 
@@ -101,7 +101,16 @@ const TeamBlock = styled.div`
   }
   justify-content: space-between;
 `;
+
+const TeamBlockLogo = styled.div`
+  width: calc(50vw - 500px);
+  background-image: ${(props) => props.backgroundImage};
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+`;
+
 const TeamBlockDetail = styled.div`
+  background: linear-gradient(to bottom, #212529, #495057);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -109,13 +118,14 @@ const TeamBlockDetail = styled.div`
 
 const TeamBlockDetailTeam = styled.div`
   margin-top: 3vh;
-  width: 600px;
+  padding: 0 1.5vw;
+  width: 500px;
   display: flex;
   justify-content: center;
 `;
 const TeamBlockDetailPlayer = styled.div`
-  height: 40vh;
-  width: 600px;
+  height: 50vh;
+  width: 500px;
   display: flex;
   justify-content: center;
 `;
@@ -126,7 +136,7 @@ const SelectTeam = styled.select`
   width: 500px;
   height: 60px;
   font-size: 50px;
-  -webkit-text-stroke: 1px #495057;
+  /* -webkit-text-stroke: 1px #495057; */
   color: aliceblue;
   background-color: transparent;
   text-align: center;
@@ -134,19 +144,20 @@ const SelectTeam = styled.select`
 `;
 
 const SelectPlayerImg = styled.div`
-  width: 5.5vh;
-  height: 5vh;
+  width: 9vh;
+  height: 8vh;
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const SelectPlayer = styled.select`
   cursor: pointer;
   -webkit-appearance: none;
-  width: 320px;
+  width: 240px;
   height: 3rem;
   font-size: 2rem;
-  -webkit-text-stroke: 1px #495057;
+  /* -webkit-text-stroke: 1px #495057; */
   color: aliceblue;
   background-color: transparent;
   text-align: center;
@@ -154,7 +165,8 @@ const SelectPlayer = styled.select`
 `;
 
 const TeamBlockDetailPlayerDiv = styled.div`
-  width: 600px;
+  padding: 0 1.5vw;
+  width: 500px;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -168,7 +180,7 @@ const RegulationBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 15vh;
+  margin-top: 12vh;
 `;
 const RegulationBlockCell = styled.div`
   font-size: 44px;
@@ -247,6 +259,7 @@ export {
   TeamBlock,
   RegulationBlock,
   TeamBlockDetail,
+  TeamBlockLogo,
   TeamBlockDetailTeam,
   TeamBlockDetailPlayer,
   ButtonForChange,
