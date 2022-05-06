@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 //General
 const GeneralDiv = styled.div`
+  text-align: ${(props) => props.textAlign};
   overflow-y: ${(props) => props.overflowY};
   box-shadow: ${(props) => props.boxShadow};
   cursor: ${(props) => props.cursor};
@@ -42,6 +43,7 @@ const GeneralButton = styled.button`
   &:hover {
     background-color: ${(props) => props.hoverBackgroundColor};
     color: ${(props) => props.hoverColor};
+    color: ${(props) => props.hoverColor};
     font-size: ${(props) => props.hoverFontSize};
   }
   &::active {
@@ -56,6 +58,8 @@ const GeneralImg = styled.img`
 `;
 
 const GeneralInput = styled.input`
+  cursor: ${(props) => props.cursor};
+  font-size: ${(props) => props.fontSize};
   border: ${(props) => props.border};
   border-radius: ${(props) => props.borderRadius};
   padding: ${(props) => props.padding};
@@ -65,8 +69,14 @@ const GeneralInput = styled.input`
     font-style: ${(props) => props.placeholderStyle};
   }
 `;
+const GeneralSelect = styled.select`
+  cursor: pointer;
+  border: ${(props) => props.border};
+  border-radius: ${(props) => props.borderRadius};
+  font-size: ${(props) => props.fontSize};
+`;
 
-export { GeneralDiv, GeneralButton, GeneralImg, GeneralInput };
+export { GeneralDiv, GeneralButton, GeneralImg, GeneralInput, GeneralSelect };
 
 //Record Before Game
 const Div_Record = styled.div`
@@ -255,7 +265,8 @@ const PopupDiv = styled.div`
   left: 40vw;
   background-color: #495057;
   height: 14vh;
-  width: 20vw;
+  height: ${(props) => (props.height ? props.height : "14vh")};
+  width: ${(props) => (props.width ? props.width : "20vw")};
   z-index: 10;
   color: #f8f9fa;
   font-size: ${(props) => (props.fontSize ? props.fontSize : "40px")};

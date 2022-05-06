@@ -4,8 +4,10 @@ import { flushSync } from "react-dom";
 
 function Court(props) {
   const playerLastAxis = useRef();
-  let adjustY = 8;
-  let adjustX = 3.97;
+  const basketballPic = useRef();
+
+  let adjustY = 1;
+  let adjustX = 1;
 
   // function getCursorPositionsss(vas, event) {
   //   const rect = vas.getBoundingClientRect();
@@ -22,31 +24,34 @@ function Court(props) {
     let ctx = cvs.getContext("2d");
     if (playerLastAxis.current !== undefined) {
       ctx.clearRect(
-        playerLastAxis.current.x / adjustX - 4,
-        playerLastAxis.current.y / adjustY - 4,
-        10,
-        10
+        playerLastAxis.current.x / adjustX - 32,
+        playerLastAxis.current.y / adjustY - 32,
+        64,
+        64
       );
     }
     const rect = vas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     let axis = { x: x, y: y };
-    console.log("x: " + x + " y: " + y);
+    console.log(event.currentTarget.nodeName, "x: " + x + " y: " + y);
     props.setPlayerAxis(axis);
     playerLastAxis.current = axis;
     //add point
+    basketballPic.current =
+      "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fbasketball-32.png?alt=media&token=c613878c-bad8-4891-9e9e-ebdd6a833c9a";
 
     let base_image = new Image();
-    base_image.src =
-      "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04Niw0Ny44ODc2N2w1Mi40ODg2Nyw4MS4xMTIzM2gtMTA0Ljk3NzMzbDUyLjQ4ODY3LC04MS4xMTIzM004NiwyMS41bC03OC44MzMzMywxMjEuODMzMzNoMTU3LjY2NjY3bC03OC44MzMzMywtMTIxLjgzMzMzeiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+";
+    base_image.src = basketballPic.current;
+    base_image.opacity = 1;
+
     base_image.onload = () =>
       ctx.drawImage(
         base_image,
-        Number(x / adjustX - 4),
-        Number(y / adjustY - 4),
-        8,
-        8
+        Number(x / adjustX - 32),
+        Number(y / adjustY - 32),
+        64,
+        64
       );
   }
 
@@ -63,6 +68,11 @@ function Court(props) {
   return (
     <div style={{ position: "relative" }}>
       <canvas
+        width={1200}
+        height={1200}
+        // onClickCapture={(e) => {
+        //   getCursorPosition(e.currentTarget, e);
+        // }}
         id="cvs"
         // onClickCapture={(e) => {
         //   getCursorPositionsss(e.currentTarget, e);
@@ -70,7 +80,6 @@ function Court(props) {
       ></canvas>
       <svg
         onClickCapture={(e) => {
-          console.log(e.currentTarget.nodeName);
           getCursorPosition(e.currentTarget, e);
         }}
         version="1.1"

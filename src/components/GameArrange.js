@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { getDocs, collection, doc, db, setDoc } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import {
+  GeneralDiv,
+  GeneralInput,
+  GeneralButton,
+  GeneralImg,
+  GeneralSelect,
+  PopupDiv,
+} from "../utils/StyleComponent";
 function GameArrange() {
   const [date, setDate] = useState([new Date().toISOString().slice(0, 10)]);
   const [day, setDay] = useState([new Date().getDay()]);
@@ -102,105 +110,306 @@ function GameArrange() {
   return (
     <>
       {numberOfGames.map((num, index) => (
-        <div key={index}>
-          <input
-            type="date"
-            value={date[num]}
-            onChange={(e) => {
-              let a = [...date];
-              a[num] = e.target.value;
-              setDate(a);
-              let b = [...day];
-              b[num] = new Date(e.target.value).getDay();
-              setDay(b);
-            }}
-          />
-          <input
-            type="time"
-            onChange={(e) => {
-              let a = [...time];
-              a[num] = e.target.value;
-              setTime(a);
-            }}
-          />
-          A隊
-          <select
-            value={aTeam[num]}
-            onChange={(e) => {
-              let a = [...aTeam];
-              a[num] = e.target.value;
-              setATeam(a);
-              let b = [...aTeamLogo];
-              console.log("bbbb", b);
-              b[num] = teamsLogo[e.target.value];
-              console.log("logos", teamsLogo);
-              console.log("bbbbccc", teamsLogo[e.target.value]);
-              setATeamLogo(b);
-            }}
+        <GeneralDiv
+          display="flex"
+          justifyConten="cneter"
+          border="#495057 1px solid"
+          alignItems="center"
+          height="170px"
+          borderRadius="10px"
+          padding="0 20px"
+          marginBottom="15px"
+          key={index}
+        >
+          <GeneralDiv
+            display="flex"
+            flexWrap="wrap"
+            alignItems="center"
+            justifyContent="center"
+            height="150px"
           >
-            <option disabled value="default">
-              Select team
-            </option>
-            {teams.map((team, index) =>
-              team === bTeam[num] ? (
-                <option disabled key={index}>
-                  {team}
-                </option>
-              ) : (
-                <option key={index}>{team}</option>
-              )
-            )}
-          </select>
-          B隊
-          <select
-            value={bTeam[num]}
-            onChange={(e) => {
-              let b = [...bTeam];
-              b[num] = e.target.value;
-              setBTeam(b);
-              let a = [...bTeamLogo];
-              a[num] = teamsLogo[e.target.value];
-              setBTeamLogo(a);
-            }}
+            <GeneralInput
+              padding="2px 10px"
+              border="1px solid #adb5bd"
+              borderRadius="10px"
+              cursor="pointer"
+              fontSize="36px"
+              type="date"
+              value={date[num]}
+              onChange={(e) => {
+                let a = [...date];
+                a[num] = e.target.value;
+                setDate(a);
+                let b = [...day];
+                b[num] = new Date(e.target.value).getDay();
+                setDay(b);
+              }}
+            />
+
+            <GeneralInput
+              padding="2px 10px"
+              border="1px solid #adb5bd"
+              borderRadius="10px"
+              cursor="pointer"
+              fontSize="36px"
+              type="time"
+              onChange={(e) => {
+                let a = [...time];
+                a[num] = e.target.value;
+                setTime(a);
+              }}
+            />
+          </GeneralDiv>
+          <GeneralDiv
+            display="flex"
+            alignItems="center"
+            justifyContent="space-around"
+            width="30vw"
+            // border="1px solid #e9ecef"
           >
-            <option disabled value="default">
-              Select team
-            </option>
-            {teams.map((team, index) =>
-              team === aTeam[num] ? (
-                <option disabled key={index}>
-                  {team}
-                </option>
+            <GeneralSelect
+              borderRadius="5px"
+              border="1px solid #adb5bd"
+              fontSize="30px"
+              value={aTeam[num]}
+              onChange={(e) => {
+                let a = [...aTeam];
+                a[num] = e.target.value;
+                setATeam(a);
+                let b = [...aTeamLogo];
+                console.log("bbbb", b);
+                b[num] = teamsLogo[e.target.value];
+                console.log("logos", teamsLogo);
+                console.log("bbbbccc", teamsLogo[e.target.value]);
+                setATeamLogo(b);
+              }}
+            >
+              <option disabled value="default">
+                Select team
+              </option>
+              {teams.map((team, index) =>
+                team === bTeam[num] ? (
+                  <option disabled key={index}>
+                    {team}
+                  </option>
+                ) : (
+                  <option key={index}>{team}</option>
+                )
+              )}
+            </GeneralSelect>
+
+            <GeneralDiv
+              width="152px"
+              height="152px"
+              border="1px solid #adb5bd"
+              borderRadius="10px"
+            >
+              {aTeamLogo[num] !== "default" ? (
+                <GeneralImg height="150px" widht="150px" src={aTeamLogo[num]} />
               ) : (
-                <option key={index}>{team}</option>
-              )
-            )}
-          </select>
-        </div>
+                <GeneralImg
+                  height="150px"
+                  widht="150px"
+                  src={
+                    "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2F%3F.png?alt=media&token=ba57199a-119e-4121-a76e-2f6fdf93466f"
+                  }
+                />
+              )}
+            </GeneralDiv>
+          </GeneralDiv>
+          <GeneralDiv
+            display="flex"
+            alignItems="center"
+            // border="1px solid #e9ecef"
+            width="30vw"
+            justifyContent="space-around"
+          >
+            <GeneralDiv
+              width="152px"
+              height="152px"
+              border="1px solid #adb5bd"
+              borderRadius="10px"
+            >
+              {bTeamLogo[num] !== "default" ? (
+                <GeneralImg height="150px" widht="150px" src={bTeamLogo[num]} />
+              ) : (
+                <GeneralImg
+                  height="150px"
+                  widht="150px"
+                  src={
+                    "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2F%3F.png?alt=media&token=ba57199a-119e-4121-a76e-2f6fdf93466f"
+                  }
+                />
+              )}
+            </GeneralDiv>
+            <GeneralSelect
+              borderRadius="5px"
+              border="1px solid #adb5bd"
+              fontSize="30px"
+              value={bTeam[num]}
+              onChange={(e) => {
+                let b = [...bTeam];
+                b[num] = e.target.value;
+                setBTeam(b);
+                let a = [...bTeamLogo];
+                a[num] = teamsLogo[e.target.value];
+                setBTeamLogo(a);
+              }}
+            >
+              <option disabled value="default">
+                Select team
+              </option>
+              {teams.map((team, index) =>
+                team === aTeam[num] ? (
+                  <option disabled key={index}>
+                    {team}
+                  </option>
+                ) : (
+                  <option key={index}>{team}</option>
+                )
+              )}
+            </GeneralSelect>
+          </GeneralDiv>
+        </GeneralDiv>
       ))}
-      <button onClick={addOneMoreGame}>＋</button>
-      <button onClick={() => setCheckSetting(true)}>送出</button>
+      <GeneralDiv
+        display="flex"
+        alignItems="center"
+        height="80px"
+        borderRadius="10px"
+        marginBottom="15px"
+      >
+        <GeneralButton
+          width="100%"
+          height="100%"
+          borderRadius="10px"
+          hoverColor="#f8f9fa"
+          hoverBackgroundColor="#adb5bd"
+          backgroundColor="#dee2e6"
+          color="#212529"
+          onClick={addOneMoreGame}
+        >
+          <i className="fa-solid fa-plus" style={{ fontSize: "30px" }}></i>
+        </GeneralButton>
+      </GeneralDiv>
+
+      <GeneralDiv
+        display="flex"
+        alignItems="center"
+        height="80px"
+        marginBottom="15px"
+      >
+        <GeneralButton
+          margin="auto"
+          width="80%"
+          fontSize="30px"
+          height="60px"
+          borderRadius="10px"
+          color="#f8f9fa"
+          backgroundColor="#6c757d"
+          hoverBackgroundColor="#ced4da"
+          hoverColor="#212529"
+          onClick={() => setCheckSetting(true)}
+        >
+          Submit
+        </GeneralButton>
+      </GeneralDiv>
 
       {checkSetting ? (
-        <div>
-          {numberOfGames.map((num) => (
-            <div key={num}>
-              <div>A隊{aTeam[num]}</div>
-              <div>
-                <img src={aTeamLogo[num]} />
-              </div>
-              <div>B隊{bTeam[num]}</div>
-              <div>
-                <img src={bTeamLogo[num]} />
-              </div>
-              <div>幾號{date[num]}</div>
-              <div>星期幾{day[num]}</div>
-              <div>幾點{time[num]}</div>
-            </div>
-          ))}
-          <button onClick={sendGameSchedule}>確認無誤</button>
-          <button onClick={() => setCheckSetting(false)}>取消</button>
-        </div>
+        <PopupDiv width="42vw" height="40vh">
+          <GeneralDiv
+            overflowY="scroll"
+            height="30vh"
+            width="38vw"
+            display="flex"
+            justifyContent="center"
+            flexWrap="wrap"
+          >
+            {numberOfGames.map((num) => (
+              <GeneralDiv
+                border="1px solid #dee2e6"
+                padding="10px"
+                width="35vw"
+                borderRadius="10px"
+                marginBottom="10px"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                key={num}
+              >
+                <div>
+                  <GeneralDiv textAlign="center">{aTeam[num]}</GeneralDiv>
+                  <div>
+                    <GeneralDiv
+                      width="152px"
+                      height="152px"
+                      border="1px solid #adb5bd"
+                      borderRadius="10px"
+                    >
+                      <GeneralImg
+                        height="150px"
+                        widht="150px"
+                        src={aTeamLogo[num]}
+                      />
+                    </GeneralDiv>
+                  </div>
+                </div>
+                <div>
+                  <div>{date[num]}</div>
+                  <div>
+                    星期{day[num]} {time[num]}
+                  </div>
+                  <div></div>
+                </div>
+                <div>
+                  <GeneralDiv textAlign="center">{bTeam[num]}</GeneralDiv>
+                  <GeneralDiv
+                    width="152px"
+                    height="152px"
+                    border="1px solid #adb5bd"
+                    borderRadius="10px"
+                  >
+                    <GeneralImg
+                      height="150px"
+                      widht="150px"
+                      src={bTeamLogo[num]}
+                    />
+                  </GeneralDiv>
+                </div>
+              </GeneralDiv>
+            ))}
+          </GeneralDiv>
+          <GeneralButton
+            margin="0 auto 1vh"
+            width="35%"
+            fontSize="30px"
+            height="60px"
+            borderRadius="10px"
+            color="#f8f9fa"
+            backgroundColor="#6c757d"
+            hoverBackgroundColor="#ced4da"
+            hoverColor="#212529"
+            onClick={() => setCheckSetting(true)}
+            onClick={sendGameSchedule}
+          >
+            確認無誤
+          </GeneralButton>
+          <GeneralButton
+            margin="0 auto 1vh"
+            width="35%"
+            fontSize="30px"
+            height="60px"
+            borderRadius="10px"
+            color="#f8f9fa"
+            backgroundColor="#6c757d"
+            hoverBackgroundColor="#ced4da"
+            hoverColor="#212529"
+            onClick={() => setCheckSetting(true)}
+            onClick={() => setCheckSetting(false)}
+          >
+            取消
+          </GeneralButton>
+        </PopupDiv>
       ) : null}
     </>
   );

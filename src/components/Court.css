@@ -4,13 +4,14 @@
 
 svg {
   height: 70vh;
+  /* width: 50vw; */
 }
 
 canvas {
-  height: 70vh;
-  width: 70vh;
-  background-color: none;
-  opacity: 0.3;
+  /* height: 70vh;
+  width: 70vh; */
+  /* background-color: white; */
+  /* opacity: 0.3; */
   position: absolute;
   pointer-events: none;
 }

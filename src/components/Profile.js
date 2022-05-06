@@ -47,7 +47,7 @@ function Profile(props) {
             onClick={() => setNavActive(0)}
             to="member-file"
           >
-            會員資料
+            Member
           </LinkComponet>
 
           <LinkComponet
@@ -55,7 +55,7 @@ function Profile(props) {
             onClick={() => setNavActive(1)}
             to="game-arrange"
           >
-            安排比賽
+            Plan
           </LinkComponet>
 
           <LinkComponet
@@ -63,7 +63,7 @@ function Profile(props) {
             onClick={() => setNavActive(2)}
             to="team-inf"
           >
-            球隊資訊
+            Team
           </LinkComponet>
 
           <LinkComponet
@@ -71,7 +71,7 @@ function Profile(props) {
             onClick={() => setNavActive(3)}
             to="game-schedule"
           >
-            賽程安排
+            Schedule
           </LinkComponet>
         </SideBar>
         <ContainDiv>
