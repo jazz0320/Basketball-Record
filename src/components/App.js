@@ -1492,18 +1492,37 @@ function App(props) {
                     )}
                   </LiveActionBolck>
                 </GeneralDiv>
-                <GeneralDiv
-                  margin="0 3vh 0 1vh"
-                  backgroundSize="cover"
-                  height="160px"
-                  width="160px"
-                  backgroundImage={`url(${bTeamLogo})`}
-                />
+                <GeneralDiv>
+                  <GeneralDiv
+                    margin="0 3vh 0 1vh"
+                    backgroundSize="cover"
+                    height="160px"
+                    width="160px"
+                    backgroundImage={`url(${bTeamLogo})`}
+                  />
+                  <GeneralDiv
+                    display="flex"
+                    justifyContent="space-around"
+                    // marginTop="5px"
+                  >
+                    <ButtonSubmit
+                      backgroundColor={exchangePlayer[1] ? "#adb5bd" : "white"}
+                      onClick={() => {
+                        setExchangePlayer((pre) => [pre[0], !pre[1]]);
+                      }}
+                    >
+                      <GeneralImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fexchange.png?alt=media&token=fc298371-7acf-4cc9-86e7-fe786a00e368" />
+                    </ButtonSubmit>
+                    <ButtonSubmit backgroundColor="white">
+                      <GeneralImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Ftimeout.png?alt=media&token=13478628-d9fb-4ab2-9c89-74ca93a6bf6b" />
+                    </ButtonSubmit>
+                  </GeneralDiv>
+                </GeneralDiv>
               </GeneralDiv>
 
               <GroundContainer>
                 <TeamBox
-                  exchangePlayer={exchangePlayer}
+                  exchangePlayer={exchangePlayer[0]}
                   teamPlayers={aTeamPlayers}
                   setTeamPlayers={setATeamPlayers}
                 ></TeamBox>
@@ -1514,7 +1533,7 @@ function App(props) {
                   playerAxis={playerAxis}
                 />
                 <TeamBox
-                  exchangePlayer={exchangePlayer}
+                  exchangePlayer={exchangePlayer[1]}
                   teamPlayers={bTeamPlayers}
                   setTeamPlayers={setBTeamPlayers}
                 ></TeamBox>
@@ -1540,6 +1559,15 @@ function App(props) {
 }
 
 function TeamBox(props) {
+  const [renderPlayers, setRenderPlayers] = useState();
+  useEffect(() => {
+    if (props.exchangePlayer === false) {
+      setRenderPlayers(props.teamPlayers.slice(0, 5));
+    } else {
+      setRenderPlayers(props.teamPlayers);
+    }
+  }, [props.exchangePlayer]);
+
   function handleOnDragEnd(result) {
     console.log("gdfgdg", result);
     if (!result.destination) return;
@@ -1567,16 +1595,9 @@ function TeamBox(props) {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="team">
         {(provided) => (
-          <TeamOnTheGround
-            overflowXFirst={props.exchangePlayer[0] ? "visible" : "hidden"}
-            overflowXLast={props.exchangePlayer[1] ? "visible" : "hidden"}
-            margin={props.exchangePlayer[0] ? "0" : "0 3.5vw"}
-            // margin={props.exchangeplayer[0] ? "0" : "0 3.5vw"}
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {props.teamPlayers &&
-              props.teamPlayers.map((player, index) => (
+          <TeamOnTheGround {...provided.droppableProps} ref={provided.innerRef}>
+            {renderPlayers &&
+              renderPlayers.map((player, index) => (
                 <Draggable
                   key={player.name}
                   draggableId={player.name}
@@ -1585,7 +1606,7 @@ function TeamBox(props) {
                   {(provided) => (
                     <GeneralDiv
                       height="130px"
-                      width="140px"
+                      width="120px"
                       textAlign="center"
                       display="flex"
                       flexWrap="wrap"

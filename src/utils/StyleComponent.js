@@ -283,6 +283,9 @@ const DivGameStart_Container = styled.div`
   height: 100%;
   overflow-y: scroll;
   justify-content: center;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
 `;
 
 export {
@@ -330,12 +333,13 @@ const GroundContainer = styled.div`
 `;
 
 const TeamOnTheGround = styled.div`
-  margin: ${(props) => props.margin};
   height: 650px;
+  width: 220px;
+
   width: ${(props) => props.width};
   overflow-x: ${(props) => props.overflowX};
-  /* overflow: scroll; */
   display: flex;
+  align-items: center;
 
   ::-webkit-scrollbar {
     display: none; /* Chrome Safari */
@@ -345,11 +349,9 @@ const TeamOnTheGround = styled.div`
   flex-wrap: wrap;
   &:first-child {
     flex-wrap: wrap-reverse;
-    overflow-x: ${(props) => props.overflowXFirst};
   }
 
   &:last-child {
-    overflow-x: ${(props) => props.overflowXLast};
   }
 `;
 

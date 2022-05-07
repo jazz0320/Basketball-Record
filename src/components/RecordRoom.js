@@ -30,19 +30,22 @@ function RecordRoom(props) {
         right={horizontalLeft ? null : "0"}
         transitionDuration="0.5s"
       >
-        <ButtonSubmit
-          padding="1px 3px"
-          margin=" 0 5px 0 0"
-          onClick={() => {
-            if (horizontalLeft === true) {
-              setHorizontalLeft(false);
-            } else {
-              setHorizontalLeft(true);
-            }
-          }}
-        >
-          {horizontalLeft ? ">" : "<"}
-        </ButtonSubmit>
+        {hideRecord ? null : (
+          <ButtonSubmit
+            padding="1px 3px"
+            margin=" 0 5px 0 0"
+            onClick={() => {
+              if (horizontalLeft === true) {
+                setHorizontalLeft(false);
+              } else {
+                setHorizontalLeft(true);
+              }
+            }}
+          >
+            {horizontalLeft ? ">" : "<"}
+          </ButtonSubmit>
+        )}
+
         <ButtonSubmit
           width="70px"
           padding="1px 3px"
@@ -57,20 +60,22 @@ function RecordRoom(props) {
         >
           {hideRecord ? "Open" : "Close"}
         </ButtonSubmit>
-        <ButtonSubmit
-          width="80px"
-          backgroundColor={pointerState === "none" ? null : "#d62828"}
-          padding="1px 3px"
-          onClick={() => {
-            if (pointerState === "none") {
-              setPointerState("");
-            } else {
-              setPointerState("none");
-            }
-          }}
-        >
-          {pointerState === "none" ? "Check" : "Cancel"}
-        </ButtonSubmit>
+        {hideRecord ? null : (
+          <ButtonSubmit
+            width="80px"
+            backgroundColor={pointerState === "none" ? null : "#d62828"}
+            padding="1px 3px"
+            onClick={() => {
+              if (pointerState === "none") {
+                setPointerState("");
+              } else {
+                setPointerState("none");
+              }
+            }}
+          >
+            {pointerState === "none" ? "Check" : "Cancel"}
+          </ButtonSubmit>
+        )}
       </GeneralDiv>
       <GeneralDiv
         transitionDuration="0.5s"
