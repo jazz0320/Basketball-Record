@@ -8,7 +8,6 @@ import {
 } from "../utils/StyleComponent";
 
 const TimeBlock = styled.div`
-  height: 110px;
   width: 100%;
   background-color: #343a40;
   display: flex;
@@ -202,7 +201,7 @@ function Clock(props) {
       <div className="mr-4" style={{ display: "flex", alignItems: "center" }}>
         <SelectPlayer
           className="cursor-pointer"
-          style={{ width: "80px" }}
+          style={{ width: "30px" }}
           onChange={(e) => props.setQuarterNow(Number(e.target.value))}
         >
           <option value={1}>1st</option>
@@ -233,7 +232,7 @@ function Clock(props) {
             ></i>
           </ButtonForChange>
         </div>
-        <div className="cursor-default" style={{ fontSize: "36px" }}>
+        <div className="cursor-default" style={{ fontSize: "24px" }}>
           {props.timerMinutes < 10 ? "0" : ""}
           {props.timerMinutes}:{props.timerSeconds < 10 ? "0" : ""}
           {props.timerSeconds}
@@ -271,7 +270,7 @@ function Clock(props) {
             ></i>
           </ButtonForChange>
         </div>
-        <div className="cursor-default" style={{ fontSize: "36px" }}>
+        <div className="cursor-default" style={{ fontSize: "24px" }}>
           {shotClock}
         </div>
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -292,7 +291,7 @@ function Clock(props) {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          width: "120px",
+          width: "100px",
           marginLeft: "20px",
         }}
       >
@@ -301,44 +300,44 @@ function Clock(props) {
             onClick={reset24seconds}
             style={{
               height: "30px",
-              padding: "0px",
-              fontSize: "20px",
+              padding: "1px 4px",
+              fontSize: "16px",
               margin: "0px",
-              marginTop: "15px",
+              marginTop: "10px",
               border: "1px solid white",
             }}
           >
-            重置24秒
+            Reset 24s
           </ButtonSubmit>
         </div>
         <div>
           <ButtonSubmit
             style={{
               height: "30px",
-              padding: "0px",
-              fontSize: "20px",
+              padding: "1px",
+              fontSize: "16px",
               margin: "0px",
               border: "1px solid white",
             }}
             onClick={stop}
           >
-            暫停
+            Stop
           </ButtonSubmit>
         </div>
         <div>
           <ButtonSubmit
             style={{
               height: "30px",
-              padding: "0px",
-              fontSize: "20px",
+              padding: "1px",
+              fontSize: "16px",
 
               margin: "0px",
-              marginLeft: "10px",
+              marginLeft: "5px",
               border: "1px solid white",
             }}
             onClick={startTime}
           >
-            開始
+            Start
           </ButtonSubmit>
         </div>
       </div>

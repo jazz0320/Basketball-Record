@@ -5,7 +5,6 @@ import MemberFile from "./MemberFile";
 import Login from "./Login";
 import App from "./App";
 import Home from "./Home";
-import Test from "./Test";
 
 import Profile from "./Profile";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -21,32 +20,44 @@ import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
 import GameSchedule from "./GameSchedule";
 import GameArrange from "./GameArrange";
+import { GeneralDiv } from "../utils/StyleComponent";
 
 const NavBar = styled.div`
-  width: 100vw;
-  height: 80px;
-  padding: 15px;
-  background-color: #212529;
+  position: fixed;
+  right: 50px;
+  top: 30px;
+  display: flex;
+  width: 30px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  height: 300px;
+  justify-content: space-between;
   font-size: 30px;
-
-  @media screen and (max-width: 992px) {
-    width: 100vw;
-  }
 `;
 
 const LinkComponet = styled(Link)`
-  width: 7vw;
-  text-align: center;
-  background-color: #212529;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 100%;
   color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
   text-decoration: none;
+  :hover {
+    width: 70px;
+    height: 70px;
+  }
   :active {
     background-color: rgb(41, 41, 41);
   }
-  :last-child {
-    position: absolute;
-    right: 15px;
-  }
+`;
+
+const LinkImg = styled.img`
+  src: ${(props) => props.src};
+  width: 40px;
+  height: 40px;
 `;
 
 function Nav() {
@@ -134,44 +145,76 @@ function Nav() {
   return (
     <>
       <NavBar>
-        <LinkComponet
-          $focus={navActive === -1}
-          onClick={() => setNavActive(-1)}
-          to="/"
-        >
-          Home
-        </LinkComponet>
-        <span> | </span>
-        <LinkComponet
-          $focus={navActive === 0}
-          onClick={() => setNavActive(0)}
-          to="/record"
-        >
-          Record
-        </LinkComponet>
-        <span> | </span>
+        <GeneralDiv height="70px">
+          <LinkComponet
+            $focus={navActive === -1}
+            onClick={() => setNavActive(-1)}
+            to="/"
+          >
+            <LinkImg
+              src="
+          
+          https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fhome.png?alt=media&token=a22b88c8-fc87-48d1-a7de-32e3cb9aa20b
+          "
+            />
+          </LinkComponet>
+        </GeneralDiv>
+        <GeneralDiv height="70px">
+          <LinkComponet
+            $focus={navActive === 0}
+            onClick={() => setNavActive(0)}
+            to="/record"
+          >
+            <LinkImg
+              src="
+          
+              https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Frecord.png?alt=media&token=17a10f94-10d7-4b71-bc65-fc1202eaf1b4          "
+            />
+          </LinkComponet>
+        </GeneralDiv>
         {/* <LinkComponet to="/test">Test</LinkComponet>
         <span> | </span> */}
-
-        <LinkComponet
-          $focus={navActive === 3}
-          onClick={() => {
-            logStatus ? setNavActive(3) : setNavActive(4);
-          }}
-          to="/profile"
-        >
-          Profile
-        </LinkComponet>
-        <span> | </span>
-        <LinkComponet
-          $focus={navActive === 4}
-          onClick={() => {
-            logInOut();
-          }}
-          to="/login"
-        >
-          {logStatus ? "Logout" : "Login"}
-        </LinkComponet>
+        <GeneralDiv height="70px">
+          <LinkComponet
+            $focus={navActive === 3}
+            onClick={() => {
+              logStatus ? setNavActive(3) : setNavActive(4);
+            }}
+            to="/profile"
+          >
+            <LinkImg
+              src="
+          
+              https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3
+          "
+            />
+          </LinkComponet>
+        </GeneralDiv>
+        <GeneralDiv height="70px">
+          <LinkComponet
+            $focus={navActive === 4}
+            onClick={() => {
+              logInOut();
+            }}
+            to="/login"
+          >
+            {logStatus ? (
+              <LinkImg
+                src="
+          
+                https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogout.png?alt=media&token=1e2b01d5-2bcd-4498-b7ba-c22a148654f6
+          "
+              />
+            ) : (
+              <LinkImg
+                src="
+          
+                https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogin.png?alt=media&token=6be000e7-4df8-4262-8e80-e7ad1a054880
+          "
+              />
+            )}
+          </LinkComponet>
+        </GeneralDiv>
       </NavBar>
 
       <Routes>

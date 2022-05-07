@@ -13,8 +13,8 @@ import {
   Div_Record,
   DivBeforeGameRecord,
   TeamBlock,
-  TeamBlockLogo,
-  TeamBlockLogoBlur,
+  TeamBlockLogoDiv,
+  TeamBlockLogoImg,
   RegulationBlock,
   TeamBlockDetail,
   TeamBlockDetailTeam,
@@ -32,6 +32,7 @@ import {
   GroundContainer,
   TeamOnTheGround,
   LiveActionBolck,
+  GeneralImg,
 } from "../utils/StyleComponent";
 import "./App.css";
 import Clock from "./Clock";
@@ -82,6 +83,9 @@ function App(props) {
   const [finishSetting, setFinishSetting] = useState(false);
   const [quarterNow, setQuarterNow] = useState(1);
   const five = [1, 2, 3, 4, 5];
+  const [exchangePlayer, setExchangePlayer] = useState(() => {
+    return [false, false];
+  });
 
   const [leftSide, setLeftSide] = useState(true);
   const [activePlayer, setActivePlayer] = useState();
@@ -391,14 +395,7 @@ function App(props) {
             recordData("fga", 1);
             recordPercent("fgRate", "fgm", "fga");
           }
-          // data[activePlayer][playerActions.action] +=
-          //   playerActions.actionNumber;
 
-          // teamDataNow[quarterNow - 1][playerActions.action] +=
-          //   playerActions.actionNumber;
-
-          // teamDataNow[quarter.length][playerActions.action] +=
-          //   playerActions.actionNumber;
           recordData("pts", playerActions.actionNumber);
         } else if (playerActions.action === "reb") {
           if (playerActions.type === "def") {
@@ -1025,8 +1022,9 @@ function App(props) {
                 </SelectPlayer>
               </RegulationBlockCell>
               <ButtonSubmit
-                fontSize="2rem"
-                padding="1rem 1.5rem"
+                fontSize="1.2rem"
+                padding="0.5rem 0.75rem"
+                margin="1rem"
                 onClick={() => {
                   finishGameSetting();
                 }}
@@ -1166,7 +1164,9 @@ function App(props) {
                 </TeamBlockDetailPlayer>
               </TeamBlockDetail>
 
-              <TeamBlockLogo backgroundImage={`url(${aTeamLogo})`} />
+              <TeamBlockLogoDiv>
+                <TeamBlockLogoImg src={aTeamLogo} />
+              </TeamBlockLogoDiv>
             </TeamBlock>
             <TeamBlock backgroundImage={`url(${bTeamLogo})`}>
               <TeamBlockDetail>
@@ -1298,7 +1298,9 @@ function App(props) {
                   )}
                 </TeamBlockDetailPlayer>
               </TeamBlockDetail>
-              <TeamBlockLogo backgroundImage={`url(${bTeamLogo})`} />
+              <TeamBlockLogoDiv>
+                <TeamBlockLogoImg src={bTeamLogo} />
+              </TeamBlockLogoDiv>
             </TeamBlock>
           </DivBeforeGameRecord>
         ) : (
@@ -1317,20 +1319,45 @@ function App(props) {
                 width="100%"
                 marginBottom="10px"
               >
-                <GeneralDiv
-                  margin="0 1vh 0 3vh"
-                  backgroundSize="cover"
-                  height="170px"
-                  width="170px"
-                  backgroundImage={`url(${aTeamLogo})`}
-                />
+                <GeneralDiv>
+                  <GeneralDiv
+                    margin="0 1vh 0 3vh"
+                    backgroundSize="cover"
+                    height="160px"
+                    width="160px"
+                    backgroundImage={`url(${aTeamLogo})`}
+                  />
+                  <GeneralDiv
+                    display="flex"
+                    justifyContent="space-around"
+                    // marginTop="5px"
+                  >
+                    <ButtonSubmit
+                      backgroundColor={exchangePlayer[0] ? "#adb5bd" : "white"}
+                      onClick={() => {
+                        setExchangePlayer((pre) => [!pre[0], pre[1]]);
+                      }}
+                    >
+                      <GeneralImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fexchange.png?alt=media&token=fc298371-7acf-4cc9-86e7-fe786a00e368" />
+                    </ButtonSubmit>
+                    <ButtonSubmit backgroundColor="white">
+                      <GeneralImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Ftimeout.png?alt=media&token=13478628-d9fb-4ab2-9c89-74ca93a6bf6b" />
+                    </ButtonSubmit>
+                  </GeneralDiv>
+                </GeneralDiv>
                 <GeneralDiv
                   display="flex"
                   justifyContent="space-between"
                   flexWrap="wrap"
-                  width="70vh"
+                  width="46vw"
                 >
-                  <div className="w-5/12 flex justify-center">
+                  <GeneralDiv
+                    width="20vw"
+                    flexWrap="wrap"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="justify-center"
+                  >
                     <Clock
                       liveGameName={props.liveGameName}
                       finishSetting={finishSetting}
@@ -1345,28 +1372,33 @@ function App(props) {
                       affectTimeStopBehavior={affectTimeStopBehavior}
                       affectShotClockBehavior={affectShotClockBehavior}
                     />
-                  </div>
-                  <ButtonSubmit
-                    fontSize="1rem"
-                    padding="0.5rem 1rem"
-                    margin=" 0 5px"
-                    onClick={() => {
-                      if (
-                        aTeamData[quarter.length]["pts"] ===
-                        bTeamData[quarter.length]["pts"]
-                      ) {
-                        alert("平手尚未結束");
-                      } else {
-                        setWantToCloseGame(true);
-                      }
-                    }}
-                  >
-                    結束比賽
-                  </ButtonSubmit>
+                    <ButtonSubmit
+                      width="100%"
+                      fontSize="20px"
+                      height="40px"
+                      padding="5px 1rem"
+                      margin=" 5px 0px 0 0px"
+                      borderRadius="5px"
+                      onClick={() => {
+                        if (
+                          aTeamData[quarter.length]["pts"] ===
+                          bTeamData[quarter.length]["pts"]
+                        ) {
+                          alert("平手尚未結束");
+                        } else {
+                          setWantToCloseGame(true);
+                        }
+                      }}
+                    >
+                      EndGame
+                    </ButtonSubmit>
+                  </GeneralDiv>
+
                   <table
                     className="bg-coolors_8 text-coolors_1 text-center rounded border-none border-separate w-5/12"
                     cellPadding="10"
                     border="1"
+                    style={{ fontSize: "18px" }}
                   >
                     <thead>
                       <tr>
@@ -1378,7 +1410,7 @@ function App(props) {
                               </th>
                             ))
                           : null}
-                        <th style={{ width: "70px" }}>Total</th>
+                        <th style={{ width: "60px" }}>Total</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1463,14 +1495,15 @@ function App(props) {
                 <GeneralDiv
                   margin="0 3vh 0 1vh"
                   backgroundSize="cover"
-                  height="170px"
-                  width="170px"
+                  height="160px"
+                  width="160px"
                   backgroundImage={`url(${bTeamLogo})`}
                 />
               </GeneralDiv>
 
               <GroundContainer>
                 <TeamBox
+                  exchangePlayer={exchangePlayer}
                   teamPlayers={aTeamPlayers}
                   setTeamPlayers={setATeamPlayers}
                 ></TeamBox>
@@ -1481,24 +1514,23 @@ function App(props) {
                   playerAxis={playerAxis}
                 />
                 <TeamBox
+                  exchangePlayer={exchangePlayer}
                   teamPlayers={bTeamPlayers}
                   setTeamPlayers={setBTeamPlayers}
                 ></TeamBox>
               </GroundContainer>
 
-              <div>
-                <RecordRoom
-                  quarter={quarter}
-                  quarteNow={quarterNow}
-                  liveAction={liveAction}
-                  aTeam={aTeam}
-                  bTeam={bTeam}
-                  aTeamPlayers={aTeamPlayers}
-                  bTeamPlayers={bTeamPlayers}
-                  timerSeconds={timerSeconds}
-                  timerMinutes={timerMinutes}
-                />
-              </div>
+              <RecordRoom
+                quarter={quarter}
+                quarteNow={quarterNow}
+                liveAction={liveAction}
+                aTeam={aTeam}
+                bTeam={bTeam}
+                aTeamPlayers={aTeamPlayers}
+                bTeamPlayers={bTeamPlayers}
+                timerSeconds={timerSeconds}
+                timerMinutes={timerMinutes}
+              />
             </DivGameStart_Container>
           </DivGameStartRecord>
         )}
@@ -1530,11 +1562,19 @@ function TeamBox(props) {
     items.splice(result.source.index, 0, reorderedItemDestination);
     props.setTeamPlayers(items);
   }
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="team">
         {(provided) => (
-          <TeamOnTheGround {...provided.droppableProps} ref={provided.innerRef}>
+          <TeamOnTheGround
+            overflowXFirst={props.exchangePlayer[0] ? "visible" : "hidden"}
+            overflowXLast={props.exchangePlayer[1] ? "visible" : "hidden"}
+            margin={props.exchangePlayer[0] ? "0" : "0 3.5vw"}
+            // margin={props.exchangeplayer[0] ? "0" : "0 3.5vw"}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
             {props.teamPlayers &&
               props.teamPlayers.map((player, index) => (
                 <Draggable
@@ -1543,21 +1583,38 @@ function TeamBox(props) {
                   index={index}
                 >
                   {(provided) => (
-                    <div
-                      className="text-center"
+                    <GeneralDiv
+                      height="130px"
+                      width="140px"
+                      textAlign="center"
+                      display="flex"
+                      flexWrap="wrap"
+                      alignItems="center"
+                      justifyContent="cneter"
                       // key={index}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
                       <GeneralDiv
+                        hoverHeight="120px"
+                        hoverWidth="120px"
+                        border="1px solid black"
+                        // hoverMargin="0 20px 0 0"
+                        backgroundPosition="center"
                         backgroundSize="cover"
-                        height="120px"
-                        width="150px"
+                        margin="0 auto"
+                        height="100px"
+                        width="100px"
+                        borderRadius="100%"
                         backgroundImage={`url(${player.pic})`}
+                        hoverTransitionDuration="0.15s"
+                        transitionDuration="0.4s"
                       />
-                      {player.id}
-                    </div>
+                      <GeneralDiv width="100%" textAlign="center">
+                        {player.id}
+                      </GeneralDiv>
+                    </GeneralDiv>
                   )}
                 </Draggable>
               ))}

@@ -3,7 +3,7 @@
 }
 
 svg {
-  height: 70vh;
+  height: 630px;
   /* width: 50vw; */
 }
 
@@ -51,7 +51,7 @@ rect {
   fill: url(#);
 }
 .st4 {
-  opacity: 0.8;
+  opacity: 0.9;
   fill: url(#img1);
   /* fill: #be9d53; */
   enable-background: new;
@@ -105,6 +105,7 @@ rect {
 }
 .st15 {
   fill: white;
+  cursor: pointer;
 }
 .st16 {
   fill: white;

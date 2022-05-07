@@ -25,7 +25,23 @@ const GeneralDiv = styled.div`
   border-radius: ${(props) => props.borderRadius};
   background-image: ${(props) => props.backgroundImage};
   background-size: ${(props) => props.backgroundSize};
+  background-position: ${(props) => props.backgroundPosition};
   text-align: ${(props) => props.textAling};
+  transition-duration: ${(props) => props.transitionDuration};
+  position: ${(props) => props.position};
+  left: ${(props) => props.left};
+  right: ${(props) => props.right};
+  bottom: ${(props) => props.bottom};
+  pointer-events: ${(props) => props.pointerEvents};
+  &:hover {
+    pointer-events: ${(props) => props.hoverPointerEvents};
+    transition-duration: ${(props) => props.hoverTransitionDuration};
+    margin: ${(props) => props.hoverMargin};
+    height: ${(props) => props.hoverHeight};
+    width: ${(props) => props.hoverWidth};
+    overflow-y: ${(props) => props.hoverOverflowY};
+    background-color: ${(props) => props.hoverBackgroundColor};
+  }
 `;
 
 const GeneralButton = styled.button`
@@ -40,11 +56,13 @@ const GeneralButton = styled.button`
   padding: ${(props) => props.padding};
   font-size: ${(props) => props.fontSize};
   background-color: ${(props) => props.backgroundColor};
+  pointer-events: ${(props) => props.pointerEvents};
   &:hover {
     background-color: ${(props) => props.hoverBackgroundColor};
     color: ${(props) => props.hoverColor};
     color: ${(props) => props.hoverColor};
     font-size: ${(props) => props.hoverFontSize};
+    pointer-events: ${(props) => props.hoverPointerEvents};
   }
   &::active {
     background-color: ${(props) => props.activeBackgroundColor};
@@ -86,15 +104,12 @@ const DivBeforeGameRecord = styled.div`
   display: flex;
   background-color: #343a40;
   color: #f8f9fa;
-  font-size: 40px;
+  font-size: 30px;
 `;
 
 const TeamBlock = styled.div`
   width: 50vw;
-
-  /* border: 1px solid black; */
-  height: calc(100vh - 110px);
-
+  height: 100vh;
   display: flex;
   &:nth-child(2) {
     flex-direction: row-reverse;
@@ -102,11 +117,18 @@ const TeamBlock = styled.div`
   justify-content: space-between;
 `;
 
-const TeamBlockLogo = styled.div`
-  width: calc(50vw - 500px);
-  background-image: ${(props) => props.backgroundImage};
-  filter: blur(3px);
-  -webkit-filter: blur(3px);
+const TeamBlockLogoDiv = styled.div`
+  width: calc(50vw - 375px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const TeamBlockLogoImg = styled.img`
+  width: 80%;
+  src: ${(props) => props.backgroundImage};
+
+  -webkit-filter: drop-shadow(12px 12px 7px rgba(255, 255, 255, 0.7));
+  filter: drop-shadow(12px 12px 7px rgba(255, 255, 255, 0.7));
 `;
 
 const TeamBlockDetail = styled.div`
@@ -117,15 +139,16 @@ const TeamBlockDetail = styled.div`
 `;
 
 const TeamBlockDetailTeam = styled.div`
-  margin-top: 3vh;
+  margin-top: 5vh;
   padding: 0 1.5vw;
-  width: 500px;
+  width: 375px;
   display: flex;
+  align-items: center;
   justify-content: center;
 `;
 const TeamBlockDetailPlayer = styled.div`
-  height: 50vh;
-  width: 500px;
+  height: 46vh;
+  width: 375px;
   display: flex;
   justify-content: center;
 `;
@@ -133,18 +156,20 @@ const TeamBlockDetailPlayer = styled.div`
 const SelectTeam = styled.select`
   cursor: pointer;
   -webkit-appearance: none;
-  width: 500px;
-  height: 60px;
-  font-size: 50px;
+  width: 375px;
+  height: 50px;
+  font-size: 36px;
   /* -webkit-text-stroke: 1px #495057; */
-  color: aliceblue;
+  /* color: aliceblue; */
   background-color: transparent;
+
   text-align: center;
   border: none;
 `;
 
 const SelectPlayerImg = styled.div`
-  width: 9vh;
+  border-radius: 100%;
+  width: 8vh;
   height: 8vh;
   background-size: contain;
   background-repeat: no-repeat;
@@ -154,9 +179,9 @@ const SelectPlayerImg = styled.div`
 const SelectPlayer = styled.select`
   cursor: pointer;
   -webkit-appearance: none;
-  width: 240px;
+  width: 200px;
   height: 3rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   /* -webkit-text-stroke: 1px #495057; */
   color: aliceblue;
   background-color: transparent;
@@ -166,7 +191,7 @@ const SelectPlayer = styled.select`
 
 const TeamBlockDetailPlayerDiv = styled.div`
   padding: 0 1.5vw;
-  width: 500px;
+  width: 375px;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -175,16 +200,16 @@ const TeamBlockDetailPlayerDiv = styled.div`
 
 const RegulationBlock = styled.div`
   position: absolute;
-  width: 6vw;
+  width: 7vw;
   left: 47vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 12vh;
+  margin-top: 18vh;
 `;
 const RegulationBlockCell = styled.div`
-  font-size: 44px;
-  margin-bottom: 2vh;
+  font-size: 32px;
+  margin-bottom: 1vh;
   justify-content: space-around;
   display: flex;
 `;
@@ -200,7 +225,8 @@ const ButtonForChange = styled.button`
   }
 `;
 const ButtonSubmit = styled.button`
-  background-color: ${() => "#343A40"};
+  background-color: ${(props) =>
+    props.backgroundColor ? props.backgroundColor : "#343A40"};
   border: 1px solid ${() => "#212529"};
   white-space: nowrap;
   color: hsla(150, 14%, 97%, 1);
@@ -210,7 +236,8 @@ const ButtonSubmit = styled.button`
   /* font-size: 2rem; */
   text-shadow: 0.1rem 0.1rem 0.5rem hsla(0, 0%, 0%, 0.5);
   letter-spacing: 0.1rem;
-  border-radius: 0.5rem;
+  border-radius: ${(props) =>
+    props.borderRadius ? props.borderRadius : "0.5rem"};
   user-select: none;
   padding: ${(props) => props.padding};
   margin: ${(props) => props.margin};
@@ -218,6 +245,7 @@ const ButtonSubmit = styled.button`
   height: ${(props) => props.height};
   position: ${(props) => props.position};
   right: ${(props) => props.right};
+  left: ${(props) => props.left};
   bottom: ${(props) => props.bottom};
 
   /* padding: 1rem 1.5rem; */
@@ -229,7 +257,8 @@ const ButtonSubmit = styled.button`
   }
 
   &:hover {
-    background-color: ${() => "#495057"};
+    background-color: ${(props) =>
+      props.hoverBackgroundColor ? props.hoverBackgroundColor : "#495057"};
     ${() => `transform: translateY(-3px)`}
   }
 
@@ -240,6 +269,7 @@ const ButtonSubmit = styled.button`
 
 const DivGameStartRecord = styled.div`
   width: 100vw;
+  height: 100vh;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -250,6 +280,8 @@ const DivGameStart_Container = styled.div`
   background-color: #f8f9fa;
   display: flex;
   flex-wrap: wrap;
+  height: 100%;
+  overflow-y: scroll;
   justify-content: center;
 `;
 
@@ -259,7 +291,8 @@ export {
   TeamBlock,
   RegulationBlock,
   TeamBlockDetail,
-  TeamBlockLogo,
+  TeamBlockLogoDiv,
+  TeamBlockLogoImg,
   TeamBlockDetailTeam,
   TeamBlockDetailPlayer,
   ButtonForChange,
@@ -293,29 +326,40 @@ const PopupDiv = styled.div`
 const GroundContainer = styled.div`
   width: 100vw;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 `;
 
 const TeamOnTheGround = styled.div`
-  height: 720px;
-  width: 270px;
-  overflow: scroll;
+  margin: ${(props) => props.margin};
+  height: 650px;
+  width: ${(props) => props.width};
+  overflow-x: ${(props) => props.overflowX};
+  /* overflow: scroll; */
   display: flex;
+
   ::-webkit-scrollbar {
     display: none; /* Chrome Safari */
   }
-  justify-content: center;
-  flex-direction: row;
+  /* justify-content: center; */
+  flex-direction: column;
   flex-wrap: wrap;
+  &:first-child {
+    flex-wrap: wrap-reverse;
+    overflow-x: ${(props) => props.overflowXFirst};
+  }
+
+  &:last-child {
+    overflow-x: ${(props) => props.overflowXLast};
+  }
 `;
 
 const LiveActionBolck = styled.div`
-  font-size: 36px;
+  font-size: 24px;
   margin: 0.5vh 0 0 0;
   display: flex;
   border: 2px solid #495057;
   border-radius: 5px;
-  padding: 5px 0 5px 10px;
+  padding: 5px 10px;
   width: 54.5vw;
   div {
     padding: 1px 3px;
