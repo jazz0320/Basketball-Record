@@ -117,11 +117,12 @@ function GameArrange() {
           alignItems="center"
           height="170px"
           borderRadius="10px"
-          padding="0 20px"
+          padding="0 40px"
           marginBottom="15px"
           key={index}
         >
           <GeneralDiv
+            width="24vw"
             display="flex"
             flexWrap="wrap"
             alignItems="center"
@@ -133,7 +134,7 @@ function GameArrange() {
               border="1px solid #adb5bd"
               borderRadius="10px"
               cursor="pointer"
-              fontSize="36px"
+              fontSize="28px"
               type="date"
               value={date[num]}
               onChange={(e) => {
@@ -151,7 +152,7 @@ function GameArrange() {
               border="1px solid #adb5bd"
               borderRadius="10px"
               cursor="pointer"
-              fontSize="36px"
+              fontSize="28px"
               type="time"
               onChange={(e) => {
                 let a = [...time];
@@ -164,13 +165,13 @@ function GameArrange() {
             display="flex"
             alignItems="center"
             justifyContent="space-around"
-            width="30vw"
+            width="25vw"
             // border="1px solid #e9ecef"
           >
             <GeneralSelect
               borderRadius="5px"
               border="1px solid #adb5bd"
-              fontSize="30px"
+              fontSize="24px"
               value={aTeam[num]}
               onChange={(e) => {
                 let a = [...aTeam];
@@ -199,17 +200,17 @@ function GameArrange() {
             </GeneralSelect>
 
             <GeneralDiv
-              width="152px"
-              height="152px"
+              width="132px"
+              height="132px"
               border="1px solid #adb5bd"
               borderRadius="10px"
             >
               {aTeamLogo[num] !== "default" ? (
-                <GeneralImg height="150px" widht="150px" src={aTeamLogo[num]} />
+                <GeneralImg height="130px" widht="130px" src={aTeamLogo[num]} />
               ) : (
                 <GeneralImg
-                  height="150px"
-                  widht="150px"
+                  height="130px"
+                  widht="130px"
                   src={
                     "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2F%3F.png?alt=media&token=ba57199a-119e-4121-a76e-2f6fdf93466f"
                   }
@@ -221,21 +222,21 @@ function GameArrange() {
             display="flex"
             alignItems="center"
             // border="1px solid #e9ecef"
-            width="30vw"
+            width="25vw"
             justifyContent="space-around"
           >
             <GeneralDiv
-              width="152px"
-              height="152px"
+              width="132px"
+              height="132px"
               border="1px solid #adb5bd"
               borderRadius="10px"
             >
               {bTeamLogo[num] !== "default" ? (
-                <GeneralImg height="150px" widht="150px" src={bTeamLogo[num]} />
+                <GeneralImg height="130px" widht="130px" src={bTeamLogo[num]} />
               ) : (
                 <GeneralImg
-                  height="150px"
-                  widht="150px"
+                  height="130px"
+                  widht="130px"
                   src={
                     "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2F%3F.png?alt=media&token=ba57199a-119e-4121-a76e-2f6fdf93466f"
                   }
@@ -245,7 +246,7 @@ function GameArrange() {
             <GeneralSelect
               borderRadius="5px"
               border="1px solid #adb5bd"
-              fontSize="30px"
+              fontSize="24px"
               value={bTeam[num]}
               onChange={(e) => {
                 let b = [...bTeam];
@@ -316,11 +317,12 @@ function GameArrange() {
       </GeneralDiv>
 
       {checkSetting ? (
-        <PopupDiv width="42vw" height="40vh">
+        <PopupDiv width="41vw" height="45vh">
           <GeneralDiv
+            marginTop="2vh"
             overflowY="scroll"
             height="30vh"
-            width="38vw"
+            width="40vw"
             display="flex"
             justifyContent="center"
             flexWrap="wrap"
@@ -338,40 +340,44 @@ function GameArrange() {
                 key={num}
               >
                 <div>
-                  <GeneralDiv textAlign="center">{aTeam[num]}</GeneralDiv>
+                  <GeneralDiv fontSize="24px" textAlign="center">
+                    {aTeam[num]}
+                  </GeneralDiv>
                   <div>
                     <GeneralDiv
-                      width="152px"
-                      height="152px"
+                      width="132px"
+                      height="132px"
                       border="1px solid #adb5bd"
                       borderRadius="10px"
                     >
                       <GeneralImg
-                        height="150px"
-                        widht="150px"
+                        height="130px"
+                        widht="130px"
                         src={aTeamLogo[num]}
                       />
                     </GeneralDiv>
                   </div>
                 </div>
-                <div>
-                  <div>{date[num]}</div>
-                  <div>
+                <GeneralDiv margin="0 auto">
+                  <GeneralDiv fontSize="22px">{date[num]}</GeneralDiv>
+                  <GeneralDiv fontSize="22px">
                     星期{day[num]} {time[num]}
-                  </div>
+                  </GeneralDiv>
                   <div></div>
-                </div>
+                </GeneralDiv>
                 <div>
-                  <GeneralDiv textAlign="center">{bTeam[num]}</GeneralDiv>
+                  <GeneralDiv fontSize="24px" textAlign="center">
+                    {bTeam[num]}
+                  </GeneralDiv>
                   <GeneralDiv
-                    width="152px"
-                    height="152px"
+                    width="132px"
+                    height="132px"
                     border="1px solid #adb5bd"
                     borderRadius="10px"
                   >
                     <GeneralImg
-                      height="150px"
-                      widht="150px"
+                      height="130px"
+                      widht="130px"
                       src={bTeamLogo[num]}
                     />
                   </GeneralDiv>
@@ -382,7 +388,7 @@ function GameArrange() {
           <GeneralButton
             margin="0 auto 1vh"
             width="35%"
-            fontSize="30px"
+            fontSize="28px"
             height="60px"
             borderRadius="10px"
             color="#f8f9fa"
@@ -397,7 +403,7 @@ function GameArrange() {
           <GeneralButton
             margin="0 auto 1vh"
             width="35%"
-            fontSize="30px"
+            fontSize="28px"
             height="60px"
             borderRadius="10px"
             color="#f8f9fa"

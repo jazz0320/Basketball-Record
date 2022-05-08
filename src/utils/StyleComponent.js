@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 //General
 const GeneralDiv = styled.div`
+  background: ${(props) => props.background};
   text-align: ${(props) => props.textAlign};
   overflow-y: ${(props) => props.overflowY};
   box-shadow: ${(props) => props.boxShadow};
@@ -41,6 +42,9 @@ const GeneralDiv = styled.div`
     width: ${(props) => props.hoverWidth};
     overflow-y: ${(props) => props.hoverOverflowY};
     background-color: ${(props) => props.hoverBackgroundColor};
+  }
+  div {
+    font-size: ${(props) => props.divFontSize};
   }
 `;
 

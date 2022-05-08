@@ -30,7 +30,7 @@ const NavBar = styled.div`
   width: 30px;
   flex-wrap: wrap;
   flex-direction: column;
-  height: 300px;
+  height: 600px;
   justify-content: space-between;
   font-size: 30px;
 `;
@@ -182,14 +182,43 @@ function Nav() {
             }}
             to="/profile"
           >
-            <LinkImg
-              src="
-          
-              https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3
-          "
-            />
+            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
           </LinkComponet>
         </GeneralDiv>
+        <GeneralDiv height="70px">
+          <LinkComponet
+            $focus={navActive === 3}
+            onClick={() => {
+              logStatus ? setNavActive(3) : setNavActive(4);
+            }}
+            to="/profile"
+          >
+            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
+          </LinkComponet>
+        </GeneralDiv>
+        <GeneralDiv height="70px">
+          <LinkComponet
+            $focus={navActive === 3}
+            onClick={() => {
+              logStatus ? setNavActive(3) : setNavActive(4);
+            }}
+            to="/profile"
+          >
+            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
+          </LinkComponet>
+        </GeneralDiv>
+        <GeneralDiv height="70px">
+          <LinkComponet
+            $focus={navActive === 3}
+            onClick={() => {
+              logStatus ? setNavActive(3) : setNavActive(4);
+            }}
+            to="/profile"
+          >
+            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
+          </LinkComponet>
+        </GeneralDiv>
+
         <GeneralDiv height="70px">
           <LinkComponet
             $focus={navActive === 4}

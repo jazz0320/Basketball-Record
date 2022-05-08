@@ -7,13 +7,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { ButtonSubmit } from "../utils/StyleComponent";
+import { ButtonSubmit, GeneralDiv, GeneralImg } from "../utils/StyleComponent";
 
 function Login(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   let redirect = useNavigate();
+  const back = require("../img/dear-basketball-1.jpeg");
 
   const loginEmailPassword = async () => {
     try {
@@ -64,71 +65,80 @@ function Login(props) {
 
   return (
     <>
-      <Wrapper>
-        <FormDiv>
-          <div style={{ marginBottom: "10px" }}>
-            <div style={{ fontSize: "30px", marginBottom: "10px" }}>信箱</div>
-            <div>
-              <Input
-                type="email"
-                onChange={(e) => setEmail(e.target.value)}
-              ></Input>
+      <GeneralDiv
+        backgroundColor="#e9ecef"
+        display="flex"
+        justifyContent="center"
+      >
+        <Wrapper>
+          <FormDiv>
+            <div style={{ marginBottom: "10px" }}>
+              <div style={{ fontSize: "30px", marginBottom: "10px" }}>信箱</div>
+              <div>
+                <Input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                ></Input>
+              </div>
+              <span style={{ color: "#F8F9FA" }}>test@test.com</span>
             </div>
-            <span style={{ color: "#F8F9FA" }}>test@test.com</span>
-          </div>
-          <div>
-            <div style={{ fontSize: "30px", marginBottom: "10px" }}>密碼</div>
             <div>
-              <Input
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-              ></Input>
+              <div style={{ fontSize: "30px", marginBottom: "10px" }}>密碼</div>
+              <div>
+                <Input
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                ></Input>
+              </div>
+              <span style={{ color: "#F8F9FA" }}>testtest</span>
             </div>
-            <span style={{ color: "#F8F9FA" }}>testtest</span>
-          </div>
-          <div>
-            <ButtonSubmit
-              onClick={loginEmailPassword}
-              style={{
-                width: "280px",
-                height: "70px",
-                marginLeft: "0px",
-                padding: "10px",
-              }}
-            >
-              登入
-            </ButtonSubmit>
+            <GeneralDiv display="flex" justifyContent="space-around">
+              <ButtonSubmit
+                onClick={loginEmailPassword}
+                width="180px"
+                height="50px"
+              >
+                登入
+              </ButtonSubmit>
 
-            <ButtonSubmit
-              onClick={createAccount}
-              style={{ width: "280px", height: "70px", padding: "10px" }}
-            >
-              註冊
-            </ButtonSubmit>
-          </div>
-          <div>{error}</div>
-        </FormDiv>
-      </Wrapper>
+              <ButtonSubmit onClick={createAccount} width="180px" height="50px">
+                註冊
+              </ButtonSubmit>
+            </GeneralDiv>
+            <div>{error}</div>
+          </FormDiv>
+          {/* <GeneralDiv
+            position="absolute"
+            width="500px"
+            height="500px"
+            backgroundImage={`url(
+            ${require("../img/dear-basketball-1.jpeg")}  
+            )`}
+            background="no-repeat,-webkit-linear-gradient(top, white, white)"
+          ></GeneralDiv> */}
+        </Wrapper>
+      </GeneralDiv>
     </>
   );
 }
 export default Login;
 
-const Wrapper = styled.section`
+const Wrapper = styled.div`
+  background-color: #f8f9fa;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100% - 100px);
-  width: 100%;
+  width: 80vw;
+  height: 100vh;
   div {
-    font-size: 24px;
+    font-size: 22px;
   }
 `;
 
 const FormDiv = styled.div`
   margin: 0 auto;
   width: 100%;
-  max-width: 680px;
+  max-width: 450px;
   padding: 1.3rem;
   display: flex;
   flex-direction: column;
@@ -137,7 +147,7 @@ const FormDiv = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  max-width: 565px;
+  max-width: 400px;
   padding: 11px 13px;
   background: #f9f9fa;
   color: black;

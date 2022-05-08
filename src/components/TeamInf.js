@@ -20,11 +20,11 @@ import {
 } from "../utils/StyleComponent";
 
 const PlayerChangeBlock = styled.div`
-  width: 25vw;
+  width: 34vw;
   height: 250px;
   display: flex;
   padding: 0.5vh 0.5vw;
-  border: 1px solid #adb5bd;
+  /* border: 1px solid #adb5bd; */
   display: ${(props) => (props.$focus ? "none" : "flex")};
 `;
 const PlayerButton = styled.button`
@@ -43,8 +43,9 @@ const PlayerButton = styled.button`
 `;
 const UserInput = styled.input`
   border: 1px solid #adb5bd;
+  border-radius: 5px;
   padding: 2px 4px;
-  font-size: {(props)=>props.fontSize};
+  font-size: ${(props) => props.fontSize};
 `;
 
 function TeamInf(props) {
@@ -252,7 +253,7 @@ function TeamInf(props) {
             <GeneralDiv display="flex" flexWrap="wrap">
               {teamMemberNumbers.map((_, index) => (
                 <GeneralDiv
-                  width="25vw"
+                  width="35vw"
                   margin=" 0 1vw 1vh 1vw"
                   border="1px solid #ced4da"
                   borderRadius="10px"
@@ -320,6 +321,7 @@ function TeamInf(props) {
                       </GeneralDiv>
                       <GeneralButton
                         border="#495057 1px solid"
+                        borderRadius="10px"
                         padding="5px 10px"
                         fontSize="18px"
                         hoverBackgroundColor="#E9ECEF"
@@ -335,7 +337,8 @@ function TeamInf(props) {
               ))}
 
               <GeneralButton
-                width="25vw"
+                width="35vw"
+                height="290px"
                 margin=" 0 1vw 1vh 1vw"
                 border="1px solid #ced4da"
                 borderRadius="10px"
@@ -489,7 +492,7 @@ function ExistTeam(props) {
       <GeneralDiv display="flex" flexWrap="wrap">
         {teamPlayers?.map((player, index) => (
           <GeneralDiv
-            width="26vw"
+            width="35vw"
             margin=" 0 1vw 1vh 1vw"
             border="1px solid #ced4da"
             borderRadius="10px"
@@ -508,22 +511,22 @@ function ExistTeam(props) {
                 <GeneralImg height="200px" width="200px" src={player.pic} />
               </GeneralDiv>
               <GeneralDiv
-                width="12vw"
+                width="18vw"
                 display="flex"
                 padding="10px"
                 // justifyContent="center"
                 flexWrap="wrap"
                 alignItems="start"
               >
-                <GeneralDiv fontSize="20px" marginBottom="5px" width="10vw">
+                <GeneralDiv fontSize="20px" marginBottom="5px" width="18vw">
                   名字:{player.name}
                 </GeneralDiv>
-                <GeneralDiv fontSize="20px" marginBottom="5px" width="10vw">
+                <GeneralDiv fontSize="20px" marginBottom="5px" width="18vw">
                   背號:
                   {player.num}
                 </GeneralDiv>
                 <GeneralDiv
-                  width="10vw"
+                  width="13vw"
                   display="flex"
                   padding="2px 10px"
                   justifyContent="space-between"

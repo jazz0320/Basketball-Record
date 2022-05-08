@@ -5,7 +5,7 @@ import { GeneralDiv, GeneralButton } from "../utils/StyleComponent";
 
 const SideBar = styled.div`
   padding: 2vh 0;
-  height: calc(100vh - 180px);
+  height: 100vh;
   width: 20vw;
   background-color: #495057;
   display: flex;
@@ -18,7 +18,7 @@ const ContainDiv = styled.div`
   border: #ced4da 2px solid;
   border-radius: 10px;
   padding: 1vh 2vw;
-  height: calc(100vh - 220px);
+  height: 98vh;
   width: 80vw;
 `;
 
