@@ -5,6 +5,7 @@ const GeneralDiv = styled.div`
   background: ${(props) => props.background};
   text-align: ${(props) => props.textAlign};
   overflow-y: ${(props) => props.overflowY};
+  overflow-x: ${(props) => props.overflowX};
   box-shadow: ${(props) => props.boxShadow};
   cursor: ${(props) => props.cursor};
   width: ${(props) => props.width};

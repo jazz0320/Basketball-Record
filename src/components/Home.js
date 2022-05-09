@@ -44,7 +44,7 @@ function Home(props) {
 
       let d = { [`${doc.id}`]: { grade: b, logo: doc.data().logo } };
       a.splice(big.length, 0, d);
-      setTeamGrade(a);
+      setTeamGrade([...a]);
       order.push(c);
     });
   };
@@ -96,53 +96,69 @@ function Home(props) {
 
   return (
     <>
-      <GeneralDiv padding="1.5vw">
-        <CarousellContainer>
-          {gameTime?.map((time) => (
-            <div
-              key={time}
-              style={{
-                display: "flex",
-                flexWrap: "nowrap",
-                alignItems: "center",
-              }}
-            >
-              <TimeBox
-                gameTimeCount={gameTimeCount[time]}
-                time={time}
-                weekday={weekday[time]}
-              />
+      <GeneralDiv
+        width="100vw"
+        height="100vh"
+        display="flex"
+        justifyContent="center"
+        backgroundColor="#e9ecef"
+      >
+        <GeneralDiv width="80vw" backgroundColor="#f8f9fa" padding="1vh 1vw">
+          <GeneralDiv>
+            <CarousellContainer>
+              {gameTime?.map((time) => (
+                <div
+                  key={time}
+                  style={{
+                    display: "flex",
+                    flexWrap: "nowrap",
+                    alignItems: "center",
+                  }}
+                >
+                  <TimeBox
+                    gameTimeCount={gameTimeCount[time]}
+                    time={time}
+                    weekday={weekday[time]}
+                  />
 
-              {gameList?.map((game) =>
-                Object.keys(game)[0].slice(0, 10) === time ? (
-                  <div key={Object.keys(game)}>
-                    {/* {console.log("ggg", game)} */}
-                    {/* {console.log("aaa", Object.keys(game)[0])} */}
-                    {game[Object.keys(game)[0]].gameStatus === "coming" ? (
-                      <Link
-                        to={`coming-soon/${Object.keys(game)[0]}`}
-                        key={game}
-                      >
-                        <BoxComing data={game[Object.keys(game)[0]]} />
-                      </Link>
-                    ) : game[Object.keys(game)[0]].gameStatus === "live" ? (
-                      <Link to={`live-now/${Object.keys(game)[0]}`} key={game}>
-                        <BoxEnd data={game[Object.keys(game)[0]]} />
-                      </Link>
-                    ) : (
-                      <Link to={`past-game/${Object.keys(game)[0]}`} key={game}>
-                        <BoxEnd data={game[Object.keys(game)[0]]} />
-                      </Link>
-                    )}
-                  </div>
-                ) : null
-              )}
-            </div>
-          ))}
-        </CarousellContainer>
-        <HomeGrade teamGrade={teamGrade} />
+                  {gameList?.map((game) =>
+                    Object.keys(game)[0].slice(0, 10) === time ? (
+                      <div key={Object.keys(game)}>
+                        {/* {console.log("ggg", game)} */}
+                        {/* {console.log("aaa", Object.keys(game)[0])} */}
+                        {game[Object.keys(game)[0]].gameStatus === "coming" ? (
+                          <Link
+                            to={`coming-soon/${Object.keys(game)[0]}`}
+                            key={game}
+                          >
+                            <BoxComing data={game[Object.keys(game)[0]]} />
+                          </Link>
+                        ) : game[Object.keys(game)[0]].gameStatus === "live" ? (
+                          <Link
+                            to={`live-now/${Object.keys(game)[0]}`}
+                            key={game}
+                          >
+                            <BoxEnd data={game[Object.keys(game)[0]]} />
+                          </Link>
+                        ) : (
+                          <Link
+                            to={`past-game/${Object.keys(game)[0]}`}
+                            key={game}
+                          >
+                            <BoxEnd data={game[Object.keys(game)[0]]} />
+                          </Link>
+                        )}
+                      </div>
+                    ) : null
+                  )}
+                </div>
+              ))}
+            </CarousellContainer>
+            <HomeGrade teamGrade={teamGrade} />
 
-        <Outlet />
+            <Outlet />
+          </GeneralDiv>
+        </GeneralDiv>
       </GeneralDiv>
     </>
   );
@@ -152,18 +168,20 @@ export default Home;
 
 const CarousellContainer = styled.div`
   height: 230px;
-  width: 90vw;
+  width: 78vw;
   display: inline-flex;
   overflow: scroll;
   color: #495057;
   ::-webkit-scrollbar {
-    display: none; /* Chrome Safari */
+    display: none;
+    /* Chrome Safari */
   }
 `;
 
 const GameContainerL1 = styled.div`
-  height: 160px;
-  width: 206px;
+  border-radius: 5px;
+  height: 205px;
+  width: 256px;
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -171,9 +189,9 @@ const GameContainerL1 = styled.div`
 `;
 
 const GameContainerL2 = styled.div`
-  width: 180px;
-  height: 50px;
-  font-size: 14px;
+  width: 234px;
+  height: 80px;
+  font-size: 19px;
   line-height: 50px;
   display: flex;
   flex-wrap: wrap;
@@ -183,26 +201,28 @@ const GameContainerL2 = styled.div`
 `;
 
 const LogoDiv = styled.div`
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   background-size: contain;
   background-image: url(${(props) => props.img});
   margin-right: 10px;
 `;
 
 const TeamDiv = styled.div`
-  height: 50px;
-  width: 65px;
-  font-size: 8px;
+  height: 80px;
+  width: 75px;
+  font-size: 16px;
 
   div {
-    line-height: 25px;
+    line-height: 35px;
     text-align: center;
     justify-content: center;
   }
 `;
 
 const ScoreBox = styled.div`
+  margin: auto;
+  font-size: 24px;
   height: 50px;
   width: 50px;
   line-height: 50px;
@@ -259,13 +279,16 @@ function BoxEnd(props) {
 }
 
 const GameContainerL2forComing = styled.div`
-  width: 60px;
-  height: 100px;
-  font-size: 14px;
+  width: 100px;
+  height: 150px;
+  font-size: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  :nth-child(3) {
+    width: 30px;
+  }
   .vs {
     line-height: 100px;
   }
@@ -276,8 +299,8 @@ const GameContainerL2forComing = styled.div`
 `;
 
 const LogoDivForComing = styled.div`
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   background-size: contain;
   background-image: url(${(props) => props.img});
 `;
@@ -328,17 +351,18 @@ function BoxComing(props) {
 }
 
 const TimeContainer = styled.div`
-  height: 200px;
-  width: 80px;
+  border-radius: 10px;
+  height: 220px;
+  width: 100px;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   background-color: #343a40;
   div {
     color: white;
-    margin-top: 40px;
-    font-size: 14px;
-    width: 80px;
+    margin-top: 50px;
+    font-size: 18px;
+    width: 100px;
     text-align: center;
   }
 `;
@@ -378,7 +402,7 @@ function TimeBox(props) {
 
   return (
     <TimeContainer>
-      <div>
+      <GeneralDiv>
         {months[timeDate[1]]}
         <br />
         {timeDate[2]}
@@ -386,7 +410,7 @@ function TimeBox(props) {
         {days[`0${props.weekday}`]}
         <br />
         {props.gameTimeCount}場比賽
-      </div>
+      </GeneralDiv>
     </TimeContainer>
   );
 }

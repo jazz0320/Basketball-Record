@@ -169,204 +169,221 @@ function TeamInf(props) {
 
   return (
     <>
-      {memberTeamExist ? (
-        <ExistTeam memberTeamExist={memberTeamExist} userId={props.userId} />
-      ) : (
-        <GeneralDiv position="relative" height="50vh">
-          <GeneralDiv fontSize="28px" marginBottom="0.5vh">
-            球隊名稱{" "}
-            <UserInput
-              value={team.current}
-              onChange={(e) => {
-                teamName.current = e.target.value;
-              }}
+      <GeneralDiv
+        width="100vw"
+        height="100%"
+        display="flex"
+        justifyContent="center"
+        backgroundColor="#e9ecef"
+      >
+        <GeneralDiv width="80vw" backgroundColor="#f8f9fa" padding="1vh 2vw">
+          {memberTeamExist ? (
+            <ExistTeam
+              memberTeamExist={memberTeamExist}
+              userId={props.userId}
             />
-          </GeneralDiv>
-          <GeneralDiv display="flex" alignItems="end">
-            <GeneralDiv marginBottom="0.5vh">
-              <GeneralDiv fontSize="28px" marginBottom="0.3vh">
-                球隊Logo
+          ) : (
+            <GeneralDiv position="relative">
+              <GeneralDiv fontSize="28px" marginBottom="0.5vh">
+                球隊名稱{" "}
+                <UserInput
+                  value={team.current}
+                  onChange={(e) => {
+                    teamName.current = e.target.value;
+                  }}
+                />
               </GeneralDiv>
-              <GeneralDiv
-                margin="0 0.5vw 0 1vw"
-                border="1px solid #ced4da"
-                height="205px"
-                width="205px"
-              >
-                {imgSrc.logoPic ? (
-                  <GeneralImg
-                    height="200px"
-                    width="200px"
-                    src={imgSrc.logoPic}
-                  />
-                ) : (
-                  <GeneralImg
-                    height="200px"
-                    width="200px"
-                    src={
-                      "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fpic2.png?alt=media&token=71104548-b3f0-4d35-bd3b-fbd0a81912c3"
-                    }
-                  />
-                )}
-              </GeneralDiv>
-            </GeneralDiv>
-            <input type="file" name="logoPic" onChange={upload}></input>
-          </GeneralDiv>
-          <GeneralDiv display="flex" alignItems="end" marginBottom="0.5vh">
-            <GeneralDiv>
-              <GeneralDiv fontSize="28px" marginBottom="0.3vh">
-                {" "}
-                球隊相關照片
-              </GeneralDiv>
-              <GeneralDiv
-                margin="0 0.5vw 0 1vw"
-                border="1px solid #ced4da"
-                height="205px"
-                width="205px"
-              >
-                {imgSrc["teamRelated1"] ? (
-                  <GeneralImg
-                    height="200px"
-                    width="200px"
-                    src={imgSrc.teamRelated1}
-                  ></GeneralImg>
-                ) : (
-                  <GeneralImg
-                    height="200px"
-                    width="200px"
-                    src={
-                      "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fpic1.png?alt=media&token=2f5d86b4-5f5c-4283-b05d-2254b86264d7"
-                    }
-                  ></GeneralImg>
-                )}
-              </GeneralDiv>
-            </GeneralDiv>
-
-            <input type="file" name="teamRelated1" onChange={upload}></input>
-          </GeneralDiv>
-
-          <div>
-            <GeneralDiv fontSize="28px" boxShadow="0" marginBottom="1vh">
-              球員登錄
-            </GeneralDiv>
-
-            <GeneralDiv display="flex" flexWrap="wrap">
-              {teamMemberNumbers.map((_, index) => (
-                <GeneralDiv
-                  width="35vw"
-                  margin=" 0 1vw 1vh 1vw"
-                  border="1px solid #ced4da"
-                  borderRadius="10px"
-                  padding="5px"
-                  key={index}
-                >
-                  <GeneralDiv fontSize="20px">球員{index + 1}</GeneralDiv>
-
-                  <GeneralDiv padding="10px" display="flex" height="250px">
-                    <GeneralDiv
-                      border="1px solid #E9ECEF"
-                      height="205px"
-                      width="205px"
-                      marginRight="0.5vw"
-                      marginBottom="5px"
-                    >
-                      {imgSrc[`playerPic${index}`] ? (
-                        <GeneralImg
-                          height="200px"
-                          width="200px"
-                          src={imgSrc[`playerPic${index}`]}
-                        />
-                      ) : (
-                        <GeneralImg
-                          height="200px"
-                          width="200px"
-                          src={
-                            "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fperson.png?alt=media&token=ee15ed01-e153-41d6-a8a1-ed0528073690"
-                          }
-                        />
-                      )}
-
-                      <input
-                        type="file"
-                        name={`playerPic${index}`}
-                        onChange={upload}
-                      ></input>
-                    </GeneralDiv>
-                    <GeneralDiv
-                      display="flex"
-                      justifyContent="center"
-                      flexWrap="wrap"
-                      alignItems="start"
-                    >
-                      <GeneralDiv marginBottom="5px">
-                        名字{" "}
-                        <UserInput
-                          name="playername"
-                          onChange={(e) => wirtePlayersInf(e, index)}
-                        />
-                      </GeneralDiv>
-                      <GeneralDiv marginBottom="5px">
-                        綽號{" "}
-                        <UserInput
-                          name="playerNicname"
-                          onChange={(e) => wirtePlayersInf(e, index)}
-                        />
-                      </GeneralDiv>
-                      <GeneralDiv marginBottom="5px">
-                        背號{" "}
-                        <UserInput
-                          name="playernum"
-                          onChange={(e) => wirtePlayersInf(e, index)}
-                        />
-                      </GeneralDiv>
-                      <GeneralButton
-                        border="#495057 1px solid"
-                        borderRadius="10px"
-                        padding="5px 10px"
-                        fontSize="18px"
-                        hoverBackgroundColor="#E9ECEF"
-                        activeBackgroundColor="#495057"
-                        activeColor="#F8F9FA"
-                        onClick={() => deletePlayer(index)}
-                      >
-                        移除球員
-                      </GeneralButton>
-                    </GeneralDiv>
+              <GeneralDiv display="flex" alignItems="end">
+                <GeneralDiv marginBottom="0.5vh">
+                  <GeneralDiv fontSize="28px" marginBottom="0.3vh">
+                    球隊Logo
+                  </GeneralDiv>
+                  <GeneralDiv
+                    margin="0 0.5vw 0 1vw"
+                    border="1px solid #ced4da"
+                    height="205px"
+                    width="205px"
+                  >
+                    {imgSrc.logoPic ? (
+                      <GeneralImg
+                        height="200px"
+                        width="200px"
+                        src={imgSrc.logoPic}
+                      />
+                    ) : (
+                      <GeneralImg
+                        height="200px"
+                        width="200px"
+                        src={
+                          "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fpic2.png?alt=media&token=71104548-b3f0-4d35-bd3b-fbd0a81912c3"
+                        }
+                      />
+                    )}
                   </GeneralDiv>
                 </GeneralDiv>
-              ))}
+                <input type="file" name="logoPic" onChange={upload}></input>
+              </GeneralDiv>
+              <GeneralDiv display="flex" alignItems="end" marginBottom="0.5vh">
+                <GeneralDiv>
+                  <GeneralDiv fontSize="28px" marginBottom="0.3vh">
+                    {" "}
+                    球隊相關照片
+                  </GeneralDiv>
+                  <GeneralDiv
+                    margin="0 0.5vw 0 1vw"
+                    border="1px solid #ced4da"
+                    height="205px"
+                    width="205px"
+                  >
+                    {imgSrc["teamRelated1"] ? (
+                      <GeneralImg
+                        height="200px"
+                        width="200px"
+                        src={imgSrc.teamRelated1}
+                      ></GeneralImg>
+                    ) : (
+                      <GeneralImg
+                        height="200px"
+                        width="200px"
+                        src={
+                          "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fpic1.png?alt=media&token=2f5d86b4-5f5c-4283-b05d-2254b86264d7"
+                        }
+                      ></GeneralImg>
+                    )}
+                  </GeneralDiv>
+                </GeneralDiv>
 
-              <GeneralButton
-                width="35vw"
-                height="290px"
-                margin=" 0 1vw 1vh 1vw"
-                border="1px solid #ced4da"
-                borderRadius="10px"
-                padding="5px"
-                onClick={addPlayer}
-                fontSize="40px"
-                hoverBackgroundColor="#E9ECEF"
-                activeBackgroundColor="#495057"
-                activeColor="#F8F9FA"
-                hoverFontSize="50px"
+                <input
+                  type="file"
+                  name="teamRelated1"
+                  onChange={upload}
+                ></input>
+              </GeneralDiv>
+
+              <div>
+                <GeneralDiv fontSize="28px" boxShadow="0" marginBottom="1vh">
+                  球員登錄
+                </GeneralDiv>
+
+                <GeneralDiv display="flex" flexWrap="wrap">
+                  {teamMemberNumbers.map((_, index) => (
+                    <GeneralDiv
+                      width="35vw"
+                      margin=" 0 1vw 1vh 1vw"
+                      border="1px solid #ced4da"
+                      borderRadius="10px"
+                      padding="5px"
+                      key={index}
+                    >
+                      <GeneralDiv fontSize="20px">球員{index + 1}</GeneralDiv>
+
+                      <GeneralDiv padding="10px" display="flex" height="250px">
+                        <GeneralDiv
+                          border="1px solid #E9ECEF"
+                          height="205px"
+                          width="205px"
+                          marginRight="0.5vw"
+                          marginBottom="5px"
+                        >
+                          {imgSrc[`playerPic${index}`] ? (
+                            <GeneralImg
+                              height="200px"
+                              width="200px"
+                              src={imgSrc[`playerPic${index}`]}
+                            />
+                          ) : (
+                            <GeneralImg
+                              height="200px"
+                              width="200px"
+                              src={
+                                "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fperson.png?alt=media&token=ee15ed01-e153-41d6-a8a1-ed0528073690"
+                              }
+                            />
+                          )}
+
+                          <input
+                            type="file"
+                            name={`playerPic${index}`}
+                            onChange={upload}
+                          ></input>
+                        </GeneralDiv>
+                        <GeneralDiv
+                          display="flex"
+                          justifyContent="center"
+                          flexWrap="wrap"
+                          alignItems="start"
+                        >
+                          <GeneralDiv marginBottom="5px">
+                            名字{" "}
+                            <UserInput
+                              name="playername"
+                              onChange={(e) => wirtePlayersInf(e, index)}
+                            />
+                          </GeneralDiv>
+                          <GeneralDiv marginBottom="5px">
+                            綽號{" "}
+                            <UserInput
+                              name="playerNicname"
+                              onChange={(e) => wirtePlayersInf(e, index)}
+                            />
+                          </GeneralDiv>
+                          <GeneralDiv marginBottom="5px">
+                            背號{" "}
+                            <UserInput
+                              name="playernum"
+                              onChange={(e) => wirtePlayersInf(e, index)}
+                            />
+                          </GeneralDiv>
+                          <GeneralButton
+                            border="#495057 1px solid"
+                            borderRadius="10px"
+                            padding="5px 10px"
+                            fontSize="18px"
+                            hoverBackgroundColor="#E9ECEF"
+                            activeBackgroundColor="#495057"
+                            activeColor="#F8F9FA"
+                            onClick={() => deletePlayer(index)}
+                          >
+                            移除球員
+                          </GeneralButton>
+                        </GeneralDiv>
+                      </GeneralDiv>
+                    </GeneralDiv>
+                  ))}
+
+                  <GeneralButton
+                    width="35vw"
+                    height="290px"
+                    margin=" 0 1vw 1vh 1vw"
+                    border="1px solid #ced4da"
+                    borderRadius="10px"
+                    padding="5px"
+                    onClick={addPlayer}
+                    fontSize="40px"
+                    hoverBackgroundColor="#E9ECEF"
+                    activeBackgroundColor="#495057"
+                    activeColor="#F8F9FA"
+                    hoverFontSize="50px"
+                  >
+                    <i className="fa-solid fa-plus"></i>
+                  </GeneralButton>
+                </GeneralDiv>
+              </div>
+              <ButtonSubmit
+                padding="10px"
+                width="100px"
+                margin="10px"
+                position="absolute"
+                onClick={submitTeamInf}
+                right="60px"
+                bottom="150px"
               >
-                <i className="fa-solid fa-plus"></i>
-              </GeneralButton>
+                送出
+              </ButtonSubmit>
             </GeneralDiv>
-          </div>
-          <ButtonSubmit
-            padding="10px"
-            width="100px"
-            margin="10px"
-            position="absolute"
-            onClick={submitTeamInf}
-            right="60px"
-            bottom="150px"
-          >
-            送出
-          </ButtonSubmit>
+          )}
         </GeneralDiv>
-      )}
+      </GeneralDiv>
     </>
   );
 }
@@ -437,7 +454,6 @@ function ExistTeam(props) {
 
   return (
     <>
-      <GeneralDiv fontSize="40px">隊名: {props.memberTeamExist}</GeneralDiv>
       {checkDelete ? (
         <PopupDiv
           position="fixed"
@@ -480,7 +496,7 @@ function ExistTeam(props) {
           </GeneralDiv>
         </PopupDiv>
       ) : null}
-
+      <GeneralDiv fontSize="40px">隊名: {props.memberTeamExist}</GeneralDiv>
       <div>
         <GeneralImg height="200px" width="200px" src={teamLogo} />
         <input type="file" name="logo" onChange={(e) => upload(e)}></input>

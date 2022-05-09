@@ -14,7 +14,7 @@ function HomeGrade(props) {
       width="33vw"
       border="2px solid #adb5bd"
       borderRadius="10px"
-      marginTop="2vh"
+      marginTop="4vh"
     >
       <GeneralDiv
         display="flex"
@@ -44,9 +44,64 @@ function HomeGrade(props) {
           GB
         </GeneralDiv>
       </GeneralDiv>
-      <GeneralDiv height="55vh" overflowY="scroll" padding="0 10px">
+      <GeneralDiv height="60vh" overflowY="scroll" padding="0 10px">
+        {console.log("aaasasasasa", props.teamGrade)}
+        {props.teamGrade &&
+          props.teamGrade?.map((item, index) => (
+            <GeneralDiv
+              display="flex"
+              alignItems="center"
+              divFontSize="18px"
+              key={Object.keys(item)}
+            >
+              <GeneralDiv width="40px" textAlign="center">
+                {index}
+              </GeneralDiv>
+              <GeneralDiv>
+                <GeneralImg
+                  src={item[Object.keys(item)]["logo"]}
+                  width="80px"
+                  height="80px"
+                />
+              </GeneralDiv>
+              <GeneralDiv width="110px" textAlign="center">
+                {Object.keys(item)}
+              </GeneralDiv>
+              <GeneralDiv width="30px" textAlign="right">
+                {item[Object.keys(item)]["grade"][0]}
+              </GeneralDiv>
+              <GeneralDiv width="50px" textAlign="right">
+                {item[Object.keys(item)]["grade"][1]}
+              </GeneralDiv>
+              <GeneralDiv width="70px" textAlign="right">
+                {Math.round(
+                  roundDecimal(
+                    item[Object.keys(item)]["grade"][0] /
+                      (item[Object.keys(item)]["grade"][1] +
+                        item[Object.keys(item)]["grade"][0]),
+                    2
+                  ) * 100
+                )}
+                %
+              </GeneralDiv>
+              <GeneralDiv width="60px" textAlign="right">
+                {index === 0
+                  ? "0"
+                  : (item[Object.keys(item)]["grade"][2] -
+                      props.teamGrade[index - 1][
+                        Object.keys(props.teamGrade[index - 1])
+                      ]["grade"][2]) /
+                    2}
+              </GeneralDiv>
+            </GeneralDiv>
+          ))}
         {props.teamGrade?.map((item, index) => (
-          <GeneralDiv display="flex" alignItems="center" divFontSize="18px">
+          <GeneralDiv
+            display="flex"
+            alignItems="center"
+            divFontSize="18px"
+            key={Object.keys(item)}
+          >
             <GeneralDiv width="40px" textAlign="center">
               {index}
             </GeneralDiv>
@@ -67,12 +122,14 @@ function HomeGrade(props) {
               {item[Object.keys(item)]["grade"][1]}
             </GeneralDiv>
             <GeneralDiv width="70px" textAlign="right">
-              {roundDecimal(
-                item[Object.keys(item)]["grade"][0] /
-                  (item[Object.keys(item)]["grade"][1] +
-                    item[Object.keys(item)]["grade"][0]),
-                2
-              ) * 100}
+              {Math.round(
+                roundDecimal(
+                  item[Object.keys(item)]["grade"][0] /
+                    (item[Object.keys(item)]["grade"][1] +
+                      item[Object.keys(item)]["grade"][0]),
+                  2
+                ) * 100
+              )}
               %
             </GeneralDiv>
             <GeneralDiv width="60px" textAlign="right">
@@ -87,7 +144,12 @@ function HomeGrade(props) {
           </GeneralDiv>
         ))}
         {props.teamGrade?.map((item, index) => (
-          <GeneralDiv display="flex" alignItems="center" divFontSize="18px">
+          <GeneralDiv
+            display="flex"
+            alignItems="center"
+            divFontSize="18px"
+            key={Object.keys(item)}
+          >
             <GeneralDiv width="40px" textAlign="center">
               {index}
             </GeneralDiv>
@@ -108,53 +170,14 @@ function HomeGrade(props) {
               {item[Object.keys(item)]["grade"][1]}
             </GeneralDiv>
             <GeneralDiv width="70px" textAlign="right">
-              {roundDecimal(
-                item[Object.keys(item)]["grade"][0] /
-                  (item[Object.keys(item)]["grade"][1] +
-                    item[Object.keys(item)]["grade"][0]),
-                2
-              ) * 100}
-              %
-            </GeneralDiv>
-            <GeneralDiv width="60px" textAlign="right">
-              {index === 0
-                ? "0"
-                : (item[Object.keys(item)]["grade"][2] -
-                    props.teamGrade[index - 1][
-                      Object.keys(props.teamGrade[index - 1])
-                    ]["grade"][2]) /
-                  2}
-            </GeneralDiv>
-          </GeneralDiv>
-        ))}
-        {props.teamGrade?.map((item, index) => (
-          <GeneralDiv display="flex" alignItems="center" divFontSize="18px">
-            <GeneralDiv width="40px" textAlign="center">
-              {index}
-            </GeneralDiv>
-            <GeneralDiv>
-              <GeneralImg
-                src={item[Object.keys(item)]["logo"]}
-                width="80px"
-                height="80px"
-              />
-            </GeneralDiv>
-            <GeneralDiv width="110px" textAlign="center">
-              {Object.keys(item)}
-            </GeneralDiv>
-            <GeneralDiv width="30px" textAlign="right">
-              {item[Object.keys(item)]["grade"][0]}
-            </GeneralDiv>
-            <GeneralDiv width="50px" textAlign="right">
-              {item[Object.keys(item)]["grade"][1]}
-            </GeneralDiv>
-            <GeneralDiv width="70px" textAlign="right">
-              {roundDecimal(
-                item[Object.keys(item)]["grade"][0] /
-                  (item[Object.keys(item)]["grade"][1] +
-                    item[Object.keys(item)]["grade"][0]),
-                2
-              ) * 100}
+              {Math.round(
+                roundDecimal(
+                  item[Object.keys(item)]["grade"][0] /
+                    (item[Object.keys(item)]["grade"][1] +
+                      item[Object.keys(item)]["grade"][0]),
+                  2
+                ) * 100
+              )}
               %
             </GeneralDiv>
             <GeneralDiv width="60px" textAlign="right">

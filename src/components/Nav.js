@@ -1,12 +1,9 @@
 import LiveRoom from "./LiveRoom";
-import PastGame from "./PastGame";
 import TeamInf from "./TeamInf";
 import MemberFile from "./MemberFile";
 import Login from "./Login";
 import App from "./App";
 import Home from "./Home";
-
-import Profile from "./Profile";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import {
   auth,
@@ -30,7 +27,6 @@ const NavBar = styled.div`
   width: 30px;
   flex-wrap: wrap;
   flex-direction: column;
-  height: 600px;
   justify-content: space-between;
   font-size: 30px;
 `;
@@ -44,6 +40,7 @@ const LinkComponet = styled(Link)`
   background-color: white;
   border-radius: 100%;
   color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
+  border: ${(props) => (props.$focus ? "5px solid black" : null)};
   text-decoration: none;
   :hover {
     width: 70px;
@@ -65,6 +62,7 @@ function Nav() {
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
+  const [userRole, setUserRole] = useState();
   const [scheduleGames, setScheduleGames] = useState([]);
   const [everyLiveGames, setEveryLiveGames] = useState([]);
   const [pastGameRoutes, setPastGameRoutes] = useState();
@@ -159,88 +157,75 @@ function Nav() {
             />
           </LinkComponet>
         </GeneralDiv>
-        <GeneralDiv height="70px">
-          <LinkComponet
-            $focus={navActive === 0}
-            onClick={() => setNavActive(0)}
-            to="/record"
-          >
-            <LinkImg
-              src="
-          
-              https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Frecord.png?alt=media&token=17a10f94-10d7-4b71-bc65-fc1202eaf1b4          "
-            />
-          </LinkComponet>
-        </GeneralDiv>
-        {/* <LinkComponet to="/test">Test</LinkComponet>
-        <span> | </span> */}
-        <GeneralDiv height="70px">
-          <LinkComponet
-            $focus={navActive === 3}
-            onClick={() => {
-              logStatus ? setNavActive(3) : setNavActive(4);
-            }}
-            to="/profile"
-          >
-            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
-          </LinkComponet>
-        </GeneralDiv>
-        <GeneralDiv height="70px">
-          <LinkComponet
-            $focus={navActive === 3}
-            onClick={() => {
-              logStatus ? setNavActive(3) : setNavActive(4);
-            }}
-            to="/profile"
-          >
-            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
-          </LinkComponet>
-        </GeneralDiv>
-        <GeneralDiv height="70px">
-          <LinkComponet
-            $focus={navActive === 3}
-            onClick={() => {
-              logStatus ? setNavActive(3) : setNavActive(4);
-            }}
-            to="/profile"
-          >
-            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
-          </LinkComponet>
-        </GeneralDiv>
-        <GeneralDiv height="70px">
-          <LinkComponet
-            $focus={navActive === 3}
-            onClick={() => {
-              logStatus ? setNavActive(3) : setNavActive(4);
-            }}
-            to="/profile"
-          >
-            <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
-          </LinkComponet>
-        </GeneralDiv>
+        {logStatus ? (
+          <>
+            {userRole === 2 && (
+              <GeneralDiv height="70px">
+                <LinkComponet
+                  $focus={navActive === 0}
+                  onClick={() => setNavActive(0)}
+                  to="/record"
+                >
+                  <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Frecord.png?alt=media&token=17a10f94-10d7-4b71-bc65-fc1202eaf1b4          " />
+                </LinkComponet>
+              </GeneralDiv>
+            )}
+            {/* <GeneralDiv height="70px">
+              <LinkComponet
+                $focus={navActive === 3}
+                onClick={() => {
+                  logStatus ? setNavActive(3) : setNavActive(4);
+                }}
+                to="/member-file"
+              >
+                <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
+              </LinkComponet>
+            </GeneralDiv> */}
+            <GeneralDiv height="70px">
+              <LinkComponet
+                $focus={navActive === 5}
+                onClick={() => setNavActive(5)}
+                to="/game-schedule"
+              >
+                <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fcalendar.png?alt=media&token=411be2b9-84b9-435b-b9f6-40eba70de6c7" />
+              </LinkComponet>
+            </GeneralDiv>
+            {userRole === 2 && (
+              <GeneralDiv height="70px">
+                <LinkComponet
+                  $focus={navActive === 6}
+                  onClick={() => setNavActive(6)}
+                  to="/game-arrange"
+                >
+                  <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fplan.png?alt=media&token=c8f75623-527a-43d2-bc72-166689252eb8" />
+                </LinkComponet>
+              </GeneralDiv>
+            )}
+            <GeneralDiv height="70px">
+              <LinkComponet
+                $focus={navActive === 7}
+                onClick={() => setNavActive(7)}
+                to="/team-inf"
+              >
+                <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fteam.png?alt=media&token=0130a93d-5303-4d6a-b4f3-6b7b4f7ea729" />
+              </LinkComponet>
+            </GeneralDiv>
+          </>
+        ) : null}
 
         <GeneralDiv height="70px">
           <LinkComponet
             $focus={navActive === 4}
             onClick={() => {
+              setNavActive(4);
               logInOut();
             }}
             to="/login"
           >
             {logStatus ? (
-              <LinkImg
-                src="
-          
-                https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogout.png?alt=media&token=1e2b01d5-2bcd-4498-b7ba-c22a148654f6
-          "
-              />
+              <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogout.png?alt=media&token=1e2b01d5-2bcd-4498-b7ba-c22a148654f6" />
             ) : (
-              <LinkImg
-                src="
-          
-                https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogin.png?alt=media&token=6be000e7-4df8-4262-8e80-e7ad1a054880
-          "
-              />
+              <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogin.png?alt=media&token=6be000e7-4df8-4262-8e80-e7ad1a054880" />
             )}
           </LinkComponet>
         </GeneralDiv>
@@ -250,33 +235,32 @@ function Nav() {
         <Route
           path="/"
           element={<Home setComingGameRoutes={setComingGameRoutes} />}
-        >
-          {liveGameRoutes?.map((gameName, index) => (
-            <Route
-              key={index}
-              path={`live-now/${gameName}`}
-              element={
-                <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
-              }
-            />
-          ))}
-          {pastGameRoutes?.map((gameName, index) => (
-            <Route
-              key={index}
-              path={`past-game/${gameName}`}
-              element={<PastGame gameName={gameName} />}
-            />
-          ))}
-          {comingGameRoutes?.map((gameName, index) => (
-            <Route
-              key={index}
-              path={`coming-soon/${gameName}`}
-              element={
-                <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
-              }
-            />
-          ))}
-        </Route>
+        ></Route>
+        {liveGameRoutes?.map((gameName, index) => (
+          <Route
+            key={index}
+            path={`live-now/${gameName}`}
+            element={
+              <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
+            }
+          />
+        ))}
+        {pastGameRoutes?.map((gameName, index) => (
+          <Route
+            key={index}
+            path={`past-game/${gameName}`}
+            element={<LiveRoom gameName={gameName} pastGameName={gameName} />}
+          />
+        ))}
+        {comingGameRoutes?.map((gameName, index) => (
+          <Route
+            key={index}
+            path={`coming-soon/${gameName}`}
+            element={
+              <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
+            }
+          />
+        ))}
 
         {/* <Route path="/test" element={<Test />} /> */}
 
@@ -291,17 +275,16 @@ function Nav() {
           }
         />
 
-        <Route path="/profile" element={<Profile userId={userId} />}>
-          <Route path="member-file" element={<MemberFile />} />
-          <Route path="game-schedule" element={<GameSchedule />} />
-          <Route path="game-arrange" element={<GameArrange />} />
-          <Route path="team-inf" element={<TeamInf userId={userId} />} />
-        </Route>
+        <Route path="member-file" element={<MemberFile />} />
+        <Route path="game-schedule" element={<GameSchedule />} />
+        <Route path="game-arrange" element={<GameArrange />} />
+        <Route path="team-inf" element={<TeamInf userId={userId} />} />
         <Route
           path="/login"
           element={
             <Login
               setLogFirstTime={setLogFirstTime}
+              setUserRole={setUserRole}
               setNavActive={setNavActive}
               setUserId={setUserId}
             />
