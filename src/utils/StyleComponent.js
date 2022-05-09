@@ -315,8 +315,8 @@ export {
 // 開始比賽
 const PopupDiv = styled.div`
   position: fixed;
-  top: 30vh;
-  left: 40vw;
+  top: ${(props) => (props.top ? props.top : "30vh")};
+  left: ${(props) => (props.left ? props.left : "40vw")};
   background-color: #495057;
   height: 14vh;
   height: ${(props) => (props.height ? props.height : "14vh")};

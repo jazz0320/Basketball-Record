@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 import HomeGrade from "./HomeGrade";
+import PlayerGrade from "./PlayerGrade";
 import { GeneralDiv } from "../utils/StyleComponent";
 
 function Home(props) {
@@ -12,8 +13,10 @@ function Home(props) {
   const [gameTimeCount, setGameTimeCount] = useState({});
   const [weekday, setWeekday] = useState({});
   const [teamGrade, setTeamGrade] = useState([]);
+  const [playerGrade, setPlayerGrade] = useState([]);
   let comingGame = [];
   async function loadSchedule() {
+    setGameList([]);
     const querySnapshot = await getDocs(collection(db, "game_schedule"));
     querySnapshot.forEach((doc) => {
       if (doc.data().gameStatus === "coming") {
@@ -29,29 +32,34 @@ function Home(props) {
     props.setComingGameRoutes(comingGame);
   }
 
-  const getTeamGrade = async function () {
+  const getTeamData = async function () {
     let order = [];
     const querySnapshot = await getDocs(collection(db, "team_data"));
     querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       let a = teamGrade;
       let b = doc.data().winLoss;
       let c = b[0] - b[1];
       b.push(c);
-      console.log(order);
       let big = order.filter((item) => item > c);
-      console.log(big);
-
       let d = { [`${doc.id}`]: { grade: b, logo: doc.data().logo } };
       a.splice(big.length, 0, d);
       setTeamGrade([...a]);
       order.push(c);
     });
+
+    querySnapshot.forEach((doc) => {
+      console.log("cccc", doc.data().players);
+      let players = doc
+        .data()
+        .players.map((player) => ({ ...player, team: doc.id }));
+      setPlayerGrade((pre) => [...pre, ...players]);
+    });
   };
 
   useEffect(() => {
     loadSchedule();
-    getTeamGrade();
+    getTeamData();
+    // getPlayerGrade();
     // const q = query(collection(db, "game_schedule"));
     // const unsub = onSnapshot(q, (snapshot) => {
     //   snapshot.docChanges().forEach((doc) => {
@@ -103,61 +111,65 @@ function Home(props) {
         justifyContent="center"
         backgroundColor="#e9ecef"
       >
-        <GeneralDiv width="80vw" backgroundColor="#f8f9fa" padding="1vh 1vw">
-          <GeneralDiv>
-            <CarousellContainer>
-              {gameTime?.map((time) => (
-                <div
-                  key={time}
-                  style={{
-                    display: "flex",
-                    flexWrap: "nowrap",
-                    alignItems: "center",
-                  }}
-                >
-                  <TimeBox
-                    gameTimeCount={gameTimeCount[time]}
-                    time={time}
-                    weekday={weekday[time]}
-                  />
+        <GeneralDiv
+          width="80vw"
+          backgroundColor="#f8f9fa"
+          padding="1vh 1vw"
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="space-around"
+        >
+          <CarousellContainer>
+            {gameTime?.map((time) => (
+              <div
+                key={time}
+                style={{
+                  display: "flex",
+                  flexWrap: "nowrap",
+                  alignItems: "center",
+                }}
+              >
+                <TimeBox
+                  gameTimeCount={gameTimeCount[time]}
+                  time={time}
+                  weekday={weekday[time]}
+                />
 
-                  {gameList?.map((game) =>
-                    Object.keys(game)[0].slice(0, 10) === time ? (
-                      <div key={Object.keys(game)}>
-                        {/* {console.log("ggg", game)} */}
-                        {/* {console.log("aaa", Object.keys(game)[0])} */}
-                        {game[Object.keys(game)[0]].gameStatus === "coming" ? (
-                          <Link
-                            to={`coming-soon/${Object.keys(game)[0]}`}
-                            key={game}
-                          >
-                            <BoxComing data={game[Object.keys(game)[0]]} />
-                          </Link>
-                        ) : game[Object.keys(game)[0]].gameStatus === "live" ? (
-                          <Link
-                            to={`live-now/${Object.keys(game)[0]}`}
-                            key={game}
-                          >
-                            <BoxEnd data={game[Object.keys(game)[0]]} />
-                          </Link>
-                        ) : (
-                          <Link
-                            to={`past-game/${Object.keys(game)[0]}`}
-                            key={game}
-                          >
-                            <BoxEnd data={game[Object.keys(game)[0]]} />
-                          </Link>
-                        )}
-                      </div>
-                    ) : null
-                  )}
-                </div>
-              ))}
-            </CarousellContainer>
-            <HomeGrade teamGrade={teamGrade} />
-
-            <Outlet />
-          </GeneralDiv>
+                {gameList?.map((game) =>
+                  Object.keys(game)[0].slice(0, 10) === time ? (
+                    <div key={Object.keys(game)}>
+                      {/* {console.log("ggg", game)} */}
+                      {/* {console.log("aaa", Object.keys(game)[0])} */}
+                      {game[Object.keys(game)[0]].gameStatus === "coming" ? (
+                        <Link
+                          to={`coming-soon/${Object.keys(game)[0]}`}
+                          key={game}
+                        >
+                          <BoxComing data={game[Object.keys(game)[0]]} />
+                        </Link>
+                      ) : game[Object.keys(game)[0]].gameStatus === "live" ? (
+                        <Link
+                          to={`live-now/${Object.keys(game)[0]}`}
+                          key={game}
+                        >
+                          <BoxEnd data={game[Object.keys(game)[0]]} />
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`past-game/${Object.keys(game)[0]}`}
+                          key={game}
+                        >
+                          <BoxEnd data={game[Object.keys(game)[0]]} />
+                        </Link>
+                      )}
+                    </div>
+                  ) : null
+                )}
+              </div>
+            ))}
+          </CarousellContainer>
+          <HomeGrade teamGrade={teamGrade} />
+          <PlayerGrade playerGrade={playerGrade} />
         </GeneralDiv>
       </GeneralDiv>
     </>

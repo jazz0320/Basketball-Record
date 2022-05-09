@@ -1,5 +1,3 @@
-import { getDoc, doc, getDocs, collection, db } from "../utils/firebase";
-import { useEffect, useState } from "react";
 import { GeneralDiv, GeneralImg } from "../utils/StyleComponent";
 
 function HomeGrade(props) {
@@ -45,7 +43,6 @@ function HomeGrade(props) {
         </GeneralDiv>
       </GeneralDiv>
       <GeneralDiv height="60vh" overflowY="scroll" padding="0 10px">
-        {console.log("aaasasasasa", props.teamGrade)}
         {props.teamGrade &&
           props.teamGrade?.map((item, index) => (
             <GeneralDiv

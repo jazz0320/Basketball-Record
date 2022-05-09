@@ -333,7 +333,7 @@ function GameArrange() {
           </GeneralDiv>
 
           {checkSetting ? (
-            <PopupDiv width="41vw" height="45vh">
+            <PopupDiv width="41vw" height="45vh" top="20vh" left="30vw">
               <GeneralDiv
                 marginTop="2vh"
                 overflowY="scroll"
@@ -411,8 +411,10 @@ function GameArrange() {
                 backgroundColor="#6c757d"
                 hoverBackgroundColor="#ced4da"
                 hoverColor="#212529"
-                onClick={() => setCheckSetting(true)}
-                onClick={sendGameSchedule}
+                onClick={() => {
+                  setCheckSetting(true);
+                  sendGameSchedule();
+                }}
               >
                 確認無誤
               </GeneralButton>
