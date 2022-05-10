@@ -27,6 +27,7 @@ const GeneralDiv = styled.div`
   border-radius: ${(props) => props.borderRadius};
   background-image: ${(props) => props.backgroundImage};
   background-size: ${(props) => props.backgroundSize};
+  background-repeat: ${(props) => props.backgroundRepeat};
   background-position: ${(props) => props.backgroundPosition};
   text-align: ${(props) => props.textAling};
   transition-duration: ${(props) => props.transitionDuration};
@@ -78,6 +79,7 @@ const GeneralButton = styled.button`
 const GeneralImg = styled.img`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  src: ${(props) => props.src};
 `;
 
 const GeneralInput = styled.input`
@@ -293,7 +295,28 @@ const DivGameStart_Container = styled.div`
   }
 `;
 
+const IconComponet = styled.div`
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 100%;
+  color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
+  border: ${(props) => (props.$focus ? "5px solid black" : null)};
+  text-decoration: none;
+  :hover {
+    width: 70px;
+    height: 70px;
+  }
+  :active {
+    background-color: rgb(41, 41, 41);
+  }
+`;
+
 export {
+  IconComponet,
   Div_Record,
   DivBeforeGameRecord,
   TeamBlock,

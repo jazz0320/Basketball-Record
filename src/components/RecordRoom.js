@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import {
   GeneralDiv,
   GeneralButton,
+  IconComponet,
   ButtonSubmit,
+  GeneralImg,
 } from "../utils/StyleComponent";
 
 function RecordRoom(props) {
   const [reverseLiveAction, setReverseLiveAction] = useState();
   const [pointerState, setPointerState] = useState("none");
   const [hideRecord, setHideRecord] = useState(false);
-  const [horizontalLeft, setHorizontalLeft] = useState(true);
+  const [openRecordButton, setOpenRecordButton] = useState(false);
 
   useEffect(() => {
     let a = [...props.liveAction];
@@ -25,73 +27,66 @@ function RecordRoom(props) {
       </div> */}
       <GeneralDiv
         position="fixed"
-        bottom={hideRecord ? "5px" : "15vh"}
-        left={horizontalLeft ? "0" : null}
-        right={horizontalLeft ? null : "0"}
+        bottom="5px"
+        right="5px"
         transitionDuration="0.5s"
+        display="flex"
       >
-        {hideRecord ? null : (
-          <ButtonSubmit
-            padding="1px 3px"
-            margin=" 0 5px 0 0"
-            onClick={() => {
-              if (horizontalLeft === true) {
-                setHorizontalLeft(false);
-              } else {
-                setHorizontalLeft(true);
-              }
-            }}
-          >
-            {horizontalLeft ? ">" : "<"}
-          </ButtonSubmit>
-        )}
+        {openRecordButton && (
+          <GeneralDiv width="100px">
+            <ButtonSubmit
+              width="70px"
+              padding="1px 3px"
+              margin=" 0 5px 0 0"
+              onClick={() => {
+                if (hideRecord === false) {
+                  setHideRecord(true);
+                } else {
+                  setHideRecord(false);
+                }
+              }}
+            >
+              {hideRecord ? "Open" : "Close"}
+            </ButtonSubmit>
 
-        <ButtonSubmit
-          width="70px"
-          padding="1px 3px"
-          margin=" 0 5px 0 0"
-          onClick={() => {
-            if (hideRecord === false) {
-              setHideRecord(true);
-            } else {
-              setHideRecord(false);
-            }
-          }}
-        >
-          {hideRecord ? "Open" : "Close"}
-        </ButtonSubmit>
-        {hideRecord ? null : (
-          <ButtonSubmit
-            width="80px"
-            backgroundColor={pointerState === "none" ? null : "#d62828"}
-            padding="1px 3px"
-            onClick={() => {
-              if (pointerState === "none") {
-                setPointerState("");
-              } else {
-                setPointerState("none");
-              }
-            }}
-          >
-            {pointerState === "none" ? "Check" : "Cancel"}
-          </ButtonSubmit>
+            <ButtonSubmit
+              width="80px"
+              backgroundColor={pointerState === "none" ? null : "#d62828"}
+              padding="1px 3px"
+              onClick={() => {
+                if (pointerState === "none") {
+                  setPointerState("");
+                } else {
+                  setPointerState("none");
+                }
+              }}
+            >
+              {pointerState === "none" ? "Check" : "Cancel"}
+            </ButtonSubmit>
+          </GeneralDiv>
         )}
+        <IconComponet onClick={() => setOpenRecordButton((pre) => !pre)}>
+          <GeneralImg
+            width="50px"
+            height="50px"
+            src={require("../img/chat/chat1.png")}
+            alt="Watch Record"
+          />
+        </IconComponet>
       </GeneralDiv>
       <GeneralDiv
         transitionDuration="0.5s"
         position="fixed"
         bottom="0"
-        left={horizontalLeft ? "0" : null}
-        right={horizontalLeft ? null : "0"}
-        width={hideRecord ? "0px" : "45vw"}
+        width={hideRecord ? "0px" : "42vw"}
         padding={hideRecord ? "0px" : "5px"}
-        height={hideRecord ? "0px" : "15vh"}
+        height={hideRecord ? "0px" : "8vh"}
+        color="white"
         backgroundColor={
           pointerState === "none"
-            ? "rgba(206, 212, 218,0.4)"
-            : "rgba(206, 212, 218,0.8)"
+            ? "rgba(33, 37, 41,0.4)"
+            : "rgba(33, 37, 41,0.8)"
         }
-        border="1px solid #212529"
         borderRadius="10px 10px 0 0"
         fontSize="20px"
         overflowY="hidden"

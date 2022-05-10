@@ -8,20 +8,17 @@ function HomeGrade(props) {
     );
   };
   return (
-    <GeneralDiv
-      width="33vw"
-      border="2px solid #adb5bd"
-      borderRadius="10px"
-      marginTop="4vh"
-    >
+    <GeneralDiv width="33vw" border="2px solid #adb5bd" borderRadius="10px">
       <GeneralDiv
         display="flex"
         alignItems="center"
+        justifyContent="space-around"
         height="4vh"
         backgroundColor="#343a40"
         color="#f8f9fa"
         borderRadius="6px 6px 0 0"
         padding="0 10px"
+        divFontSize="20px"
       >
         <GeneralDiv width="40px" textAlign="center">
           Rank
@@ -42,17 +39,18 @@ function HomeGrade(props) {
           GB
         </GeneralDiv>
       </GeneralDiv>
-      <GeneralDiv height="60vh" overflowY="scroll" padding="0 10px">
+      <GeneralDiv height="62vh" overflowY="scroll" padding="0 10px">
         {props.teamGrade &&
           props.teamGrade?.map((item, index) => (
             <GeneralDiv
               display="flex"
               alignItems="center"
-              divFontSize="18px"
+              justifyContent="space-around"
+              divFontSize="20px"
               key={Object.keys(item)}
             >
               <GeneralDiv width="40px" textAlign="center">
-                {index}
+                {index + 1}
               </GeneralDiv>
               <GeneralDiv>
                 <GeneralImg
@@ -96,7 +94,8 @@ function HomeGrade(props) {
           <GeneralDiv
             display="flex"
             alignItems="center"
-            divFontSize="18px"
+            justifyContent="space-around"
+            divFontSize="20px"
             key={Object.keys(item)}
           >
             <GeneralDiv width="40px" textAlign="center">
@@ -144,7 +143,8 @@ function HomeGrade(props) {
           <GeneralDiv
             display="flex"
             alignItems="center"
-            divFontSize="18px"
+            justifyContent="space-around"
+            divFontSize="20px"
             key={Object.keys(item)}
           >
             <GeneralDiv width="40px" textAlign="center">

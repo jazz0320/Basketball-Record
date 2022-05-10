@@ -1606,7 +1606,7 @@ function TeamBox(props) {
                   {(provided) => (
                     <GeneralDiv
                       height="130px"
-                      width="120px"
+                      width={props.exchangePlayer ? "120px" : "200px"}
                       textAlign="center"
                       display="flex"
                       flexWrap="wrap"
@@ -1620,8 +1620,6 @@ function TeamBox(props) {
                       <GeneralDiv
                         hoverHeight="120px"
                         hoverWidth="120px"
-                        border="1px solid black"
-                        // hoverMargin="0 20px 0 0"
                         backgroundPosition="center"
                         backgroundSize="cover"
                         margin="0 auto"

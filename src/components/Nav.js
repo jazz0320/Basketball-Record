@@ -198,7 +198,10 @@ function Nav() {
                   onClick={() => setNavActive(6)}
                   to="/game-arrange"
                 >
-                  <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fplan.png?alt=media&token=c8f75623-527a-43d2-bc72-166689252eb8" />
+                  <LinkImg
+                    src="
+                  https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fplan.png?alt=media&token=6c8ed85e-ab79-4393-b7d4-d60d401babb7"
+                  />
                 </LinkComponet>
               </GeneralDiv>
             )}
