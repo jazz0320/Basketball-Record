@@ -116,7 +116,18 @@ function GameArrange() {
         justifyContent="center"
         backgroundColor="#e9ecef"
       >
-        <GeneralDiv width="80vw" backgroundColor="#f8f9fa" padding="1vh 2vw">
+        <GeneralDiv
+          width="80vw"
+          backgroundColor="#f8f9fa"
+          padding="0 2vw 1vh 2vw"
+          boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
+        >
+          <GeneralDiv
+            width="80vw"
+            height="100px"
+            backgroundColor="blue"
+            marginBottom="1vh"
+          />
           {numberOfGames.map((num, index) => (
             <GeneralDiv
               display="flex"

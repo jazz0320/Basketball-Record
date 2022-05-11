@@ -106,19 +106,21 @@ function Home(props) {
     <>
       <GeneralDiv
         width="100vw"
-        height="100vh"
         display="flex"
         justifyContent="center"
         backgroundColor="#e9ecef"
+        overflowY="scroll"
       >
         <GeneralDiv
           width="80vw"
           backgroundColor="#f8f9fa"
-          padding="1vh 1vw"
+          padding="0.5vh 1vw"
           display="flex"
           flexWrap="wrap"
           justifyContent="space-around"
+          boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
         >
+          <GeneralDiv height="100px" width="100%" />
           <CarousellContainer>
             {gameTime?.map((time) => (
               <div
@@ -163,6 +165,7 @@ function Home(props) {
           </CarousellContainer>
           <HomeGrade teamGrade={teamGrade} />
           <PlayerGrade playerGrade={playerGrade} />
+          <GeneralDiv height="120px" width="100%" />
         </GeneralDiv>
       </GeneralDiv>
     </>

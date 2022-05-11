@@ -20,41 +20,46 @@ import GameArrange from "./GameArrange";
 import { GeneralDiv } from "../utils/StyleComponent";
 
 const NavBar = styled.div`
+  padding: 20px;
   position: fixed;
-  right: 50px;
-  top: 30px;
+  top: 0px;
   display: flex;
-  width: 30px;
+  width: 100vw;
+  height: 100px;
+  background-color: #212529;
+  color: #f8f9fa;
   flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: 30px;
+
+  font-size: 26px;
+  box-shadow: 15px 5px 4px 4px rgba(0, 0, 0, 0.7);
 `;
 
 const LinkComponet = styled(Link)`
-  width: 60px;
+  width: 150px;
   height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  /* background-color: white; */
   border-radius: 100%;
-  color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
-  border: ${(props) => (props.$focus ? "5px solid black" : null)};
+  color: ${(props) => (props.$focus ? "white" : "#adb5bd")};
+
+  /* -webkit-filter: ${(props) =>
+    props.$focus ? "drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.7))" : null}; */
+
   text-decoration: none;
-  :hover {
-    width: 70px;
-    height: 70px;
-  }
+
   :active {
     background-color: rgb(41, 41, 41);
   }
 `;
 
 const LinkImg = styled.img`
+  filter: ${(props) =>
+    props.$focus ? "drop-shadow(15px 15px 4px rgba(255, 255, 255, 1))" : null};
   src: ${(props) => props.src};
-  width: 40px;
-  height: 40px;
+  width: ${(props) => (props.width ? props.width : "30px")};
+  height: ${(props) => (props.height ? props.height : "30px")};
 `;
 
 function Nav() {
@@ -147,11 +152,12 @@ function Nav() {
             to="/"
           >
             <LinkImg
-              src="
-          
-          https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fhome.png?alt=media&token=a22b88c8-fc87-48d1-a7de-32e3cb9aa20b
-          "
+              $focus={navActive === -1}
+              height="60px"
+              width="60px"
+              src={require("../img/logo.png")}
             />
+            首頁
           </LinkComponet>
         </GeneralDiv>
         {logStatus ? (
@@ -163,21 +169,17 @@ function Nav() {
                   onClick={() => setNavActive(0)}
                   to="/record"
                 >
-                  <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Frecord.png?alt=media&token=17a10f94-10d7-4b71-bc65-fc1202eaf1b4          " />
+                  <LinkImg
+                    $focus={navActive === 0}
+                    src={require("../img/basketballW.png")}
+                    height="50px"
+                    width="50px"
+                  />
+                  紀錄
                 </LinkComponet>
               </GeneralDiv>
             )}
-            {/* <GeneralDiv height="70px">
-              <LinkComponet
-                $focus={navActive === 3}
-                onClick={() => {
-                  logStatus ? setNavActive(3) : setNavActive(4);
-                }}
-                to="/member-file"
-              >
-                <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
-              </LinkComponet>
-            </GeneralDiv> */}
+
             {userId !== "test@test.com" && (
               <GeneralDiv height="70px">
                 <LinkComponet
@@ -185,7 +187,11 @@ function Nav() {
                   onClick={() => setNavActive(5)}
                   to="/game-schedule"
                 >
-                  <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fcalendar.png?alt=media&token=411be2b9-84b9-435b-b9f6-40eba70de6c7" />
+                  <LinkImg
+                    $focus={navActive === 5}
+                    src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fcalendar.png?alt=media&token=411be2b9-84b9-435b-b9f6-40eba70de6c7"
+                  />
+                  賽程
                 </LinkComponet>
               </GeneralDiv>
             )}
@@ -197,9 +203,10 @@ function Nav() {
                   to="/game-arrange"
                 >
                   <LinkImg
-                    src="
-                  https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fplan.png?alt=media&token=6c8ed85e-ab79-4393-b7d4-d60d401babb7"
+                    $focus={navActive === 6}
+                    src={require("../img/editCalendar/planW.png")}
                   />
+                  賽程
                 </LinkComponet>
               </GeneralDiv>
             )}
@@ -210,14 +217,30 @@ function Nav() {
                   onClick={() => setNavActive(7)}
                   to="/team-inf"
                 >
-                  <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fteam.png?alt=media&token=0130a93d-5303-4d6a-b4f3-6b7b4f7ea729" />
+                  <LinkImg
+                    $focus={navActive === 7}
+                    src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fteam.png?alt=media&token=0130a93d-5303-4d6a-b4f3-6b7b4f7ea729"
+                  />
+                  組隊
                 </LinkComponet>
               </GeneralDiv>
             )}
           </>
         ) : null}
 
-        <GeneralDiv height="70px">
+        <GeneralDiv height="70px" position="fixed" right="0px" display="flex">
+          <GeneralDiv
+            display="flex"
+            alignItems="center"
+            height="60px"
+            fontSize="22px"
+          >
+            {logStatus
+              ? userId === "test@test.com"
+                ? "Hi, 主辦者 "
+                : "Hi, 參賽者"
+              : null}
+          </GeneralDiv>
           <LinkComponet
             $focus={navActive === 4}
             onClick={() => {
@@ -227,9 +250,21 @@ function Nav() {
             to="/login"
           >
             {logStatus ? (
-              <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogout.png?alt=media&token=1e2b01d5-2bcd-4498-b7ba-c22a148654f6" />
+              <>
+                <LinkImg
+                  $focus={navActive === 4}
+                  src={require("../img/logout/logoutW.png")}
+                />
+                登出
+              </>
             ) : (
-              <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Flogin.png?alt=media&token=6be000e7-4df8-4262-8e80-e7ad1a054880" />
+              <>
+                <LinkImg
+                  $focus={navActive === 4}
+                  src={require("../img/profile/profileW.png")}
+                />
+                登入
+              </>
             )}
           </LinkComponet>
         </GeneralDiv>
@@ -257,15 +292,6 @@ function Nav() {
             element={<LiveRoom gameName={gameName} pastGameName={gameName} />}
           />
         ))}
-        {/* {comingGameRoutes?.map((gameName, index) => (
-          <Route
-            key={index}
-            path={`coming-soon/${gameName}`}
-            element={
-              <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
-            }
-          />
-        ))} */}
 
         <Route
           path="/record"

@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 //General
 const GeneralDiv = styled.div`
+  box-shadow: ${(props) => props.boxShadow};
   background: ${(props) => props.background};
   text-align: ${(props) => props.textAlign};
   overflow-y: ${(props) => props.overflowY};
@@ -32,11 +33,13 @@ const GeneralDiv = styled.div`
   text-align: ${(props) => props.textAling};
   transition-duration: ${(props) => props.transitionDuration};
   position: ${(props) => props.position};
+  top: ${(props) => props.top};
   left: ${(props) => props.left};
   right: ${(props) => props.right};
   bottom: ${(props) => props.bottom};
   pointer-events: ${(props) => props.pointerEvents};
   &:hover {
+    box-shadow: ${(props) => props.hoverBoxShadow};
     pointer-events: ${(props) => props.hoverPointerEvents};
     transition-duration: ${(props) => props.hoverTransitionDuration};
     margin: ${(props) => props.hoverMargin};

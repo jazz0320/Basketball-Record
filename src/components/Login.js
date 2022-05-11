@@ -126,9 +126,11 @@ function Login(props) {
 export default Login;
 
 const Wrapper = styled.div`
+  box-shadow: 12px 12px 10px rgba(0, 0, 0, 0.7);
   background-color: #f8f9fa;
   display: flex;
   justify-content: center;
+
   align-items: center;
   width: 80vw;
   height: 100vh;
@@ -138,6 +140,7 @@ const Wrapper = styled.div`
 `;
 
 const FormDiv = styled.div`
+  box-shadow: 12px 12px 7px rgba(0, 0, 0, 0.7);
   margin: 0 auto;
   width: 100%;
   max-width: 450px;
