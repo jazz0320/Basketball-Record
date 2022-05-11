@@ -20,6 +20,7 @@ import GameArrange from "./GameArrange";
 import { GeneralDiv } from "../utils/StyleComponent";
 
 const NavBar = styled.div`
+  z-index: 10;
   padding: 20px;
   position: fixed;
   top: 0px;
@@ -56,10 +57,12 @@ const LinkComponet = styled(Link)`
 
 const LinkImg = styled.img`
   filter: ${(props) =>
-    props.$focus ? "drop-shadow(15px 15px 4px rgba(255, 255, 255, 1))" : null};
+    props.$focus
+      ? "drop-shadow(15px 15px 4px rgba(255, 255, 255, 0.7))"
+      : null};
   src: ${(props) => props.src};
-  width: ${(props) => (props.width ? props.width : "30px")};
-  height: ${(props) => (props.height ? props.height : "30px")};
+  width: ${(props) => (props.width ? props.width : "35px")};
+  height: ${(props) => (props.height ? props.height : "35px")};
 `;
 
 function Nav() {
@@ -175,7 +178,7 @@ function Nav() {
                     height="50px"
                     width="50px"
                   />
-                  紀錄
+                  記錄
                 </LinkComponet>
               </GeneralDiv>
             )}
@@ -191,7 +194,7 @@ function Nav() {
                     $focus={navActive === 5}
                     src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fcalendar.png?alt=media&token=411be2b9-84b9-435b-b9f6-40eba70de6c7"
                   />
-                  賽程
+                  <GeneralDiv margin="10px">賽程</GeneralDiv>
                 </LinkComponet>
               </GeneralDiv>
             )}
@@ -206,7 +209,7 @@ function Nav() {
                     $focus={navActive === 6}
                     src={require("../img/editCalendar/planW.png")}
                   />
-                  賽程
+                  <GeneralDiv margin="5px">賽程</GeneralDiv>
                 </LinkComponet>
               </GeneralDiv>
             )}
@@ -255,7 +258,7 @@ function Nav() {
                   $focus={navActive === 4}
                   src={require("../img/logout/logoutW.png")}
                 />
-                登出
+                <GeneralDiv margin="5px">登出</GeneralDiv>
               </>
             ) : (
               <>

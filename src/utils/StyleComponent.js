@@ -80,6 +80,7 @@ const GeneralButton = styled.button`
 `;
 
 const GeneralImg = styled.img`
+  filter: ${(props) => props.filter};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   src: ${(props) => props.src};
@@ -111,14 +112,18 @@ const Div_Record = styled.div`
   display: fiexd;
 `;
 const DivBeforeGameRecord = styled.div`
+  width: 100vw;
+  background-color: #f8f9fa;
   display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #343a40;
   color: #f8f9fa;
   font-size: 30px;
 `;
 
 const TeamBlock = styled.div`
-  width: 50vw;
+  width: 40vw;
   height: 100vh;
   display: flex;
   &:nth-child(2) {
@@ -149,14 +154,16 @@ const TeamBlockDetail = styled.div`
 `;
 
 const TeamBlockDetailTeam = styled.div`
+  display: ${(props) => (props.display ? props.display : "flex")};
   margin-top: 5vh;
   padding: 0 1.5vw;
   width: 375px;
-  display: flex;
+
   align-items: center;
   justify-content: center;
 `;
 const TeamBlockDetailPlayer = styled.div`
+  margin-top: 35vh;
   height: 46vh;
   width: 375px;
   display: flex;
@@ -164,6 +171,7 @@ const TeamBlockDetailPlayer = styled.div`
 `;
 
 const SelectTeam = styled.select`
+  display: ${(props) => props.display};
   cursor: pointer;
   -webkit-appearance: none;
   width: 375px;
@@ -209,13 +217,14 @@ const TeamBlockDetailPlayerDiv = styled.div`
 `;
 
 const RegulationBlock = styled.div`
+  z-index: 0;
   position: absolute;
   width: 7vw;
   left: 47vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 18vh;
+  margin-top: 3vh;
 `;
 const RegulationBlockCell = styled.div`
   font-size: 32px;

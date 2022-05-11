@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { doc, onSnapshot, getDoc, db } from "../utils/firebase";
-import { GeneralDiv, GeneralButton } from "../utils/StyleComponent";
+import { GeneralDiv, GeneralButton, GeneralImg } from "../utils/StyleComponent";
 import "./LiveRoom.css";
+import Loading from "../utils/Loading";
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
@@ -59,8 +60,6 @@ function LiveRoom(props) {
         setEndGame(docSnap.data().endGame);
       }
       loading();
-    } else {
-      alert("比賽即將到來，敬請期待");
     }
 
     // unsub();
@@ -76,6 +75,7 @@ function LiveRoom(props) {
           display="flex"
           justifyContent="center"
           backgroundColor="#e9ecef"
+          padding="1vh 1vw"
         >
           <GeneralDiv
             height="100vh"
@@ -84,17 +84,16 @@ function LiveRoom(props) {
             justifyContent="center"
             backgroundColor="#f8f9fa"
             className="flex justify-center flex-wrap w-10/12 bg-white"
+            boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
           >
+            <GeneralDiv height="100px" width="100%" />
             <div className="w-screen h-fit flex justify-around items-center">
-              <div
-                // className="h-"
-                style={{
-                  backgroundSize: "cover",
-                  height: "170px",
-                  width: "170px",
-                  backgroundImage: `url(${aTeamLogo})`,
-                }}
-              ></div>
+              <GeneralDiv height="170px" width="170px">
+                <GeneralImg
+                  src={aTeamLogo}
+                  filter="drop-shadow(15px 15px 4px rgba(0, 0, 0, 0.5))"
+                />
+              </GeneralDiv>
               <table
                 className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate w-4/12 h-28"
                 cellPadding="10"
@@ -158,14 +157,12 @@ function LiveRoom(props) {
                   </tr>
                 </tbody>
               </table>
-              <div
-                style={{
-                  backgroundSize: "cover",
-                  height: "170px",
-                  width: "170px",
-                  backgroundImage: `url(${bTeamLogo})`,
-                }}
-              ></div>
+              <GeneralDiv height="170px" width="170px">
+                <GeneralImg
+                  src={bTeamLogo}
+                  filter="drop-shadow(15px 15px 4px rgba(0, 0, 0, 0.5))"
+                />
+              </GeneralDiv>
             </div>
             <div
               className="w-screen flex justify-center h-fit items-center mb-3"
@@ -238,7 +235,7 @@ function LiveRoom(props) {
           </GeneralDiv>
         </GeneralDiv>
       ) : (
-        <div>比賽尚未開始</div>
+        <Loading />
       )}
     </>
   );
