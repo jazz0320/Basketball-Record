@@ -62,7 +62,7 @@ function Nav() {
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
-  const [userRole, setUserRole] = useState();
+
   const [scheduleGames, setScheduleGames] = useState([]);
   const [everyLiveGames, setEveryLiveGames] = useState([]);
   const [pastGameRoutes, setPastGameRoutes] = useState();
@@ -92,11 +92,9 @@ function Nav() {
 
   const logInOut = function () {
     if (logStatus === false) {
-      // setNavActive(3);
     } else if (logStatus === true) {
       logout();
       setLogStatus(false);
-      // setNavActive(3);
     }
   };
 
@@ -158,7 +156,7 @@ function Nav() {
         </GeneralDiv>
         {logStatus ? (
           <>
-            {userRole === 2 && (
+            {userId === "test@test.com" && (
               <GeneralDiv height="70px">
                 <LinkComponet
                   $focus={navActive === 0}
@@ -180,7 +178,7 @@ function Nav() {
                 <LinkImg src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fprofile.png?alt=media&token=d8f8dd4b-79f8-402f-9260-38c47d6fc9f3" />
               </LinkComponet>
             </GeneralDiv> */}
-            {userRole === 1 && (
+            {userId !== "test@test.com" && (
               <GeneralDiv height="70px">
                 <LinkComponet
                   $focus={navActive === 5}
@@ -191,7 +189,7 @@ function Nav() {
                 </LinkComponet>
               </GeneralDiv>
             )}
-            {userRole === 2 && (
+            {userId === "test@test.com" && (
               <GeneralDiv height="70px">
                 <LinkComponet
                   $focus={navActive === 6}
@@ -205,7 +203,7 @@ function Nav() {
                 </LinkComponet>
               </GeneralDiv>
             )}
-            {userRole === 1 && (
+            {userId !== "test@test.com" && (
               <GeneralDiv height="70px">
                 <LinkComponet
                   $focus={navActive === 7}
@@ -242,10 +240,11 @@ function Nav() {
           path="/"
           element={<Home setComingGameRoutes={setComingGameRoutes} />}
         ></Route>
+
         {liveGameRoutes?.map((gameName, index) => (
           <Route
             key={index}
-            path={`live-now/${gameName}`}
+            path={`live-now/${encodeURI(gameName)}`}
             element={
               <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
             }
@@ -254,11 +253,11 @@ function Nav() {
         {pastGameRoutes?.map((gameName, index) => (
           <Route
             key={index}
-            path={`past-game/${gameName}`}
+            path={`past-game/${encodeURI(gameName)}`}
             element={<LiveRoom gameName={gameName} pastGameName={gameName} />}
           />
         ))}
-        {comingGameRoutes?.map((gameName, index) => (
+        {/* {comingGameRoutes?.map((gameName, index) => (
           <Route
             key={index}
             path={`coming-soon/${gameName}`}
@@ -266,9 +265,7 @@ function Nav() {
               <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
             }
           />
-        ))}
-
-        {/* <Route path="/test" element={<Test />} /> */}
+        ))} */}
 
         <Route
           path="/record"
@@ -293,7 +290,6 @@ function Nav() {
           element={
             <Login
               setLogFirstTime={setLogFirstTime}
-              setUserRole={setUserRole}
               setNavActive={setNavActive}
               setUserId={setUserId}
             />

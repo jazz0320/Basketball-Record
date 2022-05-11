@@ -19,7 +19,9 @@ function LiveRoom(props) {
   const [watchBox, setWatchBox] = useState("livestream");
 
   useEffect(() => {
+    console.log("ccc");
     if (props.liveGameRoutes?.includes(props.gameName)) {
+      console.log("ttt");
       const unsub = onSnapshot(
         doc(db, "live_game", `${props.gameName}`),
         (doc) => {

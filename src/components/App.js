@@ -1454,7 +1454,7 @@ function App(props) {
                     {leftSide && <div>{aTeam}</div>}
                     {!leftSide && <div>{bTeam}</div>}
 
-                    <span>{"   "}, </span>
+                    {/* <span>, </span> */}
 
                     {leftSide && activePlayer !== undefined ? (
                       aTeamPlayers ? (
@@ -1475,17 +1475,17 @@ function App(props) {
                       ""
                     )}
 
-                    <span> {activePlayer !== undefined ? " , " : ""} </span>
+                    {/* <span> {activePlayer !== undefined ? " , " : ""} </span> */}
 
                     {playerLocation && <div> {playerLocation} </div>}
 
-                    <span> {playerLocation !== undefined ? " , " : ""} </span>
+                    {/* <span> {playerLocation !== undefined ? " , " : ""} </span> */}
                     {playerActions && playerActions.actionWord && (
                       <div>{playerActions.actionWord}</div>
                     )}
-                    <span>
+                    {/* <span>
                       {playerActions && playerActions.actionWord ? " , " : ""}
-                    </span>
+                    </span> */}
 
                     {playerActions && playerActions.actionWord && (
                       <div>{playerActions.actionNumber}</div>

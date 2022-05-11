@@ -138,15 +138,8 @@ function Home(props) {
                 {gameList?.map((game) =>
                   Object.keys(game)[0].slice(0, 10) === time ? (
                     <div key={Object.keys(game)}>
-                      {/* {console.log("ggg", game)} */}
-                      {/* {console.log("aaa", Object.keys(game)[0])} */}
                       {game[Object.keys(game)[0]].gameStatus === "coming" ? (
-                        <Link
-                          to={`coming-soon/${Object.keys(game)[0]}`}
-                          key={game}
-                        >
-                          <BoxComing data={game[Object.keys(game)[0]]} />
-                        </Link>
+                        <BoxComing data={game[Object.keys(game)[0]]} />
                       ) : game[Object.keys(game)[0]].gameStatus === "live" ? (
                         <Link
                           to={`live-now/${Object.keys(game)[0]}`}
@@ -191,6 +184,7 @@ const CarousellContainer = styled.div`
 `;
 
 const GameContainerL1 = styled.div`
+  cursor: pointer;
   border-radius: 5px;
   height: 205px;
   width: 256px;
@@ -332,7 +326,7 @@ function BoxComing(props) {
     getTeamGrade();
   }, []);
   return (
-    <GameContainerL1>
+    <GameContainerL1 onClick={() => alert("比賽即將開始，敬請期待")}>
       <GameContainerL2 className="flex justify-around">
         <span>時間：{props.data.time_time}</span>
         <span className="text-black font-extrabold">coming soon</span>

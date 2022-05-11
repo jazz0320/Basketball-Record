@@ -24,11 +24,6 @@ function Login(props) {
         password
       );
       props.setUserId(userCredential.user.email);
-      if (userCredential.user.email === "test@test.com") {
-        props.setUserRole(2);
-      } else {
-        props.setUserRole(1);
-      }
 
       props.setLogFirstTime(true);
       props.setNavActive(-1);

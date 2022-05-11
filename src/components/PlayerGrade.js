@@ -98,7 +98,7 @@ function GradeOutCome(props) {
               backgroundRepeat="no-repeat"
             />
             <GeneralDiv width="250px" textAling="center">
-              {data.id}
+              {data.name}
             </GeneralDiv>
             <GeneralDiv width="120px">{data.team}</GeneralDiv>
             <GeneralDiv width="120px" textAling="center">
