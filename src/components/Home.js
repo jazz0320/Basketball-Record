@@ -165,7 +165,6 @@ function Home(props) {
           </CarousellContainer>
           <HomeGrade teamGrade={teamGrade} />
           <PlayerGrade playerGrade={playerGrade} />
-          <GeneralDiv height="120px" width="100%" />
         </GeneralDiv>
       </GeneralDiv>
     </>
@@ -189,7 +188,7 @@ const CarousellContainer = styled.div`
 const GameContainerL1 = styled.div`
   cursor: pointer;
   border-radius: 5px;
-  height: 205px;
+  height: 215px;
   width: 256px;
   padding: 10px;
   display: flex;
@@ -218,12 +217,15 @@ const LogoDiv = styled.div`
 `;
 
 const TeamDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
   height: 80px;
   width: 75px;
   font-size: 16px;
 
   div {
-    line-height: 35px;
     text-align: center;
     justify-content: center;
   }
@@ -266,20 +268,24 @@ function BoxEnd(props) {
       <GameContainerL2>
         <LogoDiv img={props.data.aTeamLogo} />
         <TeamDiv>
-          <div style={{ color: "black" }}>{props.data.aTeam}</div>
-          <div>
+          <GeneralDiv lineHeight="15px" color="black">
+            {props.data.aTeam}
+          </GeneralDiv>
+          <GeneralDiv lineHeight="20px">
             {aTeamWinloss[0]}-{aTeamWinloss[1]}
-          </div>
+          </GeneralDiv>
         </TeamDiv>
         <ScoreBox>{props.data.aTeam_score}</ScoreBox>
       </GameContainerL2>
       <GameContainerL2>
         <LogoDiv img={props.data.bTeamLogo} />
         <TeamDiv>
-          <div style={{ color: "black" }}>{props.data.bTeam}</div>
-          <div>
+          <GeneralDiv color="black" lineHeight="15px">
+            {props.data.bTeam}
+          </GeneralDiv>
+          <GeneralDiv lineHeight="20px">
             {bTeamWinloss[0]}-{bTeamWinloss[1]}
-          </div>
+          </GeneralDiv>
         </TeamDiv>
         <ScoreBox>{props.data.bTeam_score}</ScoreBox>
       </GameContainerL2>
@@ -337,7 +343,9 @@ function BoxComing(props) {
       <GameContainerL2forComing>
         <LogoDivForComing img={props.data.aTeamLogo} />
         <TeamDiv>
-          <div style={{ color: "black" }}>{props.data.aTeam}</div>
+          <GeneralDiv color="black" lineHeight="20px">
+            {props.data.aTeam}
+          </GeneralDiv>
           <div>
             {aTeamWinloss[0]}-{aTeamWinloss[1]}
           </div>
@@ -349,7 +357,9 @@ function BoxComing(props) {
       <GameContainerL2forComing>
         <LogoDivForComing img={props.data.bTeamLogo} />
         <TeamDiv>
-          <div style={{ color: "black" }}>{props.data.bTeam}</div>
+          <GeneralDiv color="black" lineHeight="20px">
+            {props.data.bTeam}
+          </GeneralDiv>
           <div>
             {bTeamWinloss[0]}-{bTeamWinloss[1]}
           </div>

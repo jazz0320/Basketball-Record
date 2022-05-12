@@ -65,6 +65,14 @@ function RecordRoom(props) {
             </ButtonSubmit>
           </GeneralDiv>
         )}
+        <IconComponet onClick={() => props.setOpenGradeButton((pre) => !pre)}>
+          <GeneralImg
+            width="50px"
+            height="50px"
+            src={require("../img/chat/chat1.png")}
+            alt="Watch Record"
+          />
+        </IconComponet>
         <IconComponet onClick={() => setOpenRecordButton((pre) => !pre)}>
           <GeneralImg
             width="50px"
@@ -78,7 +86,7 @@ function RecordRoom(props) {
         transitionDuration="0.5s"
         position="fixed"
         bottom="0"
-        width={hideRecord ? "0px" : "42vw"}
+        width={hideRecord ? "0px" : "80vw"}
         padding={hideRecord ? "0px" : "5px"}
         height={hideRecord ? "0px" : "8vh"}
         color="white"

@@ -17,7 +17,17 @@ import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
 import GameSchedule from "./GameSchedule";
 import GameArrange from "./GameArrange";
-import { GeneralDiv } from "../utils/StyleComponent";
+import { GeneralDiv, IconComponet, GeneralImg } from "../utils/StyleComponent";
+
+const SideBar = styled.div`
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+`;
 
 const NavBar = styled.div`
   z-index: 10;
@@ -32,7 +42,7 @@ const NavBar = styled.div`
   flex-wrap: wrap;
 
   font-size: 26px;
-  box-shadow: 15px 5px 4px 4px rgba(0, 0, 0, 0.7);
+  box-shadow: 15px 5px 4px rgba(0, 0, 0, 0.7);
 `;
 
 const LinkComponet = styled(Link)`
@@ -45,9 +55,6 @@ const LinkComponet = styled(Link)`
   border-radius: 100%;
   color: ${(props) => (props.$focus ? "white" : "#adb5bd")};
 
-  /* -webkit-filter: ${(props) =>
-    props.$focus ? "drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.7))" : null}; */
-
   text-decoration: none;
 
   :active {
@@ -58,7 +65,7 @@ const LinkComponet = styled(Link)`
 const LinkImg = styled.img`
   filter: ${(props) =>
     props.$focus
-      ? "drop-shadow(15px 15px 4px rgba(255, 255, 255, 0.7))"
+      ? "drop-shadow(30px 30px 1px rgba(255, 255, 255, 0.7))"
       : null};
   src: ${(props) => props.src};
   width: ${(props) => (props.width ? props.width : "35px")};
@@ -66,6 +73,7 @@ const LinkImg = styled.img`
 `;
 
 function Nav() {
+  const [isGameStart, setIsGameStart] = useState(false);
   const [navActive, setNavActive] = useState();
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
@@ -77,6 +85,7 @@ function Nav() {
   const [liveGameRoutes, setLiveGameRoutes] = useState();
   const [comingGameRoutes, setComingGameRoutes] = useState();
   const liveGameName = useRef("none");
+  let redirect = useNavigate();
 
   const monitorAuthState = async () => {
     onAuthStateChanged(auth, (user) => {
@@ -147,131 +156,148 @@ function Nav() {
 
   return (
     <>
-      <NavBar>
-        <GeneralDiv height="70px">
-          <LinkComponet
-            $focus={navActive === -1}
-            onClick={() => setNavActive(-1)}
-            to="/"
-          >
-            <LinkImg
-              $focus={navActive === -1}
-              height="60px"
-              width="60px"
-              src={require("../img/logo.png")}
-            />
-            首頁
-          </LinkComponet>
-        </GeneralDiv>
-        {logStatus ? (
-          <>
-            {userId === "test@test.com" && (
-              <GeneralDiv height="70px">
-                <LinkComponet
-                  $focus={navActive === 0}
-                  onClick={() => setNavActive(0)}
-                  to="/record"
-                >
-                  <LinkImg
-                    $focus={navActive === 0}
-                    src={require("../img/basketballW.png")}
-                    height="50px"
-                    width="50px"
-                  />
-                  記錄
-                </LinkComponet>
-              </GeneralDiv>
-            )}
-
-            {userId !== "test@test.com" && (
-              <GeneralDiv height="70px">
-                <LinkComponet
-                  $focus={navActive === 5}
-                  onClick={() => setNavActive(5)}
-                  to="/game-schedule"
-                >
-                  <LinkImg
-                    $focus={navActive === 5}
-                    src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fcalendar.png?alt=media&token=411be2b9-84b9-435b-b9f6-40eba70de6c7"
-                  />
-                  <GeneralDiv margin="10px">賽程</GeneralDiv>
-                </LinkComponet>
-              </GeneralDiv>
-            )}
-            {userId === "test@test.com" && (
-              <GeneralDiv height="70px">
-                <LinkComponet
-                  $focus={navActive === 6}
-                  onClick={() => setNavActive(6)}
-                  to="/game-arrange"
-                >
-                  <LinkImg
-                    $focus={navActive === 6}
-                    src={require("../img/editCalendar/planW.png")}
-                  />
-                  <GeneralDiv margin="5px">賽程</GeneralDiv>
-                </LinkComponet>
-              </GeneralDiv>
-            )}
-            {userId !== "test@test.com" && (
-              <GeneralDiv height="70px">
-                <LinkComponet
-                  $focus={navActive === 7}
-                  onClick={() => setNavActive(7)}
-                  to="/team-inf"
-                >
-                  <LinkImg
-                    $focus={navActive === 7}
-                    src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fteam.png?alt=media&token=0130a93d-5303-4d6a-b4f3-6b7b4f7ea729"
-                  />
-                  組隊
-                </LinkComponet>
-              </GeneralDiv>
-            )}
-          </>
-        ) : null}
-
-        <GeneralDiv height="70px" position="fixed" right="0px" display="flex">
-          <GeneralDiv
-            display="flex"
-            alignItems="center"
-            height="60px"
-            fontSize="22px"
-          >
-            {logStatus
-              ? userId === "test@test.com"
-                ? "Hi, 主辦者 "
-                : "Hi, 參賽者"
-              : null}
-          </GeneralDiv>
-          <LinkComponet
-            $focus={navActive === 4}
+      {isGameStart ? (
+        <SideBar>
+          <IconComponet
             onClick={() => {
-              setNavActive(4);
-              logInOut();
+              redirect("/");
+              setIsGameStart(false);
             }}
-            to="/login"
           >
-            {logStatus ? (
-              <>
-                <LinkImg
-                  $focus={navActive === 4}
-                  src={require("../img/logout/logoutW.png")}
-                />
-                <GeneralDiv margin="5px">登出</GeneralDiv>
-              </>
-            ) : (
-              <>
-                <LinkImg
-                  $focus={navActive === 4}
-                  src={require("../img/profile/profileW.png")}
-                />
-                登入
-              </>
-            )}
-          </LinkComponet>
-        </GeneralDiv>
-      </NavBar>
+            <GeneralImg
+              width="50px"
+              height="50px"
+              src={require("../img/logout/logout1.png")}
+              alt="Watch Record"
+            />
+          </IconComponet>
+        </SideBar>
+      ) : (
+        <NavBar>
+          <GeneralDiv height="70px">
+            <LinkComponet
+              $focus={navActive === -1}
+              onClick={() => setNavActive(-1)}
+              to="/"
+            >
+              <LinkImg
+                $focus={navActive === -1}
+                height="60px"
+                width="60px"
+                src={require("../img/logo.png")}
+              />
+            </LinkComponet>
+          </GeneralDiv>
+          {logStatus ? (
+            <>
+              {userId === "test@test.com" && (
+                <GeneralDiv height="70px">
+                  <LinkComponet
+                    $focus={navActive === 0}
+                    onClick={() => setNavActive(0)}
+                    to="/record"
+                  >
+                    <LinkImg
+                      $focus={navActive === 0}
+                      src={require("../img/basketballW.png")}
+                      height="50px"
+                      width="50px"
+                    />
+                    <GeneralDiv margin="5px">記錄</GeneralDiv>
+                  </LinkComponet>
+                </GeneralDiv>
+              )}
+
+              {userId !== "test@test.com" && (
+                <GeneralDiv height="70px">
+                  <LinkComponet
+                    $focus={navActive === 5}
+                    onClick={() => setNavActive(5)}
+                    to="/game-schedule"
+                  >
+                    <LinkImg
+                      $focus={navActive === 5}
+                      src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fcalendar.png?alt=media&token=411be2b9-84b9-435b-b9f6-40eba70de6c7"
+                    />
+                    <GeneralDiv margin="10px">賽程</GeneralDiv>
+                  </LinkComponet>
+                </GeneralDiv>
+              )}
+              {userId === "test@test.com" && (
+                <GeneralDiv height="70px">
+                  <LinkComponet
+                    $focus={navActive === 6}
+                    onClick={() => setNavActive(6)}
+                    to="/game-arrange"
+                  >
+                    <LinkImg
+                      $focus={navActive === 6}
+                      src={require("../img/editCalendar/planW.png")}
+                    />
+                    <GeneralDiv margin="10px">賽程</GeneralDiv>
+                  </LinkComponet>
+                </GeneralDiv>
+              )}
+              {userId !== "test@test.com" && (
+                <GeneralDiv height="70px">
+                  <LinkComponet
+                    $focus={navActive === 7}
+                    onClick={() => setNavActive(7)}
+                    to="/team-inf"
+                  >
+                    <LinkImg
+                      $focus={navActive === 7}
+                      src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fteam.png?alt=media&token=0130a93d-5303-4d6a-b4f3-6b7b4f7ea729"
+                    />
+                    組隊
+                  </LinkComponet>
+                </GeneralDiv>
+              )}
+            </>
+          ) : null}
+
+          <GeneralDiv height="70px" position="fixed" right="0px" display="flex">
+            <GeneralDiv
+              display="flex"
+              alignItems="center"
+              height="60px"
+              fontSize="22px"
+            >
+              {logStatus
+                ? userId === "test@test.com"
+                  ? "Hi, 主辦者 "
+                  : "Hi, 參賽者"
+                : null}
+            </GeneralDiv>
+            <LinkComponet
+              $focus={navActive === 4}
+              onClick={() => {
+                setNavActive(4);
+                logInOut();
+              }}
+              to="/login"
+            >
+              {logStatus ? (
+                <>
+                  <LinkImg
+                    $focus={navActive === 4}
+                    src={require("../img/logout/logoutW.png")}
+                  />
+                  <GeneralDiv margin="5px">登出</GeneralDiv>
+                </>
+              ) : (
+                <>
+                  <LinkImg
+                    $focus={navActive === 4}
+                    src={require("../img/profile/profileW.png")}
+                  />
+                  登入
+                </>
+              )}
+            </LinkComponet>
+          </GeneralDiv>
+        </NavBar>
+      )}
 
       <Routes>
         <Route
@@ -300,6 +326,7 @@ function Nav() {
           path="/record"
           element={
             <App
+              setIsGameStart={setIsGameStart}
               scheduleGames={scheduleGames}
               everyLiveGames={everyLiveGames}
               liveGameName={liveGameName}

@@ -126,22 +126,22 @@ function GameArrange() {
             width="80vw"
             height="100px"
             backgroundColor="blue"
-            marginBottom="1vh"
+            marginBottom="2vh"
           />
           {numberOfGames.map((num, index) => (
             <GeneralDiv
               display="flex"
               justifyConten="cneter"
-              border="#495057 1px solid"
+              boxShadow="6px 6px 3px 3px rgba(73, 80, 87, 0.7);"
               alignItems="center"
               height="170px"
               borderRadius="10px"
-              padding="0 40px"
+              padding="0 10px"
               marginBottom="15px"
-              key={index}
+              key={num}
             >
               <GeneralDiv
-                width="24vw"
+                width="18vw"
                 display="flex"
                 flexWrap="wrap"
                 alignItems="center"
@@ -149,6 +149,7 @@ function GameArrange() {
                 height="150px"
               >
                 <GeneralInput
+                  width="230px"
                   padding="2px 10px"
                   border="1px solid #adb5bd"
                   borderRadius="10px"
@@ -167,6 +168,7 @@ function GameArrange() {
                 />
 
                 <GeneralInput
+                  width="230px"
                   padding="2px 10px"
                   border="1px solid #adb5bd"
                   borderRadius="10px"
@@ -184,7 +186,7 @@ function GameArrange() {
                 display="flex"
                 alignItems="center"
                 justifyContent="space-around"
-                width="25vw"
+                width="28vw"
                 // border="1px solid #e9ecef"
               >
                 <GeneralSelect
@@ -219,24 +221,25 @@ function GameArrange() {
                 </GeneralSelect>
 
                 <GeneralDiv
-                  width="132px"
-                  height="132px"
-                  border="1px solid #adb5bd"
+                  width="122px"
+                  height="122px"
                   borderRadius="10px"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
                 >
                   {aTeamLogo[num] !== "default" ? (
                     <GeneralImg
-                      height="130px"
-                      widht="130px"
+                      height="120px"
+                      width="120px"
                       src={aTeamLogo[num]}
                     />
                   ) : (
                     <GeneralImg
-                      height="130px"
-                      widht="130px"
-                      src={
-                        "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2F%3F.png?alt=media&token=ba57199a-119e-4121-a76e-2f6fdf93466f"
-                      }
+                      rotate="rotate(10deg)"
+                      height="100px"
+                      width="80px"
+                      src={require("../img/flag/flagG.png")}
                     />
                   )}
                 </GeneralDiv>
@@ -245,28 +248,29 @@ function GameArrange() {
                 display="flex"
                 alignItems="center"
                 // border="1px solid #e9ecef"
-                width="25vw"
+                width="28vw"
                 justifyContent="space-around"
               >
                 <GeneralDiv
-                  width="132px"
-                  height="132px"
-                  border="1px solid #adb5bd"
+                  width="122px"
+                  height="122px"
                   borderRadius="10px"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
                 >
                   {bTeamLogo[num] !== "default" ? (
                     <GeneralImg
-                      height="130px"
-                      widht="130px"
+                      height="120px"
+                      width="120px"
                       src={bTeamLogo[num]}
                     />
                   ) : (
                     <GeneralImg
-                      height="130px"
-                      widht="130px"
-                      src={
-                        "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2F%3F.png?alt=media&token=ba57199a-119e-4121-a76e-2f6fdf93466f"
-                      }
+                      rotate="rotate(10deg)"
+                      height="100px"
+                      width="80px"
+                      src={require("../img/flag/flagG.png")}
                     />
                   )}
                 </GeneralDiv>
@@ -439,7 +443,6 @@ function GameArrange() {
                 backgroundColor="#6c757d"
                 hoverBackgroundColor="#ced4da"
                 hoverColor="#212529"
-                onClick={() => setCheckSetting(true)}
                 onClick={() => setCheckSetting(false)}
               >
                 取消

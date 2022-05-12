@@ -81,6 +81,7 @@ function GradeOutCome(props) {
       <GeneralDiv height="59vh" overflowY="scroll">
         {sortData?.map((data, index) => (
           <GeneralDiv
+            key={data.name}
             display="flex"
             alignItems="center"
             marginBottom="10px"

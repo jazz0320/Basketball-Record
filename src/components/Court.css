@@ -2,8 +2,8 @@
   font-family: "Fjalla One";
 }
 
-svg {
-  height: 630px;
+#myObj {
+  height: 700px;
   /* width: 50vw; */
 }
 
@@ -21,7 +21,7 @@ img {
 }
 path {
   fill: transparent;
-  transition: 0.5s;
+  /* transition: 0.5s; */
   cursor: pointer;
 }
 rect {
@@ -86,6 +86,7 @@ rect {
 }
 
 .st101 {
+  /* fill: transparent; */
   /* opacity: 0.8; */
   /* fill: url(#img1); */
   /* fill: #be9d53; */

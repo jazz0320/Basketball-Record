@@ -5,20 +5,26 @@ import {
   ButtonForChange,
   SelectPlayer,
   ButtonSubmit,
+  GeneralDiv,
 } from "../utils/StyleComponent";
 
 const TimeBlock = styled.div`
-  width: 100%;
+  height: 50px;
+  width: 500px;
   background-color: #343a40;
   display: flex;
-  justify-content: center;
-  border-radius: 5px;
+  justify-content: space-around;
+  border-radius: 5px 0 0 5px;
   div {
     color: #f8f9fa;
   }
 `;
 const BigClock = styled.div`
-  /* position: "relative"; */
+  align-items: center;
+  width: 110px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 `;
 
 function Clock(props) {
@@ -198,10 +204,12 @@ function Clock(props) {
 
   return (
     <TimeBlock>
-      <div className="mr-4" style={{ display: "flex", alignItems: "center" }}>
+      <GeneralDiv display="flex" alignItems="center">
         <SelectPlayer
+          width="60px"
+          fontSize="30px"
+          color="white"
           className="cursor-pointer"
-          style={{ width: "30px" }}
           onChange={(e) => props.setQuarterNow(Number(e.target.value))}
         >
           <option value={1}>1st</option>
@@ -209,12 +217,10 @@ function Clock(props) {
           <option value={3}>3rd</option>
           <option value={4}>4th</option>
         </SelectPlayer>
-      </div>
+      </GeneralDiv>
 
-      <BigClock
-      // className={`clock_tick ${props.timerSeconds === false ? "none" : ""}`}
-      >
-        <div style={{ display: "flex", justifyContent: "center" }}>
+      <BigClock>
+        <GeneralDiv display="flex" justifyContent="center">
           <ButtonForChange
             onClick={() => {
               setRestTime(restTime + 1000);
@@ -227,17 +233,17 @@ function Clock(props) {
             }}
           >
             <i
-              className="fa-solid fa-angle-up"
+              className="fa-solid fa-angle-left"
               style={{ fontSize: "24px" }}
             ></i>
           </ButtonForChange>
-        </div>
+        </GeneralDiv>
         <div className="cursor-default" style={{ fontSize: "24px" }}>
           {props.timerMinutes < 10 ? "0" : ""}
           {props.timerMinutes}:{props.timerSeconds < 10 ? "0" : ""}
           {props.timerSeconds}
         </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <GeneralDiv display="flex" justifyContent="center">
           <ButtonForChange
             onClick={() => {
               setRestTime(restTime - 1000);
@@ -250,13 +256,18 @@ function Clock(props) {
             }}
           >
             <i
-              className="fa-solid fa-angle-down"
+              className="fa-solid fa-angle-right"
               style={{ fontSize: "24px" }}
             ></i>
           </ButtonForChange>
-        </div>
+        </GeneralDiv>
       </BigClock>
-      <div style={{ marginLeft: "15px" }}>
+      <GeneralDiv
+        display="flex"
+        alignItems="center"
+        justifyContent="space-around"
+        width="70px"
+      >
         <div style={{ display: "flex", justifyContent: "center" }}>
           <ButtonForChange
             onClick={() => {
@@ -265,7 +276,7 @@ function Clock(props) {
             }}
           >
             <i
-              className="fa-solid fa-angle-up"
+              className="fa-solid fa-angle-left"
               style={{ fontSize: "24px" }}
             ></i>
           </ButtonForChange>
@@ -281,66 +292,62 @@ function Clock(props) {
             }}
           >
             <i
-              className="fa-solid fa-angle-down"
+              className="fa-solid fa-angle-right"
               style={{ fontSize: "24px" }}
             ></i>
           </ButtonForChange>
         </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          width: "100px",
-          marginLeft: "20px",
-        }}
+      </GeneralDiv>
+      <GeneralDiv
+        display="flex"
+        flexWrap="wrap"
+        alignItems="center"
+        justifyContent="space-around"
+        width="200px"
       >
         <div>
           <ButtonSubmit
             onClick={reset24seconds}
             style={{
               height: "30px",
-              padding: "1px 4px",
+              padding: "1px 5px",
               fontSize: "16px",
-              margin: "0px",
-              marginTop: "10px",
               border: "1px solid white",
             }}
           >
-            Reset 24s
+            重置24秒
           </ButtonSubmit>
         </div>
         <div>
           <ButtonSubmit
             style={{
               height: "30px",
-              padding: "1px",
+              padding: "1px 5px",
               fontSize: "16px",
               margin: "0px",
               border: "1px solid white",
             }}
             onClick={stop}
           >
-            Stop
+            暫停
           </ButtonSubmit>
         </div>
         <div>
           <ButtonSubmit
             style={{
               height: "30px",
-              padding: "1px",
+              padding: "1px 5px",
               fontSize: "16px",
-
               margin: "0px",
               marginLeft: "5px",
               border: "1px solid white",
             }}
             onClick={startTime}
           >
-            Start
+            開始
           </ButtonSubmit>
         </div>
-      </div>
+      </GeneralDiv>
     </TimeBlock>
   );
 }

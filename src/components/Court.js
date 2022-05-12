@@ -77,13 +77,14 @@ function Court(props) {
         }}
       >
         <div
+          id="svgDiv"
           style={{
             position: "relative",
             border: "1px solid #e9ecef",
             backgroundColor: "white",
           }}
         >
-          <canvas width={630} height={630} id="cvs"></canvas>
+          <canvas width={700} height={700} id="cvs"></canvas>
           <svg
             onClick={(e) => {
               getCursorPosition(e.currentTarget, e);

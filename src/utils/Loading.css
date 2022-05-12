@@ -11,8 +11,8 @@
 }
 
 .loadingSvg .loadingPath {
-  animation-duration: 1s;
-  animation-name: pulse;
+  animation-duration: 3s;
+  animation: pulse;
   animation-iteration-count: infinite;
   color: #fff;
 }
