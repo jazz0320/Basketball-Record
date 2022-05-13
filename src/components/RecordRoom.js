@@ -1,17 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  GeneralDiv,
-  GeneralButton,
-  IconComponet,
-  ButtonSubmit,
-  GeneralImg,
-} from "../utils/StyleComponent";
+import { GeneralDiv, IconComponet, GeneralImg } from "../utils/StyleComponent";
 
 function RecordRoom(props) {
   const [reverseLiveAction, setReverseLiveAction] = useState();
-  const [pointerState, setPointerState] = useState("none");
-  const [hideRecord, setHideRecord] = useState(false);
-  const [openRecordButton, setOpenRecordButton] = useState(false);
 
   useEffect(() => {
     let a = [...props.liveAction];
@@ -21,85 +12,36 @@ function RecordRoom(props) {
 
   return (
     <>
-      {/* <div>
-        {props.quarter &&
-          props.quarter.map((q, index) => <span key={index}>{q}</span>)}
-      </div> */}
       <GeneralDiv
         position="fixed"
         bottom="5px"
         right="5px"
         transitionDuration="0.5s"
         display="flex"
+        zIndex="4"
       >
-        {openRecordButton && (
-          <GeneralDiv width="100px">
-            <ButtonSubmit
-              width="70px"
-              padding="1px 3px"
-              margin=" 0 5px 0 0"
-              onClick={() => {
-                if (hideRecord === false) {
-                  setHideRecord(true);
-                } else {
-                  setHideRecord(false);
-                }
-              }}
-            >
-              {hideRecord ? "Open" : "Close"}
-            </ButtonSubmit>
-
-            <ButtonSubmit
-              width="80px"
-              backgroundColor={pointerState === "none" ? null : "#d62828"}
-              padding="1px 3px"
-              onClick={() => {
-                if (pointerState === "none") {
-                  setPointerState("");
-                } else {
-                  setPointerState("none");
-                }
-              }}
-            >
-              {pointerState === "none" ? "Check" : "Cancel"}
-            </ButtonSubmit>
-          </GeneralDiv>
-        )}
         <IconComponet onClick={() => props.setOpenGradeButton((pre) => !pre)}>
           <GeneralImg
             width="50px"
             height="50px"
-            src={require("../img/chat/chat1.png")}
-            alt="Watch Record"
-          />
-        </IconComponet>
-        <IconComponet onClick={() => setOpenRecordButton((pre) => !pre)}>
-          <GeneralImg
-            width="50px"
-            height="50px"
-            src={require("../img/chat/chat1.png")}
+            src={require("../img/score/score.png")}
             alt="Watch Record"
           />
         </IconComponet>
       </GeneralDiv>
       <GeneralDiv
+        marginTop="5px"
         transitionDuration="0.5s"
-        position="fixed"
-        bottom="0"
-        width={hideRecord ? "0px" : "80vw"}
-        padding={hideRecord ? "0px" : "5px"}
-        height={hideRecord ? "0px" : "8vh"}
-        color="white"
-        backgroundColor={
-          pointerState === "none"
-            ? "rgba(33, 37, 41,0.4)"
-            : "rgba(33, 37, 41,0.8)"
-        }
-        borderRadius="10px 10px 0 0"
-        fontSize="20px"
+        width={props.pageSize[1] ? "740px" : "80vw"}
+        padding="5px"
+        height={props.pageSize[1] ? "50px" : "8vh"}
+        color="black"
+        backgroundColor="#f8f9fa"
+        borderRadius="5px 5px 0 0"
+        fontSize="16px"
         overflowY="hidden"
         hoverOverflowY="scroll"
-        pointerEvents={pointerState}
+        boxShadow="0px 0px 5px 5px rgba(108,117,125, 0.4);"
       >
         {reverseLiveAction?.map((item, index) => (
           <div key={index}>

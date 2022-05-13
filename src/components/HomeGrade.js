@@ -8,7 +8,13 @@ function HomeGrade(props) {
     );
   };
   return (
-    <GeneralDiv width="33vw" border="2px solid #adb5bd" borderRadius="10px">
+    <GeneralDiv
+      width="37vw"
+      height="calc(100vh - 200px)"
+      border="2px solid #adb5bd"
+      borderRadius="10px"
+      boxShadow="0px 2px 5px 3px rgba(0, 0, 0, 0.3);"
+    >
       <GeneralDiv
         display="flex"
         alignItems="center"
@@ -21,25 +27,29 @@ function HomeGrade(props) {
         divFontSize="20px"
       >
         <GeneralDiv width="40px" textAlign="center">
-          Rank
+          排名
         </GeneralDiv>
         <GeneralDiv width="190px" textAlign="center">
-          Team
+          隊伍
         </GeneralDiv>
-        <GeneralDiv width="30px" textAlign="right">
-          W
+        <GeneralDiv width="40px" textAlign="right">
+          勝
         </GeneralDiv>
         <GeneralDiv width="50px" textAlign="right">
-          L
+          負
         </GeneralDiv>
-        <GeneralDiv width="70px" textAlign="right">
-          Win%
+        <GeneralDiv width="80px" textAlign="right">
+          勝率%
         </GeneralDiv>
-        <GeneralDiv width="60px" textAlign="right">
-          GB
+        <GeneralDiv width="50px" textAlign="right">
+          勝差
         </GeneralDiv>
       </GeneralDiv>
-      <GeneralDiv height="62vh" overflowY="scroll" padding="0 10px">
+      <GeneralDiv
+        height="calc(100vh - 240px)"
+        overflowY="scroll"
+        padding="0 10px"
+      >
         {props.teamGrade &&
           props.teamGrade?.map((item, index) => (
             <GeneralDiv
@@ -54,6 +64,7 @@ function HomeGrade(props) {
               </GeneralDiv>
               <GeneralDiv>
                 <GeneralImg
+                  filter={"drop-shadow(-10px 10px 3px rgba(0, 0, 0, 0.3))"}
                   src={item[Object.keys(item)]["logo"]}
                   width="80px"
                   height="80px"

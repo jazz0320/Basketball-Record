@@ -1,6 +1,7 @@
 import "./Court.css";
 import { useRef } from "react";
 import { flushSync } from "react-dom";
+import { GeneralDiv } from "../utils/StyleComponent";
 
 function Court(props) {
   const playerLastAxis = useRef();
@@ -62,6 +63,7 @@ function Court(props) {
     flushSync(() => {
       props.setPlayerLocation();
       props.setPlayerLocationScoreNumber();
+      props.dispatchPlayerActions({ type: "intial" });
     });
     console.log(location);
     props.setPlayerLocation(location);
@@ -69,7 +71,10 @@ function Court(props) {
   };
 
   return (
-    <div style={{ border: "1px solid #adb5bd" }}>
+    <GeneralDiv
+      border="1px solid #adb5bd"
+      boxShadow="0px 0px 7px 5px rgba(108,117,125, 0.4);"
+    >
       <div
         style={{
           border: "white 15px solid",
@@ -756,7 +761,7 @@ function Court(props) {
           </svg>
         </div>
       </div>
-    </div>
+    </GeneralDiv>
   );
 }
 

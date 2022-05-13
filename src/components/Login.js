@@ -3,7 +3,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "../utils/firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -14,7 +14,12 @@ function Login(props) {
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   let redirect = useNavigate();
-  const back = require("../img/dear-basketball-1.jpeg");
+
+  useEffect(() => {
+    if (props.logStatus === true) {
+      redirect("/");
+    }
+  }, [props.logStatus]);
 
   const loginEmailPassword = async () => {
     try {

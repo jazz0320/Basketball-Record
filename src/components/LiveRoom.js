@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { doc, onSnapshot, getDoc, db } from "../utils/firebase";
 import { GeneralDiv, GeneralButton, GeneralImg } from "../utils/StyleComponent";
 import "./LiveRoom.css";
-import Loading from "../utils/Loading";
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
@@ -234,9 +233,7 @@ function LiveRoom(props) {
             </GeneralDiv>
           </GeneralDiv>
         </GeneralDiv>
-      ) : (
-        <Loading />
-      )}
+      ) : null}
     </>
   );
 }

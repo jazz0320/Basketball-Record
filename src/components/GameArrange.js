@@ -120,19 +120,14 @@ function GameArrange() {
           width="80vw"
           backgroundColor="#f8f9fa"
           padding="0 2vw 1vh 2vw"
-          boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
+          boxShadow="0px 0px 7px 3px rgba(0, 0, 0, 0.5);"
         >
-          <GeneralDiv
-            width="80vw"
-            height="100px"
-            backgroundColor="blue"
-            marginBottom="2vh"
-          />
+          <GeneralDiv width="80vw" height="100px" marginBottom="2vh" />
           {numberOfGames.map((num, index) => (
             <GeneralDiv
               display="flex"
               justifyConten="cneter"
-              boxShadow="6px 6px 3px 3px rgba(73, 80, 87, 0.7);"
+              boxShadow="0px 0px 10px 2px rgba(0, 0, 0, 0.5);"
               alignItems="center"
               height="170px"
               borderRadius="10px"
@@ -199,10 +194,7 @@ function GameArrange() {
                     a[num] = e.target.value;
                     setATeam(a);
                     let b = [...aTeamLogo];
-                    console.log("bbbb", b);
                     b[num] = teamsLogo[e.target.value];
-                    console.log("logos", teamsLogo);
-                    console.log("bbbbccc", teamsLogo[e.target.value]);
                     setATeamLogo(b);
                   }}
                 >
@@ -228,20 +220,19 @@ function GameArrange() {
                   justifyContent="center"
                   alignItems="center"
                 >
-                  {aTeamLogo[num] !== "default" ? (
-                    <GeneralImg
-                      height="120px"
-                      width="120px"
-                      src={aTeamLogo[num]}
-                    />
-                  ) : (
-                    <GeneralImg
-                      rotate="rotate(10deg)"
-                      height="100px"
-                      width="80px"
-                      src={require("../img/flag/flagG.png")}
-                    />
-                  )}
+                  <GeneralImg
+                    filter="drop-shadow(-5px 5px 3px rgba(0, 0, 0, 0.5))"
+                    height={aTeamLogo[num] !== "default" ? "120px" : "100px"}
+                    rotate={
+                      aTeamLogo[num] !== "default" ? null : "rotate(10deg)"
+                    }
+                    width={aTeamLogo[num] !== "default" ? "120px" : "80px"}
+                    src={
+                      aTeamLogo[num] !== "default"
+                        ? aTeamLogo[num]
+                        : require("../img/flag/flagG.png")
+                    }
+                  />
                 </GeneralDiv>
               </GeneralDiv>
               <GeneralDiv
@@ -259,20 +250,19 @@ function GameArrange() {
                   justifyContent="center"
                   alignItems="center"
                 >
-                  {bTeamLogo[num] !== "default" ? (
-                    <GeneralImg
-                      height="120px"
-                      width="120px"
-                      src={bTeamLogo[num]}
-                    />
-                  ) : (
-                    <GeneralImg
-                      rotate="rotate(10deg)"
-                      height="100px"
-                      width="80px"
-                      src={require("../img/flag/flagG.png")}
-                    />
-                  )}
+                  <GeneralImg
+                    filter="drop-shadow(-5px 5px 3px rgba(0, 0, 0, 0.5))"
+                    height={bTeamLogo[num] !== "default" ? "120px" : "100px"}
+                    rotate={
+                      bTeamLogo[num] !== "default" ? null : "rotate(10deg)"
+                    }
+                    width={bTeamLogo[num] !== "default" ? "120px" : "80px"}
+                    src={
+                      bTeamLogo[num] !== "default"
+                        ? bTeamLogo[num]
+                        : require("../img/flag/flagG.png")
+                    }
+                  />
                 </GeneralDiv>
                 <GeneralSelect
                   borderRadius="5px"
@@ -310,6 +300,7 @@ function GameArrange() {
             height="80px"
             borderRadius="10px"
             marginBottom="15px"
+            boxShadow="0px 0px 5px 1px rgba(0, 0, 0, 0.5);"
           >
             <GeneralButton
               width="100%"
@@ -332,6 +323,8 @@ function GameArrange() {
             marginBottom="15px"
           >
             <GeneralButton
+              boxShadow="0px 0px 5px 1px rgba(0, 0, 0, 0.5);"
+              hoverBoxShadow="0px 0px 5px 5px rgba(0, 0, 0, 0.5);"
               margin="auto"
               width="80%"
               fontSize="30px"

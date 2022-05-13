@@ -13,8 +13,7 @@ import {
   Div_Record,
   DivBeforeGameRecord,
   TeamBlock,
-  TeamBlockLogoDiv,
-  TeamBlockLogoImg,
+  DivGameStartLogo,
   RegulationBlock,
   TeamBlockDetail,
   TeamBlockDetailTeam,
@@ -29,6 +28,7 @@ import {
   DivGameStart_Container,
   ButtonSubmit,
   PopupDiv,
+  PopupBlur,
   GroundContainer,
   TeamOnTheGround,
   LiveActionBolck,
@@ -42,6 +42,7 @@ import RecordRoom from "./RecordRoom";
 import { useNavigate } from "react-router-dom";
 
 function App(props) {
+  const [pageSize, setPageSize] = useState([]);
   const [teams, setTeams] = useState([]);
   const [aTeam, setATeam] = useState("default");
   const [aTeamStartFive, setATeamStartFive] = useState([
@@ -344,6 +345,13 @@ function App(props) {
     };
     const submit = async function (e) {
       if (e.key === "Enter") {
+        if (
+          (activePlayer === undefined) |
+          (playerLocation === undefined) |
+          (playerActions === undefined)
+        ) {
+          return;
+        }
         let data;
         let teamDataNow;
         if (leftSide) {
@@ -539,8 +547,17 @@ function App(props) {
     });
   }
 
+  //偵測螢幕大小
+  const getPageSize = function () {
+    const pageWidth = document.documentElement.scrollWidth;
+    const pageHeight = document.documentElement.scrollHeight;
+    console.log("w", pageWidth, "h", pageHeight);
+    setPageSize([pageWidth, pageHeight]);
+  };
+
   useEffect(() => {
     chooseTeam();
+    getPageSize();
   }, []);
 
   useEffect(() => {
@@ -1325,6 +1342,13 @@ function App(props) {
                 setWantToCloseGame={setWantToCloseGame}
               />
             ) : null}
+            <DivGameStartLogo
+              backgroundImage={`url(${aTeamLogo})`}
+              backgroundSize="cover"
+              backgroundPosition="-200%"
+              opacity={leftSide ? "0.7" : "0.3"}
+              transitionDuration="0.5s"
+            />
             <DivGameStart_Container>
               {openGradeButton && (
                 <GeneralDiv
@@ -1332,14 +1356,14 @@ function App(props) {
                   justifyContent="center"
                   position="fixed"
                   right="10px"
-                  bottom="100px"
-                  backgroundColor="#dee2e6"
+                  bottom="70px"
+                  zIndex="10"
                 >
                   <table
-                    className="bg-coolors_8 text-coolors_1 text-center rounded border-none border-separate w-5/12"
-                    cellPadding="0"
-                    border="1"
-                    style={{ fontSize: "18px" }}
+                    className="bg-coolors_8 text-coolors_1 text-center rounded border-none border-separate"
+                    cellPadding="10"
+                    border="2"
+                    style={{ fontSize: "20px" }}
                   >
                     <thead>
                       <tr>
@@ -1393,127 +1417,150 @@ function App(props) {
                   </table>
                 </GeneralDiv>
               )}
-              <GeneralDiv
-                display="flex"
-                flexWrap="nowrap"
-                justifyContent="space-around"
-                width="60vw"
-                alignItems="center"
-                height="60px"
-              >
-                <Clock
-                  liveGameName={props.liveGameName}
-                  finishSetting={finishSetting}
-                  eachQuarterTime={eachQuarterTime}
-                  quarter={quarter}
-                  quarteNow={quarterNow}
-                  setQuarterNow={setQuarterNow}
-                  timerMinutes={timerMinutes}
-                  setTimerMinutes={setTimerMinutes}
-                  timerSeconds={timerSeconds}
-                  setTimerSeconds={setTimerSeconds}
-                  affectTimeStopBehavior={affectTimeStopBehavior}
-                  affectShotClockBehavior={affectShotClockBehavior}
-                />
+              <GeneralDiv>
                 <GeneralDiv
-                  height="50px"
-                  width="280px"
-                  backgroundColor="#343a40"
                   display="flex"
-                  alignItems="center"
+                  boxShadow="0px 0px 1px 3px rgba(108,117,125, 0.4);"
+                  flexWrap="nowrap"
+                  backgroundColor="transparent"
                   justifyContent="space-around"
-                  borderRadius="0 5px 5px 0"
+                  width="740px"
+                  alignItems="center"
+                  borderRadius="5px"
+                  marginBottom="5px"
                 >
-                  <ButtonSubmit
-                    height="30px"
-                    padding="1px 4px"
-                    fontSize="16px"
-                    border="1px solid white"
-                    onClick={() => {
-                      setExchangePlayer((pre) => !pre);
-                    }}
+                  <Clock
+                    liveGameName={props.liveGameName}
+                    finishSetting={finishSetting}
+                    eachQuarterTime={eachQuarterTime}
+                    quarter={quarter}
+                    quarteNow={quarterNow}
+                    setQuarterNow={setQuarterNow}
+                    timerMinutes={timerMinutes}
+                    setTimerMinutes={setTimerMinutes}
+                    timerSeconds={timerSeconds}
+                    setTimerSeconds={setTimerSeconds}
+                    affectTimeStopBehavior={affectTimeStopBehavior}
+                    affectShotClockBehavior={affectShotClockBehavior}
+                  />
+                  <GeneralDiv
+                    height="50px"
+                    width="280px"
+                    backgroundColor="#343a40"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-around"
+                    borderRadius="0 5px 5px 0"
                   >
-                    請求換人
-                  </ButtonSubmit>
-                  <ButtonSubmit
-                    height="30px"
-                    padding="1px 4px"
-                    fontSize="16px"
-                    border="1px solid white"
-                  >
-                    請求暫停
-                  </ButtonSubmit>
-                  <ButtonSubmit
-                    fontSize="16px"
-                    padding="1px 5px"
-                    onClick={() => {
-                      if (
-                        aTeamData[quarter.length]["pts"] ===
-                        bTeamData[quarter.length]["pts"]
-                      ) {
-                        alert("平手尚未結束");
-                      } else {
-                        setWantToCloseGame(true);
-                      }
-                    }}
-                  >
-                    結束比賽
-                  </ButtonSubmit>
+                    <ButtonSubmit
+                      height="30px"
+                      padding="1px 4px"
+                      fontSize="16px"
+                      border="1px solid white"
+                      onClick={() => {
+                        setExchangePlayer((pre) => !pre);
+                        setActivePlayer();
+                        setActivePlayerId();
+                        setActivePlayerPic();
+                        dispatchPlayerActions({ type: "intial" });
+                        setPlayerAxis();
+                        setPlayerLocation();
+                      }}
+                    >
+                      請求換人
+                    </ButtonSubmit>
+                    <ButtonSubmit
+                      height="30px"
+                      padding="1px 4px"
+                      fontSize="16px"
+                      border="1px solid white"
+                    >
+                      請求暫停
+                    </ButtonSubmit>
+                    <ButtonSubmit
+                      fontSize="16px"
+                      padding="1px 5px"
+                      onClick={() => {
+                        if (
+                          aTeamData[quarter.length]["pts"] ===
+                          bTeamData[quarter.length]["pts"]
+                        ) {
+                          alert("平手尚未結束");
+                        } else {
+                          setWantToCloseGame(true);
+                        }
+                      }}
+                    >
+                      結束比賽
+                    </ButtonSubmit>
+                  </GeneralDiv>
                 </GeneralDiv>
+
+                <LiveActionBolck
+                  ok={
+                    activePlayer !== undefined &&
+                    playerLocation &&
+                    playerActions
+                      ? true
+                      : false
+                  }
+                >
+                  {leftSide && <div>{aTeam}</div>}
+                  {!leftSide && <div>{bTeam}</div>}
+                  {leftSide && activePlayer !== undefined ? (
+                    aTeamPlayers ? (
+                      <div>{aTeamPlayers[activePlayer].id}</div>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    ""
+                  )}
+                  {!leftSide && activePlayer !== undefined ? (
+                    bTeamPlayers ? (
+                      <div>{bTeamPlayers[activePlayer].id}</div>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    ""
+                  )}
+
+                  {playerLocation && <div> {playerLocation} </div>}
+
+                  {playerActions && playerActions.actionWord && (
+                    <div>{playerActions.actionWord}</div>
+                  )}
+
+                  {playerActions && playerActions.actionWord && (
+                    <div>{playerActions.actionNumber}</div>
+                  )}
+                </LiveActionBolck>
               </GeneralDiv>
-
-              <LiveActionBolck>
-                {leftSide && <div>{aTeam}</div>}
-                {!leftSide && <div>{bTeam}</div>}
-                {leftSide && activePlayer !== undefined ? (
-                  aTeamPlayers ? (
-                    <div>{aTeamPlayers[activePlayer].id}</div>
-                  ) : (
-                    ""
-                  )
-                ) : (
-                  ""
-                )}
-                {!leftSide && activePlayer !== undefined ? (
-                  bTeamPlayers ? (
-                    <div>{bTeamPlayers[activePlayer].id}</div>
-                  ) : (
-                    ""
-                  )
-                ) : (
-                  ""
-                )}
-
-                {playerLocation && <div> {playerLocation} </div>}
-
-                {playerActions && playerActions.actionWord && (
-                  <div>{playerActions.actionWord}</div>
-                )}
-
-                {playerActions && playerActions.actionWord && (
-                  <div>{playerActions.actionNumber}</div>
-                )}
-              </LiveActionBolck>
-
               <GroundContainer>
                 <TeamBox
                   exchangePlayer={exchangePlayer}
                   teamPlayers={aTeamPlayers}
                   setTeamPlayers={setATeamPlayers}
+                  activePlayer={activePlayer}
+                  selectTeam={leftSide}
                 ></TeamBox>
                 <Court
                   setPlayerLocation={setPlayerLocation}
                   setPlayerAxis={setPlayerAxis}
                   setPlayerLocationScoreNumber={setPlayerLocationScoreNumber}
+                  dispatchPlayerActions={dispatchPlayerActions}
                   playerAxis={playerAxis}
                 />
                 <TeamBox
                   exchangePlayer={exchangePlayer}
                   teamPlayers={bTeamPlayers}
                   setTeamPlayers={setBTeamPlayers}
+                  activePlayer={activePlayer}
+                  selectTeam={!leftSide}
                 ></TeamBox>
               </GroundContainer>
-              <GeneralDiv height="100px" width="100px" />
+              {/* <GeneralDiv height="100px" width="100px" /> */}
               <RecordRoom
                 quarter={quarter}
                 quarteNow={quarterNow}
@@ -1524,9 +1571,17 @@ function App(props) {
                 bTeamPlayers={bTeamPlayers}
                 timerSeconds={timerSeconds}
                 timerMinutes={timerMinutes}
+                pageSize={pageSize}
                 setOpenGradeButton={setOpenGradeButton}
               />
             </DivGameStart_Container>
+            <DivGameStartLogo
+              backgroundImage={`url(${bTeamLogo})`}
+              backgroundSize="cover"
+              backgroundPosition="-200%"
+              opacity={!leftSide ? "0.8" : "0.2"}
+              transitionDuration="0.5s"
+            />
           </DivGameStartRecord>
         )}
       </Div_Record>
@@ -1581,33 +1636,57 @@ function TeamBox(props) {
                 >
                   {(provided) => (
                     <GeneralDiv
-                      height="130px"
-                      width={props.exchangePlayer ? "120px" : "200px"}
+                      height="140px"
+                      width={props.exchangePlayer ? "100px" : "190px"}
                       textAlign="center"
                       display="flex"
                       flexWrap="wrap"
                       alignItems="center"
                       justifyContent="cneter"
+                      transitionDuration="0.5s"
+                      borderRadius="5px"
+                      border={
+                        props.selectTeam && props.activePlayer === index
+                          ? "8px ridge #ced4da"
+                          : "0.1px soild white"
+                      }
+                      boxShadow={
+                        props.selectTeam && props.activePlayer === index
+                          ? "-12px 7px 7px 5px rgba(108,117,125, 0.4);"
+                          : "0px 0px 0px 0px rgba(108,117,125, 0.4);"
+                      }
                       // key={index}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
                       <GeneralDiv
-                        hoverHeight="120px"
-                        hoverWidth="120px"
+                        hoverWidth={props.exchangePlayer ? "110px" : null}
                         backgroundPosition="center"
                         backgroundSize="cover"
                         margin="0 auto"
                         height="100px"
-                        width="100px"
+                        width={props.exchangePlayer ? "80px" : "120px"}
                         borderRadius="100%"
-                        backgroundImage={`url(${player.pic})`}
+                        // backgroundImage={`url(${player.pic})`}
                         hoverTransitionDuration="0.15s"
                         transitionDuration="0.4s"
-                      />
-                      <GeneralDiv width="100%" textAlign="center">
+                      >
+                        <GeneralImg
+                          hoverWidth={props.exchangePlayer ? "110px" : null}
+                          height={props.exchangePlayer ? "90px" : "100px"}
+                          width={props.exchangePlayer ? "90px" : "140px"}
+                          src={player.pic}
+                          filter="drop-shadow(-15px 10px 3px rgba(0, 0, 0, 0.5))"
+                        />
+                      </GeneralDiv>
+                      <GeneralDiv
+                        width="100%"
+                        textAlign="center"
+                        fontSize={props.exchangePlayer ? "14px" : null}
+                      >
                         {player.id}
+                        {index}
                       </GeneralDiv>
                     </GeneralDiv>
                   )}
@@ -1623,29 +1702,39 @@ function TeamBox(props) {
 
 const PopupEndGameBlock = function (props) {
   return (
-    <PopupDiv>
-      確定結束比賽？
-      <br />
-      <div>
-        <ButtonSubmit
-          width="120px"
-          height="80px"
-          fontSize="24px"
-          margin="0 10px 0 0"
-          onClick={props.endGame}
-        >
-          Yes
-        </ButtonSubmit>
-        <ButtonSubmit
-          width="120px"
-          height="80px"
-          fontSize="24px"
-          onClick={() => props.setWantToCloseGame(false)}
-        >
-          No
-        </ButtonSubmit>
-      </div>
-    </PopupDiv>
+    <>
+      <PopupBlur onClick={() => props.setWantToCloseGame(false)} />
+      <PopupDiv
+        height="120px"
+        fontSize="28px"
+        top="38vh"
+        borderRadius="5px"
+        backgroundColor="rgba(206, 212, 218, 1.0)"
+        color="#343a40"
+      >
+        確定結束比賽？
+        <br />
+        <div>
+          <ButtonSubmit
+            width="60px"
+            height="40px"
+            fontSize="20px"
+            margin="0 10px 0 0"
+            onClick={props.endGame}
+          >
+            Yes
+          </ButtonSubmit>
+          <ButtonSubmit
+            width="60px"
+            height="40px"
+            fontSize="20px"
+            onClick={() => props.setWantToCloseGame(false)}
+          >
+            No
+          </ButtonSubmit>
+        </div>
+      </PopupDiv>
+    </>
   );
 };
 

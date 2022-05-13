@@ -1,6 +1,6 @@
 import LiveRoom from "./LiveRoom";
 import TeamInf from "./TeamInf";
-import MemberFile from "./MemberFile";
+
 import Login from "./Login";
 import App from "./App";
 import Home from "./Home";
@@ -37,12 +37,12 @@ const NavBar = styled.div`
   display: flex;
   width: 100vw;
   height: 100px;
-  background-color: #212529;
+  background-color: #f8f9fa;
   color: #f8f9fa;
   flex-wrap: wrap;
 
   font-size: 26px;
-  box-shadow: 15px 5px 4px rgba(0, 0, 0, 0.7);
+  box-shadow: rgb(0 0 0 / 18%) 0px 2px 2px;
 `;
 
 const LinkComponet = styled(Link)`
@@ -53,20 +53,14 @@ const LinkComponet = styled(Link)`
   align-items: center;
   /* background-color: white; */
   border-radius: 100%;
-  color: ${(props) => (props.$focus ? "white" : "#adb5bd")};
+  color: ${(props) => (props.$focus ? "#343a40" : "#cccccc")};
 
   text-decoration: none;
-
-  :active {
-    background-color: rgb(41, 41, 41);
-  }
 `;
 
 const LinkImg = styled.img`
   filter: ${(props) =>
-    props.$focus
-      ? "drop-shadow(30px 30px 1px rgba(255, 255, 255, 0.7))"
-      : null};
+    props.$focus ? "drop-shadow(-15px 15px 2px rgba(0, 0, 0, 0.5))" : null};
   src: ${(props) => props.src};
   width: ${(props) => (props.width ? props.width : "35px")};
   height: ${(props) => (props.height ? props.height : "35px")};
@@ -74,7 +68,7 @@ const LinkImg = styled.img`
 
 function Nav() {
   const [isGameStart, setIsGameStart] = useState(false);
-  const [navActive, setNavActive] = useState();
+  const [navActive, setNavActive] = useState(-1);
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
@@ -184,7 +178,11 @@ function Nav() {
                 $focus={navActive === -1}
                 height="60px"
                 width="60px"
-                src={require("../img/logo.png")}
+                src={
+                  navActive === -1
+                    ? require("../img/logoB.png")
+                    : require("../img/logoG.png")
+                }
               />
             </LinkComponet>
           </GeneralDiv>
@@ -198,8 +196,11 @@ function Nav() {
                     to="/record"
                   >
                     <LinkImg
-                      $focus={navActive === 0}
-                      src={require("../img/basketballW.png")}
+                      src={
+                        navActive === 0
+                          ? require("../img/basketball.png")
+                          : require("../img/basketballG.png")
+                      }
                       height="50px"
                       width="50px"
                     />
@@ -216,8 +217,11 @@ function Nav() {
                     to="/game-schedule"
                   >
                     <LinkImg
-                      $focus={navActive === 5}
-                      src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fcalendar.png?alt=media&token=411be2b9-84b9-435b-b9f6-40eba70de6c7"
+                      src={
+                        navActive === 5
+                          ? require("../img/calendar/calendar.png")
+                          : require("../img/calendar/calendarG.png")
+                      }
                     />
                     <GeneralDiv margin="10px">賽程</GeneralDiv>
                   </LinkComponet>
@@ -231,8 +235,11 @@ function Nav() {
                     to="/game-arrange"
                   >
                     <LinkImg
-                      $focus={navActive === 6}
-                      src={require("../img/editCalendar/planW.png")}
+                      src={
+                        navActive === 6
+                          ? require("../img/editCalendar/plan.png")
+                          : require("../img/editCalendar/planG.png")
+                      }
                     />
                     <GeneralDiv margin="10px">賽程</GeneralDiv>
                   </LinkComponet>
@@ -246,8 +253,11 @@ function Nav() {
                     to="/team-inf"
                   >
                     <LinkImg
-                      $focus={navActive === 7}
-                      src="https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fteam.png?alt=media&token=0130a93d-5303-4d6a-b4f3-6b7b4f7ea729"
+                      src={
+                        navActive === 7
+                          ? require("../img/basketball.png")
+                          : require("../img/basketballG.png")
+                      }
                     />
                     組隊
                   </LinkComponet>
@@ -261,6 +271,7 @@ function Nav() {
               display="flex"
               alignItems="center"
               height="60px"
+              color="black"
               fontSize="22px"
             >
               {logStatus
@@ -280,8 +291,11 @@ function Nav() {
               {logStatus ? (
                 <>
                   <LinkImg
-                    $focus={navActive === 4}
-                    src={require("../img/logout/logoutW.png")}
+                    src={
+                      navActive === 5
+                        ? require("../img/logout/logout.png")
+                        : require("../img/logout/signoutG.png")
+                    }
                   />
                   <GeneralDiv margin="5px">登出</GeneralDiv>
                 </>
@@ -334,7 +348,6 @@ function Nav() {
           }
         />
 
-        <Route path="member-file" element={<MemberFile />} />
         <Route
           path="game-schedule"
           element={<GameSchedule userId={userId} />}
@@ -347,6 +360,7 @@ function Nav() {
             <Login
               setLogFirstTime={setLogFirstTime}
               setNavActive={setNavActive}
+              logStatus={logStatus}
               setUserId={setUserId}
             />
           }

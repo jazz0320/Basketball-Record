@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 import HomeGrade from "./HomeGrade";
 import PlayerGrade from "./PlayerGrade";
-import { GeneralDiv } from "../utils/StyleComponent";
+import { GeneralDiv, GeneralImg } from "../utils/StyleComponent";
 
 function Home(props) {
   const [gameList, setGameList] = useState([]);
@@ -118,7 +118,7 @@ function Home(props) {
           display="flex"
           flexWrap="wrap"
           justifyContent="space-around"
-          boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
+          boxShadow="0px 0px 3px 5px rgba(0, 0, 0, 0.3);"
         >
           <GeneralDiv height="100px" width="100%" />
           <CarousellContainer>
@@ -163,8 +163,15 @@ function Home(props) {
               </div>
             ))}
           </CarousellContainer>
-          <HomeGrade teamGrade={teamGrade} />
-          <PlayerGrade playerGrade={playerGrade} />
+          <GeneralDiv
+            width="76vw"
+            display="flex"
+            flexWrap="wrap"
+            justifyContent="space-between"
+          >
+            <PlayerGrade playerGrade={playerGrade} />
+            <HomeGrade teamGrade={teamGrade} />
+          </GeneralDiv>
         </GeneralDiv>
       </GeneralDiv>
     </>
@@ -174,8 +181,10 @@ function Home(props) {
 export default Home;
 
 const CarousellContainer = styled.div`
-  height: 230px;
-  width: 78vw;
+  margin: 0.2vh 1vw 1.5vh 0vw;
+  height: 250px;
+  width: 80vw;
+  padding: 10px;
   display: inline-flex;
   overflow: scroll;
   color: #495057;
@@ -188,12 +197,13 @@ const CarousellContainer = styled.div`
 const GameContainerL1 = styled.div`
   cursor: pointer;
   border-radius: 5px;
-  height: 215px;
+  height: 220px;
   width: 256px;
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
   border: 1px solid #ced4da;
+  box-shadow: -5px 5px 3px rgba(0, 0, 0, 0.2);
 `;
 
 const GameContainerL2 = styled.div`
@@ -266,7 +276,14 @@ function BoxEnd(props) {
         )}
       </GameContainerL2>
       <GameContainerL2>
-        <LogoDiv img={props.data.aTeamLogo} />
+        <LogoDiv>
+          <GeneralImg
+            height="80px"
+            width="80px"
+            src={props.data.aTeamLogo}
+            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
+          />
+        </LogoDiv>
         <TeamDiv>
           <GeneralDiv lineHeight="15px" color="black">
             {props.data.aTeam}
@@ -278,7 +295,14 @@ function BoxEnd(props) {
         <ScoreBox>{props.data.aTeam_score}</ScoreBox>
       </GameContainerL2>
       <GameContainerL2>
-        <LogoDiv img={props.data.bTeamLogo} />
+        <LogoDiv>
+          <GeneralImg
+            height="80px"
+            width="80px"
+            src={props.data.bTeamLogo}
+            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
+          />
+        </LogoDiv>
         <TeamDiv>
           <GeneralDiv color="black" lineHeight="15px">
             {props.data.bTeam}
@@ -317,7 +341,7 @@ const LogoDivForComing = styled.div`
   height: 80px;
   width: 80px;
   background-size: contain;
-  background-image: url(${(props) => props.img});
+  /* background-image: url(${(props) => props.img}); */
 `;
 
 function BoxComing(props) {
@@ -341,7 +365,14 @@ function BoxComing(props) {
         <span className="text-black font-extrabold">coming soon</span>
       </GameContainerL2>
       <GameContainerL2forComing>
-        <LogoDivForComing img={props.data.aTeamLogo} />
+        <LogoDiv>
+          <GeneralImg
+            height="80px"
+            width="80px"
+            src={props.data.aTeamLogo}
+            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
+          />
+        </LogoDiv>
         <TeamDiv>
           <GeneralDiv color="black" lineHeight="20px">
             {props.data.aTeam}
@@ -355,7 +386,14 @@ function BoxComing(props) {
         <div className="vs">VS</div>
       </GameContainerL2forComing>
       <GameContainerL2forComing>
-        <LogoDivForComing img={props.data.bTeamLogo} />
+        <LogoDiv>
+          <GeneralImg
+            height="80px"
+            width="80px"
+            src={props.data.bTeamLogo}
+            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
+          />
+        </LogoDiv>
         <TeamDiv>
           <GeneralDiv color="black" lineHeight="20px">
             {props.data.bTeam}
@@ -370,8 +408,9 @@ function BoxComing(props) {
 }
 
 const TimeContainer = styled.div`
+  box-shadow: -8px 8px 5px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-  height: 220px;
+  height: 235px;
   width: 100px;
   display: flex;
   flex-wrap: nowrap;

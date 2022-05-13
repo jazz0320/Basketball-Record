@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 //General
 const GeneralDiv = styled.div`
+  z-index: ${(props) => props.zIndex};
   line-height: ${(props) => props.lineHeight};
   vertical-align: ${(props) => props.verticalAlign};
   box-shadow: ${(props) => props.boxShadow};
@@ -55,6 +56,7 @@ const GeneralDiv = styled.div`
 `;
 
 const GeneralButton = styled.button`
+  box-shadow: ${(props) => props.boxShadow};
   margin: ${(props) => props.margin};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
@@ -68,8 +70,8 @@ const GeneralButton = styled.button`
   background-color: ${(props) => props.backgroundColor};
   pointer-events: ${(props) => props.pointerEvents};
   &:hover {
+    box-shadow: ${(props) => props.hoverBoxShadow};
     background-color: ${(props) => props.hoverBackgroundColor};
-    color: ${(props) => props.hoverColor};
     color: ${(props) => props.hoverColor};
     font-size: ${(props) => props.hoverFontSize};
     pointer-events: ${(props) => props.hoverPointerEvents};
@@ -90,6 +92,13 @@ const GeneralImg = styled.img`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   src: ${(props) => props.src};
+  &:hover {
+    box-shadow: ${(props) => props.hoverBoxShadow};
+    transition-duration: ${(props) => props.hoverTransitionDuration};
+    margin: ${(props) => props.hoverMargin};
+    height: ${(props) => props.hoverHeight};
+    width: ${(props) => props.hoverWidth};
+  }
 `;
 
 const GeneralInput = styled.input`
@@ -310,6 +319,18 @@ const DivGameStartRecord = styled.div`
   justify-content: center;
   background-color: #e9ecef;
 `;
+const DivGameStartLogo = styled.div`
+  pointer-events: none;
+  width: 10vw;
+  height: 100%;
+  background-image: ${(props) => props.backgroundImage};
+  background-size: ${(props) => props.backgroundSize};
+  background-repeat: ${(props) => props.backgroundRepeat};
+  background-position: ${(props) => props.backgroundPosition};
+  opacity: ${(props) => props.opacity};
+  transition-duration: ${(props) => props.transitionDuration};
+`;
+
 const DivGameStart_Container = styled.div`
   width: 80vw;
   background-color: #f8f9fa;
@@ -324,6 +345,7 @@ const DivGameStart_Container = styled.div`
 `;
 
 const IconComponet = styled.div`
+  cursor: pointer;
   width: 60px;
   height: 60px;
   display: flex;
@@ -361,35 +383,47 @@ export {
   SelectPlayerImg,
   RegulationBlockCell,
   ButtonSubmit,
+  DivGameStartLogo,
 };
 
 // 開始比賽
 const PopupDiv = styled.div`
   position: fixed;
+  box-shadow: ${(props) => props.boxShadow};
   top: ${(props) => (props.top ? props.top : "30vh")};
   left: ${(props) => (props.left ? props.left : "40vw")};
-  background-color: #495057;
-  height: 14vh;
+  background-color: ${(props) =>
+    props.backgroundColor ? props.backgroundColor : "#495057"};
+  height: ${(props) => (props.height ? props.height : "14vh")};
   height: ${(props) => (props.height ? props.height : "14vh")};
   width: ${(props) => (props.width ? props.width : "20vw")};
   z-index: 10;
-  color: #f8f9fa;
+  color: ${(props) => (props.color ? props.color : "#f8f9fa")};
   font-size: ${(props) => (props.fontSize ? props.fontSize : "40px")};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  border-radius: 6%;
+  border-radius: ${(props) => (props.borderRadius ? props.borderRadius : "6%")};
+`;
+
+const PopupBlur = styled.div`
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 6;
+  background-color: rgba(0, 0, 0);
+  opacity: 0.5;
 `;
 
 const GroundContainer = styled.div`
   width: 100vw;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 const TeamOnTheGround = styled.div`
-  height: 650px;
+  height: 700px;
   width: 220px;
 
   width: ${(props) => props.width};
@@ -412,19 +446,24 @@ const TeamOnTheGround = styled.div`
 `;
 
 const LiveActionBolck = styled.div`
+  box-shadow: 0px 0px 1px 3px rgba(108, 117, 125, 0.3);
+  margin-bottom: 5px;
   height: 50px;
-  font-size: 24px;
+  font-size: 20px;
   display: flex;
-  border: 2px solid #495057;
   border-radius: 5px;
-  padding: 5px 10px;
-  width: 70vw;
+  padding: 7px 10px;
+  width: 740px;
   div {
-    height: 40px;
-    padding: 1px 3px;
-    border: 1px solid #495057;
+    overflow-x: hidden;
+    color: ${(props) => (props.ok ? "white" : "#6c757d")};
+    height: 36px;
+    padding: 1px 10px;
+    margin-right: 3px;
+    box-shadow: 0px 0px 1px 1px rgba(108, 117, 125, 0.4);
     border-radius: 5px;
-    background-color: #ced4da;
+    background-color: ${(props) => (props.ok ? "#343a40" : "#adb5bd")};
+
     animation-name: popup;
     animation-duration: 0.3s;
 
@@ -448,6 +487,7 @@ const LiveActionBolck = styled.div`
 
 export {
   PopupDiv,
+  PopupBlur,
   GroundContainer,
   TeamOnTheGround,
   LiveActionBolck,
