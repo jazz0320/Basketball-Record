@@ -8,7 +8,18 @@ import {
   GeneralImg,
   GeneralSelect,
   PopupDiv,
+  PopupBlur,
 } from "../utils/StyleComponent";
+const days = {
+  1: "一",
+  2: "二",
+  3: "三",
+  4: "四",
+  5: "五",
+  6: "六",
+  7: "日",
+};
+
 function GameArrange() {
   const [date, setDate] = useState([new Date().toISOString().slice(0, 10)]);
   const [day, setDay] = useState([new Date().getDay()]);
@@ -341,106 +352,153 @@ function GameArrange() {
           </GeneralDiv>
 
           {checkSetting ? (
-            <PopupDiv width="41vw" height="45vh" top="20vh" left="30vw">
-              <GeneralDiv
-                marginTop="2vh"
-                overflowY="scroll"
-                height="30vh"
-                width="40vw"
-                display="flex"
-                justifyContent="center"
-                flexWrap="wrap"
+            <>
+              <PopupBlur
+                top="0"
+                left="0"
+                onClick={() => setCheckSetting(false)}
+              />
+              <PopupDiv
+                width="41vw"
+                height="45vh"
+                top="20vh"
+                left="30vw"
+                borderRadius="10px"
+                boxShadow="0px 0px 3px 1px rgba(255, 255, 255, 0.5)"
+                hoverBoxShadow="0px 0px 7px 3px rgba(255, 255, 255, 0.5)"
               >
-                {numberOfGames.map((num) => (
-                  <GeneralDiv
-                    border="1px solid #dee2e6"
-                    padding="10px"
-                    width="35vw"
-                    borderRadius="10px"
-                    marginBottom="10px"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    key={num}
-                  >
-                    <div>
-                      <GeneralDiv fontSize="24px" textAlign="center">
-                        {aTeam[num]}
+                <GeneralDiv
+                  marginTop="2vh"
+                  overflowY="scroll"
+                  height="32vh"
+                  width="40vw"
+                  display="flex"
+                  justifyContent="center"
+                  flexWrap="wrap"
+                >
+                  {numberOfGames.map((num) => (
+                    <GeneralDiv
+                      boxShadow="0px 0px 5px 1px rgba(255, 255, 255, 0.5);"
+                      padding="10px"
+                      margin="10px 0"
+                      width="35vw"
+                      borderRadius="10px"
+                      marginBottom="10px"
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      key={num}
+                    >
+                      <GeneralDiv
+                        display="flex"
+                        alignItems="flex-end"
+                        flexWrap="wrap"
+                        justifyContent="center"
+                        height="100%"
+                      >
+                        <GeneralDiv
+                          fontSize="24px"
+                          textAlign="center"
+                          maxWidth="140px"
+                        >
+                          {aTeam[num]}
+                        </GeneralDiv>
+                        <div>
+                          <GeneralDiv
+                            width="132px"
+                            height="132px"
+                            borderRadius="10px"
+                          >
+                            <GeneralImg
+                              height="130px"
+                              widht="130px"
+                              src={aTeamLogo[num]}
+                              filter="drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5))"
+                            />
+                          </GeneralDiv>
+                        </div>
                       </GeneralDiv>
-                      <div>
+                      <GeneralDiv
+                        margin="0 auto"
+                        display="flex"
+                        alignItems="flex-end"
+                        flexWrap="wrap"
+                        justifyContent="center"
+                      >
+                        <GeneralDiv fontSize="22px">{date[num]}</GeneralDiv>
+                        <GeneralDiv fontSize="22px">
+                          星期{days[day[num]]} {time[num]}
+                        </GeneralDiv>
+                        <div></div>
+                      </GeneralDiv>
+                      <GeneralDiv
+                        display="flex"
+                        alignItems="flex-end"
+                        flexWrap="wrap"
+                        justifyContent="center"
+                        height="100%"
+                      >
+                        <GeneralDiv
+                          fontSize="24px"
+                          textAlign="center"
+                          maxWidth="140px"
+                        >
+                          {bTeam[num]}
+                        </GeneralDiv>
                         <GeneralDiv
                           width="132px"
                           height="132px"
-                          border="1px solid #adb5bd"
                           borderRadius="10px"
                         >
                           <GeneralImg
                             height="130px"
                             widht="130px"
-                            src={aTeamLogo[num]}
+                            src={bTeamLogo[num]}
+                            filter="drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5))"
                           />
                         </GeneralDiv>
-                      </div>
-                    </div>
-                    <GeneralDiv margin="0 auto">
-                      <GeneralDiv fontSize="22px">{date[num]}</GeneralDiv>
-                      <GeneralDiv fontSize="22px">
-                        星期{day[num]} {time[num]}
                       </GeneralDiv>
-                      <div></div>
                     </GeneralDiv>
-                    <div>
-                      <GeneralDiv fontSize="24px" textAlign="center">
-                        {bTeam[num]}
-                      </GeneralDiv>
-                      <GeneralDiv
-                        width="132px"
-                        height="132px"
-                        border="1px solid #adb5bd"
-                        borderRadius="10px"
-                      >
-                        <GeneralImg
-                          height="130px"
-                          widht="130px"
-                          src={bTeamLogo[num]}
-                        />
-                      </GeneralDiv>
-                    </div>
-                  </GeneralDiv>
-                ))}
-              </GeneralDiv>
-              <GeneralButton
-                margin="0 auto 1vh"
-                width="35%"
-                fontSize="28px"
-                height="60px"
-                borderRadius="10px"
-                color="#f8f9fa"
-                backgroundColor="#6c757d"
-                hoverBackgroundColor="#ced4da"
-                hoverColor="#212529"
-                onClick={() => {
-                  setCheckSetting(true);
-                  sendGameSchedule();
-                }}
-              >
-                確認無誤
-              </GeneralButton>
-              <GeneralButton
-                margin="0 auto 1vh"
-                width="35%"
-                fontSize="28px"
-                height="60px"
-                borderRadius="10px"
-                color="#f8f9fa"
-                backgroundColor="#6c757d"
-                hoverBackgroundColor="#ced4da"
-                hoverColor="#212529"
-                onClick={() => setCheckSetting(false)}
-              >
-                取消
-              </GeneralButton>
-            </PopupDiv>
+                  ))}
+                </GeneralDiv>
+
+                <GeneralButton
+                  boxShadow="0px 0px 3px 2px rgba(255, 255, 255, 0.5);"
+                  hoverBoxShadow="0px 0px 10px 7px rgba(255, 255, 255, 0.5);"
+                  margin="0 auto 1vh"
+                  width="35%"
+                  fontSize="28px"
+                  height="60px"
+                  borderRadius="10px"
+                  color="#f8f9fa"
+                  backgroundColor="#6c757d"
+                  hoverBackgroundColor="#ced4da"
+                  hoverColor="#212529"
+                  onClick={() => setCheckSetting(false)}
+                >
+                  取消
+                </GeneralButton>
+                <GeneralButton
+                  boxShadow="0px 0px 6px 3px rgba(255, 255, 255, 0.5);"
+                  hoverBoxShadow="0px 0px 15px 10px rgba(255, 255, 255, 0.5);"
+                  margin="0 auto 1vh"
+                  width="35%"
+                  fontSize="28px"
+                  height="60px"
+                  borderRadius="10px"
+                  color="#f8f9fa"
+                  backgroundColor="#6c757d"
+                  hoverBackgroundColor="#ced4da"
+                  hoverColor="#212529"
+                  onClick={() => {
+                    setCheckSetting(true);
+                    sendGameSchedule();
+                  }}
+                >
+                  確認無誤
+                </GeneralButton>
+              </PopupDiv>
+            </>
           ) : null}
         </GeneralDiv>
       </GeneralDiv>

@@ -105,14 +105,17 @@ function GradeOutCome(props) {
             <GeneralDiv
               width="50px"
               textAling="center"
-              fontSize={index < 3 ? `${20 + (3 - index) * 4}px` : "20px"}
+              fontSize={index < 3 ? `${20 + (3 - index) * 7}px` : "20px"}
+              fontWeight={index === 0 && "550"}
+              fontWeight={index === 1 && "500"}
+              fontWeight={index === 2 && "450"}
             >
               {index + 1}
             </GeneralDiv>
             <GeneralDiv>
               <GeneralImg
                 filter={"drop-shadow(-10px 6px 3px rgba(0, 0, 0, 0.5))"}
-                height={index < 3 ? `${100 + (3 - index) * 8}px` : "80px"}
+                height={index < 3 ? `${90 + (3 - index) * 8}px` : "80px"}
                 width={index < 3 ? `${136 + (3 - index) * 11}px` : "109px"}
                 src={data.pic}
               />

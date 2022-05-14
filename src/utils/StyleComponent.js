@@ -2,6 +2,9 @@ import styled, { createGlobalStyle } from "styled-components";
 
 //General
 const GeneralDiv = styled.div`
+  max-width: ${(props) => props.maxWidth};
+  min-height: ${(props) => props.minHeight};
+  max-height: ${(props) => props.maxHeight};
   z-index: ${(props) => props.zIndex};
   line-height: ${(props) => props.lineHeight};
   vertical-align: ${(props) => props.verticalAlign};
@@ -41,6 +44,7 @@ const GeneralDiv = styled.div`
   bottom: ${(props) => props.bottom};
   pointer-events: ${(props) => props.pointerEvents};
   &:hover {
+    display: ${(props) => props.hoverDisplay};
     box-shadow: ${(props) => props.hoverBoxShadow};
     pointer-events: ${(props) => props.hoverPointerEvents};
     transition-duration: ${(props) => props.hoverTransitionDuration};
@@ -52,6 +56,9 @@ const GeneralDiv = styled.div`
   }
   div {
     font-size: ${(props) => props.divFontSize};
+  }
+  span {
+    font-size: ${(props) => props.spanFontSize};
   }
 `;
 
@@ -102,6 +109,7 @@ const GeneralImg = styled.img`
 `;
 
 const GeneralInput = styled.input`
+  display: ${(props) => props.display};
   width: ${(props) => props.width};
   cursor: ${(props) => props.cursor};
   font-size: ${(props) => props.fontSize};
@@ -114,6 +122,22 @@ const GeneralInput = styled.input`
     font-style: ${(props) => props.placeholderStyle};
   }
 `;
+
+const GeneralLabel = styled.label`
+  z-index: ${(props) => props.zIndex};
+  cursor: ${(props) => props.cursor};
+  text-align: ${(props) => props.textAlign};
+  padding: ${(props) => props.padding};
+  border: ${(props) => props.border};
+  background-color: ${(props) => props.backgroundColor};
+  font-size: ${(props) => props.fontSize};
+  border: ${(props) => props.border};
+  width: ${(props) => props.width};
+  &:hover {
+    display: ${(props) => props.hoverDisplay};
+  }
+`;
+
 const GeneralSelect = styled.select`
   cursor: pointer;
   border: ${(props) => props.border};
@@ -121,7 +145,14 @@ const GeneralSelect = styled.select`
   font-size: ${(props) => props.fontSize};
 `;
 
-export { GeneralDiv, GeneralButton, GeneralImg, GeneralInput, GeneralSelect };
+export {
+  GeneralDiv,
+  GeneralButton,
+  GeneralImg,
+  GeneralInput,
+  GeneralSelect,
+  GeneralLabel,
+};
 
 //Record Before Game
 const Div_Record = styled.div`
@@ -142,6 +173,8 @@ const TeamBlock = styled.div`
   width: 40vw;
   height: calc(100vh - 100px);
   display: flex;
+  background-image: ${(props) => props.backgroundImage};
+  background-position: ${(props) => props.backgroundPosition};
   &:nth-child(2) {
     flex-direction: row-reverse;
   }
@@ -167,9 +200,9 @@ const TeamBlockDetail = styled.div`
   /* background: linear-gradient(to bottom, #212529, #495057); */
   background-color: #f8f9fa;
   background-image: ${(props) => props.backgroundImage};
+  background-position: ${(props) => props.backgroundPosition};
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: ${(props) => props.backgroundPosition};
   width: 40vw;
   display: flex;
   flex-direction: column;
@@ -185,6 +218,7 @@ const TeamBlockDetailTeam = styled.div`
   justify-content: center;
 `;
 const TeamBlockDetailPlayer = styled.div`
+  z-index: 10;
   /* backdrop-filter: blur(3px); */
   margin-right: ${(props) => props.marginRight};
   margin-left: ${(props) => props.marginLeft};
@@ -241,7 +275,7 @@ const TeamBlockDetailPlayerDiv = styled.div`
 `;
 
 const RegulationBlock = styled.div`
-  z-index: 0;
+  z-index: 10;
   position: fixed;
   top: 100px;
   width: 20vw;
@@ -269,6 +303,7 @@ const ButtonForChange = styled.button`
   }
 `;
 const ButtonSubmit = styled.button`
+  z-index: ${(props) => props.zIndex};
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : "#343A40"};
   border: 1px solid white;
@@ -405,9 +440,14 @@ const PopupDiv = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   border-radius: ${(props) => (props.borderRadius ? props.borderRadius : "6%")};
+  &:hover {
+    box-shadow: ${(props) => props.hoverBoxShadow};
+  }
 `;
 
 const PopupBlur = styled.div`
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
   position: fixed;
   height: 100vh;
   width: 100vw;
@@ -463,7 +503,6 @@ const LiveActionBolck = styled.div`
     box-shadow: 0px 0px 1px 1px rgba(108, 117, 125, 0.4);
     border-radius: 5px;
     background-color: ${(props) => (props.ok ? "#343a40" : "#adb5bd")};
-
     animation-name: popup;
     animation-duration: 0.3s;
 
@@ -494,3 +533,48 @@ export {
   DivGameStartRecord,
   DivGameStart_Container,
 };
+
+const LiveRoomActionBlock = styled.div`
+  /* animation-name: popup;
+  animation-duration: 0.3s;
+  @keyframes popup {
+    0% {
+      transform: translateY(20px);
+      background-color: #343a40;
+      color: white;
+    }
+    90% {
+      transform: translateY(-10px);
+      background-color: #6c757d;
+      color: white;
+    }
+    100% {
+      transform: translateY(0);
+    }
+  } */
+`;
+
+const LiveRoomLines = styled.div`
+  /* animation-name: popup;
+  animation-duration: 0.3s;
+  @keyframes popup {
+    0% {
+      transform: translateY(20px);
+      background-color: #343a40;
+      color: white;
+    }
+    90% {
+      transform: translateY(-10px);
+      background-color: #6c757d;
+      color: white;
+    }
+    100% {
+      transform: translateY(0);
+    }
+  } */
+  span {
+    font-size: ${(props) => props.spanFontSize};
+  }
+`;
+
+export { LiveRoomLines, LiveRoomActionBlock };

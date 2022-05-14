@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { doc, onSnapshot, getDoc, db } from "../utils/firebase";
-import { GeneralDiv, GeneralButton, GeneralImg } from "../utils/StyleComponent";
+import {
+  GeneralDiv,
+  GeneralButton,
+  GeneralImg,
+  LiveRoomLines,
+  LiveRoomActionBlock,
+} from "../utils/StyleComponent";
 import "./LiveRoom.css";
 
 function LiveRoom(props) {
@@ -21,7 +27,6 @@ function LiveRoom(props) {
   useEffect(() => {
     console.log("ccc");
     if (props.liveGameRoutes?.includes(props.gameName)) {
-      console.log("ttt");
       const unsub = onSnapshot(
         doc(db, "live_game", `${props.gameName}`),
         (doc) => {
@@ -70,32 +75,31 @@ function LiveRoom(props) {
         <div>比賽結束</div>
       ) : finishSetting ? (
         <GeneralDiv
-          height="100vh"
           display="flex"
           justifyContent="center"
           backgroundColor="#e9ecef"
           padding="1vh 1vw"
+          width="100vw"
         >
           <GeneralDiv
-            height="100vh"
             width="80vw"
             display="flex"
+            flexWrap="wrap"
             justifyContent="center"
             backgroundColor="#f8f9fa"
-            className="flex justify-center flex-wrap w-10/12 bg-white"
-            boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
+            boxShadow="0px 0px 7px 5px rgba(0, 0, 0, 0.7);"
           >
             <GeneralDiv height="100px" width="100%" />
             <div className="w-screen h-fit flex justify-around items-center">
               <GeneralDiv height="170px" width="170px">
                 <GeneralImg
                   src={aTeamLogo}
-                  filter="drop-shadow(15px 15px 4px rgba(0, 0, 0, 0.5))"
+                  filter="drop-shadow(-15px 15px 4px rgba(0, 0, 0, 0.5))"
                 />
               </GeneralDiv>
               <table
-                className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate w-4/12 h-28"
-                cellPadding="10"
+                className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate w-5/12 h-28"
+                cellPadding="1"
                 border="1"
               >
                 <thead>
@@ -159,7 +163,7 @@ function LiveRoom(props) {
               <GeneralDiv height="170px" width="170px">
                 <GeneralImg
                   src={bTeamLogo}
-                  filter="drop-shadow(15px 15px 4px rgba(0, 0, 0, 0.5))"
+                  filter="drop-shadow(-15px 15px 4px rgba(0, 0, 0, 0.5))"
                 />
               </GeneralDiv>
             </div>
@@ -200,7 +204,7 @@ function LiveRoom(props) {
                 Team-Data{" "}
               </span>
             </div>
-            <GeneralDiv height="75vh">
+            <GeneralDiv minHeight="70vh" maxHeight="150vh" overflowY="scroll">
               {watchBox === "boxscore" ? (
                 <div>
                   <Boxscore
@@ -268,12 +272,12 @@ function Boxscore(props) {
         </div>
         <table
           className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate"
-          cellPadding="10"
+          cellPadding="5"
           border="1"
         >
           <thead>
             <tr>
-              <th>PLAYER</th>
+              <th width="100px">PLAYER</th>
               <th>MIN</th>
               <th>FGM</th>
               <th>FGA</th>
@@ -300,7 +304,7 @@ function Boxscore(props) {
             {selectTeam === "ateam"
               ? props.aTeamPlayers.map((players, index) => (
                   <tr key={index}>
-                    <td>{players.id}</td>
+                    <td nowrap="nowrap">{players.id}</td>
                     <td>none</td>
                     <td>{players.fgm}</td>
                     <td>{players.fga}</td>
@@ -325,7 +329,7 @@ function Boxscore(props) {
                 ))
               : props.bTeamPlayers.map((players, index) => (
                   <tr key={index}>
-                    <td>{players.id}</td>
+                    <td nowrap="nowrap">{players.id}</td>
                     <td>none</td>
                     <td>{players.fgm}</td>
                     <td>{players.fga}</td>
@@ -403,83 +407,93 @@ function Livestream(props) {
           All{" "}
         </span>
       </div>
-      <div
-        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
-      >
+      <GeneralDiv display="flex" flexWrap="wrap" justifyContent="center">
         {quarteNowLive === props.quarter.length
           ? props.liveAction
               .slice()
               .reverse()
               ?.map((item, index) => (
-                <div key={index} className="flex mt-2 drop-shadow-lg">
-                  {item.team === true ? (
-                    <GeneralDiv
-                      display="flex"
-                      justifyContent="flex-end"
-                      alignItems="center"
-                      width="33vw"
-                      backgroundColor="#e9ecef"
-                    >
-                      <span>{item.team ? props.aTeam : props.bTeam}</span>
-                      <span> , </span>
-                      <span>{item.playerId}</span>
-                      <span> , </span>
-                      <span>{item.location}</span>
-                      <span> , </span>
-                      <span>得{item.count}分</span>
-
-                      <div className="pr-1 pl-5">
-                        <img
-                          className="h-14 w-16 rounded-full"
-                          src={`${item.playerPic}`}
-                        ></img>
-                      </div>
-                    </GeneralDiv>
-                  ) : (
-                    <GeneralDiv width="33vw" />
-                  )}
-
-                  <div
-                    className="bg-coolors_4 mx-5 py-1 items-center"
-                    style={{
-                      width: "8vw",
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "center",
-                    }}
+                <>
+                  <LiveRoomActionBlock
+                    key={index}
+                    className="flex mt-2 drop-shadow-lg"
                   >
-                    <span>第{item.quarterNow}節</span>
-                    <span>
-                      {item.minutes}:{item.seconds}
-                    </span>
-                  </div>
+                    {item.team === true ? (
+                      <GeneralDiv
+                        display="flex"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        width="33vw"
+                        backgroundColor="#e9ecef"
+                      >
+                        <LiveRoomLines spanFontSize="14px">
+                          <span>{item.team ? props.aTeam : props.bTeam}</span>
+                          <span> , </span>
+                          <span>{item.playerId}</span>
+                          <span> , </span>
+                          <span>{item.location}</span>
+                          <span> , </span>
+                          <span>
+                            {item.actionWord}+{item.count}
+                          </span>
+                        </LiveRoomLines>
 
-                  {item.team === false ? (
-                    <GeneralDiv
-                      display="flex"
-                      alignItems="center"
-                      width="33vw"
-                      backgroundColor="#e9ecef"
+                        <div className="pr-1 pl-5">
+                          <img
+                            className="h-14 w-16 rounded-full"
+                            src={`${item.playerPic}`}
+                          ></img>
+                        </div>
+                      </GeneralDiv>
+                    ) : (
+                      <GeneralDiv width="33vw" />
+                    )}
+
+                    <div
+                      className="bg-coolors_4 mx-5 py-1 items-center"
+                      style={{
+                        width: "8vw",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                      }}
                     >
-                      <div className="pr-5 pl-1">
-                        <img
-                          className="h-14 w-16 rounded-full"
-                          src={`${item.playerPic}`}
-                        ></img>
-                      </div>
-                      <span>{item.team ? props.aTeam : props.bTeam}</span>
-                      <span> , </span>
-                      <span>{item.playerId}</span>
-                      <span> , </span>
-                      <span>{item.location}</span>
-                      <span> , </span>
-                      <span>得{item.count}分</span>
-                      {/* </div> */}
-                    </GeneralDiv>
-                  ) : (
-                    <GeneralDiv width="33vw" />
-                  )}
-                </div>
+                      <span>第{item.quarterNow}節</span>
+                      <span>
+                        {item.minutes}:{item.seconds}
+                      </span>
+                    </div>
+
+                    {item.team === false ? (
+                      <GeneralDiv
+                        display="flex"
+                        alignItems="center"
+                        width="33vw"
+                        backgroundColor="#e9ecef"
+                      >
+                        <div className="pr-5 pl-1">
+                          <img
+                            className="h-14 w-16 rounded-full"
+                            src={`${item.playerPic}`}
+                          ></img>
+                        </div>
+                        <LiveRoomLines spanFontSize="14px">
+                          <span>{item.team ? props.aTeam : props.bTeam}</span>
+                          <span> , </span>
+                          <span>{item.playerId}</span>
+                          <span> , </span>
+                          <span>{item.location}</span>
+                          <span> , </span>
+                          <span>
+                            {item.actionWord}+{item.count}
+                          </span>
+                        </LiveRoomLines>
+                      </GeneralDiv>
+                    ) : (
+                      <GeneralDiv width="33vw" />
+                    )}
+                  </LiveRoomActionBlock>
+                </>
               ))
           : actionNow
           ? actionNow
@@ -494,7 +508,7 @@ function Livestream(props) {
                   {item.team === true ? (
                     <div
                       className=" bg-coolors_2 flex justify-end items-center"
-                      style={{ width: "25vw" }}
+                      style={{ width: "33vw" }}
                     >
                       <span>{item.team ? props.aTeam : props.bTeam}</span>
                       <span> , </span>
@@ -512,7 +526,7 @@ function Livestream(props) {
                       </div>
                     </div>
                   ) : (
-                    <div key={index} style={{ width: "25vw" }}></div>
+                    <div key={index} style={{ width: "33vw" }}></div>
                   )}
 
                   <div
@@ -527,7 +541,7 @@ function Livestream(props) {
                   {item.team === false ? (
                     <div
                       className="text-left bg-coolors_2 flex items-center"
-                      style={{ width: "25vw" }}
+                      style={{ width: "33vw" }}
                     >
                       <div className="pr-5 pl-1">
                         <img
@@ -544,12 +558,12 @@ function Livestream(props) {
                       <span>得{item.count}分</span>
                     </div>
                   ) : (
-                    <div style={{ width: "25vw" }}></div>
+                    <div style={{ width: "33vw" }}></div>
                   )}
                 </div>
               ))
           : null}
-      </div>
+      </GeneralDiv>
     </>
   );
 }

@@ -131,7 +131,7 @@ function Login(props) {
 export default Login;
 
 const Wrapper = styled.div`
-  box-shadow: 12px 12px 10px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.5);
   background-color: #f8f9fa;
   display: flex;
   justify-content: center;
@@ -145,7 +145,7 @@ const Wrapper = styled.div`
 `;
 
 const FormDiv = styled.div`
-  box-shadow: 12px 12px 7px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.3);
   margin: 0 auto;
   width: 100%;
   max-width: 450px;

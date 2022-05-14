@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   storage,
   ref,
@@ -13,6 +15,7 @@ import styled from "styled-components";
 import {
   PopupDiv,
   ButtonSubmit,
+  GeneralLabel,
   GeneralDiv,
   GeneralImg,
   GeneralInput,
@@ -21,10 +24,9 @@ import {
 
 const PlayerChangeBlock = styled.div`
   width: 34vw;
-  height: 250px;
+  height: 205px;
   display: flex;
   padding: 0.5vh 0.5vw;
-  /* border: 1px solid #adb5bd; */
   display: ${(props) => (props.$focus ? "none" : "flex")};
 `;
 const PlayerButton = styled.button`
@@ -36,7 +38,7 @@ const PlayerButton = styled.button`
     background-color: #e9ecef;
   }
   &:active {
-    back-groundcolor: #495057;
+    background-color: #495057;
     color: #f8f9fa;
   }
   display: ${(props) => (props.$check ? "none" : "block")};
@@ -49,6 +51,7 @@ const UserInput = styled.input`
 `;
 
 function TeamInf(props) {
+  let redirect = useNavigate();
   const [teamMemberNumbers, setTeamMemberNumbers] = useState([1, 2, 3, 4, 5]);
   const team = useRef();
   const teamName = useRef();
@@ -165,25 +168,30 @@ function TeamInf(props) {
       },
       { merge: true }
     );
+    redirect("/team-inf");
   };
 
   return (
     <>
       <GeneralDiv
         width="100vw"
-        height="100%"
         display="flex"
         justifyContent="center"
         backgroundColor="#e9ecef"
       >
-        <GeneralDiv width="80vw" backgroundColor="#f8f9fa" padding="1vh 2vw">
+        <GeneralDiv
+          marginTop="100px"
+          width="80vw"
+          backgroundColor="#f8f9fa"
+          padding="1vh 2vw"
+        >
           {memberTeamExist ? (
             <ExistTeam
               memberTeamExist={memberTeamExist}
               userId={props.userId}
             />
           ) : (
-            <GeneralDiv position="relative">
+            <GeneralDiv position="relative" padding="0 0 100px 0">
               <GeneralDiv fontSize="28px" marginBottom="0.5vh">
                 球隊名稱{" "}
                 <UserInput
@@ -223,7 +231,7 @@ function TeamInf(props) {
                 </GeneralDiv>
                 <input type="file" name="logoPic" onChange={upload}></input>
               </GeneralDiv>
-              <GeneralDiv display="flex" alignItems="end" marginBottom="0.5vh">
+              {/* <GeneralDiv display="flex" alignItems="end" marginBottom="0.5vh">
                 <GeneralDiv>
                   <GeneralDiv fontSize="28px" marginBottom="0.3vh">
                     {" "}
@@ -258,7 +266,7 @@ function TeamInf(props) {
                   name="teamRelated1"
                   onChange={upload}
                 ></input>
-              </GeneralDiv>
+              </GeneralDiv> */}
 
               <div>
                 <GeneralDiv fontSize="28px" boxShadow="0" marginBottom="1vh">
@@ -375,8 +383,8 @@ function TeamInf(props) {
                 margin="10px"
                 position="absolute"
                 onClick={submitTeamInf}
-                right="60px"
-                bottom="150px"
+                right="40px"
+                bottom="20px"
               >
                 送出
               </ButtonSubmit>
@@ -395,6 +403,7 @@ function ExistTeam(props) {
   const [revisePlayer, setRevisePlayer] = useState();
   const [checkDelete, setCheckDelete] = useState();
   const [deletePlayerIndex, setDeletePlayerIndex] = useState();
+  const [changePic, setChangePic] = useState(false);
 
   async function getExistTeamData() {
     if (props.memberTeamExist !== undefined) {
@@ -496,35 +505,73 @@ function ExistTeam(props) {
           </GeneralDiv>
         </PopupDiv>
       ) : null}
-      <GeneralDiv fontSize="40px">隊名: {props.memberTeamExist}</GeneralDiv>
-      <div>
-        <GeneralImg height="200px" width="200px" src={teamLogo} />
-        <input type="file" name="logo" onChange={(e) => upload(e)}></input>
-      </div>
-      <div>
+      <GeneralDiv fontSize="40px" marginLeft="1vw">
+        {props.memberTeamExist}
+      </GeneralDiv>
+      <GeneralDiv position="relative" marginLeft="1vw">
+        <GeneralImg
+          height="300px"
+          width="300px"
+          src={teamLogo}
+          onMouseOver={() => setChangePic((pre) => !pre)}
+        />
+        {changePic && (
+          <GeneralDiv
+            onMouseOut={() => setChangePic((pre) => !pre)}
+            height="300px"
+            width="300px"
+            position="absolute"
+            top="0"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            backgroundColor="rgba(0,0,0,0.3)"
+          >
+            <GeneralLabel
+              zIndex="10"
+              cursor="pointer"
+              border="2px solid rgba(0,0,0,0.7)"
+              padding="8px"
+              textAlign="center"
+              backgroundColor="white"
+            >
+              更換Logo
+              <GeneralInput
+                display="none"
+                type="file"
+                name="logo"
+                onChange={(e) => upload(e)}
+              />
+            </GeneralLabel>
+          </GeneralDiv>
+        )}
+      </GeneralDiv>
+      {/* <div>
         <GeneralImg height="200px" width="200px" src={teamPics} />
         <input type="file" name="team_pic" onChange={(e) => upload(e)}></input>
-      </div>
+      </div> */}
       <GeneralDiv display="flex" flexWrap="wrap">
         {teamPlayers?.map((player, index) => (
           <GeneralDiv
-            width="35vw"
+            // width="35vw"
             margin=" 0 1vw 1vh 1vw"
             border="1px solid #ced4da"
             borderRadius="10px"
             padding="5px"
             key={index}
+            boxShadow="0px 0px 5px 1px rgba(0, 0, 0, 0.5);"
+            hoverBoxShadow="0px 0px 5px 5px rgba(0, 0, 0, 0.5);"
           >
             <GeneralDiv fontSize="20px">球員{index + 1}</GeneralDiv>
             <PlayerChangeBlock $focus={revisePlayer === index}>
               <GeneralDiv
                 border="1px solid #E9ECEF"
-                height="205px"
+                height="165px"
                 width="205px"
                 marginRight="0.5vw"
                 marginBottom="5px"
               >
-                <GeneralImg height="200px" width="200px" src={player.pic} />
+                <GeneralImg height="160px" width="200px" src={player.pic} />
               </GeneralDiv>
               <GeneralDiv
                 width="18vw"
@@ -641,7 +688,7 @@ function ModifyPlayer(props) {
     <>
       <GeneralDiv width="200px">
         <GeneralImg
-          height="200px"
+          height="160px"
           width="200px"
           src={newPlayer.pic}
         ></GeneralImg>

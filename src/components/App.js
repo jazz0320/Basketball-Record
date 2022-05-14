@@ -1044,6 +1044,7 @@ function App(props) {
               </RegulationBlockCell> */}
               </RegulationBlock>
               <ButtonSubmit
+                zIndex="10"
                 fontSize="1.2rem"
                 position="fixed"
                 padding="0.5rem 0.75rem"
@@ -1055,6 +1056,14 @@ function App(props) {
                 Submit
               </ButtonSubmit>
               <TeamBlock>
+                <GeneralDiv
+                  backgroundColor="rgba(255,255,255,0.5)"
+                  position="fixed"
+                  top="0"
+                  left="0"
+                  height="100%"
+                  width="100%"
+                />
                 <TeamBlockDetail
                   backgroundImage={`url(${aTeamLogo})`}
                   backgroundPosition="200%"

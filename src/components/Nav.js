@@ -59,6 +59,7 @@ const LinkComponet = styled(Link)`
 `;
 
 const LinkImg = styled.img`
+  margin-right: ${(props) => props.maginRight};
   filter: ${(props) =>
     props.$focus ? "drop-shadow(-15px 15px 2px rgba(0, 0, 0, 0.5))" : null};
   src: ${(props) => props.src};
@@ -292,7 +293,7 @@ function Nav() {
                 <>
                   <LinkImg
                     src={
-                      navActive === 5
+                      navActive === 4
                         ? require("../img/logout/logout.png")
                         : require("../img/logout/signoutG.png")
                     }
@@ -302,8 +303,12 @@ function Nav() {
               ) : (
                 <>
                   <LinkImg
-                    $focus={navActive === 4}
-                    src={require("../img/profile/profileW.png")}
+                    src={
+                      navActive === 4
+                        ? require("../img/profile/profileB.png")
+                        : require("../img/profile/profileG.png")
+                    }
+                    maginRight="5px"
                   />
                   登入
                 </>

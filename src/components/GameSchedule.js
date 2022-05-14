@@ -40,8 +40,7 @@ function GameSchedule(props) {
   return (
     <>
       <GeneralDiv
-        width="100vw"
-        height="100vh"
+        marginTop="100px"
         display="flex"
         justifyContent="center"
         backgroundColor="#e9ecef"
@@ -52,17 +51,7 @@ function GameSchedule(props) {
             dateClick={handleDateClick}
             weekends={true}
             eventContent={renderEventContent}
-            events={
-              events
-              //   [
-              //   {
-              //     title: "event 2",
-              //     allDay: true,
-              //     date: "2022-04-02",
-              //     url: "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/test2%40test.com%2F600x600.jpeg?alt=media&token=5b52f811-3d45-42dd-9aae-296cb5940c5b",
-              //   },
-              // ]
-            }
+            events={events}
           />
         </GeneralDiv>
       </GeneralDiv>
