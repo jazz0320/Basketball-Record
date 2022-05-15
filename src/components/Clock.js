@@ -155,7 +155,7 @@ function Clock(props) {
     if (e.key === "l") {
       stop();
     }
-    if (e.key === "j") {
+    if (e.key === "r") {
       reset24seconds();
     }
   };
@@ -175,18 +175,18 @@ function Clock(props) {
     reset24seconds();
   }, [props.affectShotClockBehavior]);
 
-  useEffect(() => {
-    async function gameTime() {
-      await setDoc(
-        doc(db, "live_game", props.liveGameName.current),
-        {
-          time_shotClock: Number(shotClock),
-        },
-        { merge: true }
-      );
-    }
-    gameTime();
-  }, [shotClock]);
+  // useEffect(() => {
+  //   async function gameTime() {
+  //     await setDoc(
+  //       doc(db, "live_game", props.liveGameName.current),
+  //       {
+  //         time_shotClock: Number(shotClock),
+  //       },
+  //       { merge: true }
+  //     );
+  //   }
+  //   gameTime();
+  // }, [shotClock]);
 
   useEffect(() => {
     async function gameTime() {

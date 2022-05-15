@@ -99,6 +99,7 @@ const GeneralImg = styled.img`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   src: ${(props) => props.src};
+  transition-duration: ${(props) => props.transitionDuration};
   &:hover {
     box-shadow: ${(props) => props.hoverBoxShadow};
     transition-duration: ${(props) => props.hoverTransitionDuration};

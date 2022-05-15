@@ -460,7 +460,8 @@ function Livestream(props) {
                     >
                       <span>第{item.quarterNow}節</span>
                       <span>
-                        {item.minutes}:{item.seconds}
+                        {item.minutes}:{item.seconds < 10 ? "0" : null}
+                        {item.seconds}
                       </span>
                     </div>
 
@@ -506,25 +507,28 @@ function Livestream(props) {
                   style={{ display: "flex", textAlign: "center" }}
                 >
                   {item.team === true ? (
-                    <div
-                      className=" bg-coolors_2 flex justify-end items-center"
-                      style={{ width: "33vw" }}
+                    <GeneralDiv
+                      display="flex"
+                      alignItems="center"
+                      width="33vw"
+                      backgroundColor="#e9ecef"
                     >
-                      <span>{item.team ? props.aTeam : props.bTeam}</span>
-                      <span> , </span>
-                      <span>{item.playerId}</span>
-                      <span> , </span>
-                      <span>{item.location}</span>
-                      <span> , </span>
-                      <span>得{item.count}分</span>
-
+                      <LiveRoomLines spanFontSize="14px">
+                        <span>{item.team ? props.aTeam : props.bTeam}</span>
+                        <span> , </span>
+                        <span>{item.playerId}</span>
+                        <span> , </span>
+                        <span>{item.location}</span>
+                        <span> , </span>
+                        <span>得{item.count}分</span>
+                      </LiveRoomLines>
                       <div className="pr-1 pl-5">
                         <img
                           className="h-14 w-16 rounded-full"
                           src={`${item.playerPic}`}
                         ></img>
                       </div>
-                    </div>
+                    </GeneralDiv>
                   ) : (
                     <div key={index} style={{ width: "33vw" }}></div>
                   )}
@@ -534,14 +538,17 @@ function Livestream(props) {
                     style={{ width: "8vw" }}
                   >
                     <span>
-                      {item.minutes}:{item.seconds}
+                      {item.minutes}:{item.seconds < 10 ? "0" : null}
+                      {item.seconds}
                     </span>
                   </div>
 
                   {item.team === false ? (
-                    <div
-                      className="text-left bg-coolors_2 flex items-center"
-                      style={{ width: "33vw" }}
+                    <GeneralDiv
+                      display="flex"
+                      alignItems="center"
+                      width="33vw"
+                      backgroundColor="#e9ecef"
                     >
                       <div className="pr-5 pl-1">
                         <img
@@ -549,14 +556,16 @@ function Livestream(props) {
                           src={`${item.playerPic}`}
                         ></img>
                       </div>
-                      <span>{item.team ? props.aTeam : props.bTeam}</span>
-                      <span> , </span>
-                      <span>{item.playerId}</span>
-                      <span> , </span>
-                      <span>{item.location}</span>
-                      <span> , </span>
-                      <span>得{item.count}分</span>
-                    </div>
+                      <LiveRoomLines spanFontSize="14px">
+                        <span>{item.team ? props.aTeam : props.bTeam}</span>
+                        <span> , </span>
+                        <span>{item.playerId}</span>
+                        <span> , </span>
+                        <span>{item.location}</span>
+                        <span> , </span>
+                        <span>得{item.count}分</span>
+                      </LiveRoomLines>
+                    </GeneralDiv>
                   ) : (
                     <div style={{ width: "33vw" }}></div>
                   )}

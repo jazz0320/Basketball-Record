@@ -61,7 +61,7 @@ const LinkComponet = styled(Link)`
 const LinkImg = styled.img`
   margin-right: ${(props) => props.maginRight};
   filter: ${(props) =>
-    props.$focus ? "drop-shadow(-15px 15px 2px rgba(0, 0, 0, 0.5))" : null};
+    props.$focus ? "drop-shadow(-10px 10px 2px rgba(0, 0, 0, 0.5))" : null};
   src: ${(props) => props.src};
   width: ${(props) => (props.width ? props.width : "35px")};
   height: ${(props) => (props.height ? props.height : "35px")};

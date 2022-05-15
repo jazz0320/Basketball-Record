@@ -1686,7 +1686,14 @@ function TeamBox(props) {
                           height={props.exchangePlayer ? "90px" : "100px"}
                           width={props.exchangePlayer ? "90px" : "140px"}
                           src={player.pic}
-                          filter="drop-shadow(-15px 10px 3px rgba(0, 0, 0, 0.5))"
+                          transitionDuration="0.5s"
+                          filter={
+                            props.exchangePlayer
+                              ? null
+                              : props.selectTeam && props.activePlayer === index
+                              ? "drop-shadow(-15px 10px 5px rgba(0, 0, 0, 0.3))"
+                              : "drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.5))"
+                          }
                         />
                       </GeneralDiv>
                       <GeneralDiv
@@ -1695,7 +1702,6 @@ function TeamBox(props) {
                         fontSize={props.exchangePlayer ? "14px" : null}
                       >
                         {player.id}
-                        {index}
                       </GeneralDiv>
                     </GeneralDiv>
                   )}

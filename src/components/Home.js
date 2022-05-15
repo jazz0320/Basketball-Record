@@ -114,7 +114,7 @@ function Home(props) {
         <GeneralDiv
           width="80vw"
           backgroundColor="#f8f9fa"
-          padding="0.5vh 1vw"
+          padding="0.5vh 1vw 3vh 1vw"
           display="flex"
           flexWrap="wrap"
           justifyContent="space-around"
@@ -181,7 +181,7 @@ function Home(props) {
 export default Home;
 
 const CarousellContainer = styled.div`
-  margin: 0.2vh 1vw 1.5vh 0vw;
+  margin: 0.2vh 1vw 3vh 0vw;
   height: 250px;
   width: 80vw;
   padding: 10px;
