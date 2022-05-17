@@ -455,7 +455,7 @@ function Court(props) {
               <clipPath id="SVGID_6_">
                 <use xlinkHref="#SVGID_5_" style={{ overflow: "visible" }} />
               </clipPath>
-              <g className="st11">
+              <g className="st11" style={{ clipPath: "url(#SVGID_6_)" }}>
                 <path
                   onClick={() => {
                     locationInf("右側三分", 3);

@@ -146,7 +146,20 @@ const GeneralSelect = styled.select`
   font-size: ${(props) => props.fontSize};
 `;
 
+const GeneralSpan = styled.span`
+  border-radius: ${(props) => props.borderRadius};
+  display: ${(props) => props.display};
+  padding: ${(props) => props.padding};
+  background-color: ${(props) => props.backgroundColor};
+  color: ${(props) => props.color};
+  cursor: ${(props) => props.cursor};
+  &:hover {
+    background-color: ${(props) => props.hoverBackgroundColor};
+    color: ${(props) => props.hoverColor};
+  }
+`;
 export {
+  GeneralSpan,
   GeneralDiv,
   GeneralButton,
   GeneralImg,

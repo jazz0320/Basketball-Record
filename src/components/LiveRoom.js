@@ -3,11 +3,11 @@ import { doc, onSnapshot, getDoc, db } from "../utils/firebase";
 import {
   GeneralDiv,
   GeneralButton,
+  GeneralSpan,
   GeneralImg,
   LiveRoomLines,
   LiveRoomActionBlock,
 } from "../utils/StyleComponent";
-import "./LiveRoom.css";
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
@@ -171,38 +171,62 @@ function LiveRoom(props) {
               className="w-screen flex justify-center h-fit items-center mb-3"
               id="radio"
             >
-              <span
-                className="round button flex justify-center items-center"
-                id={watchBox === "boxscore" ? "checkbutton" : null}
+              <GeneralSpan
+                borderRadius="5px"
+                display="inline-block"
+                padding="5px 10px"
+                backgroundColor={
+                  watchBox === "boxscore" ? "#5e7380" : "#f7f7f7"
+                }
+                color={watchBox === "boxscore" ? "#fff" : "#333"}
+                cursor="pointer"
+                hoverBackgroundColor="#bbb"
+                hoverColor="#fff"
                 onClick={() => {
                   setWatchBox("boxscore");
                 }}
               >
                 {" "}
                 Box-score{" "}
-              </span>
+              </GeneralSpan>
 
-              <span
-                id={watchBox === "livestream" ? "checkbutton" : null}
-                className="round button"
+              <GeneralSpan
+                borderRadius="5px"
+                display="inline-block"
+                padding="5px 10px"
+                backgroundColor={
+                  watchBox === "livestream" ? "#5e7380" : "#f7f7f7"
+                }
+                color={watchBox === "livestream" ? "#fff" : "#333"}
+                cursor="pointer"
+                hoverBackgroundColor="#bbb"
+                hoverColor="#fff"
                 onClick={() => {
                   setWatchBox("livestream");
                 }}
               >
                 {" "}
                 Live-Stream{" "}
-              </span>
+              </GeneralSpan>
 
-              <span
-                className="round button"
-                id={watchBox === "teamdata" ? "checkbutton" : null}
+              <GeneralSpan
+                borderRadius="5px"
+                display="inline-block"
+                padding="5px 10px"
+                backgroundColor={
+                  watchBox === "teamdata" ? "#5e7380" : "#f7f7f7"
+                }
+                color={watchBox === "teamdata" ? "#fff" : "#333"}
+                cursor="pointer"
+                hoverBackgroundColor="#bbb"
+                hoverColor="#fff"
                 onClick={() => {
                   setWatchBox("teamdata");
                 }}
               >
                 {" "}
                 Team-Data{" "}
-              </span>
+              </GeneralSpan>
             </div>
             <GeneralDiv minHeight="70vh" maxHeight="150vh" overflowY="scroll">
               {watchBox === "boxscore" ? (
@@ -250,25 +274,37 @@ function Boxscore(props) {
     <>
       <GeneralDiv width="75vw" overflowX="scroll">
         <div id="radio">
-          <span
-            className="round button"
-            id={selectTeam === "ateam" ? "checkbutton" : null}
+          <GeneralSpan
+            borderRadius="5px"
+            display="inline-block"
+            padding="5px 10px"
+            backgroundColor={selectTeam === "ateam" ? "#5e7380" : "#f7f7f7"}
+            color={selectTeam === "ateam" ? "#fff" : "#333"}
+            cursor="pointer"
+            hoverBackgroundColor="#bbb"
+            hoverColor="#fff"
             onClick={() => {
               setSelectTeam("ateam");
             }}
           >
             {props.aTeam}
-          </span>
+          </GeneralSpan>
 
-          <span
-            id={selectTeam === "bteam" ? "checkbutton" : null}
-            className="round button"
+          <GeneralSpan
+            borderRadius="5px"
+            display="inline-block"
+            padding="5px 10px"
+            backgroundColor={selectTeam === "bteam" ? "#5e7380" : "#f7f7f7"}
+            color={selectTeam === "bteam" ? "#fff" : "#333"}
+            cursor="pointer"
+            hoverBackgroundColor="#bbb"
+            hoverColor="#fff"
             onClick={() => {
               setSelectTeam("bteam");
             }}
           >
             {props.bTeam}
-          </span>
+          </GeneralSpan>
         </div>
         <table
           className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate"
@@ -384,28 +420,42 @@ function Livestream(props) {
       <div className="flex justify-center">
         {props.quarter &&
           props.quarter.map((q, index) => (
-            <span
+            <GeneralSpan
               key={index}
-              className="round button"
-              id={quarteNowLive === index ? "checkbutton" : null}
+              borderRadius="5px"
+              display="inline-block"
+              padding="5px 10px"
+              backgroundColor={quarteNowLive === index ? "#5e7380" : "#f7f7f7"}
+              color={quarteNowLive === index ? "#fff" : "#333"}
+              cursor="pointer"
+              hoverBackgroundColor="#bbb"
+              hoverColor="#fff"
               onClick={() => {
                 setQuarterNowLive(index);
               }}
             >
               {" "}
               {q}{" "}
-            </span>
+            </GeneralSpan>
           ))}
-        <span
-          className="round button"
-          id={quarteNowLive === props.quarter.length ? "checkbutton" : null}
+        <GeneralSpan
+          borderRadius="5px"
+          display="inline-block"
+          padding="5px 10px"
+          backgroundColor={
+            quarteNowLive === props.quarter.length ? "#5e7380" : "#f7f7f7"
+          }
+          color={quarteNowLive === props.quarter.length ? "#fff" : "#333"}
+          cursor="pointer"
+          hoverBackgroundColor="#bbb"
+          hoverColor="#fff"
           onClick={() => {
             setQuarterNowLive(props.quarter.length);
           }}
         >
           {" "}
           All{" "}
-        </span>
+        </GeneralSpan>
       </div>
       <GeneralDiv display="flex" flexWrap="wrap" justifyContent="center">
         {quarteNowLive === props.quarter.length
@@ -427,15 +477,17 @@ function Livestream(props) {
                         backgroundColor="#e9ecef"
                       >
                         <LiveRoomLines spanFontSize="14px">
-                          <span>{item.team ? props.aTeam : props.bTeam}</span>
-                          <span> , </span>
-                          <span>{item.playerId}</span>
-                          <span> , </span>
-                          <span>{item.location}</span>
-                          <span> , </span>
-                          <span>
+                          <GeneralSpan>
+                            {item.team ? props.aTeam : props.bTeam}
+                          </GeneralSpan>
+                          <GeneralSpan> , </GeneralSpan>
+                          <GeneralSpan>{item.playerId}</GeneralSpan>
+                          <GeneralSpan> , </GeneralSpan>
+                          <GeneralSpan>{item.location}</GeneralSpan>
+                          <GeneralSpan> , </GeneralSpan>
+                          <GeneralSpan>
                             {item.actionWord}+{item.count}
-                          </span>
+                          </GeneralSpan>
                         </LiveRoomLines>
 
                         <div className="pr-1 pl-5">
@@ -458,11 +510,11 @@ function Livestream(props) {
                         justifyContent: "center",
                       }}
                     >
-                      <span>第{item.quarterNow}節</span>
-                      <span>
+                      <GeneralSpan>第{item.quarterNow}節</GeneralSpan>
+                      <GeneralSpan>
                         {item.minutes}:{item.seconds < 10 ? "0" : null}
                         {item.seconds}
-                      </span>
+                      </GeneralSpan>
                     </div>
 
                     {item.team === false ? (
@@ -479,15 +531,17 @@ function Livestream(props) {
                           ></img>
                         </div>
                         <LiveRoomLines spanFontSize="14px">
-                          <span>{item.team ? props.aTeam : props.bTeam}</span>
-                          <span> , </span>
-                          <span>{item.playerId}</span>
-                          <span> , </span>
-                          <span>{item.location}</span>
-                          <span> , </span>
-                          <span>
+                          <GeneralSpan>
+                            {item.team ? props.aTeam : props.bTeam}
+                          </GeneralSpan>
+                          <GeneralSpan> , </GeneralSpan>
+                          <GeneralSpan>{item.playerId}</GeneralSpan>
+                          <GeneralSpan> , </GeneralSpan>
+                          <GeneralSpan>{item.location}</GeneralSpan>
+                          <GeneralSpan> , </GeneralSpan>
+                          <GeneralSpan>
                             {item.actionWord}+{item.count}
-                          </span>
+                          </GeneralSpan>
                         </LiveRoomLines>
                       </GeneralDiv>
                     ) : (
@@ -514,13 +568,15 @@ function Livestream(props) {
                       backgroundColor="#e9ecef"
                     >
                       <LiveRoomLines spanFontSize="14px">
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
+                        <GeneralSpan>
+                          {item.team ? props.aTeam : props.bTeam}
+                        </GeneralSpan>
+                        <GeneralSpan> , </GeneralSpan>
+                        <GeneralSpan>{item.playerId}</GeneralSpan>
+                        <GeneralSpan> , </GeneralSpan>
+                        <GeneralSpan>{item.location}</GeneralSpan>
+                        <GeneralSpan> , </GeneralSpan>
+                        <GeneralSpan>得{item.count}分</GeneralSpan>
                       </LiveRoomLines>
                       <div className="pr-1 pl-5">
                         <img
@@ -537,10 +593,10 @@ function Livestream(props) {
                     className="bg-coolors_4 mx-5 py-1 items-center flex justify-center"
                     style={{ width: "8vw" }}
                   >
-                    <span>
+                    <GeneralSpan>
                       {item.minutes}:{item.seconds < 10 ? "0" : null}
                       {item.seconds}
-                    </span>
+                    </GeneralSpan>
                   </div>
 
                   {item.team === false ? (
@@ -557,13 +613,15 @@ function Livestream(props) {
                         ></img>
                       </div>
                       <LiveRoomLines spanFontSize="14px">
-                        <span>{item.team ? props.aTeam : props.bTeam}</span>
-                        <span> , </span>
-                        <span>{item.playerId}</span>
-                        <span> , </span>
-                        <span>{item.location}</span>
-                        <span> , </span>
-                        <span>得{item.count}分</span>
+                        <GeneralSpan>
+                          {item.team ? props.aTeam : props.bTeam}
+                        </GeneralSpan>
+                        <GeneralSpan> , </GeneralSpan>
+                        <GeneralSpan>{item.playerId}</GeneralSpan>
+                        <GeneralSpan> , </GeneralSpan>
+                        <GeneralSpan>{item.location}</GeneralSpan>
+                        <GeneralSpan> , </GeneralSpan>
+                        <GeneralSpan>得{item.count}分</GeneralSpan>
                       </LiveRoomLines>
                     </GeneralDiv>
                   ) : (
@@ -606,28 +664,42 @@ function TeamData(props) {
       <div className="flex justify-center">
         {props.quarter &&
           props.quarter.map((q, index) => (
-            <span
+            <GeneralSpan
               key={index}
-              className="round button"
-              id={quarterNowData === index ? "checkbutton" : null}
+              borderRadius="5px"
+              display="inline-block"
+              padding="5px 10px"
+              backgroundColor={quarterNowData === index ? "#5e7380" : "#f7f7f7"}
+              color={quarterNowData === index ? "#fff" : "#333"}
+              cursor="pointer"
+              hoverBackgroundColor="#bbb"
+              hoverColor="#fff"
               onClick={() => {
                 setQuarterNowData(index);
               }}
             >
               {" "}
               {q}{" "}
-            </span>
+            </GeneralSpan>
           ))}
-        <span
-          className="round button"
-          id={quarterNowData === props.quarter.length ? "checkbutton" : null}
+        <GeneralSpan
+          borderRadius="5px"
+          display="inline-block"
+          padding="5px 10px"
+          backgroundColor={
+            quarterNowData === props.quarter.length ? "#5e7380" : "#f7f7f7"
+          }
+          color={quarterNowData === props.quarter.length ? "#fff" : "#333"}
+          cursor="pointer"
+          hoverBackgroundColor="#bbb"
+          hoverColor="#fff"
           onClick={() => {
             setQuarterNowData(props.quarter.length);
           }}
         >
           {" "}
           All{" "}
-        </span>
+        </GeneralSpan>
       </div>
 
       <div
@@ -746,6 +818,10 @@ function Bar(props) {
 }
 
 function BarPercent(props) {
+  function round(num) {
+    var m = Number((Math.abs(num) * 100).toPrecision(15));
+    return (Math.round(m) / 100) * Math.sign(num);
+  }
   return (
     <div className="" style={{ marginBottom: "0.75vh" }}>
       <div
@@ -758,7 +834,7 @@ function BarPercent(props) {
           className="flex items-center justify-center"
           style={{ width: "60px" }}
         >
-          {props.widthA * 100}%
+          {round(props.widthA * 100)}%
         </div>
         <div
           className="flex justify-end mr-2"
@@ -803,7 +879,7 @@ function BarPercent(props) {
           className="flex items-center justify-center"
           style={{ width: "60px" }}
         >
-          {props.widthB * 100}%
+          {round(props.widthB * 100)}%
         </div>
       </div>
     </div>

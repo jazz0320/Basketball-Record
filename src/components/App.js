@@ -34,7 +34,6 @@ import {
   LiveActionBolck,
   GeneralImg,
 } from "../utils/StyleComponent";
-import "./App.css";
 import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court from "./Court";
@@ -1081,7 +1080,16 @@ function App(props) {
                         )
                       }
                     >
-                      <i className="fa-solid fa-chevron-left carousel__btn_img_team"></i>
+                      <i
+                        className="fa-solid fa-chevron-left"
+                        style={{
+                          color: "white",
+                          fontSize: "32px",
+                          width: " 32px",
+                          height: "32px",
+                          webkitTextStroke: "1px #495057",
+                        }}
+                      ></i>
                     </ButtonForChange>
                     <SelectTeam
                       value={aTeam}
@@ -1121,7 +1129,16 @@ function App(props) {
                         )
                       }
                     >
-                      <i className="fa-solid fa-chevron-right carousel__btn_img_team"></i>
+                      <i
+                        className="fa-solid fa-chevron-right"
+                        style={{
+                          webkitTextStroke: "1px #495057",
+                          color: "white",
+                          fontSize: "32px",
+                          width: " 32px",
+                          height: "32px",
+                        }}
+                      ></i>
                     </ButtonForChange>
                   </TeamBlockDetailTeam>
                   <TeamBlockDetailPlayer marginLeft="auto">
@@ -1140,7 +1157,16 @@ function App(props) {
                                 )
                               }
                             >
-                              <i className="fa-solid fa-chevron-left carousel__btn_img_player"></i>
+                              <i
+                                className="fa-solid fa-chevron-left"
+                                style={{
+                                  color: "white",
+                                  fontSize: "28px",
+                                  width: "28px",
+                                  webkitTextStroke: "1px #495057",
+                                  height: "28px",
+                                }}
+                              ></i>
                             </ButtonForChange>
                             {aTeamStartFive[index] !== "default" ? (
                               <SelectPlayerImg
@@ -1188,7 +1214,16 @@ function App(props) {
                                 )
                               }
                             >
-                              <i className="fa-solid fa-chevron-right carousel__btn_img_player"></i>
+                              <i
+                                className="fa-solid fa-chevron-right"
+                                style={{
+                                  color: "white",
+                                  fontSize: "28px",
+                                  width: "28px",
+                                  webkitTextStroke: "1px #495057",
+                                  height: "28px",
+                                }}
+                              ></i>
                             </ButtonForChange>
                           </TeamBlockDetailPlayerDiv>
                         ))}
@@ -1220,7 +1255,16 @@ function App(props) {
                         )
                       }
                     >
-                      <i className="fa-solid fa-chevron-left carousel__btn_img_team"></i>
+                      <i
+                        className="fa-solid fa-chevron-left"
+                        style={{
+                          webkitTextStroke: "1px #495057",
+                          color: "white",
+                          fontSize: "32px",
+                          width: " 32px",
+                          height: "32px",
+                        }}
+                      ></i>
                     </ButtonForChange>
 
                     <SelectTeam
@@ -1261,7 +1305,16 @@ function App(props) {
                         )
                       }
                     >
-                      <i className="fa-solid fa-chevron-right carousel__btn_img_team"></i>
+                      <i
+                        className="fa-solid fa-chevron-right"
+                        style={{
+                          webkitTextStroke: "1px #495057",
+                          color: "white",
+                          fontSize: "32px",
+                          width: " 32px",
+                          height: "32px",
+                        }}
+                      ></i>
                     </ButtonForChange>
                   </TeamBlockDetailTeam>
                   <TeamBlockDetailPlayer>
@@ -1280,7 +1333,16 @@ function App(props) {
                                 )
                               }
                             >
-                              <i className="fa-solid fa-chevron-left carousel__btn_img_player"></i>
+                              <i
+                                className="fa-solid fa-chevron-left"
+                                style={{
+                                  color: "white",
+                                  fontSize: "28px",
+                                  width: "28px",
+                                  webkitTextStroke: "1px #495057",
+                                  height: "28px",
+                                }}
+                              ></i>
                             </ButtonForChange>
 
                             <SelectPlayer
@@ -1329,7 +1391,16 @@ function App(props) {
                                 )
                               }
                             >
-                              <i className="fa-solid fa-chevron-right carousel__btn_img_player"></i>
+                              <i
+                                className="fa-solid fa-chevron-right"
+                                style={{
+                                  color: "white",
+                                  fontSize: "28px",
+                                  width: "28px",
+                                  webkitTextStroke: "1px #495057",
+                                  height: "28px",
+                                }}
+                              ></i>
                             </ButtonForChange>
                           </TeamBlockDetailPlayerDiv>
                         ))}
