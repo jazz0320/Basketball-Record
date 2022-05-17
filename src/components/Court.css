@@ -1,27 +1,14 @@
-* {
-  font-family: "Fjalla One";
-}
-
 #myObj {
   height: 700px;
-  /* width: 50vw; */
 }
 
 canvas {
-  /* height: 70vh;
-  width: 70vh; */
-  /* background-color: white; */
-  /* opacity: 0.3; */
   position: absolute;
   pointer-events: none;
 }
 
-img {
-  color: black;
-}
 path {
   fill: transparent;
-  /* transition: 0.5s; */
   cursor: pointer;
 }
 rect {
@@ -37,30 +24,20 @@ rect {
 }
 
 .st0 {
-  /* fill: url(#img1); */
   fill: white;
-}
-.st1 {
-  /* clip-path: url("https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fwood.jpg?alt=media&token=e98450a0-5449-4182-86e2-ce7854a61d0b"); */
 }
 .st2 {
   fill: white;
-  /* fill: url(#img1); */
 }
-.st3 {
-  fill: url(#);
-}
+
 .st4 {
   opacity: 0.9;
   fill: url(#img1);
-  /* fill: #be9d53; */
-  enable-background: new;
 }
 .st5 {
   stroke: white;
   opacity: 0.8;
   fill: url(#img1);
-  /* fill: #be9d53; */
   enable-background: new;
 }
 .st6 {
@@ -77,7 +54,7 @@ rect {
 }
 .st9 {
   clip-path: url(#SVGID_4_);
-  /* fill: url(#img1); */
+  fill: url(#img1);
 }
 .st10 {
   opacity: 0.6;
@@ -86,14 +63,10 @@ rect {
 }
 
 .st101 {
-  /* fill: transparent; */
-  /* opacity: 0.8; */
-  /* fill: url(#img1); */
-  /* fill: #be9d53; */
   enable-background: new;
 }
 .st11 {
-  /* clip-path: url(#SVGID_6_); */
+  clip-path: url(#SVGID_6_);
 }
 .st12 {
   clip-path: url(#SVGID_8_);

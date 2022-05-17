@@ -89,13 +89,19 @@ function Court(props) {
             backgroundColor: "white",
           }}
         >
-          <canvas width={700} height={700} id="cvs"></canvas>
+          <canvas
+            width={700}
+            height={700}
+            id="cvs"
+            style={{ position: "absolute", pointerEvents: "none" }}
+          ></canvas>
           <svg
             onClick={(e) => {
               getCursorPosition(e.currentTarget, e);
             }}
             version="1.1"
             id="myObj"
+            style={{ height: "700px" }}
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             x="0px"
@@ -136,6 +142,7 @@ function Court(props) {
                   locationInf("中場半圓", 2);
                 }}
                 className="st0"
+                style={{ fill: "white" }}
                 id="obj2"
                 d="M278.5,419.6c42.7,0,76,33.4,78.3,73.3h-9.9c-1.7-33.2-31.4-63.9-68.4-63.3c-37,0.5-65.5,29.4-67.1,63.2H201
 		C203.7,453.7,235.8,419.6,278.5,419.6z"
@@ -365,6 +372,10 @@ function Court(props) {
                 locationInf("左邊底角三分線上", 2);
               }}
               className="st15"
+              style={{
+                fill: "white",
+                cursor: "pointer",
+              }}
               d="M42.9,1.7c0,0.4,0,0.8,0,1.2c0,67.8,0,135.6,0,203.4c0,0.4,0,0.8,0,1.2c-3.3,0-6.6,0-10,0c0-0.6,0-1.1,0-1.7
 	c0-67.5,0-135,0-202.4c0-0.6,0-1.1,0-1.7C36.3,1.7,39.6,1.7,42.9,1.7z"
             />
@@ -374,6 +385,10 @@ function Court(props) {
                 locationInf("右邊底角三分線上", 2);
               }}
               className="st15"
+              style={{
+                fill: "white",
+                cursor: "pointer",
+              }}
               id="ts77"
               d="M522,1.2c0,0.4,0,0.8,0,1.2c0,67.8,0,135.6,0,203.4c0,0.4,0,0.8,0,1.2c-3.3,0-6.6,0-10,0c0-0.6,0-1.1,0-1.7
 	c0-67.5,0-135,0-202.4c0-0.6,0-1.1,0-1.7C515.4,1.2,518.7,1.2,522,1.2z"
@@ -401,6 +416,10 @@ function Court(props) {
                     locationInf("左側三分", 3);
                   }}
                   className="st15"
+                  style={{
+                    fill: "white",
+                    cursor: "pointer",
+                  }}
                   d="M521.8,203.6V1.1h25.8v-1.2H-2.2v550.4h549.9v-57.4H400.4l-46.3-166.3c10.6-2.8,21.1-6.2,31.2-10.2
 			c26.9-10.6,52.3-25.4,75.6-44c39.8-31.5,59.4-62.8,60.2-64.1l0.4-0.7h26.2v-4H521.8z M441,1.1c6.1,18,9.2,36.8,9.2,55.9
 			c0,30.3-7.9,60.2-22.8,86.3c-14,24.4-33.9,45.2-57.6,60.3V1.1H441z M359.9,1.1v103c-2.3,4.1-4.9,7.9-7.7,11.5V1.1H359.9z
@@ -461,6 +480,10 @@ function Court(props) {
                     locationInf("右側三分", 3);
                   }}
                   className="st15"
+                  style={{
+                    fill: "white",
+                    cursor: "pointer",
+                  }}
                   d="M1094.3,203.7V1.3h28.4V0H518v550.4h604.7V493h-162l-50.9-166.3c11.7-2.8,23.2-6.2,34.3-10.2
 			c29.6-10.6,57.5-25.4,83.1-44c43.7-31.5,65.3-62.8,66.2-64.1l0.4-0.7h28.8v-4H1094.3z M1005.4,1.3c6.8,18,10.1,36.8,10.1,55.9
 			c0,30.3-8.7,60.2-25.1,86.3c-15.4,24.4-37.3,45.2-63.4,60.3V1.3H1005.4z M916.2,1.3v103c-2.5,4.1-5.3,7.9-8.5,11.5V1.3H916.2z
@@ -498,12 +521,16 @@ function Court(props) {
               <clipPath id="SVGID_8_">
                 <use xlinkHref="#SVGID_9_" style={{ overflow: "visible" }} />
               </clipPath>
-              <g className="st12">
+              <g className="st12" style={{ clipPath: "url(#SVGID_8_)" }}>
                 <path
                   onClick={() => {
                     locationInf("左側45度三分", 3);
                   }}
                   className="st15"
+                  style={{
+                    fill: "white",
+                    cursor: "pointer",
+                  }}
                   d="M518.8,203.9V1.4h25.6V0.2H-0.8v550.4h545.2v-57.4H398.4l-45.9-166.3c10.5-2.8,20.9-6.2,31-10.2
 			c26.6-10.6,51.8-25.4,74.9-44c39.4-31.5,58.9-62.8,59.7-64.1l0.4-0.7h26v-4H518.8z M438.7,1.4c6.1,18,9.1,36.8,9.1,55.9
 			c0,30.3-7.9,60.2-22.6,86.3c-13.9,24.4-33.6,45.2-57.1,60.3V1.4H438.7z M358.2,1.4v103c-2.3,4.1-4.8,7.9-7.7,11.5V1.4H358.2z
@@ -550,6 +577,10 @@ function Court(props) {
                 locationInf("右側45度三分", 3);
               }}
               className="st15"
+              style={{
+                fill: "white",
+                cursor: "pointer",
+              }}
               points="354.2,327 400.4,492.9 396.4,492.9 350.5,328.1 "
             />
             <g>
@@ -558,6 +589,7 @@ function Court(props) {
                   locationInf("禁區圓弧", 2);
                 }}
                 className="st0"
+                style={{ fill: "white" }}
                 d="M277.9,132.8c40.6,0,73.6,31.3,73.6,69.9h-9.8c0-33-28.6-59.9-63.7-59.9s-63.7,26.9-63.7,59.9h-9.8
 		C204.3,164.1,237.3,132.8,277.9,132.8z"
               />
@@ -569,6 +601,10 @@ function Court(props) {
               x="183.6"
               y="202.1"
               className="st15"
+              style={{
+                fill: "white",
+                cursor: "pointer",
+              }}
               width="186.4"
               height="9.5"
             />
@@ -646,6 +682,7 @@ function Court(props) {
                   locationInf("弧頂中距離", 2);
                 }}
                 className="st0"
+                style={{ fill: "white" }}
                 d="M277.6,281c-40.5,0-73.5-31.3-73.5-69.9h9.8c0,33,28.6,59.9,63.7,59.9s63.7-26.9,63.7-59.9h9.8
 		C351.1,249.6,318.2,281,277.6,281z"
               />
@@ -663,7 +700,7 @@ function Court(props) {
               <clipPath id="SVGID_10_">
                 <use xlinkHref="#SVGID_11_" style={{ overflow: "visible" }} />
               </clipPath>
-              <g className="st14">
+              <g className="st14" style={{ clipPath: "url(#SVGID_10_)" }}>
                 <path
                   onClick={() => {
                     locationInf("中距離弧線", 2);
@@ -680,6 +717,10 @@ function Court(props) {
                 locationInf("右側45度三分踩線", 2);
               }}
               className="st15"
+              style={{
+                fill: "white",
+                cursor: "pointer",
+              }}
               d="M522,207c-10.1,16.3-23.7,30.7-37.2,44.4c-21.5,21.8-46,39.4-73.3,53.2c-11.5,5.8-23.5,10.7-35.7,15c-1,0.4-1.4,0.2-1.8-0.9
 	c-0.7-2.6-1.6-5.2-2.5-7.9c3.2-1.2,6.3-2.3,9.4-3.4c25.6-9.7,49.3-22.8,70.9-39.6c17.8-15,34.7-30.7,48.7-48.4
 	c4.4-4.9,7.9-9.8,11.5-15.1"
@@ -689,6 +730,10 @@ function Court(props) {
                 locationInf("左側45度三分踩線", 2);
               }}
               className="st15"
+              style={{
+                fill: "white",
+                cursor: "pointer",
+              }}
               d="M32.8,206.7c10.1,16.3,23.7,30.7,37.2,44.4c21.5,21.8,46,39.4,73.3,53.2c11.5,5.8,26.1,11.3,38.3,15.6
 	c0.5-1,0.3-1.3,0.6-2.4c0.7-2.6,0.9-4.5,1.8-7.2c-3.2-1.2-7.2-2-10.2-3.2c-25.3-10.9-47.5-24.7-70.3-40.6
 	c-17.8-15-35.3-29.7-49.2-47.4c-4.4-4.9-7.9-9.8-11.5-15.1"
@@ -750,6 +795,7 @@ function Court(props) {
                 <use xlinkHref="#SVGID_15_" style={{ overflow: "visible" }} />
               </clipPath>
               <path
+                style={{ fill: "transparent" }}
                 onClick={() => {
                   locationInf("右邊底角三分", 3);
                 }}
