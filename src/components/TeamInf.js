@@ -362,7 +362,6 @@ function TeamInf(props) {
 
 function ExistTeam(props) {
   const [teamLogo, setTeamLogo] = useState();
-  const [teamPics, setTeamPics] = useState();
   const [teamPlayers, setTeamPlayers] = useState();
   const [revisePlayer, setRevisePlayer] = useState();
   const [checkDelete, setCheckDelete] = useState();
@@ -375,7 +374,6 @@ function ExistTeam(props) {
         doc(db, "team_data", `${props.memberTeamExist}`)
       );
       setTeamLogo(querySnapshot.data().logo);
-      setTeamPics(querySnapshot.data().team_pic);
       setTeamPlayers(querySnapshot.data().players);
     }
   }

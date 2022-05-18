@@ -1,6 +1,6 @@
 import { getDoc, doc, getDocs, collection, db } from "../utils/firebase";
 import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomeGrade from "./HomeGrade";
 import PlayerGrade from "./PlayerGrade";
@@ -48,7 +48,6 @@ function Home(props) {
     });
 
     querySnapshot.forEach((doc) => {
-      console.log("cccc", doc.data().players);
       let players = doc
         .data()
         .players.map((player) => ({ ...player, team: doc.id }));
@@ -306,13 +305,6 @@ const GameContainerL2forComing = styled.div`
     margin-left: 10px;
     width: 50px;
   }
-`;
-
-const LogoDivForComing = styled.div`
-  height: 80px;
-  width: 80px;
-  background-size: contain;
-  /* background-image: url(${(props) => props.img}); */
 `;
 
 function BoxComing(props) {

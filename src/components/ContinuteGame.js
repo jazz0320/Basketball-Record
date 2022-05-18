@@ -6,7 +6,6 @@ import {
   GeneralSelect,
   GeneralDiv,
 } from "../utils/StyleComponent";
-import Swal from "sweetalert2";
 import { getDoc, doc, db } from "../utils/firebase";
 
 function ContinueGame(props) {
@@ -20,8 +19,10 @@ function ContinueGame(props) {
     props.liveGameName.current = backLiveGame;
     async function systemSetting() {
       const docSnap = await getDoc(doc(db, "live_game", backLiveGame));
-      let time = docSnap.data().time_minutes * 60 + docSnap.data().time_seconds;
+      const time =
+        docSnap.data().time_minutes * 60 + docSnap.data().time_seconds;
       props.restartGameTime.current = time;
+      props.eachQuarterTime.current = docSnap.data().quarter_minutes;
       props.restartGameShotTime.current = docSnap.data().time_shotClock;
       props.setLiveAction(docSnap.data().live_action);
       props.setQuarter(docSnap.data().quarter);
@@ -36,14 +37,15 @@ function ContinueGame(props) {
       props.setBTeamData(docSnap.data().B_team_data);
     }
     systemSetting();
-    console.log("ggg");
     props.setBackToChooseGameBlock(true);
   };
   return (
     <>
       <PopupBlur zIndex="90" />
       <PopupDiv height="30vh" width="40vw" zIndex="99" left="30vw">
-        選擇恢復比賽？
+        <GeneralDiv width="80%" textAlign="center">
+          選擇恢復比賽？
+        </GeneralDiv>
         <GeneralSelect
           fontSize="16px"
           color="black"
@@ -85,28 +87,3 @@ function ContinueGame(props) {
 }
 
 export default ContinueGame;
-
-// {wantToBackLiveGame ? (
-//   <ContinueGame
-//     setWantToBackLiveGame={setWantToBackLiveGame}
-//     restartGameShotTime={restartGameShotTime}
-//     restartGameTime={restartGameTime}
-//     setLiveAction={setLiveAction}
-//     setQuarter={setQuarter}
-//     setATeam={setATeam}
-//     setATeamPlayers={setATeamPlayers}
-//     setATeamLogo={setATeamLogo}
-//     setATeamData={setATeamData}
-//     setBTeam={setBTeam}
-//     setBTeamPlayers={setBTeamPlayers}
-//     setBTeamLogo={setBTeamLogo}
-//     setBTeamData={setBTeamData}
-//     liveGameName={props.liveGameName}
-//     setFinishSetting={setFinishSetting}
-//     everyLiveGames={props.everyLiveGames}
-//   />
-// ) : null}
-
-// const restartGameTime = useRef();
-//   const restartGameShotTime = useRef();
-//   const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true);

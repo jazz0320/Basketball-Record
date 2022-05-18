@@ -33,7 +33,6 @@ import {
   TeamOnTheGround,
   LiveActionBolck,
   GeneralImg,
-  GeneralButton,
 } from "../utils/StyleComponent";
 import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -566,43 +565,45 @@ function App(props) {
   }, []);
 
   useEffect(() => {
-    async function selectTeam() {
-      const docSnap = await getDoc(doc(db, "team_data", aTeam));
-      let data = docSnap.data().players;
-      let logo = docSnap.data().logo;
-      let winLoss = docSnap.data().winLoss;
-      let newData = [];
-      for (let i = 0; i < data.length; i++) {
-        data[i].min = 0;
-        data[i].fgm = 0;
-        data[i].fga = 0;
-        data[i].fgRate = 0;
-        data[i].threePtm = 0;
-        data[i].threePta = 0;
-        data[i].threePtRate = 0;
-        data[i].ftm = 0;
-        data[i].fta = 0;
-        data[i].ftRate = 0;
-        data[i].oreb = 0;
-        data[i].dreb = 0;
-        data[i].reb = 0;
-        data[i].ast = 0;
-        data[i].stl = 0;
-        data[i].blk = 0;
-        data[i].to = 0;
-        data[i].pf = 0;
-        data[i].pts = 0;
-        data[i].start = false;
-        data[i].position = 6;
-        newData.push(data[i]);
+    if (wantToBackLiveGame === false) {
+      async function selectTeam() {
+        const docSnap = await getDoc(doc(db, "team_data", aTeam));
+        let data = docSnap.data().players;
+        let logo = docSnap.data().logo;
+        let winLoss = docSnap.data().winLoss;
+        let newData = [];
+        for (let i = 0; i < data.length; i++) {
+          data[i].min = 0;
+          data[i].fgm = 0;
+          data[i].fga = 0;
+          data[i].fgRate = 0;
+          data[i].threePtm = 0;
+          data[i].threePta = 0;
+          data[i].threePtRate = 0;
+          data[i].ftm = 0;
+          data[i].fta = 0;
+          data[i].ftRate = 0;
+          data[i].oreb = 0;
+          data[i].dreb = 0;
+          data[i].reb = 0;
+          data[i].ast = 0;
+          data[i].stl = 0;
+          data[i].blk = 0;
+          data[i].to = 0;
+          data[i].pf = 0;
+          data[i].pts = 0;
+          data[i].start = false;
+          data[i].position = 6;
+          newData.push(data[i]);
+        }
+        setATeamPlayers(newData);
+        setATeamWinLoss(winLoss);
+        aTeamPlayersName.current = newData.map((player) => player.name);
+        setATeamLogo(logo);
       }
-      setATeamPlayers(newData);
-      setATeamWinLoss(winLoss);
-      aTeamPlayersName.current = newData.map((player) => player.name);
-      setATeamLogo(logo);
-    }
-    if (aTeam !== "default") {
-      selectTeam();
+      if (aTeam !== "default") {
+        selectTeam();
+      }
     }
   }, [aTeam]);
 
@@ -641,70 +642,72 @@ function App(props) {
   }, [quarter]);
 
   useEffect(() => {
-    async function selectTeam() {
-      const docRef = doc(db, "team_data", bTeam);
-      const docSnap = await getDoc(docRef);
-      let data = docSnap.data().players;
-      let logo = docSnap.data().logo;
-      let winLoss = docSnap.data().winLoss;
-      let newData = [];
-      for (let i = 0; i < data.length; i++) {
-        data[i].min = 0;
-        data[i].fgm = 0;
-        data[i].fga = 0;
-        data[i].fgRate = 0;
-        data[i].threePtm = 0;
-        data[i].threePta = 0;
-        data[i].threePtRate = 0;
-        data[i].ftm = 0;
-        data[i].fta = 0;
-        data[i].ftRate = 0;
-        data[i].oreb = 0;
-        data[i].dreb = 0;
-        data[i].reb = 0;
-        data[i].ast = 0;
-        data[i].stl = 0;
-        data[i].blk = 0;
-        data[i].to = 0;
-        data[i].pf = 0;
-        data[i].pts = 0;
-        data[i].start = false;
-        data[i].position = 6;
-        newData.push(data[i]);
+    if (wantToBackLiveGame === false) {
+      async function selectTeam() {
+        const docRef = doc(db, "team_data", bTeam);
+        const docSnap = await getDoc(docRef);
+        let data = docSnap.data().players;
+        let logo = docSnap.data().logo;
+        let winLoss = docSnap.data().winLoss;
+        let newData = [];
+        for (let i = 0; i < data.length; i++) {
+          data[i].min = 0;
+          data[i].fgm = 0;
+          data[i].fga = 0;
+          data[i].fgRate = 0;
+          data[i].threePtm = 0;
+          data[i].threePta = 0;
+          data[i].threePtRate = 0;
+          data[i].ftm = 0;
+          data[i].fta = 0;
+          data[i].ftRate = 0;
+          data[i].oreb = 0;
+          data[i].dreb = 0;
+          data[i].reb = 0;
+          data[i].ast = 0;
+          data[i].stl = 0;
+          data[i].blk = 0;
+          data[i].to = 0;
+          data[i].pf = 0;
+          data[i].pts = 0;
+          data[i].start = false;
+          data[i].position = 6;
+          newData.push(data[i]);
+        }
+        setBTeamPlayers(newData);
+        setBTeamWinLoss(winLoss);
+        bTeamPlayersName.current = newData.map((player) => player.name);
+        setBTeamLogo(logo);
       }
-      setBTeamPlayers(newData);
-      setBTeamWinLoss(winLoss);
-      bTeamPlayersName.current = newData.map((player) => player.name);
-      setBTeamLogo(logo);
-    }
-    if (bTeam !== "default") {
-      selectTeam();
+      if (bTeam !== "default") {
+        selectTeam();
+      }
     }
   }, [bTeam]);
 
   const finishGameSetting = function () {
-    // if ((aTeam === "default") | (bTeam === "default")) {
-    //   alert("請選擇賽程");
-    //   return;
-    // }
+    if ((aTeam === "default") | (bTeam === "default")) {
+      alert("請選擇賽程");
+      return;
+    }
 
-    // for (let i = 0; i < 5; i++) {
-    //   if (
-    //     (aTeamPlayers[i].position - 1 !== i) |
-    //     (bTeamPlayers[i].position - 1 !== i)
-    //   ) {
-    //     alert("請選擇先發球員");
-    //     return;
-    //   }
-    // }
-    // if (quarter === 0) {
-    //   alert("請選擇賽制");
-    //   return;
-    // }
-    // if (eachQuarterTime.current === undefined) {
-    //   alert("請選擇單節時間");
-    //   return;
-    // }
+    for (let i = 0; i < 5; i++) {
+      if (
+        (aTeamPlayers[i].position - 1 !== i) |
+        (bTeamPlayers[i].position - 1 !== i)
+      ) {
+        alert("請選擇先發球員");
+        return;
+      }
+    }
+    if (quarter === 0) {
+      alert("請選擇賽制");
+      return;
+    }
+    if (eachQuarterTime.current === undefined) {
+      alert("請選擇單節時間");
+      return;
+    }
 
     async function systemSetting() {
       await setDoc(
@@ -985,20 +988,28 @@ function App(props) {
     <>
       {backToChooseGameBlock && (
         <PopupDiv
-          backgroundColor="yellow"
+          top="40vh"
+          left="42vw"
           zIndex="100"
-          height="200px"
-          width="400px"
+          height="100px"
+          width="16vw"
+          backgroundColor="#ced4da"
         >
-          <GeneralButton color="black" onClick={finishGameSetting}>
+          <ButtonSubmit
+            margin="0px 30px 0px 0px"
+            padding="5px 15px"
+            onClick={finishGameSetting}
+            fontSize="20px"
+          >
             確認
-          </GeneralButton>
-          <GeneralButton
-            color="black"
+          </ButtonSubmit>
+          <ButtonSubmit
+            padding="5px 15px"
+            fontSize="20px"
             onClick={() => setBackToChooseGameBlock(false)}
           >
             取消
-          </GeneralButton>
+          </ButtonSubmit>
         </PopupDiv>
       )}
       {wantToBackLiveGame ? (
@@ -1009,6 +1020,7 @@ function App(props) {
           setLiveAction={setLiveAction}
           setQuarter={setQuarter}
           setQuarterNow={setQuarterNow}
+          eachQuarterTime={eachQuarterTime}
           setATeam={setATeam}
           setATeamPlayers={setATeamPlayers}
           setATeamLogo={setATeamLogo}

@@ -214,7 +214,6 @@ const TeamBlockLogoImg = styled.img`
 
 const TeamBlockDetail = styled.div`
   box-shadow: ${(props) => props.boxShadow};
-  /* background: linear-gradient(to bottom, #212529, #495057); */
   background-color: #f8f9fa;
   background-image: ${(props) => props.backgroundImage};
   background-position: ${(props) => props.backgroundPosition};
@@ -236,7 +235,6 @@ const TeamBlockDetailTeam = styled.div`
 `;
 const TeamBlockDetailPlayer = styled.div`
   z-index: 10;
-  /* backdrop-filter: blur(3px); */
   margin-right: ${(props) => props.marginRight};
   margin-left: ${(props) => props.marginLeft};
   margin-top: 23vh;
@@ -343,9 +341,6 @@ const ButtonSubmit = styled.button`
   right: ${(props) => props.right};
   left: ${(props) => props.left};
   bottom: ${(props) => props.bottom};
-
-  /* padding: 1rem 1.5rem; */
-  /* margin: 0 0.5rem; */
   transition: all 0.1s ease-in;
 
   ::-moz-focus-inner {
@@ -441,6 +436,7 @@ export {
 // 開始比賽
 const PopupDiv = styled.div`
   position: fixed;
+  border: ${(props) => props.border};
   box-shadow: ${(props) => props.boxShadow};
   top: ${(props) => (props.top ? props.top : "30vh")};
   left: ${(props) => (props.left ? props.left : "40vw")};
@@ -551,44 +547,9 @@ export {
   DivGameStart_Container,
 };
 
-const LiveRoomActionBlock = styled.div`
-  /* animation-name: popup;
-  animation-duration: 0.3s;
-  @keyframes popup {
-    0% {
-      transform: translateY(20px);
-      background-color: #343a40;
-      color: white;
-    }
-    90% {
-      transform: translateY(-10px);
-      background-color: #6c757d;
-      color: white;
-    }
-    100% {
-      transform: translateY(0);
-    }
-  } */
-`;
+const LiveRoomActionBlock = styled.div``;
 
 const LiveRoomLines = styled.div`
-  /* animation-name: popup;
-  animation-duration: 0.3s;
-  @keyframes popup {
-    0% {
-      transform: translateY(20px);
-      background-color: #343a40;
-      color: white;
-    }
-    90% {
-      transform: translateY(-10px);
-      background-color: #6c757d;
-      color: white;
-    }
-    100% {
-      transform: translateY(0);
-    }
-  } */
   span {
     font-size: ${(props) => props.spanFontSize};
   }
