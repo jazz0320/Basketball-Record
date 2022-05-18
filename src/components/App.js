@@ -232,6 +232,14 @@ function App(props) {
         activeTeam = bTeamPlayers;
       }
 
+      const playerChoose = (playerPosition) => {
+        setActivePlayer(); //for css animation effect 清空
+        clearActionByChangePlayer();
+        setActivePlayer(playerPosition);
+        setActivePlayerId(activeTeam[playerPosition].id);
+        setActivePlayerPic(activeTeam[playerPosition].pic);
+      };
+
       const clearActionByChangePlayer = function () {
         //換人clear
         setActivePlayerId();
@@ -242,39 +250,19 @@ function App(props) {
       };
 
       if (e.keyCode === 49) {
-        setActivePlayer(); //for css animation effect 清空
-        clearActionByChangePlayer();
-        setActivePlayer(0);
-        setActivePlayerId(activeTeam[0].id);
-        setActivePlayerPic(activeTeam[0].pic);
+        playerChoose(0);
       }
       if (e.keyCode === 50) {
-        setActivePlayer();
-        clearActionByChangePlayer();
-        setActivePlayer(1);
-        setActivePlayerId(activeTeam[1].id);
-        setActivePlayerPic(activeTeam[1].pic);
+        playerChoose(1);
       }
       if (e.keyCode === 51) {
-        setActivePlayer();
-        clearActionByChangePlayer();
-        setActivePlayer(2);
-        setActivePlayerId(activeTeam[2].id);
-        setActivePlayerPic(activeTeam[2].pic);
+        playerChoose(2);
       }
       if (e.keyCode === 52) {
-        setActivePlayer();
-        clearActionByChangePlayer();
-        setActivePlayer(3);
-        setActivePlayerId(activeTeam[3].id);
-        setActivePlayerPic(activeTeam[3].pic);
+        playerChoose(3);
       }
       if (e.keyCode === 53) {
-        setActivePlayer();
-        clearActionByChangePlayer();
-        setActivePlayer(4);
-        setActivePlayerId(activeTeam[4].id);
-        setActivePlayerPic(activeTeam[4].pic);
+        playerChoose(4);
       }
     };
 
@@ -297,53 +285,40 @@ function App(props) {
     const action = function (e) {
       if (playerLocationScoreNumber === 2) {
         if (e.ctrlKey && e.key === "q") {
-          console.log("222");
           dispatchPlayerActions({ type: "score2" });
         } else if (e.key === "q") {
-          console.log("000");
           dispatchPlayerActions({ type: "miss2pts" });
         }
       } else if (playerLocationScoreNumber === 3) {
         if (e.ctrlKey && e.key === "q") {
-          console.log("333");
           dispatchPlayerActions({ type: "score3" });
         } else if (e.key === "q") {
-          console.log("000");
           dispatchPlayerActions({ type: "miss3pts" });
         }
       }
       if (e.ctrlKey && e.key === "z") {
-        console.log("ft1");
         dispatchPlayerActions({ type: "ft" });
       } else if (e.key === "z") {
-        console.log("ft0");
         dispatchPlayerActions({ type: "missFt" });
       }
       if (e.ctrlKey && e.key === "w") {
-        console.log("offReb");
         dispatchPlayerActions({ type: "offReb" });
       } else if (e.key === "w") {
-        console.log("defReb");
         dispatchPlayerActions({ type: "defReb" });
       }
       if (e.key === "a") {
-        console.log("assist");
         dispatchPlayerActions({ type: "assist" });
       }
       if (e.key === "s") {
-        console.log("steal");
         dispatchPlayerActions({ type: "steal" });
       }
       if (e.key === "d") {
-        console.log("block");
         dispatchPlayerActions({ type: "block" });
       }
       if (e.key === "e") {
-        console.log("turnover");
         dispatchPlayerActions({ type: "turnover" });
       }
       if (e.key === "f") {
-        console.log("personalFoul");
         dispatchPlayerActions({ type: "personalFoul" });
       }
     };
@@ -378,7 +353,6 @@ function App(props) {
             teamDataNow[quarterNow - 1][num] / teamDataNow[quarterNow - 1][dem];
           teamDataNow[quarter.length][rate] =
             teamDataNow[quarter.length][num] / teamDataNow[quarter.length][dem];
-          console.log("rrr", teamDataNow[quarter.length][rate]);
         };
 
         if (playerActions.action === "pts") {
@@ -546,7 +520,6 @@ function App(props) {
   async function chooseTeam() {
     const querySnapshot = await getDocs(collection(db, "team_data"));
     querySnapshot.forEach((doc) => {
-      console.log(doc.id);
       setTeams((teams) => [...teams, doc.id]);
     });
   }
@@ -555,7 +528,7 @@ function App(props) {
   const getPageSize = function () {
     const pageWidth = document.documentElement.scrollWidth;
     const pageHeight = document.documentElement.scrollHeight;
-    console.log("w", pageWidth, "h", pageHeight);
+
     setPageSize([pageWidth, pageHeight]);
   };
 
@@ -747,8 +720,6 @@ function App(props) {
   };
 
   const selectAStartFive = async function (player, position) {
-    console.log("player", player);
-    console.log("position", position);
     let players = [...aTeamPlayers];
     for (let i = 0; i < players.length; i++) {
       if (players[i].position === position) {
@@ -791,7 +762,6 @@ function App(props) {
     let aTeamGrade;
     let bTeamGrade;
     if (aTeamData[quarter.length]["pts"] > bTeamData[quarter.length]["pts"]) {
-      console.log("aWin");
       aTeamGrade = [...aTeamWinLoss];
       aTeamGrade[0] = aTeamGrade[0] + 1;
       bTeamGrade = [...bTeamWinLoss];
@@ -800,7 +770,6 @@ function App(props) {
       setBTeamWinLoss(bTeamGrade);
       whoWin.current = aTeam;
     } else {
-      console.log("bWin");
       aTeamGrade = [...aTeamWinLoss];
       aTeamGrade[1] = aTeamGrade[1] + 1;
       bTeamGrade = [...bTeamWinLoss];
@@ -871,10 +840,7 @@ function App(props) {
       },
       { merge: true }
     );
-    // };
-    // saveGameData();
-    // };
-    // transitionGameData();
+
     const deleteLiveGame = async function () {
       await deleteDoc(doc(db, "live_game", props.liveGameName.current));
     };
@@ -913,9 +879,8 @@ function App(props) {
   const changePlayer = function (type, target, targetGroup, source, setTarget) {
     let value = targetGroup[target];
     let listOri = source.current;
-    console.log("1");
+
     if (value === "default") {
-      console.log("2");
       if (listOri === undefined) {
         alert("請選擇隊伍");
         return;
@@ -938,14 +903,11 @@ function App(props) {
       start[target] = list[index];
       setTarget(start);
       if (source === aTeamPlayersName) {
-        console.log("a1 work");
         selectAStartFive(list[index], target + 1);
       } else {
-        console.log("b1 work");
         selectBStartFive(list[index], target + 1);
       }
     } else {
-      console.log("3");
       let startForFilter = [...targetGroup];
       startForFilter[target] = "deafult";
       let list = listOri.filter((player) => !startForFilter.includes(player));
@@ -966,10 +928,8 @@ function App(props) {
       start[target] = list[index];
       setTarget(start);
       if (source === aTeamPlayersName) {
-        console.log("a2 work");
         selectAStartFive(list[index], target + 1);
       } else {
-        console.log("b2 work");
         selectBStartFive(list[index], target + 1);
       }
     }
@@ -978,7 +938,7 @@ function App(props) {
   const chooseSpecifiedGame = async function (e) {
     const docSnap = await getDoc(doc(db, "game_schedule", e));
     props.liveGameName.current = e;
-    console.log("e", e);
+
     let data = docSnap.data();
     setATeam(data.aTeam);
     setBTeam(data.bTeam);
@@ -1014,6 +974,22 @@ function App(props) {
       )}
       {wantToBackLiveGame ? (
         <ContinueGame
+          reset={(gameData, time) => {
+            restartGameTime.current = time;
+            eachQuarterTime.current = gameData.quarter_minutes;
+            restartGameShotTime.current = gameData.time_shotClock;
+            setLiveAction(gameData.live_action);
+            setQuarter(gameData.quarter);
+            setQuarterNow(gameData.quarterNow);
+            setATeam(gameData.A_team);
+            setATeamPlayers(gameData.A_team_player);
+            setATeamLogo(gameData.A_team_logo);
+            setATeamData(gameData.A_team_data);
+            setBTeam(gameData.B_team);
+            setBTeamPlayers(gameData.B_team_player);
+            setBTeamLogo(gameData.B_team_logo);
+            setBTeamData(gameData.B_team_data);
+          }}
           setWantToBackLiveGame={setWantToBackLiveGame}
           restartGameShotTime={restartGameShotTime}
           restartGameTime={restartGameTime}
@@ -1636,23 +1612,12 @@ function App(props) {
                 >
                   {leftSide && <div>{aTeam}</div>}
                   {!leftSide && <div>{bTeam}</div>}
-                  {leftSide && activePlayer !== undefined ? (
-                    aTeamPlayers ? (
-                      <div>{aTeamPlayers[activePlayer].id}</div>
-                    ) : (
-                      ""
-                    )
-                  ) : (
-                    ""
+
+                  {leftSide && activePlayer !== undefined && aTeamPlayers && (
+                    <div>{aTeamPlayers[activePlayer].id}</div>
                   )}
-                  {!leftSide && activePlayer !== undefined ? (
-                    bTeamPlayers ? (
-                      <div>{bTeamPlayers[activePlayer].id}</div>
-                    ) : (
-                      ""
-                    )
-                  ) : (
-                    ""
+                  {!leftSide && activePlayer !== undefined && bTeamPlayers && (
+                    <div>{bTeamPlayers[activePlayer].id}</div>
                   )}
 
                   {playerLocation && <div> {playerLocation} </div>}
@@ -1729,7 +1694,6 @@ function TeamBox(props) {
   }, [props.exchangePlayer, props.teamPlayers]);
 
   function handleOnDragEnd(result) {
-    console.log("gdfgdg", result);
     if (!result.destination) return;
     const items = Array.from([...props.teamPlayers]);
     const itemsLength = items.length;
@@ -1784,7 +1748,6 @@ function TeamBox(props) {
                           ? "-12px 7px 7px 5px rgba(108,117,125, 0.4);"
                           : "0px 0px 0px 0px rgba(108,117,125, 0.4);"
                       }
-                      // key={index}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
@@ -1797,7 +1760,6 @@ function TeamBox(props) {
                         height="100px"
                         width={props.exchangePlayer ? "80px" : "120px"}
                         borderRadius="100%"
-                        // backgroundImage={`url(${player.pic})`}
                         hoverTransitionDuration="0.15s"
                         transitionDuration="0.4s"
                       >

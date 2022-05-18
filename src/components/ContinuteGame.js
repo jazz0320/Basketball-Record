@@ -21,20 +21,21 @@ function ContinueGame(props) {
       const docSnap = await getDoc(doc(db, "live_game", backLiveGame));
       const time =
         docSnap.data().time_minutes * 60 + docSnap.data().time_seconds;
-      props.restartGameTime.current = time;
-      props.eachQuarterTime.current = docSnap.data().quarter_minutes;
-      props.restartGameShotTime.current = docSnap.data().time_shotClock;
-      props.setLiveAction(docSnap.data().live_action);
-      props.setQuarter(docSnap.data().quarter);
-      props.setQuarterNow(docSnap.data().quarterNow);
-      props.setATeam(docSnap.data().A_team);
-      props.setATeamPlayers(docSnap.data().A_team_player);
-      props.setATeamLogo(docSnap.data().A_team_logo);
-      props.setATeamData(docSnap.data().A_team_data);
-      props.setBTeam(docSnap.data().B_team);
-      props.setBTeamPlayers(docSnap.data().B_team_player);
-      props.setBTeamLogo(docSnap.data().B_team_logo);
-      props.setBTeamData(docSnap.data().B_team_data);
+      props.reset(docSnap.data(), time);
+      // props.restartGameTime.current = time;
+      // props.eachQuarterTime.current = docSnap.data().quarter_minutes;
+      // props.restartGameShotTime.current = docSnap.data().time_shotClock;
+      // props.setLiveAction(docSnap.data().live_action);
+      // props.setQuarter(docSnap.data().quarter);
+      // props.setQuarterNow(docSnap.data().quarterNow);
+      // props.setATeam(docSnap.data().A_team);
+      // props.setATeamPlayers(docSnap.data().A_team_player);
+      // props.setATeamLogo(docSnap.data().A_team_logo);
+      // props.setATeamData(docSnap.data().A_team_data);
+      // props.setBTeam(docSnap.data().B_team);
+      // props.setBTeamPlayers(docSnap.data().B_team_player);
+      // props.setBTeamLogo(docSnap.data().B_team_logo);
+      // props.setBTeamData(docSnap.data().B_team_data);
     }
     systemSetting();
     props.setBackToChooseGameBlock(true);
