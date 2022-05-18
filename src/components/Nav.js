@@ -51,7 +51,6 @@ const LinkComponet = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: white; */
   border-radius: 100%;
   color: ${(props) => (props.$focus ? "#343a40" : "#cccccc")};
 

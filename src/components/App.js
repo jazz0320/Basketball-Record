@@ -33,14 +33,17 @@ import {
   TeamOnTheGround,
   LiveActionBolck,
   GeneralImg,
+  GeneralButton,
 } from "../utils/StyleComponent";
 import Clock from "./Clock";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court from "./Court";
 import RecordRoom from "./RecordRoom";
 import { useNavigate } from "react-router-dom";
+import ContinueGame from "./ContinuteGame";
 
 function App(props) {
+  const [backToChooseGameBlock, setBackToChooseGameBlock] = useState(false);
   const [pageSize, setPageSize] = useState([]);
   const [teams, setTeams] = useState([]);
   const [aTeam, setATeam] = useState("default");
@@ -79,7 +82,6 @@ function App(props) {
   const [affectTimeStopBehavior, setAffectTimeStopBehavior] = useState(true);
   const [affectShotClockBehavior, setAffectShotClockBehavior] = useState(true);
 
-  const [stopTime, setStopTime] = useState(0);
   const [finishSetting, setFinishSetting] = useState(false);
   const [quarterNow, setQuarterNow] = useState(1);
   const five = [1, 2, 3, 4, 5];
@@ -96,6 +98,10 @@ function App(props) {
   const [liveAction, setLiveAction] = useState([]);
   const [openGradeButton, setOpenGradeButton] = useState(false);
   const [wantToCloseGame, setWantToCloseGame] = useState();
+
+  const restartGameTime = useRef();
+  const restartGameShotTime = useRef();
+  const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true);
 
   let redirect = useNavigate();
 
@@ -677,32 +683,28 @@ function App(props) {
   }, [bTeam]);
 
   const finishGameSetting = function () {
-    if ((aTeam === "default") | (bTeam === "default")) {
-      alert("請選擇賽程");
-      return;
-    }
+    // if ((aTeam === "default") | (bTeam === "default")) {
+    //   alert("請選擇賽程");
+    //   return;
+    // }
 
-    for (let i = 0; i < 5; i++) {
-      if (
-        (aTeamPlayers[i].position - 1 !== i) |
-        (bTeamPlayers[i].position - 1 !== i)
-      ) {
-        alert("請選擇先發球員");
-        return;
-      }
-    }
-    if (quarter === 0) {
-      alert("請選擇賽制");
-      return;
-    }
-    if (eachQuarterTime.current === undefined) {
-      alert("請選擇單節時間");
-      return;
-    }
-    if (stopTime === undefined) {
-      alert("停錶模式");
-      return;
-    }
+    // for (let i = 0; i < 5; i++) {
+    //   if (
+    //     (aTeamPlayers[i].position - 1 !== i) |
+    //     (bTeamPlayers[i].position - 1 !== i)
+    //   ) {
+    //     alert("請選擇先發球員");
+    //     return;
+    //   }
+    // }
+    // if (quarter === 0) {
+    //   alert("請選擇賽制");
+    //   return;
+    // }
+    // if (eachQuarterTime.current === undefined) {
+    //   alert("請選擇單節時間");
+    //   return;
+    // }
 
     async function systemSetting() {
       await setDoc(
@@ -712,7 +714,6 @@ function App(props) {
           quarter: quarter,
           quarterNow: quarterNow,
           quarter_minutes: Number(eachQuarterTime.current),
-          stop_ime: stopTime,
           finishSetting: true,
           endGame: false,
           //new
@@ -738,6 +739,8 @@ function App(props) {
     systemSetting();
     setFinishSetting(true);
     props.setIsGameStart(true);
+    setBackToChooseGameBlock(false);
+    setWantToBackLiveGame(false);
   };
 
   const selectAStartFive = async function (player, position) {
@@ -874,6 +877,7 @@ function App(props) {
     };
     deleteLiveGame();
     setTimeout(redirect("/"), 1000);
+    props.setIsGameStart(false);
   };
 
   const change = function (
@@ -979,6 +983,45 @@ function App(props) {
 
   return (
     <>
+      {backToChooseGameBlock && (
+        <PopupDiv
+          backgroundColor="yellow"
+          zIndex="100"
+          height="200px"
+          width="400px"
+        >
+          <GeneralButton color="black" onClick={finishGameSetting}>
+            確認
+          </GeneralButton>
+          <GeneralButton
+            color="black"
+            onClick={() => setBackToChooseGameBlock(false)}
+          >
+            取消
+          </GeneralButton>
+        </PopupDiv>
+      )}
+      {wantToBackLiveGame ? (
+        <ContinueGame
+          setWantToBackLiveGame={setWantToBackLiveGame}
+          restartGameShotTime={restartGameShotTime}
+          restartGameTime={restartGameTime}
+          setLiveAction={setLiveAction}
+          setQuarter={setQuarter}
+          setQuarterNow={setQuarterNow}
+          setATeam={setATeam}
+          setATeamPlayers={setATeamPlayers}
+          setATeamLogo={setATeamLogo}
+          setATeamData={setATeamData}
+          setBTeam={setBTeam}
+          setBTeamPlayers={setBTeamPlayers}
+          setBTeamLogo={setBTeamLogo}
+          setBTeamData={setBTeamData}
+          liveGameName={props.liveGameName}
+          everyLiveGames={props.everyLiveGames}
+          setBackToChooseGameBlock={setBackToChooseGameBlock}
+        />
+      ) : null}
       {finishSetting ? null : <GeneralDiv height="100px" width="100%" />}
       <Div_Record>
         {finishSetting === false ? (
@@ -1033,14 +1076,6 @@ function App(props) {
                     <option value={12}>12 mins</option>
                   </SelectPlayer>
                 </RegulationBlockCell>
-                {/* <RegulationBlockCell>
-                <SelectPlayer onChange={(e) => setStopTime(e.target.value)}>
-                  <option>Select Stop</option>
-                  <option value={0}>停錶</option>
-                  <option value={1}>各節最後三分鐘停錶</option>
-                  <option value={2}>不停錶</option>
-                </SelectPlayer>
-              </RegulationBlockCell> */}
               </RegulationBlock>
               <ButtonSubmit
                 zIndex="10"
@@ -1510,6 +1545,8 @@ function App(props) {
                   marginBottom="5px"
                 >
                   <Clock
+                    restartGameShotTime={restartGameShotTime}
+                    restartGameTime={restartGameTime}
                     liveGameName={props.liveGameName}
                     finishSetting={finishSetting}
                     eachQuarterTime={eachQuarterTime}

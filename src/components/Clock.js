@@ -34,6 +34,22 @@ function Clock(props) {
   const timeFreeze = useRef(true);
   const [gameStart, setGameStart] = useState(false);
 
+  useEffect(() => {
+    if (props.restartGameTime.current !== undefined) {
+      setRestTime(props.restartGameTime.current * 1000);
+      const minutes = Math.floor(props.restartGameTime.current / 60);
+      const seconds = Math.floor(
+        Math.floor(props.restartGameTime.current % 60)
+      );
+      props.setTimerMinutes(minutes);
+      props.setTimerSeconds(seconds);
+      setGameStart(true);
+    }
+    if (props.restartGameShotTime.current !== undefined) {
+      setShotClockRestTime(props.restartGameShotTime.current);
+    }
+  }, [props.restartGameTime.current, props.restartGameShotTime.current]);
+
   //timer
   let interval = useRef();
   let timePast = 0;
@@ -76,8 +92,10 @@ function Clock(props) {
         timeFreeze.current = false;
         timePast = 0;
         shotClockTimepast = 0;
+
         interval.current = setInterval(() => {
           const distance = restTime - timePast;
+          console.log("abc", distance);
           const minutes = Math.floor(
             (distance % (1000 * 60 * 60)) / (1000 * 60)
           );

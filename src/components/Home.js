@@ -59,36 +59,7 @@ function Home(props) {
   useEffect(() => {
     loadSchedule();
     getTeamData();
-    // getPlayerGrade();
-    // const q = query(collection(db, "game_schedule"));
-    // const unsub = onSnapshot(q, (snapshot) => {
-    //   snapshot.docChanges().forEach((doc) => {
-    //     // console.log("id", doc.id.slice(0, 10));
-    //     setGameListName((pre) => [...pre, doc.id]);
-    //     setGameList((pre) => [...pre, { [`${doc.id}`]: doc.data() }]);
-    //     setWeekday((pre) => ({
-    //       ...pre,
-    //       [`${doc.id.slice(0, 10)}`]: doc.data().time_day,
-    //     }));
-    //   });
-    // });
-    // console.log("aaa", unsub);
-
-    // gameList.filter(=>)
   }, []);
-
-  // useEffect(() => {
-  //   let comingGame = [];
-  //   for (let i = 0; i < gameListName.length; i++) {
-  //     console.log("bbb", gameList[gameListName[i]]);
-  //     if (gameList[gameListName[i]].gameStatus === "coming") {
-  //       comingGame.push(gameListName[i]);
-  //       console.log(gameListName[i]);
-  //     }
-  //   }
-  //   props.setComingGameRoutes(comingGame);
-  //   console.log("aaa");
-  // }, [gameListName]);
 
   useEffect(() => {
     let a = gameListName.map((game) => game.slice(0, 10));

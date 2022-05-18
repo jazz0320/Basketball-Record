@@ -106,9 +106,7 @@ function GradeOutCome(props) {
               width="50px"
               textAling="center"
               fontSize={index < 3 ? `${20 + (3 - index) * 7}px` : "20px"}
-              fontWeight={index === 0 && "550"}
-              fontWeight={index === 1 && "500"}
-              fontWeight={index === 2 && "450"}
+              fontWeight={index < 3 ? `${400 + (3 - index) * 50}` : "400"}
             >
               {index + 1}
             </GeneralDiv>

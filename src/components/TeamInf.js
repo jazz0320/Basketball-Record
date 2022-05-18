@@ -231,42 +231,6 @@ function TeamInf(props) {
                 </GeneralDiv>
                 <input type="file" name="logoPic" onChange={upload}></input>
               </GeneralDiv>
-              {/* <GeneralDiv display="flex" alignItems="end" marginBottom="0.5vh">
-                <GeneralDiv>
-                  <GeneralDiv fontSize="28px" marginBottom="0.3vh">
-                    {" "}
-                    球隊相關照片
-                  </GeneralDiv>
-                  <GeneralDiv
-                    margin="0 0.5vw 0 1vw"
-                    border="1px solid #ced4da"
-                    height="205px"
-                    width="205px"
-                  >
-                    {imgSrc["teamRelated1"] ? (
-                      <GeneralImg
-                        height="200px"
-                        width="200px"
-                        src={imgSrc.teamRelated1}
-                      ></GeneralImg>
-                    ) : (
-                      <GeneralImg
-                        height="200px"
-                        width="200px"
-                        src={
-                          "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fpic1.png?alt=media&token=2f5d86b4-5f5c-4283-b05d-2254b86264d7"
-                        }
-                      ></GeneralImg>
-                    )}
-                  </GeneralDiv>
-                </GeneralDiv>
-
-                <input
-                  type="file"
-                  name="teamRelated1"
-                  onChange={upload}
-                ></input>
-              </GeneralDiv> */}
 
               <div>
                 <GeneralDiv fontSize="28px" boxShadow="0" marginBottom="1vh">

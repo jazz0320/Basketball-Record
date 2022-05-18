@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 //General
 const GeneralDiv = styled.div`
+  font-weight: ${(props) => props.fontWeight};
   max-width: ${(props) => props.maxWidth};
   min-height: ${(props) => props.minHeight};
   max-height: ${(props) => props.maxHeight};
@@ -140,6 +141,8 @@ const GeneralLabel = styled.label`
 `;
 
 const GeneralSelect = styled.select`
+  color: ${(props) => props.color};
+  height: ${(props) => props.height};
   cursor: pointer;
   border: ${(props) => props.border};
   border-radius: ${(props) => props.borderRadius};
@@ -446,7 +449,7 @@ const PopupDiv = styled.div`
   height: ${(props) => (props.height ? props.height : "14vh")};
   height: ${(props) => (props.height ? props.height : "14vh")};
   width: ${(props) => (props.width ? props.width : "20vw")};
-  z-index: 10;
+  z-index: ${(props) => (props.zIndex ? props.zIndex : "10")};
   color: ${(props) => (props.color ? props.color : "#f8f9fa")};
   font-size: ${(props) => (props.fontSize ? props.fontSize : "40px")};
   display: flex;
@@ -465,7 +468,7 @@ const PopupBlur = styled.div`
   position: fixed;
   height: 100vh;
   width: 100vw;
-  z-index: 6;
+  z-index: ${(props) => (props.zIndex ? props.zIndex : "6")};
   background-color: rgba(0, 0, 0);
   opacity: 0.5;
 `;
