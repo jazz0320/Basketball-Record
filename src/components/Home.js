@@ -1,12 +1,40 @@
 import { getDoc, doc, getDocs, collection, db } from "../utils/firebase";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import HomeGrade from "./HomeGrade";
 import PlayerGrade from "./PlayerGrade";
-import { GeneralDiv, GeneralImg } from "../utils/StyleComponent";
 
-function Home(props) {
+const CenterDiv = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+`;
+
+const FullPageContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  background-color: #e9ecef;
+`;
+
+const ContentContainer = styled.div`
+  width: 80vw;
+  background-color: #f8f9fa;
+  padding: 0.5vh 1vw 3vh 1vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  box-shadow: 0px 0px 3px 5px rgba(0, 0, 0, 0.3); ;
+`;
+const PlayerTeamContainer = styled.div`
+  width: 76vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
+
+function Home() {
   const [gameList, setGameList] = useState([]);
   const [gameListName, setGameListName] = useState([]);
   const [gameTime, setGameTime] = useState([]);
@@ -73,33 +101,11 @@ function Home(props) {
 
   return (
     <>
-      <GeneralDiv
-        width="100vw"
-        display="flex"
-        justifyContent="center"
-        backgroundColor="#e9ecef"
-        overflowY="scroll"
-      >
-        <GeneralDiv
-          width="80vw"
-          backgroundColor="#f8f9fa"
-          padding="0.5vh 1vw 3vh 1vw"
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="space-around"
-          boxShadow="0px 0px 3px 5px rgba(0, 0, 0, 0.3);"
-        >
-          <GeneralDiv height="100px" width="100%" />
+      <FullPageContainer>
+        <ContentContainer>
           <CarousellContainer>
             {gameTime?.map((time) => (
-              <div
-                key={time}
-                style={{
-                  display: "flex",
-                  flexWrap: "nowrap",
-                  alignItems: "center",
-                }}
-              >
+              <CenterDiv key={time}>
                 <TimeBox
                   gameTimeCount={gameTimeCount[time]}
                   time={time}
@@ -129,20 +135,15 @@ function Home(props) {
                     </div>
                   ) : null
                 )}
-              </div>
+              </CenterDiv>
             ))}
           </CarousellContainer>
-          <GeneralDiv
-            width="76vw"
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-          >
+          <PlayerTeamContainer>
             <PlayerGrade playerGrade={playerGrade} />
             <HomeGrade teamGrade={teamGrade} />
-          </GeneralDiv>
-        </GeneralDiv>
-      </GeneralDiv>
+          </PlayerTeamContainer>
+        </ContentContainer>
+      </FullPageContainer>
     </>
   );
 }
@@ -150,7 +151,7 @@ function Home(props) {
 export default Home;
 
 const CarousellContainer = styled.div`
-  margin: 0.2vh 1vw 3vh 0vw;
+  margin: 105px 1vw 3vh 0vw;
   height: 250px;
   width: 80vw;
   padding: 10px;
@@ -181,6 +182,7 @@ const GameContainerL2 = styled.div`
   font-size: 19px;
   line-height: 50px;
   display: flex;
+  justify-content: space-around;
   flex-wrap: wrap;
   :first-child {
     height: 40px;
@@ -199,11 +201,9 @@ const TeamDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
   height: 80px;
   width: 75px;
   font-size: 16px;
-
   div {
     text-align: center;
     justify-content: center;
@@ -217,6 +217,22 @@ const ScoreBox = styled.div`
   width: 50px;
   line-height: 50px;
   text-align: center;
+`;
+
+const TeamLogoImg = styled.img`
+  height: 80px;
+  width: 80px;
+  filter: drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3));
+`;
+
+const TeamName = styled.div`
+  line-height: 15px;
+  color: black;
+`;
+
+const GameStatus = styled.div`
+  color: black;
+  font-weight: 500;
 `;
 
 function BoxEnd(props) {
@@ -236,49 +252,50 @@ function BoxEnd(props) {
 
   return (
     <GameContainerL1>
-      <GameContainerL2 className="flex justify-around">
+      <GameContainerL2>
         <span>時間：{props.data.time_time}</span>
         {props.data.gameStatus === "live" ? (
-          <span className="text-red-600 font-extrabold">live now</span>
+          <GameStatus
+            css={`
+              color: red;
+              font-weight: 800;
+            `}
+          >
+            live now
+          </GameStatus>
         ) : (
-          <span className="text-black font-extrabold">end</span>
+          <GameStatus>end</GameStatus>
         )}
       </GameContainerL2>
       <GameContainerL2>
         <LogoDiv>
-          <GeneralImg
-            height="80px"
-            width="80px"
-            src={props.data.aTeamLogo}
-            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
-          />
+          <TeamLogoImg src={props.data.aTeamLogo} />
         </LogoDiv>
         <TeamDiv>
-          <GeneralDiv lineHeight="15px" color="black">
-            {props.data.aTeam}
-          </GeneralDiv>
-          <GeneralDiv lineHeight="20px">
+          <TeamName>{props.data.aTeam}</TeamName>
+          <div
+            css={`
+              line-height: 20px;
+            `}
+          >
             {aTeamWinloss[0]}-{aTeamWinloss[1]}
-          </GeneralDiv>
+          </div>
         </TeamDiv>
         <ScoreBox>{props.data.aTeam_score}</ScoreBox>
       </GameContainerL2>
       <GameContainerL2>
         <LogoDiv>
-          <GeneralImg
-            height="80px"
-            width="80px"
-            src={props.data.bTeamLogo}
-            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
-          />
+          <TeamLogoImg src={props.data.bTeamLogo} />
         </LogoDiv>
         <TeamDiv>
-          <GeneralDiv color="black" lineHeight="15px">
-            {props.data.bTeam}
-          </GeneralDiv>
-          <GeneralDiv lineHeight="20px">
+          <TeamName>{props.data.bTeam}</TeamName>
+          <div
+            css={`
+              line-height: 20px;
+            `}
+          >
             {bTeamWinloss[0]}-{bTeamWinloss[1]}
-          </GeneralDiv>
+          </div>
         </TeamDiv>
         <ScoreBox>{props.data.bTeam_score}</ScoreBox>
       </GameContainerL2>
@@ -296,13 +313,6 @@ const GameContainerL2forComing = styled.div`
   flex-wrap: wrap;
   :nth-child(3) {
     width: 30px;
-  }
-  .vs {
-    line-height: 100px;
-  }
-  .logo {
-    margin-left: 10px;
-    width: 50px;
   }
 `;
 
@@ -322,44 +332,36 @@ function BoxComing(props) {
   }, []);
   return (
     <GameContainerL1 onClick={() => alert("比賽即將開始，敬請期待")}>
-      <GameContainerL2 className="flex justify-around">
+      <GameContainerL2>
         <span>時間：{props.data.time_time}</span>
-        <span className="text-black font-extrabold">coming soon</span>
+        <GameStatus>coming soon</GameStatus>
       </GameContainerL2>
       <GameContainerL2forComing>
         <LogoDiv>
-          <GeneralImg
-            height="80px"
-            width="80px"
-            src={props.data.aTeamLogo}
-            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
-          />
+          <TeamLogoImg src={props.data.aTeamLogo} />
         </LogoDiv>
         <TeamDiv>
-          <GeneralDiv color="black" lineHeight="20px">
-            {props.data.aTeam}
-          </GeneralDiv>
+          <TeamName>{props.data.aTeam}</TeamName>
           <div>
             {aTeamWinloss[0]}-{aTeamWinloss[1]}
           </div>
         </TeamDiv>
       </GameContainerL2forComing>
       <GameContainerL2forComing>
-        <div className="vs">VS</div>
+        <div
+          css={`
+            line-height: 100px;
+          `}
+        >
+          VS
+        </div>
       </GameContainerL2forComing>
       <GameContainerL2forComing>
         <LogoDiv>
-          <GeneralImg
-            height="80px"
-            width="80px"
-            src={props.data.bTeamLogo}
-            filter={"drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.3))"}
-          />
+          <TeamLogoImg src={props.data.bTeamLogo} />
         </LogoDiv>
         <TeamDiv>
-          <GeneralDiv color="black" lineHeight="20px">
-            {props.data.bTeam}
-          </GeneralDiv>
+          <TeamName>{props.data.bTeam}</TeamName>
           <div>
             {bTeamWinloss[0]}-{bTeamWinloss[1]}
           </div>
@@ -394,8 +396,6 @@ function TimeBox(props) {
     setTimeDate(a);
   }, []);
 
-  useEffect(() => {}, [props.weekday]);
-
   const months = {
     "01": "Jan",
     "02": "Feb",
@@ -417,12 +417,12 @@ function TimeBox(props) {
     "04": "THU",
     "05": "FRI",
     "06": "SAT",
-    "07": "SUN",
+    "00": "SUN",
   };
 
   return (
     <TimeContainer>
-      <GeneralDiv>
+      <div>
         {months[timeDate[1]]}
         <br />
         {timeDate[2]}
@@ -430,7 +430,7 @@ function TimeBox(props) {
         {days[`0${props.weekday}`]}
         <br />
         {props.gameTimeCount}場比賽
-      </GeneralDiv>
+      </div>
     </TimeContainer>
   );
 }

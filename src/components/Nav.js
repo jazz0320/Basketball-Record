@@ -51,19 +51,16 @@ const LinkComponet = styled(Link)`
   align-items: center;
   border-radius: 100%;
   color: ${(props) => (props.$focus ? "#343a40" : "#cccccc")};
-
   text-decoration: none;
 `;
 
 const LinkImg = styled.img`
-  src: ${(props) => props.src};
   width: 35px;
   height: 35px;
 `;
 
 const LinkImg1 = styled.img`
   margin-right: ${(props) => props.maginRight};
-  src: ${(props) => props.src};
   width: 50px;
   height: 50px;
 `;
@@ -71,9 +68,8 @@ const LinkImg1 = styled.img`
 const LogoImg = styled.img`
   filter: ${(props) =>
     props.$focus ? "drop-shadow(-10px 10px 2px rgba(0, 0, 0, 0.5))" : null};
-  src: ${(props) => props.src};
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
 `;
 
 const IconComponet = styled.div`
