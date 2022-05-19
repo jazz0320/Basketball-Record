@@ -35,16 +35,13 @@ const ButtonSubmit = styled.button`
   width: 160px;
   height: 40px;
   transition: all 0.1s ease-in;
-
   ::-moz-focus-inner {
     border: 0;
   }
-
   &:hover {
     background-color: #495057;
     ${() => `transform: translateY(-3px)`}
   }
-
   &:active {
     background-color: ${() => "#212529"};
   }
@@ -58,7 +55,6 @@ const ButtonContainer = styled.div`
 
 const PopupDiv = styled.div`
   position: fixed;
-
   background-color: #495057;
   color: #f8f9fa;
   font-size: 40px;
@@ -94,7 +90,7 @@ function ContinueGame(props) {
   return (
     <>
       <PopupBlur />
-      <PopupDiv height="30vh" width="40vw" zIndex="99" left="30vw">
+      <PopupDiv>
         <div>選擇恢復比賽？</div>
         <LiveGameSelect
           value={backLiveGame}

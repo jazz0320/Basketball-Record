@@ -43,7 +43,6 @@ function Court(props) {
       "https://firebasestorage.googleapis.com/v0/b/basketball-record.appspot.com/o/forWebsite%2Fbasketball-32.png?alt=media&token=c613878c-bad8-4891-9e9e-ebdd6a833c9a";
 
     let base_image = new Image();
-    // base_image.src = basketballPic.current;
     const back = require("../img/basketball.png");
     base_image.src = back;
 

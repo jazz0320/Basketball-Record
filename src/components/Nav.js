@@ -147,8 +147,7 @@ function Nav() {
   };
 
   const logInOut = function () {
-    if (logStatus === false) {
-    } else if (logStatus === true) {
+    if (logStatus === true) {
       logout();
       setLogStatus(false);
     }

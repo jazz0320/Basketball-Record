@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { doc, db, setDoc } from "../utils/firebase";
 import styled from "styled-components";
 
@@ -87,12 +87,6 @@ const TimerContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 200px;
-`;
-
-const CenterDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 function Clock(props) {

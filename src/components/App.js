@@ -30,13 +30,10 @@ import {
   PopupDiv,
   PopupBlur,
   GroundContainer,
-  TeamOnTheGround,
   LiveActionBolck,
-  GeneralImg,
 } from "../utils/StyleComponent";
 import Clock from "./Clock";
 import TeamBox from "./TeamBox";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court from "./Court";
 import RecordRoom from "./RecordRoom";
 import { useNavigate } from "react-router-dom";
