@@ -35,6 +35,7 @@ import {
   GeneralImg,
 } from "../utils/StyleComponent";
 import Clock from "./Clock";
+import TeamBox from "./TeamBox";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Court from "./Court";
 import RecordRoom from "./RecordRoom";
@@ -989,25 +990,13 @@ function App(props) {
             setBTeamPlayers(gameData.B_team_player);
             setBTeamLogo(gameData.B_team_logo);
             setBTeamData(gameData.B_team_data);
+            setBackToChooseGameBlock(true);
           }}
           setWantToBackLiveGame={setWantToBackLiveGame}
           restartGameShotTime={restartGameShotTime}
           restartGameTime={restartGameTime}
-          setLiveAction={setLiveAction}
-          setQuarter={setQuarter}
-          setQuarterNow={setQuarterNow}
-          eachQuarterTime={eachQuarterTime}
-          setATeam={setATeam}
-          setATeamPlayers={setATeamPlayers}
-          setATeamLogo={setATeamLogo}
-          setATeamData={setATeamData}
-          setBTeam={setBTeam}
-          setBTeamPlayers={setBTeamPlayers}
-          setBTeamLogo={setBTeamLogo}
-          setBTeamData={setBTeamData}
           liveGameName={props.liveGameName}
           everyLiveGames={props.everyLiveGames}
-          setBackToChooseGameBlock={setBackToChooseGameBlock}
         />
       ) : null}
       {finishSetting ? null : <GeneralDiv height="100px" width="100%" />}
@@ -1680,120 +1669,6 @@ function App(props) {
         )}
       </Div_Record>
     </>
-  );
-}
-
-function TeamBox(props) {
-  const [renderPlayers, setRenderPlayers] = useState();
-  useEffect(() => {
-    if (props.exchangePlayer === false) {
-      setRenderPlayers(props.teamPlayers.slice(0, 5));
-    } else {
-      setRenderPlayers(props.teamPlayers);
-    }
-  }, [props.exchangePlayer, props.teamPlayers]);
-
-  function handleOnDragEnd(result) {
-    if (!result.destination) return;
-    const items = Array.from([...props.teamPlayers]);
-    const itemsLength = items.length;
-    const [reorderedItemSource] = items.splice(result.source.index, 1);
-    let reorderedItemDestination;
-    if (result.destination.index === itemsLength - 1) {
-      let reorderedItemDestinations = [
-        ...items.splice(result.destination.index - 1, 1),
-      ];
-      reorderedItemDestination = reorderedItemDestinations[0];
-    } else {
-      let reorderedItemDestinations = [
-        ...items.splice(result.destination.index, 1),
-      ];
-      reorderedItemDestination = reorderedItemDestinations[0];
-    }
-    items.splice(result.destination.index, 0, reorderedItemSource);
-    items.splice(result.source.index, 0, reorderedItemDestination);
-    props.setTeamPlayers(items);
-  }
-
-  return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <Droppable droppableId="team">
-        {(provided) => (
-          <TeamOnTheGround {...provided.droppableProps} ref={provided.innerRef}>
-            {renderPlayers &&
-              renderPlayers.map((player, index) => (
-                <Draggable
-                  key={player.name}
-                  draggableId={player.name}
-                  index={index}
-                >
-                  {(provided) => (
-                    <GeneralDiv
-                      height="140px"
-                      width={props.exchangePlayer ? "100px" : "190px"}
-                      textAlign="center"
-                      display="flex"
-                      flexWrap="wrap"
-                      alignItems="center"
-                      justifyContent="cneter"
-                      transitionDuration="0.5s"
-                      borderRadius="5px"
-                      border={
-                        props.selectTeam && props.activePlayer === index
-                          ? "8px ridge #ced4da"
-                          : "0.1px soild white"
-                      }
-                      boxShadow={
-                        props.selectTeam && props.activePlayer === index
-                          ? "-12px 7px 7px 5px rgba(108,117,125, 0.4);"
-                          : "0px 0px 0px 0px rgba(108,117,125, 0.4);"
-                      }
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <GeneralDiv
-                        hoverWidth={props.exchangePlayer ? "110px" : null}
-                        backgroundPosition="center"
-                        backgroundSize="cover"
-                        margin="0 auto"
-                        height="100px"
-                        width={props.exchangePlayer ? "80px" : "120px"}
-                        borderRadius="100%"
-                        hoverTransitionDuration="0.15s"
-                        transitionDuration="0.4s"
-                      >
-                        <GeneralImg
-                          hoverWidth={props.exchangePlayer ? "110px" : null}
-                          height={props.exchangePlayer ? "90px" : "100px"}
-                          width={props.exchangePlayer ? "90px" : "140px"}
-                          src={player.pic}
-                          transitionDuration="0.5s"
-                          filter={
-                            props.exchangePlayer
-                              ? null
-                              : props.selectTeam && props.activePlayer === index
-                              ? "drop-shadow(-15px 10px 5px rgba(0, 0, 0, 0.3))"
-                              : "drop-shadow(-10px 5px 3px rgba(0, 0, 0, 0.5))"
-                          }
-                        />
-                      </GeneralDiv>
-                      <GeneralDiv
-                        width="100%"
-                        textAlign="center"
-                        fontSize={props.exchangePlayer ? "14px" : null}
-                      >
-                        {player.id}
-                      </GeneralDiv>
-                    </GeneralDiv>
-                  )}
-                </Draggable>
-              ))}
-            {provided.placeholder}
-          </TeamOnTheGround>
-        )}
-      </Droppable>
-    </DragDropContext>
   );
 }
 

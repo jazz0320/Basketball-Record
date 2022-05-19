@@ -29,7 +29,6 @@ function Home(props) {
         [`${doc.id.slice(0, 10)}`]: doc.data().time_day,
       }));
     });
-    props.setComingGameRoutes(comingGame);
   }
 
   const getTeamData = async function () {

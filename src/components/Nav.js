@@ -1,6 +1,5 @@
 import LiveRoom from "./LiveRoom";
 import TeamInf from "./TeamInf";
-
 import Login from "./Login";
 import App from "./App";
 import Home from "./Home";
@@ -13,11 +12,11 @@ import {
   collection,
   db,
 } from "../utils/firebase";
+
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
 import GameSchedule from "./GameSchedule";
 import GameArrange from "./GameArrange";
-import { GeneralDiv, IconComponet, GeneralImg } from "../utils/StyleComponent";
 
 const SideBar = styled.div`
   padding: 5px;
@@ -40,7 +39,6 @@ const NavBar = styled.div`
   background-color: #f8f9fa;
   color: #f8f9fa;
   flex-wrap: wrap;
-
   font-size: 26px;
   box-shadow: rgb(0 0 0 / 18%) 0px 2px 2px;
 `;
@@ -58,12 +56,64 @@ const LinkComponet = styled(Link)`
 `;
 
 const LinkImg = styled.img`
+  src: ${(props) => props.src};
+  width: 35px;
+  height: 35px;
+`;
+
+const LinkImg1 = styled.img`
   margin-right: ${(props) => props.maginRight};
+  src: ${(props) => props.src};
+  width: 50px;
+  height: 50px;
+`;
+
+const LogoImg = styled.img`
   filter: ${(props) =>
     props.$focus ? "drop-shadow(-10px 10px 2px rgba(0, 0, 0, 0.5))" : null};
   src: ${(props) => props.src};
-  width: ${(props) => (props.width ? props.width : "35px")};
-  height: ${(props) => (props.height ? props.height : "35px")};
+  width: 80px;
+  height: 80px;
+`;
+
+const IconComponet = styled.div`
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 100%;
+  color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
+  border: ${(props) => (props.$focus ? "5px solid black" : null)};
+  text-decoration: none;
+  :hover {
+    width: 70px;
+    height: 70px;
+  }
+  :active {
+    background-color: rgb(41, 41, 41);
+  }
+`;
+
+const MemberId = styled.div`
+  display: flex;
+  align-items: center;
+  height: 60px;
+  color: black;
+  font-size: 22px;
+`;
+
+const RightSideContainer = styled.div`
+  height: 70px;
+  position: fixed;
+  right: 0px;
+  display: flex;
+`;
+
+const NavText = styled.div`
+  margin: 5px;
 `;
 
 function Nav() {
@@ -77,7 +127,6 @@ function Nav() {
   const [everyLiveGames, setEveryLiveGames] = useState([]);
   const [pastGameRoutes, setPastGameRoutes] = useState();
   const [liveGameRoutes, setLiveGameRoutes] = useState();
-  const [comingGameRoutes, setComingGameRoutes] = useState();
   const liveGameName = useRef("none");
   let redirect = useNavigate();
 
@@ -158,9 +207,7 @@ function Nav() {
               setIsGameStart(false);
             }}
           >
-            <GeneralImg
-              width="50px"
-              height="50px"
+            <LinkImg1
               src={require("../img/logout/logout1.png")}
               alt="Watch Record"
             />
@@ -168,118 +215,99 @@ function Nav() {
         </SideBar>
       ) : (
         <NavBar>
-          <GeneralDiv height="70px">
-            <LinkComponet
+          <LinkComponet
+            $focus={navActive === -1}
+            onClick={() => setNavActive(-1)}
+            to="/"
+          >
+            <LogoImg
               $focus={navActive === -1}
-              onClick={() => setNavActive(-1)}
-              to="/"
-            >
-              <LinkImg
-                $focus={navActive === -1}
-                height="60px"
-                width="60px"
-                src={
-                  navActive === -1
-                    ? require("../img/logoB.png")
-                    : require("../img/logoG.png")
-                }
-              />
-            </LinkComponet>
-          </GeneralDiv>
+              src={
+                navActive === -1
+                  ? require("../img/logoB.png")
+                  : require("../img/logoG.png")
+              }
+            />
+          </LinkComponet>
+
           {logStatus ? (
             <>
               {userId === "test@test.com" && (
-                <GeneralDiv height="70px">
-                  <LinkComponet
-                    $focus={navActive === 0}
-                    onClick={() => setNavActive(0)}
-                    to="/record"
-                  >
-                    <LinkImg
-                      src={
-                        navActive === 0
-                          ? require("../img/basketball.png")
-                          : require("../img/basketballG.png")
-                      }
-                      height="50px"
-                      width="50px"
-                    />
-                    <GeneralDiv margin="5px">記錄</GeneralDiv>
-                  </LinkComponet>
-                </GeneralDiv>
+                <LinkComponet
+                  $focus={navActive === 0}
+                  onClick={() => setNavActive(0)}
+                  to="/record"
+                >
+                  <LinkImg1
+                    src={
+                      navActive === 0
+                        ? require("../img/basketball.png")
+                        : require("../img/basketballG.png")
+                    }
+                  />
+                  <NavText>記錄</NavText>
+                </LinkComponet>
               )}
 
               {userId !== "test@test.com" && (
-                <GeneralDiv height="70px">
-                  <LinkComponet
-                    $focus={navActive === 5}
-                    onClick={() => setNavActive(5)}
-                    to="/game-schedule"
-                  >
-                    <LinkImg
-                      src={
-                        navActive === 5
-                          ? require("../img/calendar/calendar.png")
-                          : require("../img/calendar/calendarG.png")
-                      }
-                    />
-                    <GeneralDiv margin="10px">賽程</GeneralDiv>
-                  </LinkComponet>
-                </GeneralDiv>
+                <LinkComponet
+                  $focus={navActive === 5}
+                  onClick={() => setNavActive(5)}
+                  to="/game-schedule"
+                >
+                  <LinkImg
+                    src={
+                      navActive === 5
+                        ? require("../img/calendar/calendar.png")
+                        : require("../img/calendar/calendarG.png")
+                    }
+                  />
+                  <NavText>賽程</NavText>
+                </LinkComponet>
               )}
               {userId === "test@test.com" && (
-                <GeneralDiv height="70px">
-                  <LinkComponet
-                    $focus={navActive === 6}
-                    onClick={() => setNavActive(6)}
-                    to="/game-arrange"
-                  >
-                    <LinkImg
-                      src={
-                        navActive === 6
-                          ? require("../img/editCalendar/plan.png")
-                          : require("../img/editCalendar/planG.png")
-                      }
-                    />
-                    <GeneralDiv margin="10px">賽程</GeneralDiv>
-                  </LinkComponet>
-                </GeneralDiv>
+                <LinkComponet
+                  $focus={navActive === 6}
+                  onClick={() => setNavActive(6)}
+                  to="/game-arrange"
+                >
+                  <LinkImg
+                    src={
+                      navActive === 6
+                        ? require("../img/editCalendar/plan.png")
+                        : require("../img/editCalendar/planG.png")
+                    }
+                  />
+                  <NavText>賽程</NavText>
+                </LinkComponet>
               )}
               {userId !== "test@test.com" && (
-                <GeneralDiv height="70px">
-                  <LinkComponet
-                    $focus={navActive === 7}
-                    onClick={() => setNavActive(7)}
-                    to="/team-inf"
-                  >
-                    <LinkImg
-                      src={
-                        navActive === 7
-                          ? require("../img/basketball.png")
-                          : require("../img/basketballG.png")
-                      }
-                    />
-                    組隊
-                  </LinkComponet>
-                </GeneralDiv>
+                <LinkComponet
+                  $focus={navActive === 7}
+                  onClick={() => setNavActive(7)}
+                  to="/team-inf"
+                >
+                  <LinkImg
+                    src={
+                      navActive === 7
+                        ? require("../img/basketball.png")
+                        : require("../img/basketballG.png")
+                    }
+                  />
+                  組隊
+                </LinkComponet>
               )}
             </>
           ) : null}
 
-          <GeneralDiv height="70px" position="fixed" right="0px" display="flex">
-            <GeneralDiv
-              display="flex"
-              alignItems="center"
-              height="60px"
-              color="black"
-              fontSize="22px"
-            >
+          <RightSideContainer>
+            <MemberId>
               {logStatus
                 ? userId === "test@test.com"
                   ? "Hi, 主辦者 "
                   : "Hi, 參賽者"
                 : null}
-            </GeneralDiv>
+            </MemberId>
             <LinkComponet
               $focus={navActive === 4}
               onClick={() => {
@@ -288,40 +316,25 @@ function Nav() {
               }}
               to="/login"
             >
-              {logStatus ? (
-                <>
-                  <LinkImg
-                    src={
-                      navActive === 4
-                        ? require("../img/logout/logout.png")
-                        : require("../img/logout/signoutG.png")
-                    }
-                  />
-                  <GeneralDiv margin="5px">登出</GeneralDiv>
-                </>
-              ) : (
-                <>
-                  <LinkImg
-                    src={
-                      navActive === 4
-                        ? require("../img/profile/profileB.png")
-                        : require("../img/profile/profileG.png")
-                    }
-                    maginRight="5px"
-                  />
-                  登入
-                </>
-              )}
+              <LinkImg
+                src={
+                  logStatus
+                    ? navActive === 4
+                      ? require("../img/logout/logout.png")
+                      : require("../img/logout/signoutG.png")
+                    : navActive === 4
+                    ? require("../img/profile/profileB.png")
+                    : require("../img/profile/profileG.png")
+                }
+              />
+              <NavText>{logStatus ? "登出" : "登入"}</NavText>
             </LinkComponet>
-          </GeneralDiv>
+          </RightSideContainer>
         </NavBar>
       )}
 
       <Routes>
-        <Route
-          path="/"
-          element={<Home setComingGameRoutes={setComingGameRoutes} />}
-        ></Route>
+        <Route path="/" element={<Home />}></Route>
 
         {liveGameRoutes?.map((gameName, index) => (
           <Route
