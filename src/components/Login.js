@@ -5,9 +5,92 @@ import {
 } from "../utils/firebase";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
-import { ButtonSubmit, GeneralDiv, GeneralImg } from "../utils/StyleComponent";
+const Wrapper = styled.div`
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.5);
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  width: 80vw;
+  height: 100vh;
+`;
+
+const FormDiv = styled.div`
+  box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 450px;
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  max-width: 400px;
+  padding: 11px 13px;
+  background: #f9f9fa;
+  color: black;
+  margin-bottom: 0.9rem;
+  border-radius: 4px;
+  outline: 0;
+  border: 1px solid rgba(245, 245, 245, 0.7);
+  font-size: 24px;
+  transition: all 0.3s ease-out;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(0, 0, 0, 0.1);
+  :focus,
+  :hover {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15), 0 1px 5px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const FullPageContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  background-color: #e9ecef;
+`;
+
+const TitleBox = styled.div`
+  font-size: 30px;
+  margin-bottom: 10px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+const ButtonSubmit = styled.button`
+  background-color: #343a40;
+  border: 1px solid white;
+  white-space: nowrap;
+  color: hsla(150, 14%, 97%, 1);
+  cursor: pointer;
+  outline: none;
+  text-shadow: 0.1rem 0.1rem 0.5rem hsla(0, 0%, 0%, 0.5);
+  letter-spacing: 0.1rem;
+  border-radius: 0.5rem;
+  user-select: none;
+  width: 180px;
+  height: 50px;
+  transition: all 0.1s ease-in;
+  ::-moz-focus-inner {
+    border: 0;
+  }
+  &:hover {
+    background-color: #495057;
+    ${() => `transform: translateY(-3px)`}
+  }
+  &:active {
+    background-color: ${() => "#212529"};
+  }
+`;
 
 function Login(props) {
   const [email, setEmail] = useState();
@@ -72,104 +155,51 @@ function Login(props) {
 
   return (
     <>
-      <GeneralDiv
-        backgroundColor="#e9ecef"
-        display="flex"
-        justifyContent="center"
-      >
+      <FullPageContainer>
         <Wrapper>
           <FormDiv>
-            <div style={{ marginBottom: "10px" }}>
-              <div style={{ fontSize: "30px", marginBottom: "10px" }}>信箱</div>
+            <div>
+              <TitleBox>信箱</TitleBox>
               <div>
                 <Input
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
                 ></Input>
               </div>
-              <span style={{ color: "#F8F9FA" }}>test@test.com</span>
+              <span
+                css={`
+                  color: #f8f9fa;
+                `}
+              >
+                test@test.com
+              </span>
             </div>
             <div>
-              <div style={{ fontSize: "30px", marginBottom: "10px" }}>密碼</div>
+              <TitleBox>密碼</TitleBox>
               <div>
                 <Input
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
                 ></Input>
               </div>
-              <span style={{ color: "#F8F9FA" }}>testtest</span>
-            </div>
-            <GeneralDiv display="flex" justifyContent="space-around">
-              <ButtonSubmit
-                onClick={loginEmailPassword}
-                width="180px"
-                height="50px"
+              <span
+                css={`
+                  color: #f8f9fa;
+                `}
               >
-                登入
-              </ButtonSubmit>
+                testtest
+              </span>
+            </div>
+            <ButtonContainer>
+              <ButtonSubmit onClick={loginEmailPassword}>登入</ButtonSubmit>
 
-              <ButtonSubmit onClick={createAccount} width="180px" height="50px">
-                註冊
-              </ButtonSubmit>
-            </GeneralDiv>
+              <ButtonSubmit onClick={createAccount}>註冊</ButtonSubmit>
+            </ButtonContainer>
             <div>{error}</div>
           </FormDiv>
-          {/* <GeneralDiv
-            position="absolute"
-            width="500px"
-            height="500px"
-            backgroundImage={`url(
-            ${require("../img/dear-basketball-1.jpeg")}  
-            )`}
-            background="no-repeat,-webkit-linear-gradient(top, white, white)"
-          ></GeneralDiv> */}
         </Wrapper>
-      </GeneralDiv>
+      </FullPageContainer>
     </>
   );
 }
 export default Login;
-
-const Wrapper = styled.div`
-  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.5);
-  background-color: #f8f9fa;
-  display: flex;
-  justify-content: center;
-
-  align-items: center;
-  width: 80vw;
-  height: 100vh;
-  div {
-    font-size: 22px;
-  }
-`;
-
-const FormDiv = styled.div`
-  box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.3);
-  margin: 0 auto;
-  width: 100%;
-  max-width: 450px;
-  padding: 1.3rem;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  max-width: 400px;
-  padding: 11px 13px;
-  background: #f9f9fa;
-  color: black;
-  margin-bottom: 0.9rem;
-  border-radius: 4px;
-  outline: 0;
-  border: 1px solid rgba(245, 245, 245, 0.7);
-  font-size: 24px;
-  transition: all 0.3s ease-out;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(0, 0, 0, 0.1);
-  :focus,
-  :hover {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15), 0 1px 5px rgba(0, 0, 0, 0.1);
-  }
-`;
