@@ -10,15 +10,6 @@ function Court(props) {
   let adjustY = 1;
   let adjustX = 1;
 
-  // function getCursorPositionsss(vas, event) {
-  //   const rect = vas.getBoundingClientRect();
-  //   const x = event.clientX - rect.left;
-  //   const y = event.clientY - rect.top;
-  //   let axis = { x: x, y: y };
-  //   console.log("x: " + x + " y: " + y);
-  //   props.setPlayerAxis(axis);
-  // }
-
   function getCursorPosition(vas, event) {
     //clear 上一個定點
     let cvs = document.getElementById("cvs");
@@ -35,7 +26,6 @@ function Court(props) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     let axis = { x: x, y: y };
-    console.log(event.currentTarget.nodeName, "x: " + x + " y: " + y);
     props.setPlayerAxis(axis);
     playerLastAxis.current = axis;
     //add point
@@ -64,7 +54,6 @@ function Court(props) {
       props.setPlayerLocationScoreNumber();
       props.dispatchPlayerActions({ type: "intial" });
     });
-    console.log(location);
     props.setPlayerLocation(location);
     props.setPlayerLocationScoreNumber(num);
   };

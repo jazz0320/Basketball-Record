@@ -129,11 +129,8 @@ function Nav() {
   const monitorAuthState = async () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("登入中");
         setUserId(user.email);
         setLogStatus(true);
-      } else {
-        console.log("已登出");
       }
     });
   };

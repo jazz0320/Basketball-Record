@@ -25,12 +25,10 @@ function LiveRoom(props) {
   const [watchBox, setWatchBox] = useState("livestream");
 
   useEffect(() => {
-    console.log("ccc");
     if (props.liveGameRoutes?.includes(props.gameName)) {
       const unsub = onSnapshot(
         doc(db, "live_game", `${props.gameName}`),
         (doc) => {
-          console.log("Current data: ", doc.data().A_team_data);
           setLiveAction(doc.data().live_action);
           setQuarter(doc.data().quarter);
           setATeam(doc.data().A_team);
@@ -49,7 +47,6 @@ function LiveRoom(props) {
       async function loading() {
         const docSnap = await getDoc(doc(db, "past_data", `${props.gameName}`));
         let data = docSnap.data();
-        console.log("aaa", data);
         setLiveAction(docSnap.data().live_action);
         setQuarter(docSnap.data().quarter);
         setATeam(docSnap.data().A_team);
@@ -711,10 +708,6 @@ function TeamData(props) {
           overflow: "scroll",
         }}
       >
-        {/* <div
-          className="flex justify-center"
-          style={{ width: "60vw", border: "1px solid black" }}
-        > */}
         <div
           className="mt-3"
           style={{
@@ -723,7 +716,6 @@ function TeamData(props) {
             padding: "0.5vh 0",
           }}
         >
-          {console.log("bbb", barData)}
           {barData
             ? dataKeys?.map((item, index) =>
                 (item !== "fgRate") &

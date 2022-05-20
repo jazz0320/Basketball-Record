@@ -156,7 +156,6 @@ function Clock(props) {
 
         interval.current = setInterval(() => {
           const distance = restTime - timePast;
-          console.log("abc", distance);
           const minutes = Math.floor(
             (distance % (1000 * 60 * 60)) / (1000 * 60)
           );

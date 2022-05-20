@@ -21,9 +21,7 @@ const ContentContainer = styled.div`
 
 function GameSchedule(props) {
   const [events, setEvents] = useState([]);
-  const handleDateClick = (e) => {
-    console.log(e);
-  };
+  const handleDateClick = (e) => {};
 
   async function loadingSchedule() {
     let teamName;
@@ -37,7 +35,6 @@ function GameSchedule(props) {
         collection(db, "team_data", teamName, "game_schedule")
       );
       querySnapshot2.forEach((doc) => {
-        console.log(doc.id);
         let event = {
           title: `${doc.data().opponent} ${doc.data().time_time}`,
           date: doc.data().time_date,

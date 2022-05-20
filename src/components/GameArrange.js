@@ -247,7 +247,6 @@ function GameArrange() {
   async function chooseTeam() {
     const querySnapshot = await getDocs(collection(db, "team_data"));
     querySnapshot.forEach((doc) => {
-      console.log(doc.id);
       setTeams((teams) => [...teams, doc.id]);
       setTeamsLogo((pre) => ({
         ...pre,
@@ -274,7 +273,6 @@ function GameArrange() {
   const sendGameSchedule = async function () {
     for (let i = 0; i < numberOfGames.length; i++) {
       let gameId = `${date[i]}_${aTeam[i]}_${bTeam[i]}`;
-      console.log("id", gameId);
       await setDoc(
         doc(db, "team_data", aTeam[i], "game_schedule", gameId),
         {
