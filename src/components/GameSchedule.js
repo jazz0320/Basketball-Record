@@ -1,9 +1,23 @@
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
-import { GeneralDiv } from "../utils/StyleComponent";
 import { getDocs, collection, db, getDoc, doc } from "../utils/firebase";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const FullPageContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  background-color: #e9ecef;
+`;
+
+const ContentContainer = styled.div`
+  width: 80vw;
+  background-color: #f8f9fa;
+  padding: 110px 2vw 1vh 2vw;
+  box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.5);
+`;
 
 function GameSchedule(props) {
   const [events, setEvents] = useState([]);
@@ -39,37 +53,17 @@ function GameSchedule(props) {
 
   return (
     <>
-      <GeneralDiv
-        marginTop="100px"
-        display="flex"
-        justifyContent="center"
-        backgroundColor="#e9ecef"
-      >
-        <GeneralDiv width="80vw" backgroundColor="#f8f9fa" padding="1vh 2vw">
+      <FullPageContainer>
+        <ContentContainer>
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             dateClick={handleDateClick}
             weekends={true}
-            eventContent={renderEventContent}
             events={events}
           />
-        </GeneralDiv>
-      </GeneralDiv>
+        </ContentContainer>
+      </FullPageContainer>
     </>
-  );
-}
-
-function renderEventContent(eventInfo) {
-  return (
-    <div
-
-    //   style={{
-    //     backgroundImage: `url(${eventInfo.event.url})`,
-    //   }}
-    >
-      <p>{eventInfo.event.title}</p>
-      <img className="eventimage" src={eventInfo.event.url} />
-    </div>
   );
 }
 
