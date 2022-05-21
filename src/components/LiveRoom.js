@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { doc, onSnapshot, getDoc, db } from "../utils/firebase";
 import {
   GeneralDiv,
-  GeneralButton,
   GeneralSpan,
   GeneralImg,
   LiveRoomLines,
-  LiveRoomActionBlock,
 } from "../utils/StyleComponent";
+import LiveRoomScore from "./LiveRoomScore";
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
@@ -46,24 +45,22 @@ function LiveRoom(props) {
     } else if (props.pastGameName !== undefined) {
       async function loading() {
         const docSnap = await getDoc(doc(db, "past_data", `${props.gameName}`));
-        let data = docSnap.data();
-        setLiveAction(docSnap.data().live_action);
-        setQuarter(docSnap.data().quarter);
-        setATeam(docSnap.data().A_team);
-        setATeamLogo(docSnap.data().A_team_logo);
-        setATeamPlayers(docSnap.data().A_team_player);
-        setBTeamPlayers(docSnap.data().B_team_player);
-        setATeamData(docSnap.data().A_team_data);
-        setBTeam(docSnap.data().B_team);
-        setBTeamLogo(docSnap.data().B_team_logo);
-        setBTeamData(docSnap.data().B_team_data);
-        setFinishSetting(docSnap.data().finishSetting);
-        setEndGame(docSnap.data().endGame);
+        const data = docSnap.data();
+        setLiveAction(data.live_action);
+        setQuarter(data.quarter);
+        setATeam(data.A_team);
+        setATeamLogo(data.A_team_logo);
+        setATeamPlayers(data.A_team_player);
+        setBTeamPlayers(data.B_team_player);
+        setATeamData(data.A_team_data);
+        setBTeam(data.B_team);
+        setBTeamLogo(data.B_team_logo);
+        setBTeamData(data.B_team_data);
+        setFinishSetting(data.finishSetting);
+        setEndGame(data.endGame);
       }
       loading();
     }
-
-    // unsub();
   }, [props.gameName]);
 
   return (
@@ -228,7 +225,7 @@ function LiveRoom(props) {
             <GeneralDiv minHeight="70vh" maxHeight="150vh" overflowY="scroll">
               {watchBox === "boxscore" ? (
                 <div>
-                  <Boxscore
+                  <LiveRoomScore
                     aTeam={aTeam}
                     bTeam={bTeam}
                     aTeamPlayers={aTeamPlayers}
@@ -264,133 +261,6 @@ function LiveRoom(props) {
 }
 
 export default LiveRoom;
-
-function Boxscore(props) {
-  const [selectTeam, setSelectTeam] = useState("ateam");
-  return (
-    <>
-      <GeneralDiv width="75vw" overflowX="scroll">
-        <div id="radio">
-          <GeneralSpan
-            borderRadius="5px"
-            display="inline-block"
-            padding="5px 10px"
-            backgroundColor={selectTeam === "ateam" ? "#5e7380" : "#f7f7f7"}
-            color={selectTeam === "ateam" ? "#fff" : "#333"}
-            cursor="pointer"
-            hoverBackgroundColor="#bbb"
-            hoverColor="#fff"
-            onClick={() => {
-              setSelectTeam("ateam");
-            }}
-          >
-            {props.aTeam}
-          </GeneralSpan>
-
-          <GeneralSpan
-            borderRadius="5px"
-            display="inline-block"
-            padding="5px 10px"
-            backgroundColor={selectTeam === "bteam" ? "#5e7380" : "#f7f7f7"}
-            color={selectTeam === "bteam" ? "#fff" : "#333"}
-            cursor="pointer"
-            hoverBackgroundColor="#bbb"
-            hoverColor="#fff"
-            onClick={() => {
-              setSelectTeam("bteam");
-            }}
-          >
-            {props.bTeam}
-          </GeneralSpan>
-        </div>
-        <table
-          className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate"
-          cellPadding="5"
-          border="1"
-        >
-          <thead>
-            <tr>
-              <th width="100px">PLAYER</th>
-              <th>MIN</th>
-              <th>FGM</th>
-              <th>FGA</th>
-              <th>FG%</th>
-              <th>3PM</th>
-              <th>3PA</th>
-              <th>3p%</th>
-              <th>FTM</th>
-              <th>FTA</th>
-              <th>FT%</th>
-              <th>OREB</th>
-              <th>DREB</th>
-              <th>REB</th>
-              <th>AST</th>
-              <th>STL</th>
-              <th>BLK</th>
-              <th>TO</th>
-              <th>PF</th>
-              <th>PTS</th>
-              <th>+/-</th>
-            </tr>
-          </thead>
-          <tbody>
-            {selectTeam === "ateam"
-              ? props.aTeamPlayers.map((players, index) => (
-                  <tr key={index}>
-                    <td nowrap="nowrap">{players.id}</td>
-                    <td>none</td>
-                    <td>{players.fgm}</td>
-                    <td>{players.fga}</td>
-                    <td>{players.fgRate}</td>
-                    <td>{players.threePtm}</td>
-                    <td>{players.threePta}</td>
-                    <td>{players.threePtRate}</td>
-                    <td>{players.ftm}</td>
-                    <td>{players.fta}</td>
-                    <td>{players.fgRate}</td>
-                    <td>{players.oreb}</td>
-                    <td>{players.dreb}</td>
-                    <td>{players.reb}</td>
-                    <td>{players.ast}</td>
-                    <td>{players.stl}</td>
-                    <td>{players.blk}</td>
-                    <td>{players.to}</td>
-                    <td>{players.pf}</td>
-                    <td>{players.pts}</td>
-                    <td>none</td>
-                  </tr>
-                ))
-              : props.bTeamPlayers.map((players, index) => (
-                  <tr key={index}>
-                    <td nowrap="nowrap">{players.id}</td>
-                    <td>none</td>
-                    <td>{players.fgm}</td>
-                    <td>{players.fga}</td>
-                    <td>{players.fgRate}</td>
-                    <td>{players.threePtm}</td>
-                    <td>{players.threePta}</td>
-                    <td>{players.threePtRate}</td>
-                    <td>{players.ftm}</td>
-                    <td>{players.fta}</td>
-                    <td>{players.fgRate}</td>
-                    <td>{players.oreb}</td>
-                    <td>{players.dreb}</td>
-                    <td>{players.reb}</td>
-                    <td>{players.ast}</td>
-                    <td>{players.stl}</td>
-                    <td>{players.blk}</td>
-                    <td>{players.to}</td>
-                    <td>{players.pf}</td>
-                    <td>{players.pts}</td>
-                    <td>none</td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
-      </GeneralDiv>
-    </>
-  );
-}
 
 function Livestream(props) {
   const [quarteNowLive, setQuarterNowLive] = useState(props.quarter.length);
@@ -461,10 +331,7 @@ function Livestream(props) {
               .reverse()
               ?.map((item, index) => (
                 <>
-                  <LiveRoomActionBlock
-                    key={index}
-                    className="flex mt-2 drop-shadow-lg"
-                  >
+                  <div key={index} className="flex mt-2 drop-shadow-lg">
                     {item.team === true ? (
                       <GeneralDiv
                         display="flex"
@@ -544,7 +411,7 @@ function Livestream(props) {
                     ) : (
                       <GeneralDiv width="33vw" />
                     )}
-                  </LiveRoomActionBlock>
+                  </div>
                 </>
               ))
           : actionNow
