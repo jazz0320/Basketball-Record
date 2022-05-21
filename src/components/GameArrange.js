@@ -237,10 +237,13 @@ function GameArrange() {
   const [time, setTime] = useState([new Date()]);
   const [teams, setTeams] = useState([]);
   const [teamsLogo, setTeamsLogo] = useState({});
+  const [winLoss, setWinLoss] = useState([]);
   const [aTeam, setATeam] = useState(["default"]);
   const [aTeamLogo, setATeamLogo] = useState(["default"]);
+  const [aTeamWinLoss, setATeamWinLoss] = useState(["default"]);
   const [bTeam, setBTeam] = useState(["default"]);
   const [bTeamLogo, setBTeamLogo] = useState(["default"]);
+  const [bTeamWinLoss, setBTeamWinLoss] = useState(["default"]);
   const [numberOfGames, setNumberOfGames] = useState([0]);
   const [checkSetting, setCheckSetting] = useState(false);
   let redirect = useNavigate();
@@ -248,6 +251,10 @@ function GameArrange() {
     const querySnapshot = await getDocs(collection(db, "team_data"));
     querySnapshot.forEach((doc) => {
       setTeams((teams) => [...teams, doc.id]);
+      setWinLoss((winloss) => ({
+        ...winloss,
+        [`${doc.id}`]: doc.data().winLoss,
+      }));
       setTeamsLogo((pre) => ({
         ...pre,
         [`${doc.id}`]: doc.data().logo,
@@ -262,8 +269,10 @@ function GameArrange() {
   const addOneMoreGame = function () {
     setATeam((pre) => [...pre, "default"]);
     setATeamLogo((pre) => [...pre, "default"]);
+    setATeamWinLoss((pre) => [...pre, "default"]);
     setBTeam((pre) => [...pre, "default"]);
     setBTeamLogo((pre) => [...pre, "default"]);
+    setBTeamWinLoss((pre) => [...pre, "default"]);
     setDate((pre) => [...pre, new Date().toISOString().slice(0, 10)]);
     setDay((pre) => [...pre, new Date().getDay()]);
     setTime((pre) => [...pre, new Date()]);
@@ -309,9 +318,9 @@ function GameArrange() {
           time_time: time[i],
           end: false,
           aTeam_score: 0,
-          aTeam_winloss: [0, 0],
+          aTeam_winloss: aTeamWinLoss[i],
           bTeam_score: 0,
-          bTeam_winloss: [0, 0],
+          bTeam_winloss: bTeamWinLoss[i],
           whoWin: "default",
           gameStatus: "coming",
         },
@@ -360,6 +369,9 @@ function GameArrange() {
                     let b = [...aTeamLogo];
                     b[num] = teamsLogo[e.target.value];
                     setATeamLogo(b);
+                    let c = [...aTeamWinLoss];
+                    c[num] = winLoss[e.target.value];
+                    setATeamWinLoss(c);
                   }}
                 >
                   <option disabled value="default">
@@ -407,6 +419,9 @@ function GameArrange() {
                     let a = [...bTeamLogo];
                     a[num] = teamsLogo[e.target.value];
                     setBTeamLogo(a);
+                    let c = [...bTeamWinLoss];
+                    c[num] = winLoss[e.target.value];
+                    setBTeamWinLoss(c);
                   }}
                 >
                   <option disabled value="default">

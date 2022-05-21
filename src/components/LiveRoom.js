@@ -103,7 +103,7 @@ function LiveRoom(props) {
                   <tr>
                     <th>隊伍</th>
                     {quarter
-                      ? quarter.map((item, index) => <th>{item}</th>)
+                      ? quarter.map((item) => <th key={item}>{item}</th>)
                       : null}
                     <th>Total</th>
                   </tr>
@@ -113,7 +113,7 @@ function LiveRoom(props) {
                     <td>{aTeam}</td>
                     {quarter
                       ? quarter.map((item, index) => (
-                          <td>
+                          <td key={item}>
                             {aTeamData
                               ? aTeamData[0]
                                 ? aTeamData[index].pts
@@ -136,7 +136,7 @@ function LiveRoom(props) {
                     <td>{bTeam}</td>
                     {quarter
                       ? quarter.map((item, index) => (
-                          <td>
+                          <td key={item}>
                             {bTeamData
                               ? bTeamData[0]
                                 ? bTeamData[index].pts

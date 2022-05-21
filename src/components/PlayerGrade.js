@@ -1,7 +1,7 @@
-import { GeneralDiv, GeneralImg } from "../utils/StyleComponent";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
-let gradeType = [
+const gradeType = [
   ["to", "失誤"],
   ["oreb", "進攻籃板"],
   ["reb", "籃板"],
@@ -16,10 +16,92 @@ let gradeType = [
   ["dreb", "防守籃板"],
 ];
 
+const GradeTitle = styled.div`
+  div {
+    font-size: 20px;
+  }
+  display: flex;
+  background-color: #343a40;
+  color: #f8f9fa;
+  padding: 0 10px;
+  justify-content: space-around;
+  border-radius: 6px 6px 0 0;
+  height: 36px;
+`;
+
+const GradeTitleRank = styled.div`
+  width: 60px;
+  text-align: center;
+  height: 30px;
+  margin: auto 0;
+  font-size: ${(props) =>
+    props.index < 3 ? `${20 + (3 - props.index) * 7}px` : "20px"};
+  font-weight: ${(props) =>
+    props.index < 3 ? `${400 + (3 - props.index) * 50}` : "400"};
+`;
+const GradeTitlePlayer = styled.div`
+  width: 330px;
+  text-align: center;
+  height: 30px;
+  margin: auto 0;
+`;
+
+const PlayerName = styled.div`
+  width: 250px;
+  text-align: center;
+  font-size: 20px;
+`;
+const GradeTitleTeam = styled.div`
+  width: 120px;
+  height: 30px;
+  margin: auto;
+`;
+const TeamName = styled.div`
+  width: 120px;
+  font-size: 20px;
+`;
+
+const GradeTitleData = styled.div`
+  width: 80px;
+  height: 30px;
+  margin: auto 0;
+`;
+
+const PlayerData = styled.div`
+  width: 120px;
+  text-align: center;
+  font-size: 20px;
+`;
+
+const InfSelector = styled.div`
+  padding: 5px 10px;
+  font-size: 20px;
+`;
+
+const PlayerGradeContainer = styled.div`
+  height: calc(100vh - 280px);
+  overflow-y: scroll;
+`;
+
+const EachPlayerBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: space-around;
+`;
+
+const PlayerImg = styled.img`
+  filter: drop-shadow(-10px 6px 3px rgba(0, 0, 0, 0.5));
+  height: ${(props) =>
+    props.index < 3 ? `${90 + (3 - props.index) * 8}px` : "80px"};
+  width: ${(props) =>
+    props.index < 3 ? `${136 + (3 - props.index) * 11}px` : "109px"};
+`;
+
 function PlayerGrade(props) {
   const [checkDataType, setCheckDataType] = useState("pts");
   return (
-    <GeneralDiv
+    <div
       width="37vw"
       height="calc(100vh - 200px)"
       border="2px solid #adb5bd"
@@ -33,7 +115,7 @@ function PlayerGrade(props) {
         playerGrade={props.playerGrade}
         checkDataType={checkDataType}
       />
-    </GeneralDiv>
+    </div>
   );
 }
 export default PlayerGrade;
@@ -47,41 +129,14 @@ function GradeOutCome(props) {
     setSortData(data.slice(0, 10));
   }, [props.checkDataType, props.playerGrade]);
   return (
-    <GeneralDiv>
-      <GeneralDiv
-        divFontSize="20px"
-        display="flex"
-        backgroundColor="#343a40"
-        color="#f8f9fa"
-        padding="0 10px"
-        justifyContent="space-around"
-        borderRadius="6px 6px 0 0"
-        height="36px"
-      >
-        <GeneralDiv
-          width="60px"
-          textAlign="center"
-          height="30px"
-          margin="auto 0"
-        >
-          排名
-        </GeneralDiv>
-        <GeneralDiv
-          width="330px"
-          textAling="center"
-          height="30px"
-          margin="auto 0"
-        >
-          球員
-        </GeneralDiv>
-        <GeneralDiv width="120px" height="30px" margin="auto 0">
-          隊伍
-        </GeneralDiv>
-        <GeneralDiv width="80px" height="30px" margin="auto 0">
-          數據
-        </GeneralDiv>
-      </GeneralDiv>
-      <GeneralDiv padding="5px 10px" fontSize="20px">
+    <div>
+      <GradeTitle>
+        <GradeTitleRank>排名</GradeTitleRank>
+        <GradeTitlePlayer>球員</GradeTitlePlayer>
+        <GradeTitleTeam>隊伍</GradeTitleTeam>
+        <GradeTitleData>數據</GradeTitleData>
+      </GradeTitle>
+      <InfSelector>
         <select
           value={props.checkDataType}
           onChange={(e) => props.setCheckDataType(e.target.value)}
@@ -92,44 +147,20 @@ function GradeOutCome(props) {
             </option>
           ))}
         </select>
-      </GeneralDiv>
-      <GeneralDiv height="calc(100vh - 280px)" overflowY="scroll">
+      </InfSelector>
+      <PlayerGradeContainer>
         {sortData?.map((data, index) => (
-          <GeneralDiv
-            key={data.name}
-            display="flex"
-            alignItems="center"
-            marginBottom="10px"
-            justifyContent="space-around"
-          >
-            <GeneralDiv
-              width="50px"
-              textAling="center"
-              fontSize={index < 3 ? `${20 + (3 - index) * 7}px` : "20px"}
-              fontWeight={index < 3 ? `${400 + (3 - index) * 50}` : "400"}
-            >
-              {index + 1}
-            </GeneralDiv>
-            <GeneralDiv>
-              <GeneralImg
-                filter={"drop-shadow(-10px 6px 3px rgba(0, 0, 0, 0.5))"}
-                height={index < 3 ? `${90 + (3 - index) * 8}px` : "80px"}
-                width={index < 3 ? `${136 + (3 - index) * 11}px` : "109px"}
-                src={data.pic}
-              />
-            </GeneralDiv>
-            <GeneralDiv width="250px" textAling="center" fontSize="20px">
-              {data.name}
-            </GeneralDiv>
-            <GeneralDiv width="120px" fontSize="20px">
-              {data.team}
-            </GeneralDiv>
-            <GeneralDiv width="120px" textAling="center" fontSize="20px">
-              {data[props.checkDataType]}
-            </GeneralDiv>
-          </GeneralDiv>
+          <EachPlayerBox key={data.name}>
+            <GradeTitleRank index={index}>{index + 1}</GradeTitleRank>
+            <div>
+              <PlayerImg index={index} src={data.pic} />
+            </div>
+            <PlayerName>{data.name}</PlayerName>
+            <TeamName>{data.team}</TeamName>
+            <PlayerData>{data[props.checkDataType]}</PlayerData>
+          </EachPlayerBox>
         ))}
-      </GeneralDiv>
-    </GeneralDiv>
+      </PlayerGradeContainer>
+    </div>
   );
 }

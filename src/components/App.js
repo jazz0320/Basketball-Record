@@ -695,10 +695,12 @@ function App(props) {
           A_team_player: aTeamPlayers,
           A_team_logo: aTeamLogo,
           A_team_data: aTeamData,
+          A_team_WinLoss: aTeamWinLoss,
           B_team_data: bTeamData,
           B_team: bTeam,
           B_team_player: bTeamPlayers,
           B_team_logo: bTeamLogo,
+          B_team_WinLoss: bTeamWinLoss,
         },
         { merge: true }
       );
@@ -783,7 +785,7 @@ function App(props) {
       },
       { merge: true }
     );
-
+    console.log("aaa");
     await setDoc(
       doc(db, "game_schedule", props.liveGameName.current),
       {
@@ -797,7 +799,7 @@ function App(props) {
       doc(db, "live_game", props.liveGameName.current)
     );
     let data = docSnap.data();
-
+    console.log("bbb");
     // const saveGameData = async function () {
     await setDoc(
       doc(db, "past_data", props.liveGameName.current),
@@ -808,7 +810,7 @@ function App(props) {
     );
 
     //記錄輸贏
-
+    console.log("aTeamGrade", aTeamGrade);
     await setDoc(
       doc(db, "team_data", aTeam),
       {
@@ -816,6 +818,7 @@ function App(props) {
       },
       { merge: true }
     );
+    console.log("bTeamGrade", bTeamGrade);
     await setDoc(
       doc(db, "team_data", bTeam),
       {
@@ -824,6 +827,7 @@ function App(props) {
       { merge: true }
     );
     //保存球員個人成績
+    console.log("aTeamPlayers", aTeamPlayers);
     await setDoc(
       doc(db, "team_data", aTeam, "past_data", props.liveGameName.current),
       {
@@ -831,6 +835,7 @@ function App(props) {
       },
       { merge: true }
     );
+    console.log("bTeamPlayers", bTeamPlayers);
     await setDoc(
       doc(db, "team_data", bTeam, "past_data", props.liveGameName.current),
       {
@@ -983,10 +988,12 @@ function App(props) {
             setATeamPlayers(gameData.A_team_player);
             setATeamLogo(gameData.A_team_logo);
             setATeamData(gameData.A_team_data);
+            setATeamWinLoss(gameData.A_team_WinLoss);
             setBTeam(gameData.B_team);
             setBTeamPlayers(gameData.B_team_player);
             setBTeamLogo(gameData.B_team_logo);
             setBTeamData(gameData.B_team_data);
+            setBTeamWinLoss(gameData.B_team_WinLoss);
             setBackToChooseGameBlock(true);
           }}
           setWantToBackLiveGame={setWantToBackLiveGame}
@@ -1689,7 +1696,10 @@ const PopupEndGameBlock = function (props) {
             height="40px"
             fontSize="20px"
             margin="0 10px 0 0"
-            onClick={props.endGame}
+            onClick={
+              // console.log("gggg")
+              props.endGame
+            }
           >
             Yes
           </ButtonSubmit>

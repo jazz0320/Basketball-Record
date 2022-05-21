@@ -57,7 +57,6 @@ const UserInput = styled.input`
   border: 1px solid #adb5bd;
   border-radius: 5px;
   padding: 2px 4px;
-  font-size: ${(props) => props.fontSize};
 `;
 
 const PlayerChangeBlock = styled.div`
