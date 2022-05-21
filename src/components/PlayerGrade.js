@@ -16,6 +16,11 @@ const gradeType = [
   ["dreb", "防守籃板"],
 ];
 
+const GradeBox = styled.div`
+  box-shadow: 0px 2px 5px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+`;
+
 const GradeTitle = styled.div`
   div {
     font-size: 20px;
@@ -129,7 +134,7 @@ function GradeOutCome(props) {
     setSortData(data.slice(0, 10));
   }, [props.checkDataType, props.playerGrade]);
   return (
-    <div>
+    <GradeBox>
       <GradeTitle>
         <GradeTitleRank>排名</GradeTitleRank>
         <GradeTitlePlayer>球員</GradeTitlePlayer>
@@ -161,6 +166,6 @@ function GradeOutCome(props) {
           </EachPlayerBox>
         ))}
       </PlayerGradeContainer>
-    </div>
+    </GradeBox>
   );
 }
