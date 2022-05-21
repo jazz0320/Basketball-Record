@@ -17,8 +17,11 @@ const gradeType = [
 ];
 
 const GradeBox = styled.div`
+  border: 2px solid #adb5bd;
   box-shadow: 0px 2px 5px 3px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
+  width: 37vw;
+  height: calc(100vh - 200px);
 `;
 
 const GradeTitle = styled.div`
@@ -106,21 +109,13 @@ const PlayerImg = styled.img`
 function PlayerGrade(props) {
   const [checkDataType, setCheckDataType] = useState("pts");
   return (
-    <div
-      width="37vw"
-      height="calc(100vh - 200px)"
-      border="2px solid #adb5bd"
-      borderRadius="10px"
-      boxShadow="0px 2px 5px 3px rgba(0, 0, 0, 0.3);"
-    >
-      <GradeOutCome
-        checkDataType={checkDataType}
-        setCheckDataType={setCheckDataType}
-        gradeType={gradeType}
-        playerGrade={props.playerGrade}
-        checkDataType={checkDataType}
-      />
-    </div>
+    <GradeOutCome
+      checkDataType={checkDataType}
+      setCheckDataType={setCheckDataType}
+      gradeType={gradeType}
+      playerGrade={props.playerGrade}
+      checkDataType={checkDataType}
+    />
   );
 }
 export default PlayerGrade;
