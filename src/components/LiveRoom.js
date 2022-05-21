@@ -7,6 +7,7 @@ import {
   LiveRoomLines,
 } from "../utils/StyleComponent";
 import LiveRoomScore from "./LiveRoomScore";
+import LiveRoomStream from "./LiveRoomStream";
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
@@ -235,7 +236,7 @@ function LiveRoom(props) {
               ) : null}
               {watchBox === "livestream" ? (
                 <div>
-                  <Livestream
+                  <LiveRoomStream
                     quarter={quarter}
                     liveAction={liveAction}
                     aTeam={aTeam}
