@@ -38,69 +38,124 @@ import Court from "./Court";
 import RecordRoom from "./RecordRoom";
 import { useNavigate } from "react-router-dom";
 import ContinueGame from "./ContinuteGame";
+import AppGameStart from "./AppGameStart";
+//setBackToChooseGameBlock = {setBackToChooseGameBlock}
+//pageSize={pageSize}
+//aTeam={aTeam}
+//aTeamLogo={aTeamLogo}
+//bTeamLogo={bTeamLogo}
+//aTeamWinLoss={aTeamWinLoss}
+//setATeamWinLoss={setATeamWinLoss}
+//bTeamWinLoss={bTeamWinLoss}
+//setBTeamWinLoss={setBTeamWinLoss}
+//aTeamPlayers={aTeamPlayers}
+//setATeamPlayers={setATeamPlayers}
+//bTeamPlayers={bTeamPlayers}
+//setBTeamPlayers={setBTeamPlayers}
+//aTeamData={aTeamData}
+//setATeamData={setATeamData}
+//bTeamData={bTeamData}
+//setBTeamData={setBTeamData}
+//bTeam={bTeam}
+//quarter={quarter}
+//eachQuarterTime={eachQuarterTime}
+//finishSetting={finishSetting}
+//timerMinutes={timerMinutes}
+//setTimerMinutes={setTimerMinutes}
+//quarterNow={quarterNow}
+//setQuarterNow={setQuarterNow}
+
+import AppGameSetting from "./AppGameSetting";
+//aTeam={aTeam}
+//setATeam={setATeam}
+//aTeamLogo={aTeamLogo}
+//setATeamLogo = {setATeamLogo}
+//bTeamLogo={bTeamLogo}
+//setBTeamLogo = {setBTeamLogo}
+//aTeamWinLoss={aTeamWinLoss}
+//setATeamWinLoss={setATeamWinLoss}
+//bTeamWinLoss={bTeamWinLoss}
+//setBTeamWinLoss={setBTeamWinLoss}
+//aTeamPlayers={aTeamPlayers}
+//setATeamPlayers={setATeamPlayers}
+//bTeamPlayers={bTeamPlayers}
+//setBTeamPlayers={setBTeamPlayers}
+//aTeamData={aTeamData}
+//setATeamData={setATeamData}
+//bTeamData={bTeamData}
+//setBTeamData={setBTeamData}
+//bTeam={bTeam}
+//setBTeam={setBTeam}
+//quarter={quarter}
+//setQuarter={setQuarter}
+//eachQuarterTime={eachQuarterTime}
+//setFinishSetting={setFinishSetting}
+//setTimerMinutes={setTimerMinutes}
+//quarterNow={quarterNow}
+//finishGameSetting={finishGameSetting}
 
 function App(props) {
-  const [backToChooseGameBlock, setBackToChooseGameBlock] = useState(false);
+  const [backToChooseGameBlock, setBackToChooseGameBlock] = useState(false); //keep
   const [pageSize, setPageSize] = useState([]);
-  const [teams, setTeams] = useState([]);
-  const [aTeam, setATeam] = useState("default");
+  const [teams, setTeams] = useState([]); //delete
+  const [aTeam, setATeam] = useState("default"); //keep
   const [aTeamStartFive, setATeamStartFive] = useState([
     "default",
     "default",
     "default",
     "default",
     "default",
-  ]);
-  const [aTeamLogo, setATeamLogo] = useState();
-  const [aTeamWinLoss, setATeamWinLoss] = useState([]);
+  ]); //delete
+  const [aTeamLogo, setATeamLogo] = useState(); //keep
+  const [aTeamWinLoss, setATeamWinLoss] = useState([]); //keep
   const [aTeamPlayers, setATeamPlayers] = useState();
-  const aTeamPlayersName = useRef();
+  const aTeamPlayersName = useRef(); //delete
   const [aTeamData, setATeamData] = useState();
 
-  const [bTeam, setBTeam] = useState("default");
+  const [bTeam, setBTeam] = useState("default"); //keep
   const [bTeamStartFive, setBTeamStartFive] = useState([
     "default",
     "default",
     "default",
     "default",
     "default",
-  ]);
-  const [bTeamLogo, setBTeamLogo] = useState();
-  const [bTeamWinLoss, setBTeamWinLoss] = useState([]);
-  const [bTeamPlayers, setBTeamPlayers] = useState();
-  const bTeamPlayersName = useRef();
-  const [bTeamData, setBTeamData] = useState();
-  const whoWin = useRef();
-  const [quarter, setQuarter] = useState(0); //選擇賽制
-  const eachQuarterTime = useRef();
+  ]); //delete
+  const [bTeamLogo, setBTeamLogo] = useState(); //keep
+  const [bTeamWinLoss, setBTeamWinLoss] = useState([]); //keep
+  const [bTeamPlayers, setBTeamPlayers] = useState(); //keep
+  const bTeamPlayersName = useRef(); //delete
+  const [bTeamData, setBTeamData] = useState(); //keep
+  const whoWin = useRef(); //delete
+  const [quarter, setQuarter] = useState(0); //選擇賽制 //keep
+  const eachQuarterTime = useRef(); //keep
   //time
-  const [timerMinutes, setTimerMinutes] = useState(0);
-  const [timerSeconds, setTimerSeconds] = useState(0);
-  const [affectTimeStopBehavior, setAffectTimeStopBehavior] = useState(true);
-  const [affectShotClockBehavior, setAffectShotClockBehavior] = useState(true);
+  const [timerMinutes, setTimerMinutes] = useState(0); //keep
+  const [timerSeconds, setTimerSeconds] = useState(0); //delete
+  const [affectTimeStopBehavior, setAffectTimeStopBehavior] = useState(true); //delete
+  const [affectShotClockBehavior, setAffectShotClockBehavior] = useState(true); //delete
 
-  const [finishSetting, setFinishSetting] = useState(false);
-  const [quarterNow, setQuarterNow] = useState(1);
-  const five = [1, 2, 3, 4, 5];
-  const [exchangePlayer, setExchangePlayer] = useState(false);
+  const [finishSetting, setFinishSetting] = useState(false); //keep
+  const [quarterNow, setQuarterNow] = useState(1); //keep
+  const five = [1, 2, 3, 4, 5]; //delete
+  const [exchangePlayer, setExchangePlayer] = useState(false); //delete
 
-  const [leftSide, setLeftSide] = useState(true);
-  const [activePlayer, setActivePlayer] = useState();
-  const [activePlayerId, setActivePlayerId] = useState();
-  const [activePlayerPic, setActivePlayerPic] = useState();
-  const [playerLocation, setPlayerLocation] = useState();
-  const [playerLocationScoreNumber, setPlayerLocationScoreNumber] = useState();
-  const [playerAxis, setPlayerAxis] = useState();
+  const [leftSide, setLeftSide] = useState(true); //delete
+  const [activePlayer, setActivePlayer] = useState(); //delete
+  const [activePlayerId, setActivePlayerId] = useState(); //delete
+  const [activePlayerPic, setActivePlayerPic] = useState(); //delete
+  const [playerLocation, setPlayerLocation] = useState(); //delete
+  const [playerLocationScoreNumber, setPlayerLocationScoreNumber] = useState(); //delete
+  const [playerAxis, setPlayerAxis] = useState(); //delete
 
-  const [liveAction, setLiveAction] = useState([]);
-  const [openGradeButton, setOpenGradeButton] = useState(false);
-  const [wantToCloseGame, setWantToCloseGame] = useState();
+  const [liveAction, setLiveAction] = useState([]); //delete
+  const [openGradeButton, setOpenGradeButton] = useState(false); //delete
+  const [wantToCloseGame, setWantToCloseGame] = useState(); //delete
 
-  const restartGameTime = useRef();
-  const restartGameShotTime = useRef();
-  const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true);
+  const restartGameTime = useRef(); //delete
+  const restartGameShotTime = useRef(); //delete
+  const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true); //keep
 
-  let redirect = useNavigate();
+  let redirect = useNavigate(); //delete
 
   //playactions
   const playerActionInitialState = {
@@ -717,7 +772,7 @@ function App(props) {
     props.setIsGameStart(true);
     setBackToChooseGameBlock(false);
     setWantToBackLiveGame(false);
-  };
+  }; //keep
 
   const selectAStartFive = async function (player, position) {
     let players = [...aTeamPlayers];
@@ -1006,430 +1061,426 @@ function App(props) {
       {finishSetting ? null : <GeneralDiv height="100px" width="100%" />}
       <Div_Record>
         {finishSetting === false ? (
-          <>
-            <DivBeforeGameRecord>
-              <RegulationBlock>
-                <RegulationBlockCell>
-                  <SelectPlayer
-                    width="500px"
-                    onChange={(e) => chooseSpecifiedGame(e.target.value)}
-                  >
-                    <option>Select Game</option>
-                    {props.scheduleGames?.map((game) => (
-                      <option value={game} key={game}>
-                        {game}
-                      </option>
-                    ))}
-                  </SelectPlayer>
-                </RegulationBlockCell>
-                <RegulationBlockCell>
-                  <SelectPlayer
-                    onChange={(e) => {
-                      let quarters = [];
-                      for (let i = 1; i <= e.target.value; i++) {
-                        if (i === 1) {
-                          quarters.push("1st");
-                        } else if (i === 2) {
-                          quarters.push("2nd");
-                        } else if (i === 3) {
-                          quarters.push("3rd");
-                        } else if (i === 4) {
-                          quarters.push("4th");
-                        }
-                      }
-                      setQuarter([...quarters]);
-                    }}
-                  >
-                    <option>Select Quar</option>
-                    <option value={4}>4 quarter</option>
-                    <option value={2}>2 half</option>
-                  </SelectPlayer>
-                </RegulationBlockCell>
-                <RegulationBlockCell>
-                  <SelectPlayer
-                    onChange={(e) => {
-                      eachQuarterTime.current = Number(e.target.value);
-                      setTimerMinutes(e.target.value);
-                    }}
-                  >
-                    <option>Select Mins</option>
-                    <option value={10}>10 mins</option>
-                    <option value={12}>12 mins</option>
-                  </SelectPlayer>
-                </RegulationBlockCell>
-              </RegulationBlock>
-              <ButtonSubmit
-                zIndex="10"
-                fontSize="1.2rem"
-                position="fixed"
-                padding="0.5rem 0.75rem"
-                bottom="40px"
-                onClick={() => {
-                  finishGameSetting();
-                }}
-              >
-                Submit
-              </ButtonSubmit>
-              <TeamBlock>
-                <GeneralDiv
-                  backgroundColor="rgba(255,255,255,0.5)"
-                  position="fixed"
-                  top="0"
-                  left="0"
-                  height="100%"
-                  width="100%"
-                />
-                <TeamBlockDetail
-                  backgroundImage={`url(${aTeamLogo})`}
-                  backgroundPosition="200%"
+          <DivBeforeGameRecord>
+            <RegulationBlock>
+              <RegulationBlockCell>
+                <SelectPlayer
+                  width="500px"
+                  onChange={(e) => chooseSpecifiedGame(e.target.value)}
                 >
-                  <TeamBlockDetailTeam display="none">
-                    <ButtonForChange
-                      onClick={() =>
-                        change(
-                          "last",
-                          aTeam,
-                          bTeam,
-                          teams,
-                          setATeam,
-                          setATeamStartFive
-                        )
+                  <option>Select Game</option>
+                  {props.scheduleGames?.map((game) => (
+                    <option value={game} key={game}>
+                      {game}
+                    </option>
+                  ))}
+                </SelectPlayer>
+              </RegulationBlockCell>
+              <RegulationBlockCell>
+                <SelectPlayer
+                  onChange={(e) => {
+                    let quarters = [];
+                    for (let i = 1; i <= e.target.value; i++) {
+                      if (i === 1) {
+                        quarters.push("1st");
+                      } else if (i === 2) {
+                        quarters.push("2nd");
+                      } else if (i === 3) {
+                        quarters.push("3rd");
+                      } else if (i === 4) {
+                        quarters.push("4th");
                       }
-                    >
-                      <i
-                        className="fa-solid fa-chevron-left"
-                        style={{
-                          color: "white",
-                          fontSize: "32px",
-                          width: " 32px",
-                          height: "32px",
-                          webkitTextStroke: "1px #495057",
-                        }}
-                      ></i>
-                    </ButtonForChange>
-                    <SelectTeam
-                      value={aTeam}
-                      onChange={(e) => {
-                        setATeam(e.target.value);
-                        setATeamStartFive([
-                          "default",
-                          "default",
-                          "default",
-                          "default",
-                          "default",
-                        ]);
+                    }
+                    setQuarter([...quarters]);
+                  }}
+                >
+                  <option>Select Quar</option>
+                  <option value={4}>4 quarter</option>
+                  <option value={2}>2 half</option>
+                </SelectPlayer>
+              </RegulationBlockCell>
+              <RegulationBlockCell>
+                <SelectPlayer
+                  onChange={(e) => {
+                    eachQuarterTime.current = Number(e.target.value);
+                    setTimerMinutes(e.target.value);
+                  }}
+                >
+                  <option>Select Mins</option>
+                  <option value={10}>10 mins</option>
+                  <option value={12}>12 mins</option>
+                </SelectPlayer>
+              </RegulationBlockCell>
+            </RegulationBlock>
+            <ButtonSubmit
+              zIndex="10"
+              fontSize="1.2rem"
+              position="fixed"
+              padding="0.5rem 0.75rem"
+              bottom="40px"
+              onClick={() => {
+                finishGameSetting();
+              }}
+            >
+              Submit
+            </ButtonSubmit>
+            <TeamBlock>
+              <GeneralDiv
+                backgroundColor="rgba(255,255,255,0.5)"
+                position="fixed"
+                top="0"
+                left="0"
+                height="100%"
+                width="100%"
+              />
+              <TeamBlockDetail
+                backgroundImage={`url(${aTeamLogo})`}
+                backgroundPosition="200%"
+              >
+                <TeamBlockDetailTeam display="none">
+                  <ButtonForChange
+                    onClick={() =>
+                      change(
+                        "last",
+                        aTeam,
+                        bTeam,
+                        teams,
+                        setATeam,
+                        setATeamStartFive
+                      )
+                    }
+                  >
+                    <i
+                      className="fa-solid fa-chevron-left"
+                      style={{
+                        color: "white",
+                        fontSize: "32px",
+                        width: " 32px",
+                        height: "32px",
+                        WebkitTextStroke: "1px #495057",
                       }}
-                    >
-                      <option disabled value="default">
-                        Select team
-                      </option>
-                      {teams.map((team, index) =>
-                        team === bTeam ? (
-                          <option disabled key={index}>
-                            {team}
-                          </option>
-                        ) : (
-                          <option key={index}>{team}</option>
-                        )
-                      )}
-                    </SelectTeam>
-                    <ButtonForChange
-                      onClick={() =>
-                        change(
-                          "next",
-                          aTeam,
-                          bTeam,
-                          teams,
-                          setATeam,
-                          setATeamStartFive
-                        )
-                      }
-                    >
-                      <i
-                        className="fa-solid fa-chevron-right"
-                        style={{
-                          webkitTextStroke: "1px #495057",
-                          color: "white",
-                          fontSize: "32px",
-                          width: " 32px",
-                          height: "32px",
-                        }}
-                      ></i>
-                    </ButtonForChange>
-                  </TeamBlockDetailTeam>
-                  <TeamBlockDetailPlayer marginLeft="auto">
-                    {aTeam && (
-                      <div>
-                        {five.map((num, index) => (
-                          <TeamBlockDetailPlayerDiv key={num}>
-                            <ButtonForChange
-                              onClick={() =>
-                                changePlayer(
-                                  "last",
-                                  index,
-                                  aTeamStartFive,
-                                  aTeamPlayersName,
-                                  setATeamStartFive
-                                )
-                              }
-                            >
-                              <i
-                                className="fa-solid fa-chevron-left"
-                                style={{
-                                  color: "white",
-                                  fontSize: "28px",
-                                  width: "28px",
-                                  webkitTextStroke: "1px #495057",
-                                  height: "28px",
-                                }}
-                              ></i>
-                            </ButtonForChange>
-                            {aTeamStartFive[index] !== "default" ? (
-                              <SelectPlayerImg
-                                style={{
-                                  backgroundImage: `url(${aTeamPlayers[index].pic})`,
-                                }}
-                              />
-                            ) : (
-                              <SelectPlayerImg />
-                            )}
-                            <SelectPlayer
-                              key={index}
-                              value={aTeamStartFive[index]}
-                              onChange={(e) => {
-                                selectAStartFive(e.target.value, num);
-                                setATeamStartFive((pre) => [
-                                  ...pre,
-                                  (aTeamStartFive[index] = e.target.value),
-                                ]);
-                              }}
-                            >
-                              <option disabled value="default">
-                                Select Player
-                              </option>
-                              {aTeamPlayers?.map((player) =>
-                                player.position === 6 ? (
-                                  <option key={player.name} value={player.name}>
-                                    {player.name}
-                                  </option>
-                                ) : (
-                                  <option disabled key={player.name}>
-                                    {player.name}
-                                  </option>
-                                )
-                              )}
-                            </SelectPlayer>
-                            <ButtonForChange
-                              onClick={() =>
-                                changePlayer(
-                                  "next",
-                                  index,
-                                  aTeamStartFive,
-                                  aTeamPlayersName,
-                                  setATeamStartFive
-                                )
-                              }
-                            >
-                              <i
-                                className="fa-solid fa-chevron-right"
-                                style={{
-                                  color: "white",
-                                  fontSize: "28px",
-                                  width: "28px",
-                                  webkitTextStroke: "1px #495057",
-                                  height: "28px",
-                                }}
-                              ></i>
-                            </ButtonForChange>
-                          </TeamBlockDetailPlayerDiv>
-                        ))}
-                      </div>
+                    ></i>
+                  </ButtonForChange>
+                  <SelectTeam
+                    value={aTeam}
+                    onChange={(e) => {
+                      setATeam(e.target.value);
+                      setATeamStartFive([
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                      ]);
+                    }}
+                  >
+                    <option disabled value="default">
+                      Select team
+                    </option>
+                    {teams.map((team, index) =>
+                      team === bTeam ? (
+                        <option disabled key={index}>
+                          {team}
+                        </option>
+                      ) : (
+                        <option key={index}>{team}</option>
+                      )
                     )}
-                  </TeamBlockDetailPlayer>
-                </TeamBlockDetail>
+                  </SelectTeam>
+                  <ButtonForChange
+                    onClick={() =>
+                      change(
+                        "next",
+                        aTeam,
+                        bTeam,
+                        teams,
+                        setATeam,
+                        setATeamStartFive
+                      )
+                    }
+                  >
+                    <i
+                      className="fa-solid fa-chevron-right"
+                      style={{
+                        WebkitTextStroke: "1px #495057",
+                        color: "white",
+                        fontSize: "32px",
+                        width: " 32px",
+                        height: "32px",
+                      }}
+                    ></i>
+                  </ButtonForChange>
+                </TeamBlockDetailTeam>
+                <TeamBlockDetailPlayer marginLeft="auto">
+                  {aTeam && (
+                    <div>
+                      {five.map((num, index) => (
+                        <TeamBlockDetailPlayerDiv key={num}>
+                          <ButtonForChange
+                            onClick={() =>
+                              changePlayer(
+                                "last",
+                                index,
+                                aTeamStartFive,
+                                aTeamPlayersName,
+                                setATeamStartFive
+                              )
+                            }
+                          >
+                            <i
+                              className="fa-solid fa-chevron-left"
+                              style={{
+                                color: "white",
+                                fontSize: "28px",
+                                width: "28px",
+                                WebkitTextStroke: "1px #495057",
+                                height: "28px",
+                              }}
+                            ></i>
+                          </ButtonForChange>
+                          {aTeamStartFive[index] !== "default" ? (
+                            <SelectPlayerImg
+                              style={{
+                                backgroundImage: `url(${aTeamPlayers[index].pic})`,
+                              }}
+                            />
+                          ) : (
+                            <SelectPlayerImg />
+                          )}
+                          <SelectPlayer
+                            key={index}
+                            value={aTeamStartFive[index]}
+                            onChange={(e) => {
+                              selectAStartFive(e.target.value, num);
+                              setATeamStartFive((pre) => [
+                                ...pre,
+                                (aTeamStartFive[index] = e.target.value),
+                              ]);
+                            }}
+                          >
+                            <option disabled value="default">
+                              Select Player
+                            </option>
+                            {aTeamPlayers?.map((player) =>
+                              player.position === 6 ? (
+                                <option key={player.name} value={player.name}>
+                                  {player.name}
+                                </option>
+                              ) : (
+                                <option disabled key={player.name}>
+                                  {player.name}
+                                </option>
+                              )
+                            )}
+                          </SelectPlayer>
+                          <ButtonForChange
+                            onClick={() =>
+                              changePlayer(
+                                "next",
+                                index,
+                                aTeamStartFive,
+                                aTeamPlayersName,
+                                setATeamStartFive
+                              )
+                            }
+                          >
+                            <i
+                              className="fa-solid fa-chevron-right"
+                              style={{
+                                color: "white",
+                                fontSize: "28px",
+                                width: "28px",
+                                WebkitTextStroke: "1px #495057",
+                                height: "28px",
+                              }}
+                            ></i>
+                          </ButtonForChange>
+                        </TeamBlockDetailPlayerDiv>
+                      ))}
+                    </div>
+                  )}
+                </TeamBlockDetailPlayer>
+              </TeamBlockDetail>
 
-                {/* <TeamBlockLogoDiv>
+              {/* <TeamBlockLogoDiv>
                   <TeamBlockLogoImg src={aTeamLogo} />
                 </TeamBlockLogoDiv> */}
-              </TeamBlock>
-              <TeamBlock>
-                <TeamBlockDetail
-                  boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
-                  backgroundImage={`url(${bTeamLogo})`}
-                  backgroundPosition="-100%"
-                >
-                  <TeamBlockDetailTeam display="none">
-                    <ButtonForChange
-                      onClick={() =>
-                        change(
-                          "last",
-                          bTeam,
-                          aTeam,
-                          teams,
-                          setBTeam,
-                          setBTeamStartFive
-                        )
-                      }
-                    >
-                      <i
-                        className="fa-solid fa-chevron-left"
-                        style={{
-                          webkitTextStroke: "1px #495057",
-                          color: "white",
-                          fontSize: "32px",
-                          width: " 32px",
-                          height: "32px",
-                        }}
-                      ></i>
-                    </ButtonForChange>
-
-                    <SelectTeam
-                      value={bTeam}
-                      onChange={(e) => {
-                        setBTeam(e.target.value);
-                        setBTeamStartFive([
-                          "default",
-                          "default",
-                          "default",
-                          "default",
-                          "default",
-                        ]);
+            </TeamBlock>
+            <TeamBlock>
+              <TeamBlockDetail
+                boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
+                backgroundImage={`url(${bTeamLogo})`}
+                backgroundPosition="-100%"
+              >
+                <TeamBlockDetailTeam display="none">
+                  <ButtonForChange
+                    onClick={() =>
+                      change(
+                        "last",
+                        bTeam,
+                        aTeam,
+                        teams,
+                        setBTeam,
+                        setBTeamStartFive
+                      )
+                    }
+                  >
+                    <i
+                      className="fa-solid fa-chevron-left"
+                      style={{
+                        WebkitTextStroke: "1px #495057",
+                        color: "white",
+                        fontSize: "32px",
+                        width: " 32px",
+                        height: "32px",
                       }}
-                    >
-                      <option disabled value="default">
-                        Select team
-                      </option>
-                      {teams.map((team, index) =>
-                        team === aTeam ? (
-                          <option disabled key={index}>
-                            {team}
-                          </option>
-                        ) : (
-                          <option key={index}>{team}</option>
-                        )
-                      )}
-                    </SelectTeam>
-                    <ButtonForChange
-                      onClick={() =>
-                        change(
-                          "next",
-                          bTeam,
-                          aTeam,
-                          teams,
-                          setBTeam,
-                          setBTeamStartFive
-                        )
-                      }
-                    >
-                      <i
-                        className="fa-solid fa-chevron-right"
-                        style={{
-                          webkitTextStroke: "1px #495057",
-                          color: "white",
-                          fontSize: "32px",
-                          width: " 32px",
-                          height: "32px",
-                        }}
-                      ></i>
-                    </ButtonForChange>
-                  </TeamBlockDetailTeam>
-                  <TeamBlockDetailPlayer>
-                    {bTeam && (
-                      <div>
-                        {five.map((num, index) => (
-                          <TeamBlockDetailPlayerDiv key={num}>
-                            <ButtonForChange
-                              onClick={() =>
-                                changePlayer(
-                                  "last",
-                                  index,
-                                  bTeamStartFive,
-                                  bTeamPlayersName,
-                                  setBTeamStartFive
-                                )
-                              }
-                            >
-                              <i
-                                className="fa-solid fa-chevron-left"
-                                style={{
-                                  color: "white",
-                                  fontSize: "28px",
-                                  width: "28px",
-                                  webkitTextStroke: "1px #495057",
-                                  height: "28px",
-                                }}
-                              ></i>
-                            </ButtonForChange>
+                    ></i>
+                  </ButtonForChange>
 
-                            <SelectPlayer
-                              key={index}
-                              value={bTeamStartFive[index]}
-                              onChange={(e) => {
-                                selectBStartFive(e.target.value, num);
-                                setBTeamStartFive((pre) => [
-                                  ...pre,
-                                  (bTeamStartFive[index] = e.target.value),
-                                ]);
-                              }}
-                            >
-                              <option disabled value="default">
-                                Select Player
-                              </option>
-                              {bTeamPlayers?.map((player) =>
-                                player.position === 6 ? (
-                                  <option key={player.name}>
-                                    {player.name}
-                                  </option>
-                                ) : (
-                                  <option disabled key={player.name}>
-                                    {player.name}
-                                  </option>
-                                )
-                              )}
-                            </SelectPlayer>
-                            {bTeamStartFive[index] !== "default" ? (
-                              <SelectPlayerImg
-                                style={{
-                                  backgroundImage: `url(${bTeamPlayers[index].pic})`,
-                                }}
-                              />
-                            ) : (
-                              <SelectPlayerImg />
-                            )}
-                            <ButtonForChange
-                              onClick={() =>
-                                changePlayer(
-                                  "next",
-                                  index,
-                                  bTeamStartFive,
-                                  bTeamPlayersName,
-                                  setBTeamStartFive
-                                )
-                              }
-                            >
-                              <i
-                                className="fa-solid fa-chevron-right"
-                                style={{
-                                  color: "white",
-                                  fontSize: "28px",
-                                  width: "28px",
-                                  webkitTextStroke: "1px #495057",
-                                  height: "28px",
-                                }}
-                              ></i>
-                            </ButtonForChange>
-                          </TeamBlockDetailPlayerDiv>
-                        ))}
-                      </div>
+                  <SelectTeam
+                    value={bTeam}
+                    onChange={(e) => {
+                      setBTeam(e.target.value);
+                      setBTeamStartFive([
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                        "default",
+                      ]);
+                    }}
+                  >
+                    <option disabled value="default">
+                      Select team
+                    </option>
+                    {teams.map((team, index) =>
+                      team === aTeam ? (
+                        <option disabled key={index}>
+                          {team}
+                        </option>
+                      ) : (
+                        <option key={index}>{team}</option>
+                      )
                     )}
-                  </TeamBlockDetailPlayer>
-                </TeamBlockDetail>
-                {/* <TeamBlockLogoDiv>
+                  </SelectTeam>
+                  <ButtonForChange
+                    onClick={() =>
+                      change(
+                        "next",
+                        bTeam,
+                        aTeam,
+                        teams,
+                        setBTeam,
+                        setBTeamStartFive
+                      )
+                    }
+                  >
+                    <i
+                      className="fa-solid fa-chevron-right"
+                      style={{
+                        WebkitTextStroke: "1px #495057",
+                        color: "white",
+                        fontSize: "32px",
+                        width: " 32px",
+                        height: "32px",
+                      }}
+                    ></i>
+                  </ButtonForChange>
+                </TeamBlockDetailTeam>
+                <TeamBlockDetailPlayer>
+                  {bTeam && (
+                    <div>
+                      {five.map((num, index) => (
+                        <TeamBlockDetailPlayerDiv key={num}>
+                          <ButtonForChange
+                            onClick={() =>
+                              changePlayer(
+                                "last",
+                                index,
+                                bTeamStartFive,
+                                bTeamPlayersName,
+                                setBTeamStartFive
+                              )
+                            }
+                          >
+                            <i
+                              className="fa-solid fa-chevron-left"
+                              style={{
+                                color: "white",
+                                fontSize: "28px",
+                                width: "28px",
+                                WebkitTextStroke: "1px #495057",
+                                height: "28px",
+                              }}
+                            ></i>
+                          </ButtonForChange>
+
+                          <SelectPlayer
+                            key={index}
+                            value={bTeamStartFive[index]}
+                            onChange={(e) => {
+                              selectBStartFive(e.target.value, num);
+                              setBTeamStartFive((pre) => [
+                                ...pre,
+                                (bTeamStartFive[index] = e.target.value),
+                              ]);
+                            }}
+                          >
+                            <option disabled value="default">
+                              Select Player
+                            </option>
+                            {bTeamPlayers?.map((player) =>
+                              player.position === 6 ? (
+                                <option key={player.name}>{player.name}</option>
+                              ) : (
+                                <option disabled key={player.name}>
+                                  {player.name}
+                                </option>
+                              )
+                            )}
+                          </SelectPlayer>
+                          {bTeamStartFive[index] !== "default" ? (
+                            <SelectPlayerImg
+                              style={{
+                                backgroundImage: `url(${bTeamPlayers[index].pic})`,
+                              }}
+                            />
+                          ) : (
+                            <SelectPlayerImg />
+                          )}
+                          <ButtonForChange
+                            onClick={() =>
+                              changePlayer(
+                                "next",
+                                index,
+                                bTeamStartFive,
+                                bTeamPlayersName,
+                                setBTeamStartFive
+                              )
+                            }
+                          >
+                            <i
+                              className="fa-solid fa-chevron-right"
+                              style={{
+                                color: "white",
+                                fontSize: "28px",
+                                width: "28px",
+                                WebkitTextStroke: "1px #495057",
+                                height: "28px",
+                              }}
+                            ></i>
+                          </ButtonForChange>
+                        </TeamBlockDetailPlayerDiv>
+                      ))}
+                    </div>
+                  )}
+                </TeamBlockDetailPlayer>
+              </TeamBlockDetail>
+              {/* <TeamBlockLogoDiv>
                   <TeamBlockLogoImg src={bTeamLogo} />
                 </TeamBlockLogoDiv> */}
-              </TeamBlock>
-            </DivBeforeGameRecord>
-          </>
+            </TeamBlock>
+          </DivBeforeGameRecord>
         ) : (
           <DivGameStartRecord>
             {wantToCloseGame ? (
@@ -1696,10 +1747,7 @@ const PopupEndGameBlock = function (props) {
             height="40px"
             fontSize="20px"
             margin="0 10px 0 0"
-            onClick={
-              // console.log("gggg")
-              props.endGame
-            }
+            onClick={props.endGame}
           >
             Yes
           </ButtonSubmit>
