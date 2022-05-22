@@ -28,11 +28,11 @@ const LiveActionContainer = styled.div`
 
 const LiveActionlines = styled.div`
   display: flex;
-  margin-top: 10px;
+  margin-top: 14px;
 `;
 
 const LiveRoomLines = styled.div`
-  padding: 0 5px;
+  padding: 0 8px;
   span {
     font-size: 14px;
   }
@@ -45,6 +45,7 @@ const LinesPlayerPic = styled.img`
 `;
 
 const LinesForATeam = styled.div`
+  border-radius: 5px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -53,6 +54,7 @@ const LinesForATeam = styled.div`
   box-shadow: 0px 2px 2px 3px rgba(0, 0, 0, 0.2);
 `;
 const LinesForBTeam = styled.div`
+  border-radius: 5px;
   display: flex;
   align-items: center;
   width: 33vw;

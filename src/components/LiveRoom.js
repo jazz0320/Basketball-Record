@@ -1,9 +1,84 @@
 import { useEffect, useState } from "react";
 import { doc, onSnapshot, getDoc, db } from "../utils/firebase";
-import { GeneralDiv, GeneralSpan, GeneralImg } from "../utils/StyleComponent";
 import LiveRoomScore from "./LiveRoomScore";
 import LiveRoomStream from "./LiveRoomStream";
 import LiveRoomData from "./LiveRoomData";
+import styled from "styled-components";
+
+const FullPageContainer = styled.div`
+  width: 100vw;
+  padding: 1vh 1vw 0 1vw;
+  display: flex;
+  justify-content: center;
+  background-color: #e9ecef;
+`;
+
+const ContentContainer = styled.div`
+  width: 80vw;
+  background-color: #f8f9fa;
+  padding: 105px 1vw 3vh 1vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: cneter;
+  box-shadow: 0px 0px 3px 5px rgba(0, 0, 0, 0.3); ;
+`;
+
+const TeamInfContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const LogoBox = styled.div`
+  height: 170px;
+  width: 170px;
+`;
+
+const LogoImg = styled.img`
+  filter: drop-shadow(-15px 15px 4px rgba(0, 0, 0, 0.5));
+`;
+
+const ScoreTable = styled.table`
+  background-color: #343a40;
+  color: #f8f9fa;
+  text-align: center;
+  border-radius: 5px;
+  border-style: none;
+  border-collapse: separate;
+  width: 45%;
+  height: 120px;
+`;
+
+const WatchSpanBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+`;
+
+const WatchSpan = styled.span`
+  border-radius: 5px;
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: ${(props) => (props.watchBox ? "#5e7380" : "#f7f7f7")};
+  color: ${(props) => (props.watchBox ? "#fff" : "#333")};
+  cursor: pointer;
+  hover {
+    background-color: #bbb;
+    color: #fff;
+  }
+`;
+
+const WactchContentBox = styled.div`
+  display: flex;
+  justify-content: center;
+  min-height: 70vh;
+  max-height: 150vh;
+  overflow-y: scroll;
+  width: 100%;
+`;
 
 function LiveRoom(props) {
   const [liveAction, setLiveAction] = useState();
@@ -65,34 +140,13 @@ function LiveRoom(props) {
       {!props.pastGameName && endGame ? (
         <div>比賽結束</div>
       ) : finishSetting ? (
-        <GeneralDiv
-          display="flex"
-          justifyContent="center"
-          backgroundColor="#e9ecef"
-          padding="1vh 1vw"
-          width="100vw"
-        >
-          <GeneralDiv
-            width="80vw"
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="center"
-            backgroundColor="#f8f9fa"
-            boxShadow="0px 0px 7px 5px rgba(0, 0, 0, 0.7);"
-          >
-            <GeneralDiv height="100px" width="100%" />
-            <div className="w-screen h-fit flex justify-around items-center">
-              <GeneralDiv height="170px" width="170px">
-                <GeneralImg
-                  src={aTeamLogo}
-                  filter="drop-shadow(-15px 15px 4px rgba(0, 0, 0, 0.5))"
-                />
-              </GeneralDiv>
-              <table
-                className="bg-coolors_8 text-xl text-coolors_1 text-center rounded border-none border-separate w-5/12 h-28"
-                cellPadding="1"
-                border="1"
-              >
+        <FullPageContainer>
+          <ContentContainer>
+            <TeamInfContainer>
+              <LogoBox>
+                <LogoImg src={aTeamLogo} />
+              </LogoBox>
+              <ScoreTable cellPadding="1" border="1">
                 <thead>
                   <tr>
                     <th>隊伍</th>
@@ -150,76 +204,43 @@ function LiveRoom(props) {
                     </td>
                   </tr>
                 </tbody>
-              </table>
-              <GeneralDiv height="170px" width="170px">
-                <GeneralImg
-                  src={bTeamLogo}
-                  filter="drop-shadow(-15px 15px 4px rgba(0, 0, 0, 0.5))"
-                />
-              </GeneralDiv>
-            </div>
-            <div
-              className="w-screen flex justify-center h-fit items-center mb-3"
-              id="radio"
-            >
-              <GeneralSpan
-                borderRadius="5px"
-                display="inline-block"
-                padding="5px 10px"
-                backgroundColor={
-                  watchBox === "boxscore" ? "#5e7380" : "#f7f7f7"
-                }
-                color={watchBox === "boxscore" ? "#fff" : "#333"}
-                cursor="pointer"
-                hoverBackgroundColor="#bbb"
-                hoverColor="#fff"
+              </ScoreTable>
+              <LogoBox>
+                <LogoImg src={bTeamLogo} />
+              </LogoBox>
+            </TeamInfContainer>
+            <WatchSpanBox id="radio">
+              <WatchSpan
+                watchBox={watchBox === "boxscore"}
                 onClick={() => {
                   setWatchBox("boxscore");
                 }}
               >
                 {" "}
                 Box-score{" "}
-              </GeneralSpan>
+              </WatchSpan>
 
-              <GeneralSpan
-                borderRadius="5px"
-                display="inline-block"
-                padding="5px 10px"
-                backgroundColor={
-                  watchBox === "livestream" ? "#5e7380" : "#f7f7f7"
-                }
-                color={watchBox === "livestream" ? "#fff" : "#333"}
-                cursor="pointer"
-                hoverBackgroundColor="#bbb"
-                hoverColor="#fff"
+              <WatchSpan
+                watchBox={watchBox === "livestream"}
                 onClick={() => {
                   setWatchBox("livestream");
                 }}
               >
                 {" "}
                 Live-Stream{" "}
-              </GeneralSpan>
+              </WatchSpan>
 
-              <GeneralSpan
-                borderRadius="5px"
-                display="inline-block"
-                padding="5px 10px"
-                backgroundColor={
-                  watchBox === "teamdata" ? "#5e7380" : "#f7f7f7"
-                }
-                color={watchBox === "teamdata" ? "#fff" : "#333"}
-                cursor="pointer"
-                hoverBackgroundColor="#bbb"
-                hoverColor="#fff"
+              <WatchSpan
+                watchBox={watchBox === "teamdata"}
                 onClick={() => {
                   setWatchBox("teamdata");
                 }}
               >
                 {" "}
                 Team-Data{" "}
-              </GeneralSpan>
-            </div>
-            <GeneralDiv minHeight="70vh" maxHeight="150vh" overflowY="scroll">
+              </WatchSpan>
+            </WatchSpanBox>
+            <WactchContentBox>
               {watchBox === "boxscore" ? (
                 <div>
                   <LiveRoomScore
@@ -249,258 +270,12 @@ function LiveRoom(props) {
                   />
                 </div>
               ) : null}
-            </GeneralDiv>
-          </GeneralDiv>
-        </GeneralDiv>
+            </WactchContentBox>
+          </ContentContainer>
+        </FullPageContainer>
       ) : null}
     </>
   );
 }
 
 export default LiveRoom;
-
-function TeamData(props) {
-  const [quarterNowData, setQuarterNowData] = useState(props.quarter.length);
-  const [dataKeys, setDataKeys] = useState();
-  useEffect(() => {
-    setDataKeys(Object.keys(props.aTeamData[quarterNowData]));
-  }, []);
-  const [barData, setBarData] = useState();
-  useEffect(() => {
-    if (dataKeys !== undefined) {
-      const array = dataKeys.map((key) => ({
-        [`${key}`]: {
-          A: props.aTeamData[quarterNowData][`${key}`],
-          B: props.bTeamData[quarterNowData][`${key}`],
-        },
-      }));
-      let newObject = {};
-      for (let i = 0; i < dataKeys.length; i++) {
-        newObject = { ...newObject, ...array[i] };
-      }
-
-      setBarData(newObject);
-    }
-  }, [dataKeys, quarterNowData, props.aTeamData, props.bTeamData]);
-
-  return (
-    <>
-      <div className="flex justify-center">
-        {props.quarter &&
-          props.quarter.map((q, index) => (
-            <GeneralSpan
-              key={index}
-              borderRadius="5px"
-              display="inline-block"
-              padding="5px 10px"
-              backgroundColor={quarterNowData === index ? "#5e7380" : "#f7f7f7"}
-              color={quarterNowData === index ? "#fff" : "#333"}
-              cursor="pointer"
-              hoverBackgroundColor="#bbb"
-              hoverColor="#fff"
-              onClick={() => {
-                setQuarterNowData(index);
-              }}
-            >
-              {" "}
-              {q}{" "}
-            </GeneralSpan>
-          ))}
-        <GeneralSpan
-          borderRadius="5px"
-          display="inline-block"
-          padding="5px 10px"
-          backgroundColor={
-            quarterNowData === props.quarter.length ? "#5e7380" : "#f7f7f7"
-          }
-          color={quarterNowData === props.quarter.length ? "#fff" : "#333"}
-          cursor="pointer"
-          hoverBackgroundColor="#bbb"
-          hoverColor="#fff"
-          onClick={() => {
-            setQuarterNowData(props.quarter.length);
-          }}
-        >
-          {" "}
-          All{" "}
-        </GeneralSpan>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "scroll",
-        }}
-      >
-        <div
-          className="mt-3"
-          style={{
-            border: "1px solid black",
-            borderRadius: "10px",
-            padding: "0.5vh 0",
-          }}
-        >
-          {barData
-            ? dataKeys?.map((item, index) =>
-                (item !== "fgRate") &
-                (item !== "ftRate") &
-                (item !== "threePtRate") ? (
-                  <Bar
-                    widthA={barData[item]["A"]}
-                    widthB={barData[item]["B"]}
-                    label={item}
-                    key={index}
-                  />
-                ) : (
-                  <BarPercent
-                    widthA={barData[item]["A"]}
-                    widthB={barData[item]["B"]}
-                    label={item}
-                    key={index}
-                  />
-                )
-              )
-            : null}
-        </div>
-      </div>
-      {/* </div> */}
-    </>
-  );
-}
-
-function Bar(props) {
-  return (
-    <div className="" style={{ marginBottom: "0.75vh" }}>
-      <div
-        style={{
-          display: "flex",
-          maxWidth: "90vw",
-        }}
-      >
-        <div
-          className="flex items-center justify-center"
-          style={{ width: "60px" }}
-        >
-          {props.widthA}
-        </div>
-        <div
-          className="flex justify-end mr-2"
-          style={{
-            backgroundColor: "#dee2e6",
-            // border: "1px solid red",
-            width: "25vw",
-          }}
-        >
-          <div
-            className=""
-            style={{
-              width: `${props.widthA}%`,
-              height: "2.7vh",
-              backgroundColor: "silver",
-            }}
-          />
-        </div>
-        <div
-          style={{ height: "2.7vh", width: "100px" }}
-          className="bg-coolors_2 items-center flex justify-center"
-        >
-          {props.label}
-        </div>
-        <div
-          className="ml-2 "
-          style={{
-            backgroundColor: "#dee2e6",
-            // border: "1px solid blue",
-            width: "25vw",
-          }}
-        >
-          <div
-            style={{
-              width: `${props.widthB}%`,
-              height: "2.7vh",
-              backgroundColor: "silver",
-            }}
-          />
-        </div>
-        <div
-          className="flex items-center justify-center"
-          style={{ width: "60px" }}
-        >
-          {props.widthB}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function BarPercent(props) {
-  function round(num) {
-    var m = Number((Math.abs(num) * 100).toPrecision(15));
-    return (Math.round(m) / 100) * Math.sign(num);
-  }
-  return (
-    <div className="" style={{ marginBottom: "0.75vh" }}>
-      <div
-        style={{
-          display: "flex",
-          maxWidth: "90vw",
-        }}
-      >
-        <div
-          className="flex items-center justify-center"
-          style={{ width: "60px" }}
-        >
-          {round(props.widthA * 100)}%
-        </div>
-        <div
-          className="flex justify-end mr-2"
-          style={{
-            // border: "1px solid red",
-            backgroundColor: "#dee2e6",
-            width: "25vw",
-          }}
-        >
-          <div
-            className=""
-            style={{
-              width: `${props.widthA * 100}%`,
-              height: "2.7vh",
-              backgroundColor: "silver",
-            }}
-          />
-        </div>
-        <div
-          style={{ height: "2.7vh", width: "100px" }}
-          className="bg-coolors_2 items-center flex justify-center"
-        >
-          {props.label}
-        </div>
-        <div
-          className="ml-2 "
-          style={{
-            backgroundColor: "#dee2e6",
-            // border: "1px solid blue",
-            width: "25vw",
-          }}
-        >
-          <div
-            style={{
-              width: `${props.widthB * 100}%`,
-              height: "2.7vh",
-              backgroundColor: "silver",
-            }}
-          />
-        </div>
-        <div
-          className="flex items-center justify-center"
-          style={{ width: "60px" }}
-        >
-          {round(props.widthB * 100)}%
-        </div>
-      </div>
-    </div>
-  );
-}
