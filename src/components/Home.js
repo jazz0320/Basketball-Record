@@ -162,6 +162,8 @@ const CarousellContainer = styled.div`
     display: none;
     /* Chrome Safari */
   }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 
 const GameContainerL1 = styled.div`
