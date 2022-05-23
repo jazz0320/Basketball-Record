@@ -1,14 +1,65 @@
 import { useEffect, useState, useRef } from "react";
 import { doc, db, setDoc } from "../utils/firebase";
-import {
-  GeneralDiv,
-  Div_Record,
-  ButtonSubmit,
-  PopupDiv,
-} from "../utils/StyleComponent";
+import styled from "styled-components";
 import ContinueGame from "./ContinuteGame";
 import AppGameStart from "./AppGameStart";
 import AppGameSetting from "./AppGameSetting";
+
+const Div_Record = styled.div`
+  display: fiexd;
+`;
+
+const PopupDiv = styled.div`
+  top: 40vh;
+  left: 42vw;
+  z-index: 100;
+  height: 100px;
+  width: 16vw;
+  background-color: #ced4da;
+  position: fixed;
+  box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.2);
+  color: #f8f9fa;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  &:hover {
+    box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.5);
+  }
+`;
+
+const ButtonSubmit = styled.button`
+  margin: 0px 15px;
+  padding: 5px 15px;
+  font-size: 20px;
+  background-color: #343a40;
+  border: 1px solid white;
+  white-space: nowrap;
+  color: hsla(150, 14%, 97%, 1);
+  cursor: pointer;
+  outline: none;
+  text-shadow: 0.1rem 0.1rem 0.5rem hsla(0, 0%, 0%, 0.5);
+  letter-spacing: 0.1rem;
+  border-radius: 0.5rem;
+  user-select: none;
+  transition: all 0.1s ease-in;
+  ::-moz-focus-inner {
+    border: 0;
+  }
+  &:hover {
+    background-color: #495057;
+    ${() => `transform: translateY(-3px)`}
+  }
+  &:active {
+    background-color: ${() => "#212529"};
+  }
+`;
+const SpaceDiv = styled.div`
+  height: 100px;
+  width: 100%;
+`;
 
 function App(props) {
   const [backToChooseGameBlock, setBackToChooseGameBlock] = useState(false);
@@ -117,27 +168,9 @@ function App(props) {
   return (
     <>
       {backToChooseGameBlock && (
-        <PopupDiv
-          top="40vh"
-          left="42vw"
-          zIndex="100"
-          height="100px"
-          width="16vw"
-          backgroundColor="#ced4da"
-        >
-          <ButtonSubmit
-            margin="0px 30px 0px 0px"
-            padding="5px 15px"
-            onClick={finishGameSetting}
-            fontSize="20px"
-          >
-            確認
-          </ButtonSubmit>
-          <ButtonSubmit
-            padding="5px 15px"
-            fontSize="20px"
-            onClick={() => setBackToChooseGameBlock(false)}
-          >
+        <PopupDiv>
+          <ButtonSubmit onClick={finishGameSetting}>確認</ButtonSubmit>
+          <ButtonSubmit onClick={() => setBackToChooseGameBlock(false)}>
             取消
           </ButtonSubmit>
         </PopupDiv>
@@ -170,7 +203,7 @@ function App(props) {
           everyLiveGames={props.everyLiveGames}
         />
       ) : null}
-      {finishSetting ? null : <GeneralDiv height="100px" width="100%" />}
+      {finishSetting ? null : <SpaceDiv />}
       <Div_Record>
         {finishSetting === false ? (
           <AppGameSetting
