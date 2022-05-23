@@ -91,7 +91,6 @@ function App(props) {
   const restartGameShotTime = useRef();
   const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true);
 
-  //偵測螢幕大小
   const getPageSize = function () {
     const pageWidth = document.documentElement.scrollWidth;
     const pageHeight = document.documentElement.scrollHeight;

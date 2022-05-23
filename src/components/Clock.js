@@ -112,7 +112,6 @@ function Clock(props) {
     }
   }, [props.restartGameTime.current, props.restartGameShotTime.current]);
 
-  //timer
   let interval = useRef();
   let timePast = 0;
   let shotClockTimepast = 0;
@@ -136,12 +135,10 @@ function Clock(props) {
         setRestTime(distance);
         setShotClockRestTime(shotClockDistance * 1000);
         if ((distance < 0) | (shotClockDistance < 0)) {
-          //stop timer
           clearInterval(interval.current);
-          // setTimeStop(true);
+
           timeFreeze.current = true;
         } else {
-          //update timer
           setShotClock(shotClockDistance);
           props.setTimerMinutes(minutes);
           props.setTimerSeconds(seconds);
@@ -166,12 +163,10 @@ function Clock(props) {
           shotClockTimepast += 100;
           setShotClockRestTime(shotClockDistance);
           if ((distance < 0) | (shotClockDistance < 0)) {
-            //stop timer
             clearInterval(interval.current);
-            // setTimeStop(true);
+
             timeFreeze.current = true;
           } else {
-            //update timer
             setShotClock(shotClockDistance / 1000);
             props.setTimerMinutes(minutes);
             props.setTimerSeconds(seconds);
@@ -185,7 +180,6 @@ function Clock(props) {
     if (timeFreeze.current === false) {
       alert("暫停");
       clearInterval(interval.current);
-      // setTimeStop(true);
       timeFreeze.current = true;
     }
   };
@@ -210,12 +204,10 @@ function Clock(props) {
         setShotClockRestTime(shotClockDistance);
 
         if ((distance < 0) | (shotClockDistance < 0)) {
-          //stop timer
           clearInterval(interval.current);
-          // setTimeStop(true);
+
           timeFreeze.current = true;
         } else {
-          //update timer
           setShotClock(shotClockDistance / 1000);
           props.setTimerMinutes(minutes);
           props.setTimerSeconds(seconds);
@@ -243,11 +235,11 @@ function Clock(props) {
       window.removeEventListener("keydown", action);
     };
   }, [shotClockRestTime]);
-  //behavior affect time
+
   useEffect(() => {
     stop();
   }, [props.affectTimeStopBehavior]);
-  //behavior affect shotClock
+
   useEffect(() => {
     reset24seconds();
   }, [props.affectShotClockBehavior]);

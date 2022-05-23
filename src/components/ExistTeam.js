@@ -333,7 +333,6 @@ function ModifyPlayer(props) {
     const file = e.target.files[0];
     const path = file.name;
     const imgRef = ref(storage, `${props.userId}/${path}`);
-    let a;
     await uploadBytes(imgRef, file).then((snapshot) => {});
     await getDownloadURL(ref(storage, `${props.userId}/${path}`))
       .then((url) => {

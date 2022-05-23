@@ -1,6 +1,6 @@
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
-import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import { getDocs, collection, db, getDoc, doc } from "../utils/firebase";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -21,7 +21,6 @@ const ContentContainer = styled.div`
 
 function GameSchedule(props) {
   const [events, setEvents] = useState([]);
-  const handleDateClick = (e) => {};
 
   async function loadingSchedule() {
     let teamName;
@@ -54,7 +53,6 @@ function GameSchedule(props) {
         <ContentContainer>
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
-            dateClick={handleDateClick}
             weekends={true}
             events={events}
           />
