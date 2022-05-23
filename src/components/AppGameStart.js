@@ -1,21 +1,214 @@
 import { useEffect, useReducer, useState, useRef } from "react";
 import { getDoc, doc, db, setDoc, deleteDoc } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
-import {
-  GeneralDiv,
-  DivGameStartLogo,
-  DivGameStartRecord,
-  DivGameStart_Container,
-  ButtonSubmit,
-  GroundContainer,
-  LiveActionBolck,
-  PopupBlur,
-  PopupDiv,
-} from "../utils/StyleComponent";
+import styled from "styled-components";
 import Clock from "./Clock";
 import TeamBox from "./TeamBox";
 import Court from "./Court";
 import RecordRoom from "./RecordRoom";
+
+const DivGameStartLogo = styled.div`
+  pointer-events: none;
+  width: 10vw;
+  height: 100%;
+  background-size: cover;
+  transition-duration: 0.5s;
+  background-image: ${(props) => props.backgroundImage};
+  background-position: ${(props) => props.backgroundPosition};
+  opacity: ${(props) => props.opacity};
+`;
+
+const DivGameStartRecord = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #e9ecef;
+`;
+
+const DivGameStart_Container = styled.div`
+  width: 80vw;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  overflow-y: scroll;
+  justify-content: center;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+`;
+
+const ScoreTableContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  right: 10px;
+  bottom: 70px;
+  z-index: 10;
+`;
+
+const ScoreTable = styled.table`
+  color: #f8f9fa;
+  background-color: #343a40;
+  text-align: center;
+  border-radius: 0.25rem;
+  border-style: none;
+  border-collapse: separate;
+`;
+
+const GameRegulationContainer = styled.div`
+  display: flex;
+  box-shadow: 0px 0px 1px 3px rgba(108, 117, 125, 0.4);
+  flex-wrap: nowrap;
+  background-color: transparent;
+  justify-content: space-around;
+  width: 740px;
+  align-items: center;
+  border-radius: 5px;
+  margin-bottom: 5px;
+`;
+
+const GameActionButtonContainer = styled.div`
+  height: 50px;
+  width: 280px;
+  background-color: #343a40;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 0 5px 5px 0;
+`;
+
+const GameActionButton = styled.button`
+  height: 30px;
+  padding: 1px 4px;
+  font-size: 16px;
+  border: 1px solid white;
+  background-color: #343a40;
+  white-space: nowrap;
+  color: hsla(150, 14%, 97%, 1);
+  cursor: pointer;
+  outline: none;
+  text-shadow: 0.1rem 0.1rem 0.5rem hsla(0, 0%, 0%, 0.5);
+  letter-spacing: 0.1rem;
+  border-radius: 0.5rem;
+  user-select: none;
+  transition: all 0.1s ease-in;
+  ::-moz-focus-inner {
+    border: 0;
+  }
+  &:hover {
+    background-color: #495057;
+    ${() => `transform: translateY(-3px)`}
+  }
+  &:active {
+    background-color: ${() => "#212529"};
+  }
+`;
+
+const ButtonSubmit = styled.button`
+  width: 60px;
+  height: 40px;
+  font-size: 20px;
+  margin: 0 10px;
+  background-color: #343a40;
+  border: 1px solid white;
+  white-space: nowrap;
+  color: hsla(150, 14%, 97%, 1);
+  cursor: pointer;
+  outline: none;
+  text-shadow: 0.1rem 0.1rem 0.5rem hsla(0, 0%, 0%, 0.5);
+  letter-spacing: 0.1rem;
+  border-radius: 0.5rem;
+  user-select: none;
+  transition: all 0.1s ease-in;
+  ::-moz-focus-inner {
+    border: 0;
+  }
+  &:hover {
+    background-color: #495057;
+    ${() => `transform: translateY(-3px)`}
+  }
+  &:active {
+    background-color: ${() => "#212529"};
+  }
+`;
+
+const GroundContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const LiveActionBolck = styled.div`
+  box-shadow: 0px 0px 1px 3px rgba(108, 117, 125, 0.3);
+  margin-bottom: 5px;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  border-radius: 5px;
+  padding: 7px 10px;
+  width: 740px;
+  div {
+    overflow-x: hidden;
+    color: ${(props) => (props.ok ? "white" : "#6c757d")};
+    height: 36px;
+    padding: 1px 10px;
+    margin-right: 3px;
+    box-shadow: 0px 0px 1px 1px rgba(108, 117, 125, 0.4);
+    border-radius: 5px;
+    background-color: ${(props) => (props.ok ? "#343a40" : "#adb5bd")};
+    animation-name: popup;
+    animation-duration: 0.3s;
+
+    @keyframes popup {
+      0% {
+        transform: translateY(20px);
+        background-color: #343a40;
+        color: white;
+      }
+      90% {
+        transform: translateY(-10px);
+        background-color: #6c757d;
+        color: white;
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  }
+`;
+
+const PopupBlur = styled.div`
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 6;
+  background-color: rgba(0, 0, 0);
+  opacity: 0.5;
+`;
+
+const PopupDiv = styled.div`
+  height: 120px;
+  font-size: 28px;
+  top: 38vh;
+  border-radius: 5px;
+  background-color: rgba(206, 212, 218, 1);
+  color: #343a40;
+  position: fixed;
+  box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.2);
+  left: 40vw;
+  width: 20vw;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  &:hover {
+    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.3);
+  }
+`;
 
 function AppGameStart(props) {
   const whoWin = useRef();
@@ -558,23 +751,13 @@ function AppGameStart(props) {
       ) : null}
       <DivGameStartLogo
         backgroundImage={`url(${props.aTeamLogo})`}
-        backgroundSize="cover"
         backgroundPosition="-200%"
         opacity={leftSide ? "0.7" : "0.3"}
-        transitionDuration="0.5s"
       />
       <DivGameStart_Container>
         {openGradeButton && (
-          <GeneralDiv
-            display="flex"
-            justifyContent="center"
-            position="fixed"
-            right="10px"
-            bottom="70px"
-            zIndex="10"
-          >
-            <table
-              className="bg-coolors_8 text-coolors_1 text-center rounded border-none border-separate"
+          <ScoreTableContainer>
+            <ScoreTable
               cellPadding="10"
               border="2"
               style={{ fontSize: "20px" }}
@@ -628,21 +811,11 @@ function AppGameStart(props) {
                   </td>
                 </tr>
               </tbody>
-            </table>
-          </GeneralDiv>
+            </ScoreTable>
+          </ScoreTableContainer>
         )}
-        <GeneralDiv>
-          <GeneralDiv
-            display="flex"
-            boxShadow="0px 0px 1px 3px rgba(108,117,125, 0.4);"
-            flexWrap="nowrap"
-            backgroundColor="transparent"
-            justifyContent="space-around"
-            width="740px"
-            alignItems="center"
-            borderRadius="5px"
-            marginBottom="5px"
-          >
+        <div>
+          <GameRegulationContainer>
             <Clock
               restartGameShotTime={props.restartGameShotTime}
               restartGameTime={props.restartGameTime}
@@ -659,20 +832,8 @@ function AppGameStart(props) {
               affectTimeStopBehavior={affectTimeStopBehavior}
               affectShotClockBehavior={affectShotClockBehavior}
             />
-            <GeneralDiv
-              height="50px"
-              width="280px"
-              backgroundColor="#343a40"
-              display="flex"
-              alignItems="center"
-              justifyContent="space-around"
-              borderRadius="0 5px 5px 0"
-            >
-              <ButtonSubmit
-                height="30px"
-                padding="1px 4px"
-                fontSize="16px"
-                border="1px solid white"
+            <GameActionButtonContainer>
+              <GameActionButton
                 onClick={() => {
                   setExchangePlayer((pre) => !pre);
                   setActivePlayer();
@@ -684,18 +845,9 @@ function AppGameStart(props) {
                 }}
               >
                 請求換人
-              </ButtonSubmit>
-              <ButtonSubmit
-                height="30px"
-                padding="1px 4px"
-                fontSize="16px"
-                border="1px solid white"
-              >
-                請求暫停
-              </ButtonSubmit>
-              <ButtonSubmit
-                fontSize="16px"
-                padding="1px 5px"
+              </GameActionButton>
+              <GameActionButton>請求暫停</GameActionButton>
+              <GameActionButton
                 onClick={() => {
                   if (
                     props.aTeamData[props.quarter.length]["pts"] ===
@@ -708,9 +860,9 @@ function AppGameStart(props) {
                 }}
               >
                 結束比賽
-              </ButtonSubmit>
-            </GeneralDiv>
-          </GeneralDiv>
+              </GameActionButton>
+            </GameActionButtonContainer>
+          </GameRegulationContainer>
 
           <LiveActionBolck
             ok={
@@ -739,7 +891,7 @@ function AppGameStart(props) {
               <div>{playerActions.actionNumber}</div>
             )}
           </LiveActionBolck>
-        </GeneralDiv>
+        </div>
         <GroundContainer>
           <TeamBox
             exchangePlayer={exchangePlayer}
@@ -779,10 +931,8 @@ function AppGameStart(props) {
       </DivGameStart_Container>
       <DivGameStartLogo
         backgroundImage={`url(${props.bTeamLogo})`}
-        backgroundSize="cover"
         backgroundPosition="-200%"
         opacity={!leftSide ? "0.8" : "0.2"}
-        transitionDuration="0.5s"
       />
     </DivGameStartRecord>
   );
@@ -792,32 +942,12 @@ const PopupEndGameBlock = function (props) {
   return (
     <>
       <PopupBlur onClick={() => props.setWantToCloseGame(false)} />
-      <PopupDiv
-        height="120px"
-        fontSize="28px"
-        top="38vh"
-        borderRadius="5px"
-        backgroundColor="rgba(206, 212, 218, 1.0)"
-        color="#343a40"
-      >
+      <PopupDiv>
         確定結束比賽？
         <br />
         <div>
-          <ButtonSubmit
-            width="60px"
-            height="40px"
-            fontSize="20px"
-            margin="0 10px 0 0"
-            onClick={props.endGame}
-          >
-            Yes
-          </ButtonSubmit>
-          <ButtonSubmit
-            width="60px"
-            height="40px"
-            fontSize="20px"
-            onClick={() => props.setWantToCloseGame(false)}
-          >
+          <ButtonSubmit onClick={props.endGame}>Yes</ButtonSubmit>
+          <ButtonSubmit onClick={() => props.setWantToCloseGame(false)}>
             No
           </ButtonSubmit>
         </div>
