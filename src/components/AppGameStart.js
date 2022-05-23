@@ -19,7 +19,6 @@ import RecordRoom from "./RecordRoom";
 
 function AppGameStart(props) {
   const whoWin = useRef();
-  //time
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [affectTimeStopBehavior, setAffectTimeStopBehavior] = useState(true);
   const [affectShotClockBehavior, setAffectShotClockBehavior] = useState(true);
@@ -38,7 +37,6 @@ function AppGameStart(props) {
 
   let redirect = useNavigate();
 
-  //playactions
   const playerActionInitialState = {
     action: "",
     type: "none",
@@ -151,7 +149,6 @@ function AppGameStart(props) {
     const player = function (e) {
       if (e.keyCode === 192) {
         setLeftSide((prevState) => !prevState);
-        //換邊clear
         setActivePlayer();
         setActivePlayerId();
         setActivePlayerPic();
@@ -167,7 +164,7 @@ function AppGameStart(props) {
       }
 
       const playerChoose = (playerPosition) => {
-        setActivePlayer(); //for css animation effect 清空
+        setActivePlayer();
         clearActionByChangePlayer();
         setActivePlayer(playerPosition);
         setActivePlayerId(activeTeam[playerPosition].id);
@@ -175,7 +172,6 @@ function AppGameStart(props) {
       };
 
       const clearActionByChangePlayer = function () {
-        //換人clear
         setActivePlayerId();
         setActivePlayerPic();
         dispatchPlayerActions({ type: "intial" });
@@ -214,7 +210,6 @@ function AppGameStart(props) {
     };
   }, [leftSide, props.aTeamPlayers, props.bTeamPlayers]);
 
-  //球員行為
   useEffect(() => {
     const action = function (e) {
       if (playerLocationScoreNumber === 2) {
@@ -424,8 +419,6 @@ function AppGameStart(props) {
           },
           { merge: true }
         );
-        //clear all action for next time
-
         setActivePlayer();
         setActivePlayerId();
         dispatchPlayerActions({ type: "intial" });

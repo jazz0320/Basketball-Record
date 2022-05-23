@@ -11,34 +11,34 @@ import AppGameStart from "./AppGameStart";
 import AppGameSetting from "./AppGameSetting";
 
 function App(props) {
-  const [backToChooseGameBlock, setBackToChooseGameBlock] = useState(false); //keep
+  const [backToChooseGameBlock, setBackToChooseGameBlock] = useState(false);
   const [pageSize, setPageSize] = useState([]);
-  const [aTeam, setATeam] = useState("default"); //keep
+  const [aTeam, setATeam] = useState("default");
 
-  const [aTeamLogo, setATeamLogo] = useState(); //keep
-  const [aTeamWinLoss, setATeamWinLoss] = useState([]); //keep
+  const [aTeamLogo, setATeamLogo] = useState();
+  const [aTeamWinLoss, setATeamWinLoss] = useState([]);
   const [aTeamPlayers, setATeamPlayers] = useState();
   const [aTeamData, setATeamData] = useState();
 
-  const [bTeam, setBTeam] = useState("default"); //keep
+  const [bTeam, setBTeam] = useState("default");
 
-  const [bTeamLogo, setBTeamLogo] = useState(); //keep
-  const [bTeamWinLoss, setBTeamWinLoss] = useState([]); //keep
-  const [bTeamPlayers, setBTeamPlayers] = useState(); //keep
-  const [bTeamData, setBTeamData] = useState(); //keep
-  const [quarter, setQuarter] = useState(0); //選擇賽制 //keep
-  const eachQuarterTime = useRef(); //keep
-  //time
-  const [timerMinutes, setTimerMinutes] = useState(0); //keep
+  const [bTeamLogo, setBTeamLogo] = useState();
+  const [bTeamWinLoss, setBTeamWinLoss] = useState([]);
+  const [bTeamPlayers, setBTeamPlayers] = useState();
+  const [bTeamData, setBTeamData] = useState();
+  const [quarter, setQuarter] = useState(0);
+  const eachQuarterTime = useRef();
 
-  const [finishSetting, setFinishSetting] = useState(false); //keep
-  const [quarterNow, setQuarterNow] = useState(1); //keep
+  const [timerMinutes, setTimerMinutes] = useState(0);
 
-  const [liveAction, setLiveAction] = useState([]); //keep
+  const [finishSetting, setFinishSetting] = useState(false);
+  const [quarterNow, setQuarterNow] = useState(1);
 
-  const restartGameTime = useRef(); //keep
-  const restartGameShotTime = useRef(); //keep
-  const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true); //keep
+  const [liveAction, setLiveAction] = useState([]);
+
+  const restartGameTime = useRef();
+  const restartGameShotTime = useRef();
+  const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true);
 
   //偵測螢幕大小
   const getPageSize = function () {
@@ -86,7 +86,6 @@ function App(props) {
           quarter_minutes: Number(eachQuarterTime.current),
           finishSetting: true,
           endGame: false,
-          //new
           A_team: aTeam,
           A_team_player: aTeamPlayers,
           A_team_logo: aTeamLogo,
@@ -113,7 +112,7 @@ function App(props) {
     props.setIsGameStart(true);
     setBackToChooseGameBlock(false);
     setWantToBackLiveGame(false);
-  }; //keep
+  };
 
   return (
     <>

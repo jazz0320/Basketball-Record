@@ -1,24 +1,178 @@
 import { useEffect, useRef, useState } from "react";
-import { getDoc, getDocs, collection, doc, db } from "../utils/firebase";
-import {
-  GeneralDiv,
-  DivBeforeGameRecord,
-  TeamBlock,
-  RegulationBlock,
-  TeamBlockDetail,
-  TeamBlockDetailTeam,
-  TeamBlockDetailPlayer,
-  ButtonForChange,
-  TeamBlockDetailPlayerDiv,
-  SelectTeam,
-  SelectPlayer,
-  SelectPlayerImg,
-  RegulationBlockCell,
-  ButtonSubmit,
-} from "../utils/StyleComponent";
+import { getDoc, doc, db } from "../utils/firebase";
+import styled from "styled-components/macro";
+
+const DivBeforeGameRecord = styled.div`
+  width: 100vw;
+  height: 100%;
+  background-color: #dee2e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #212529;
+  font-size: 30px;
+`;
+
+const SelectGame = styled.select`
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+  -webkit-appearance: none;
+  width: 600px;
+  height: 3rem;
+  font-size: 2rem;
+  color: #212529;
+  background-color: transparent;
+  text-align: center;
+  border: none;
+`;
+const SelectSetting = styled.select`
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+  -webkit-appearance: none;
+  width: 250px;
+  height: 3rem;
+  font-size: 2rem;
+  color: #212529;
+  background-color: transparent;
+  text-align: center;
+  border: none;
+`;
+
+const ButtonSubmit = styled.button`
+  z-index: 10;
+  background-color: #343a40;
+  border: 1px solid white;
+  white-space: nowrap;
+  color: hsla(150, 14%, 97%, 1);
+  cursor: pointer;
+  outline: none;
+  font-size: 1.2rem;
+  text-shadow: 0.1rem 0.1rem 0.5rem hsla(0, 0%, 0%, 0.5);
+  letter-spacing: 0.1rem;
+  border-radius: 0.5rem;
+  user-select: none;
+  padding: 0.5rem 0.75rem;
+  position: fixed;
+  bottom: 40px;
+  transition: all 0.1s ease-in;
+  ::-moz-focus-inner {
+    border: 0;
+  }
+  &:hover {
+    background-color: #495057;
+    ${() => `transform: translateY(-3px)`}
+  }
+  &:active {
+    background-color: ${() => "#212529"};
+  }
+`;
+
+const TeamBlock = styled.div`
+  width: 40vw;
+  height: calc(100vh - 100px);
+  display: flex;
+  &:nth-child(2) {
+    flex-direction: row-reverse;
+  }
+  justify-content: space-between;
+`;
+
+const LogoBlur = styled.div`
+  box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  left: 10vw;
+  width: 80vw;
+`;
+
+const TeamBlockDetail = styled.div`
+  background-color: #f8f9fa;
+  background-image: ${(props) => props.backgroundImage};
+  background-position: ${(props) => props.backgroundPosition};
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const TeamBlockDetailPlayer = styled.div`
+  z-index: 10;
+  margin-top: 23vh;
+  margin-bottom: 4vh;
+  height: 46vh;
+  width: 500px;
+  display: flex;
+  justify-content: center;
+`;
+
+const ButtonForChange = styled.button`
+  color: #f8f9fa;
+  background-color: transparent;
+  cursor: pointer;
+  border: 0px;
+  &:hover {
+    background: gray;
+    color: black;
+  }
+`;
+
+const SelectPlayerImg = styled.div`
+  background-image: ${(props) => props.backgroundImage};
+  border-radius: 100%;
+  width: 13vh;
+  height: 10vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
+const SelectPlayer = styled.select`
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+  -webkit-appearance: none;
+  width: 270px;
+  height: 3rem;
+  font-size: 2rem;
+  color: #212529;
+  background-color: transparent;
+  text-align: center;
+  border: none;
+`;
+
+const TeamBlockDetailPlayerDiv = styled.div`
+  padding: 0 2vw;
+  width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 1.5vh;
+`;
+
+const RegulationBlock = styled.div`
+  z-index: 10;
+  position: fixed;
+  top: 100px;
+  width: 20vw;
+  left: 40vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4vh;
+`;
+
+const RegulationBlockCell = styled.div`
+  font-size: 32px;
+  margin-bottom: 1.5vh;
+  justify-content: space-around;
+  display: flex;
+`;
 
 function AppGameSetting(props) {
-  const [teams, setTeams] = useState([]);
   const [aTeamStartFive, setATeamStartFive] = useState([
     "default",
     "default",
@@ -36,13 +190,6 @@ function AppGameSetting(props) {
   ]);
   const bTeamPlayersName = useRef();
   const five = [1, 2, 3, 4, 5];
-
-  async function chooseTeam() {
-    const querySnapshot = await getDocs(collection(db, "team_data"));
-    querySnapshot.forEach((doc) => {
-      setTeams((teams) => [...teams, doc.id]);
-    });
-  }
 
   useEffect(() => {
     if (props.wantToBackLiveGame === false) {
@@ -180,7 +327,6 @@ function AppGameSetting(props) {
     players.sort(function (a, b) {
       return a.position - b.position;
     });
-
     props.setATeamPlayers(players);
   };
 
@@ -200,37 +346,9 @@ function AppGameSetting(props) {
     players.sort(function (a, b) {
       return a.position - b.position;
     });
-
     props.setBTeamPlayers(players);
   };
 
-  const change = function (
-    type,
-    target,
-    oppTarget,
-    source,
-    setTarget,
-    setStartFive
-  ) {
-    let value = target;
-    let listOri = [...source];
-    let list = listOri.filter((item) => item !== oppTarget);
-    let index = list.indexOf(value);
-    if (type === "next") {
-      index += 1;
-      if (index >= list.length) {
-        index = 0;
-      }
-    } else if (type === "last") {
-      if (index <= 0) {
-        index = list.length - 1;
-      } else {
-        index -= 1;
-      }
-    }
-    setTarget(list[index]);
-    setStartFive(["default", "default", "default", "default", "default"]);
-  };
   const changePlayer = function (type, target, targetGroup, source, setTarget) {
     let value = targetGroup[target];
     let listOri = source.current;
@@ -302,20 +420,17 @@ function AppGameSetting(props) {
     <DivBeforeGameRecord>
       <RegulationBlock>
         <RegulationBlockCell>
-          <SelectPlayer
-            width="500px"
-            onChange={(e) => chooseSpecifiedGame(e.target.value)}
-          >
+          <SelectGame onChange={(e) => chooseSpecifiedGame(e.target.value)}>
             <option>Select Game</option>
             {props.scheduleGames?.map((game) => (
               <option value={game} key={game}>
                 {game}
               </option>
             ))}
-          </SelectPlayer>
+          </SelectGame>
         </RegulationBlockCell>
         <RegulationBlockCell>
-          <SelectPlayer
+          <SelectSetting
             onChange={(e) => {
               let quarters = [];
               for (let i = 1; i <= e.target.value; i++) {
@@ -335,10 +450,10 @@ function AppGameSetting(props) {
             <option>Select Quar</option>
             <option value={4}>4 quarter</option>
             <option value={2}>2 half</option>
-          </SelectPlayer>
+          </SelectSetting>
         </RegulationBlockCell>
         <RegulationBlockCell>
-          <SelectPlayer
+          <SelectSetting
             onChange={(e) => {
               props.eachQuarterTime.current = Number(e.target.value);
               props.setTimerMinutes(e.target.value);
@@ -347,107 +462,21 @@ function AppGameSetting(props) {
             <option>Select Mins</option>
             <option value={10}>10 mins</option>
             <option value={12}>12 mins</option>
-          </SelectPlayer>
+          </SelectSetting>
         </RegulationBlockCell>
       </RegulationBlock>
-      <ButtonSubmit
-        zIndex="10"
-        fontSize="1.2rem"
-        position="fixed"
-        padding="0.5rem 0.75rem"
-        bottom="40px"
-        onClick={props.finishGameSetting}
-      >
-        Submit
-      </ButtonSubmit>
+      <ButtonSubmit onClick={props.finishGameSetting}>Submit</ButtonSubmit>
       <TeamBlock>
-        <GeneralDiv
-          backgroundColor="rgba(255,255,255,0.5)"
-          position="fixed"
-          top="0"
-          left="0"
-          height="100%"
-          width="100%"
-        />
+        <LogoBlur />
         <TeamBlockDetail
           backgroundImage={`url(${props.aTeamLogo})`}
           backgroundPosition="200%"
         >
-          <TeamBlockDetailTeam display="none">
-            <ButtonForChange
-              onClick={() =>
-                change(
-                  "last",
-                  props.aTeam,
-                  props.bTeam,
-                  teams,
-                  props.setATeam,
-                  setATeamStartFive
-                )
-              }
-            >
-              <i
-                className="fa-solid fa-chevron-left"
-                style={{
-                  color: "white",
-                  fontSize: "32px",
-                  width: " 32px",
-                  height: "32px",
-                  WebkitTextStroke: "1px #495057",
-                }}
-              ></i>
-            </ButtonForChange>
-            <SelectTeam
-              value={props.aTeam}
-              onChange={(e) => {
-                props.setATeam(e.target.value);
-                setATeamStartFive([
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                ]);
-              }}
-            >
-              <option disabled value="default">
-                Select team
-              </option>
-              {teams.map((team, index) =>
-                team === props.bTeam ? (
-                  <option disabled key={index}>
-                    {team}
-                  </option>
-                ) : (
-                  <option key={index}>{team}</option>
-                )
-              )}
-            </SelectTeam>
-            <ButtonForChange
-              onClick={() =>
-                change(
-                  "next",
-                  props.aTeam,
-                  props.bTeam,
-                  teams,
-                  props.setATeam,
-                  setATeamStartFive
-                )
-              }
-            >
-              <i
-                className="fa-solid fa-chevron-right"
-                style={{
-                  WebkitTextStroke: "1px #495057",
-                  color: "white",
-                  fontSize: "32px",
-                  width: " 32px",
-                  height: "32px",
-                }}
-              ></i>
-            </ButtonForChange>
-          </TeamBlockDetailTeam>
-          <TeamBlockDetailPlayer marginLeft="auto">
+          <TeamBlockDetailPlayer
+            css={`
+              margin-left: auto;
+            `}
+          >
             {props.aTeam && (
               <div>
                 {five.map((num, index) => (
@@ -476,9 +505,7 @@ function AppGameSetting(props) {
                     </ButtonForChange>
                     {aTeamStartFive[index] !== "default" ? (
                       <SelectPlayerImg
-                        style={{
-                          backgroundImage: `url(${props.aTeamPlayers[index].pic})`,
-                        }}
+                        backgroundImage={`url(${props.aTeamPlayers[index].pic})`}
                       />
                     ) : (
                       <SelectPlayerImg />
@@ -540,85 +567,9 @@ function AppGameSetting(props) {
       </TeamBlock>
       <TeamBlock>
         <TeamBlockDetail
-          boxShadow="12px 12px 7px rgba(0, 0, 0, 0.7);"
           backgroundImage={`url(${props.bTeamLogo})`}
           backgroundPosition="-100%"
         >
-          <TeamBlockDetailTeam display="none">
-            <ButtonForChange
-              onClick={() =>
-                change(
-                  "last",
-                  props.bTeam,
-                  props.aTeam,
-                  teams,
-                  props.setBTeam,
-                  setBTeamStartFive
-                )
-              }
-            >
-              <i
-                className="fa-solid fa-chevron-left"
-                style={{
-                  WebkitTextStroke: "1px #495057",
-                  color: "white",
-                  fontSize: "32px",
-                  width: " 32px",
-                  height: "32px",
-                }}
-              ></i>
-            </ButtonForChange>
-
-            <SelectTeam
-              value={props.bTeam}
-              onChange={(e) => {
-                props.setBTeam(e.target.value);
-                setBTeamStartFive([
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                  "default",
-                ]);
-              }}
-            >
-              <option disabled value="default">
-                Select team
-              </option>
-              {teams.map((team, index) =>
-                team === props.aTeam ? (
-                  <option disabled key={index}>
-                    {team}
-                  </option>
-                ) : (
-                  <option key={index}>{team}</option>
-                )
-              )}
-            </SelectTeam>
-            <ButtonForChange
-              onClick={() =>
-                change(
-                  "next",
-                  props.bTeam,
-                  props.aTeam,
-                  teams,
-                  props.setBTeam,
-                  setBTeamStartFive
-                )
-              }
-            >
-              <i
-                className="fa-solid fa-chevron-right"
-                style={{
-                  WebkitTextStroke: "1px #495057",
-                  color: "white",
-                  fontSize: "32px",
-                  width: " 32px",
-                  height: "32px",
-                }}
-              ></i>
-            </ButtonForChange>
-          </TeamBlockDetailTeam>
           <TeamBlockDetailPlayer>
             {props.bTeam && (
               <div>
@@ -673,9 +624,7 @@ function AppGameSetting(props) {
                     </SelectPlayer>
                     {bTeamStartFive[index] !== "default" ? (
                       <SelectPlayerImg
-                        style={{
-                          backgroundImage: `url(${props.bTeamPlayers[index].pic})`,
-                        }}
+                        backgroundImage={`url(${props.bTeamPlayers[index].pic})`}
                       />
                     ) : (
                       <SelectPlayerImg />
