@@ -1,7 +1,24 @@
 import "./Court.css";
 import { useRef } from "react";
 import { flushSync } from "react-dom";
-import { GeneralDiv } from "../utils/StyleComponent";
+import styled from "styled-components";
+
+const CourtContainer = styled.div`
+  height: 730px;
+  border: 1px solid #adb5bd;
+  box-shadow: 0px 0px 7px 5px rgba(108, 117, 125, 0.4);
+`;
+
+const CourtBorder = styled.div`
+  border: white 15px solid;
+  border-bottom: 0px;
+`;
+
+const CourtLine = styled.div`
+  position: relative;
+  border: 1px solid #e9ecef;
+  background-color: white;
+`;
 
 function Court(props) {
   const playerLastAxis = useRef();
@@ -59,24 +76,9 @@ function Court(props) {
   };
 
   return (
-    <GeneralDiv
-      border="1px solid #adb5bd"
-      boxShadow="0px 0px 7px 5px rgba(108,117,125, 0.4);"
-    >
-      <div
-        style={{
-          border: "white 15px solid",
-          borderBottom: "0px",
-        }}
-      >
-        <div
-          id="svgDiv"
-          style={{
-            position: "relative",
-            border: "1px solid #e9ecef",
-            backgroundColor: "white",
-          }}
-        >
+    <CourtContainer>
+      <CourtBorder>
+        <CourtLine id="svgDiv">
           <canvas
             width={700}
             height={700}
@@ -793,9 +795,9 @@ function Court(props) {
               />
             </g>
           </svg>
-        </div>
-      </div>
-    </GeneralDiv>
+        </CourtLine>
+      </CourtBorder>
+    </CourtContainer>
   );
 }
 
