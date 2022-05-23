@@ -83,6 +83,7 @@ function ContinueGame(props) {
       const docSnap = await getDoc(doc(db, "live_game", backLiveGame));
       const time =
         docSnap.data().time_minutes * 60 + docSnap.data().time_seconds;
+      console.log("data", docSnap.data());
       props.reset(docSnap.data(), time);
     }
     systemSetting();

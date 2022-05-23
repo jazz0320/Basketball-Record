@@ -18,24 +18,24 @@ import {
 } from "../utils/StyleComponent";
 
 function AppGameSetting(props) {
-  const [teams, setTeams] = useState([]); //ok
+  const [teams, setTeams] = useState([]);
   const [aTeamStartFive, setATeamStartFive] = useState([
     "default",
     "default",
     "default",
     "default",
     "default",
-  ]); //ok
-  const aTeamPlayersName = useRef(); //ok
+  ]);
+  const aTeamPlayersName = useRef();
   const [bTeamStartFive, setBTeamStartFive] = useState([
     "default",
     "default",
     "default",
     "default",
     "default",
-  ]); //ok
-  const bTeamPlayersName = useRef(); //ok
-  const five = [1, 2, 3, 4, 5]; //ok
+  ]);
+  const bTeamPlayersName = useRef();
+  const five = [1, 2, 3, 4, 5];
 
   async function chooseTeam() {
     const querySnapshot = await getDocs(collection(db, "team_data"));
@@ -43,19 +43,6 @@ function AppGameSetting(props) {
       setTeams((teams) => [...teams, doc.id]);
     });
   }
-
-  //偵測螢幕大小
-  const getPageSize = function () {
-    const pageWidth = document.documentElement.scrollWidth;
-    const pageHeight = document.documentElement.scrollHeight;
-
-    props.setPageSize([pageWidth, pageHeight]); //ok
-  };
-
-  useEffect(() => {
-    chooseTeam();
-    getPageSize();
-  }, []);
 
   useEffect(() => {
     if (props.wantToBackLiveGame === false) {
@@ -178,69 +165,6 @@ function AppGameSetting(props) {
     }
   }, [props.bTeam]);
 
-  //   const finishGameSetting = function () {
-  //     if ((props.aTeam === "default") | (props.bTeam === "default")) {
-  //       alert("請選擇賽程");
-  //       return;
-  //     }
-
-  //     for (let i = 0; i < 5; i++) {
-  //       if (
-  //         (props.aTeamPlayers[i].position - 1 !== i) |
-  //         (props.bTeamPlayers[i].position - 1 !== i)
-  //       ) {
-  //         alert("請選擇先發球員");
-  //         return;
-  //       }
-  //     }
-  //     if (props.quarter === 0) {
-  //       alert("請選擇賽制");
-  //       return;
-  //     }
-  //     if (props.eachQuarterTime.current === undefined) {
-  //       alert("請選擇單節時間");
-  //       return;
-  //     }
-
-  //     async function systemSetting() {
-  //       await setDoc(
-  //         doc(db, "live_game", props.liveGameName.current),
-  //         {
-  //           live_action: [],
-  //           quarter: props.quarter,
-  //           quarterNow: props.quarterNow,
-  //           quarter_minutes: Number(props.eachQuarterTime.current),
-  //           finishSetting: true,
-  //           endGame: false,
-  //           //new
-  //           A_team: props.aTeam,
-  //           A_team_player: props.aTeamPlayers,
-  //           A_team_logo: props.aTeamLogo,
-  //           A_team_data: props.aTeamData,
-  //           A_team_WinLoss: props.props.aTeamWinLoss,
-  //           B_team_data: props.bTeamData,
-  //           B_team: props.bTeam,
-  //           B_team_player: props.bTeamPlayers,
-  //           B_team_logo: props.bTeamLogo,
-  //           B_team_WinLoss: props.bTeamWinLoss,
-  //         },
-  //         { merge: true }
-  //       );
-  //       await setDoc(
-  //         doc(db, "game_schedule", props.liveGameName.current),
-  //         {
-  //           gameStatus: "live",
-  //         },
-  //         { merge: true }
-  //       );
-  //     }
-  //     systemSetting();
-  //     props.setFinishSetting(true);
-  //     props.setIsGameStart(true);
-  //     setWantToBackLiveGame(false);
-  //     props.setBackToChooseGameBlock(false); //ok
-  //   };
-
   const selectAStartFive = async function (player, position) {
     let players = [...props.aTeamPlayers];
     for (let i = 0; i < players.length; i++) {
@@ -310,7 +234,6 @@ function AppGameSetting(props) {
   const changePlayer = function (type, target, targetGroup, source, setTarget) {
     let value = targetGroup[target];
     let listOri = source.current;
-
     if (value === "default") {
       if (listOri === undefined) {
         alert("請選擇隊伍");

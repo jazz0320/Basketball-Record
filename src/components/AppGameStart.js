@@ -9,32 +9,34 @@ import {
   ButtonSubmit,
   GroundContainer,
   LiveActionBolck,
+  PopupBlur,
+  PopupDiv,
 } from "../utils/StyleComponent";
+import Clock from "./Clock";
+import TeamBox from "./TeamBox";
+import Court from "./Court";
+import RecordRoom from "./RecordRoom";
 
-function AppGameStart() {
-  const whoWin = useRef(); //ok
+function AppGameStart(props) {
+  const whoWin = useRef();
   //time
-  const [timerSeconds, setTimerSeconds] = useState(0); //ok
-  const [affectTimeStopBehavior, setAffectTimeStopBehavior] = useState(true); //ok
-  const [affectShotClockBehavior, setAffectShotClockBehavior] = useState(true); //ok
-  const [exchangePlayer, setExchangePlayer] = useState(false); //ok
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [affectTimeStopBehavior, setAffectTimeStopBehavior] = useState(true);
+  const [affectShotClockBehavior, setAffectShotClockBehavior] = useState(true);
+  const [exchangePlayer, setExchangePlayer] = useState(false);
 
-  const [leftSide, setLeftSide] = useState(true); //ok
-  const [activePlayer, setActivePlayer] = useState(); //ok
-  const [activePlayerId, setActivePlayerId] = useState(); //ok
-  const [activePlayerPic, setActivePlayerPic] = useState(); //ok
-  const [playerLocation, setPlayerLocation] = useState(); //ok
-  const [playerLocationScoreNumber, setPlayerLocationScoreNumber] = useState(); //ok
-  const [playerAxis, setPlayerAxis] = useState(); //ok
+  const [leftSide, setLeftSide] = useState(true);
+  const [activePlayer, setActivePlayer] = useState();
+  const [activePlayerId, setActivePlayerId] = useState();
+  const [activePlayerPic, setActivePlayerPic] = useState();
+  const [playerLocation, setPlayerLocation] = useState();
+  const [playerLocationScoreNumber, setPlayerLocationScoreNumber] = useState();
+  const [playerAxis, setPlayerAxis] = useState();
 
-  const [liveAction, setLiveAction] = useState([]); //ok
-  const [openGradeButton, setOpenGradeButton] = useState(false); //ok
-  const [wantToCloseGame, setWantToCloseGame] = useState(); //ok
+  const [openGradeButton, setOpenGradeButton] = useState(false);
+  const [wantToCloseGame, setWantToCloseGame] = useState();
 
-  const restartGameTime = useRef(); //ok
-  const restartGameShotTime = useRef(); //ok
-
-  let redirect = useNavigate(); //ok
+  let redirect = useNavigate();
 
   //playactions
   const playerActionInitialState = {
@@ -380,7 +382,7 @@ function AppGameStart() {
           }
         }
 
-        setLiveAction((prev) => [
+        props.setLiveAction((prev) => [
           ...prev,
           {
             quarterNow: props.quarterNow,
@@ -398,7 +400,7 @@ function AppGameStart() {
           },
         ]);
         let actionLive = [
-          ...liveAction,
+          ...props.liveAction,
           {
             quarterNow: props.quarterNow,
             team: leftSide,
@@ -448,7 +450,7 @@ function AppGameStart() {
     playerLocation,
     playerLocationScoreNumber,
     playerActions,
-    liveAction,
+    props.liveAction,
   ]);
 
   const endGame = async function () {
@@ -481,7 +483,6 @@ function AppGameStart() {
       },
       { merge: true }
     );
-    console.log("aaa");
     await setDoc(
       doc(db, "game_schedule", props.liveGameName.current),
       {
@@ -490,13 +491,12 @@ function AppGameStart() {
       },
       { merge: true }
     );
-    // const transitionGameData = async function () {
+
     const docSnap = await getDoc(
       doc(db, "live_game", props.liveGameName.current)
     );
     let data = docSnap.data();
-    console.log("bbb");
-    // const saveGameData = async function () {
+
     await setDoc(
       doc(db, "past_data", props.liveGameName.current),
       {
@@ -505,8 +505,6 @@ function AppGameStart() {
       { merge: true }
     );
 
-    //記錄輸贏
-    console.log("aTeamGrade", aTeamGrade);
     await setDoc(
       doc(db, "team_data", props.aTeam),
       {
@@ -514,7 +512,6 @@ function AppGameStart() {
       },
       { merge: true }
     );
-    console.log("bTeamGrade", bTeamGrade);
     await setDoc(
       doc(db, "team_data", props.bTeam),
       {
@@ -522,7 +519,6 @@ function AppGameStart() {
       },
       { merge: true }
     );
-    //保存球員個人成績
     await setDoc(
       doc(
         db,
@@ -655,8 +651,8 @@ function AppGameStart() {
             marginBottom="5px"
           >
             <Clock
-              restartGameShotTime={restartGameShotTime}
-              restartGameTime={restartGameTime}
+              restartGameShotTime={props.restartGameShotTime}
+              restartGameTime={props.restartGameTime}
               liveGameName={props.liveGameName}
               finishSetting={props.finishSetting}
               eachQuarterTime={props.eachQuarterTime}
@@ -774,11 +770,10 @@ function AppGameStart() {
             selectTeam={!leftSide}
           ></TeamBox>
         </GroundContainer>
-        {/* <GeneralDiv height="100px" width="100px" /> */}
         <RecordRoom
           quarter={props.quarter}
           quarterNow={props.quarterNow}
-          liveAction={liveAction}
+          liveAction={props.liveAction}
           aTeam={props.aTeam}
           bTeam={props.bTeam}
           aTeamPlayers={props.aTeamPlayers}
@@ -799,5 +794,43 @@ function AppGameStart() {
     </DivGameStartRecord>
   );
 }
+
+const PopupEndGameBlock = function (props) {
+  return (
+    <>
+      <PopupBlur onClick={() => props.setWantToCloseGame(false)} />
+      <PopupDiv
+        height="120px"
+        fontSize="28px"
+        top="38vh"
+        borderRadius="5px"
+        backgroundColor="rgba(206, 212, 218, 1.0)"
+        color="#343a40"
+      >
+        確定結束比賽？
+        <br />
+        <div>
+          <ButtonSubmit
+            width="60px"
+            height="40px"
+            fontSize="20px"
+            margin="0 10px 0 0"
+            onClick={props.endGame}
+          >
+            Yes
+          </ButtonSubmit>
+          <ButtonSubmit
+            width="60px"
+            height="40px"
+            fontSize="20px"
+            onClick={() => props.setWantToCloseGame(false)}
+          >
+            No
+          </ButtonSubmit>
+        </div>
+      </PopupDiv>
+    </>
+  );
+};
 
 export default AppGameStart;
