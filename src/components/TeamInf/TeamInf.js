@@ -10,7 +10,7 @@ import {
   doc,
   db,
   getDoc,
-} from "../utils/firebase";
+} from "../../utils/firebase";
 import styled from "styled-components/macro";
 
 const FullPageContainer = styled.div`

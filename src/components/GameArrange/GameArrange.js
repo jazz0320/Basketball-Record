@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDocs, collection, doc, db, setDoc } from "../utils/firebase";
+import { getDocs, collection, doc, db, setDoc } from "../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 const days = {
@@ -394,7 +394,7 @@ function GameArrange() {
                     src={
                       aTeamLogo[num] !== "default"
                         ? aTeamLogo[num]
-                        : require("../img/flag/flagG.png")
+                        : require("../../img/flag/flagG.png")
                     }
                   />
                 </LogoBox>
@@ -406,7 +406,7 @@ function GameArrange() {
                     src={
                       bTeamLogo[num] !== "default"
                         ? bTeamLogo[num]
-                        : require("../img/flag/flagG.png")
+                        : require("../../img/flag/flagG.png")
                     }
                   />
                 </LogoBox>

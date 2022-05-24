@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getDoc, doc, db } from "../utils/firebase";
+import { getDoc, doc, db } from "../../utils/firebase";
 import styled from "styled-components/macro";
 
 const DivBeforeGameRecord = styled.div`

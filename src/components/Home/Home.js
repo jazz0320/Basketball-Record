@@ -1,4 +1,4 @@
-import { getDoc, doc, getDocs, collection, db } from "../utils/firebase";
+import { getDoc, doc, getDocs, collection, db } from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components/macro";

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { doc, db, setDoc } from "../utils/firebase";
+import { doc, db, setDoc } from "../../utils/firebase";
 import styled from "styled-components";
 
 const TimeBlock = styled.div`

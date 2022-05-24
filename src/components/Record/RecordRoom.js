@@ -67,7 +67,7 @@ function RecordRoom(props) {
       <ScoreBox>
         <IconComponet onClick={() => props.setOpenGradeButton((pre) => !pre)}>
           <ScoreIcon
-            src={require("../img/score/score.png")}
+            src={require("../../img/score/score.png")}
             alt="Watch Record"
           />
         </IconComponet>

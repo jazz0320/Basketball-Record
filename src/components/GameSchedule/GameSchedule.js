@@ -1,7 +1,7 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { getDocs, collection, db, getDoc, doc } from "../utils/firebase";
+import { getDocs, collection, db, getDoc, doc } from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 

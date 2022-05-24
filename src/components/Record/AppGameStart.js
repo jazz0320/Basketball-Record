@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState, useRef } from "react";
-import { getDoc, doc, db, setDoc, deleteDoc } from "../utils/firebase";
+import { getDoc, doc, db, setDoc, deleteDoc } from "../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Clock from "./Clock";

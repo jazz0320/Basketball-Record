@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getDoc, doc, db } from "../utils/firebase";
+import { getDoc, doc, db } from "../../utils/firebase";
 import styled from "styled-components";
 
 const PopupBlur = styled.div`

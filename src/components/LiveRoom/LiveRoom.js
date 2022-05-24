@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { doc, onSnapshot, getDoc, db } from "../utils/firebase";
+import { doc, onSnapshot, getDoc, db } from "../../utils/firebase";
 import LiveRoomScore from "./LiveRoomScore";
 import LiveRoomStream from "./LiveRoomStream";
 import LiveRoomData from "./LiveRoomData";

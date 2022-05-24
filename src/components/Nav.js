@@ -1,8 +1,8 @@
-import LiveRoom from "./LiveRoom";
-import TeamInf from "./TeamInf";
-import Login from "./Login";
-import App from "./App";
-import Home from "./Home";
+import LiveRoom from "./LiveRoom/LiveRoom";
+import TeamInf from "./TeamInf/TeamInf";
+import Login from "./Login/Login";
+import App from "./Record/App";
+import Home from "./Home/Home";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import {
   auth,
@@ -15,8 +15,8 @@ import {
 
 import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
-import GameSchedule from "./GameSchedule";
-import GameArrange from "./GameArrange";
+import GameSchedule from "./GameSchedule/GameSchedule";
+import GameArrange from "./GameArrange/GameArrange";
 
 const SideBar = styled.div`
   padding: 5px;
