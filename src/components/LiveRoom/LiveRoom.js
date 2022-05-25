@@ -113,23 +113,20 @@ function LiveRoom(props) {
   }
   useEffect(() => {
     if (props.liveGameRoutes?.includes(props.gameName)) {
-      const unsub = onSnapshot(
-        doc(db, "live_game", `${props.gameName}`),
-        (doc) => {
-          setLiveAction(doc.data().live_action);
-          setQuarter(doc.data().quarter);
-          setATeam(doc.data().A_team);
-          setATeamLogo(doc.data().A_team_logo);
-          setATeamPlayers(doc.data().A_team_player);
-          setBTeamPlayers(doc.data().B_team_player);
-          setATeamData(doc.data().A_team_data);
-          setBTeam(doc.data().B_team);
-          setBTeamLogo(doc.data().B_team_logo);
-          setBTeamData(doc.data().B_team_data);
-          setFinishSetting(doc.data().finishSetting);
-          setEndGame(doc.data().endGame);
-        }
-      );
+      onSnapshot(doc(db, "live_game", `${props.gameName}`), (doc) => {
+        setLiveAction(doc.data().live_action);
+        setQuarter(doc.data().quarter);
+        setATeam(doc.data().A_team);
+        setATeamLogo(doc.data().A_team_logo);
+        setATeamPlayers(doc.data().A_team_player);
+        setBTeamPlayers(doc.data().B_team_player);
+        setATeamData(doc.data().A_team_data);
+        setBTeam(doc.data().B_team);
+        setBTeamLogo(doc.data().B_team_logo);
+        setBTeamData(doc.data().B_team_data);
+        setFinishSetting(doc.data().finishSetting);
+        setEndGame(doc.data().endGame);
+      });
     } else if (props.pastGameName !== undefined) {
       loading();
     }

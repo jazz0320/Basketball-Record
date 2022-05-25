@@ -137,7 +137,7 @@ function Nav() {
 
   useEffect(() => {
     monitorAuthState();
-  }, [logStatus]);
+  }, [logStatus, logFirstTime]);
 
   const logout = async () => {
     await signOut(auth);
