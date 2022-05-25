@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useState, useRef } from "react";
 import { doc, db, setDoc } from "../../utils/firebase";
 import styled from "styled-components";
@@ -352,5 +353,19 @@ function Clock(props) {
     </TimeBlock>
   );
 }
+
+Clock.propTypes = {
+  restartGameTime: PropTypes.object,
+  setTimerMinutes: PropTypes.func,
+  setTimerSeconds: PropTypes.func,
+  restartGameShotTime: PropTypes.object,
+  liveGameName: PropTypes.object,
+  eachQuarterTime: PropTypes.object,
+  timerMinutes: PropTypes.number,
+  timerSeconds: PropTypes.number,
+  affectTimeStopBehavior: PropTypes.bool,
+  affectShotClockBehavior: PropTypes.bool,
+  setQuarterNow: PropTypes.func,
+};
 
 export default Clock;

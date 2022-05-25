@@ -12,6 +12,7 @@ import {
   getDoc,
 } from "../../utils/firebase";
 import styled from "styled-components/macro";
+import PropTypes from "prop-types";
 
 const FullPageContainer = styled.div`
   width: 100vw;
@@ -185,14 +186,16 @@ function TeamInf(props) {
     const file = e.target.files[0];
     const path = file.name;
     const imgRef = ref(storage, `${props.userId}/${path}`);
-    await uploadBytes(imgRef, file).then((snapshot) => {});
+    await uploadBytes(imgRef, file);
     await getDownloadURL(ref(storage, `${props.userId}/${path}`))
       .then((url) => {
         let oldImgSrc = { ...imgSrc };
         oldImgSrc[e.target.name] = url;
         setImgSrc(oldImgSrc);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const wirtePlayersInf = function (e, index) {
@@ -389,5 +392,9 @@ function TeamInf(props) {
     </>
   );
 }
+
+TeamInf.propTypes = {
+  userId: PropTypes.string,
+};
 
 export default TeamInf;

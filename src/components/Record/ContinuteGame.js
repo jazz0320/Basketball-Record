@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { getDoc, doc, db } from "../../utils/firebase";
 import styled from "styled-components";
@@ -83,7 +84,6 @@ function ContinueGame(props) {
       const docSnap = await getDoc(doc(db, "live_game", backLiveGame));
       const time =
         docSnap.data().time_minutes * 60 + docSnap.data().time_seconds;
-      console.log("data", docSnap.data());
       props.reset(docSnap.data(), time);
     }
     systemSetting();
@@ -116,5 +116,12 @@ function ContinueGame(props) {
     </>
   );
 }
+
+ContinueGame.propTypes = {
+  liveGameName: PropTypes.object,
+  everyLiveGames: PropTypes.array,
+  reset: PropTypes.func,
+  setWantToBackLiveGame: PropTypes.func,
+};
 
 export default ContinueGame;

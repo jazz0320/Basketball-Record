@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
@@ -234,5 +235,12 @@ function LiveRoomStream(props) {
     </>
   );
 }
+
+LiveRoomStream.propTypes = {
+  quarter: PropTypes.array,
+  liveAction: PropTypes.array,
+  aTeam: PropTypes.string,
+  bTeam: PropTypes.string,
+};
 
 export default LiveRoomStream;

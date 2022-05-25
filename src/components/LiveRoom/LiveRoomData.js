@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
@@ -203,5 +204,22 @@ function BarPercent(props) {
     </EachBarContainer>
   );
 }
+
+LiveRoomData.propTypes = {
+  quarter: PropTypes.array,
+  aTeamData: PropTypes.object,
+  bTeamData: PropTypes.object,
+};
+
+Bar.propTypes = {
+  widthA: PropTypes.number,
+  widthB: PropTypes.number,
+  label: PropTypes.string,
+};
+BarPercent.propTypes = {
+  widthA: PropTypes.number,
+  widthB: PropTypes.number,
+  label: PropTypes.string,
+};
 
 export default LiveRoomData;

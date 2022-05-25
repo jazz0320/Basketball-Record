@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useReducer, useState, useRef } from "react";
 import { getDoc, doc, db, setDoc, deleteDoc } from "../../utils/firebase";
 import { useNavigate } from "react-router-dom";
@@ -956,4 +957,61 @@ const PopupEndGameBlock = function (props) {
   );
 };
 
+AppGameStart.propTypes = {
+  aTeam: PropTypes.string,
+  aTeamData: PropTypes.array,
+  setATeamData: PropTypes.func,
+  setBTeamData: PropTypes.func,
+  bTeamData: PropTypes.array,
+  bTeam: PropTypes.string,
+  aTeamPlayers: PropTypes.array,
+  bTeamPlayers: PropTypes.array,
+  quarter: PropTypes.array,
+  quarterNow: PropTypes.number,
+  setQuarterNow: PropTypes.func,
+  setATeamPlayers: PropTypes.func,
+  setBTeamPlayers: PropTypes.func,
+  setATeamWinLoss: PropTypes.func,
+  setBTeamWinLoss: PropTypes.func,
+  liveGameName: PropTypes.object,
+  setLiveAction: PropTypes.func,
+  liveAction: PropTypes.array,
+  aTeamWinLoss: PropTypes.array,
+  bTeamWinLoss: PropTypes.array,
+  aTeamLogo: PropTypes.string,
+  bTeamLogo: PropTypes.string,
+  finishGameSetting: PropTypes.func,
+  setWantToCloseGame: PropTypes.func,
+  endGame: PropTypes.func,
+  timerMinutes: PropTypes.number,
+  setTimerMinutes: PropTypes.func,
+  finishSetting: PropTypes.bool,
+  restartGameShotTime: PropTypes.object,
+  restartGameTime: PropTypes.object,
+  setIsGameStart: PropTypes.func,
+  eachQuarterTime: PropTypes.object,
+  pageSize: PropTypes.array,
+};
+PopupEndGameBlock.propTypes = {
+  setWantToCloseGame: PropTypes.func,
+  endGame: PropTypes.func,
+};
+
 export default AppGameStart;
+
+// wantToBackLiveGame: PropTypes.bool,
+
+//
+//
+//   setATeamLogo: PropTypes.func,
+//   setBTeamLogo: PropTypes.func,
+
+//   setATeamData: PropTypes.func,
+//   setBTeamData: PropTypes.func,
+//   setATeam: PropTypes.func,
+//   setBTeam: PropTypes.func,
+
+//   setQuarter: PropTypes.func,
+//   setTimerMinutes: PropTypes.func,
+//   eachQuarterTime: PropTypes.object,
+//   scheduleGames: PropTypes.array,

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const ScoreBox = styled.div`
   position: fixed;
@@ -94,5 +95,13 @@ function RecordRoom(props) {
     </>
   );
 }
+
+RecordRoom.propTypes = {
+  liveAction: PropTypes.array,
+  setOpenGradeButton: PropTypes.func,
+  pageSize: PropTypes.array,
+  aTeam: PropTypes.string,
+  bTeam: PropTypes.string,
+};
 
 export default RecordRoom;

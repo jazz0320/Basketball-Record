@@ -4,6 +4,7 @@ import LiveRoomScore from "./LiveRoomScore";
 import LiveRoomStream from "./LiveRoomStream";
 import LiveRoomData from "./LiveRoomData";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const FullPageContainer = styled.div`
   width: 100vw;
@@ -94,7 +95,22 @@ function LiveRoom(props) {
   const [finishSetting, setFinishSetting] = useState();
   const [endGame, setEndGame] = useState();
   const [watchBox, setWatchBox] = useState("livestream");
-
+  async function loading() {
+    const docSnap = await getDoc(doc(db, "past_data", `${props.gameName}`));
+    const data = docSnap.data();
+    setLiveAction(data.live_action);
+    setQuarter(data.quarter);
+    setATeam(data.A_team);
+    setATeamLogo(data.A_team_logo);
+    setATeamPlayers(data.A_team_player);
+    setBTeamPlayers(data.B_team_player);
+    setATeamData(data.A_team_data);
+    setBTeam(data.B_team);
+    setBTeamLogo(data.B_team_logo);
+    setBTeamData(data.B_team_data);
+    setFinishSetting(data.finishSetting);
+    setEndGame(data.endGame);
+  }
   useEffect(() => {
     if (props.liveGameRoutes?.includes(props.gameName)) {
       const unsub = onSnapshot(
@@ -115,22 +131,6 @@ function LiveRoom(props) {
         }
       );
     } else if (props.pastGameName !== undefined) {
-      async function loading() {
-        const docSnap = await getDoc(doc(db, "past_data", `${props.gameName}`));
-        const data = docSnap.data();
-        setLiveAction(data.live_action);
-        setQuarter(data.quarter);
-        setATeam(data.A_team);
-        setATeamLogo(data.A_team_logo);
-        setATeamPlayers(data.A_team_player);
-        setBTeamPlayers(data.B_team_player);
-        setATeamData(data.A_team_data);
-        setBTeam(data.B_team);
-        setBTeamLogo(data.B_team_logo);
-        setBTeamData(data.B_team_data);
-        setFinishSetting(data.finishSetting);
-        setEndGame(data.endGame);
-      }
       loading();
     }
   }, [props.gameName]);
@@ -277,5 +277,11 @@ function LiveRoom(props) {
     </>
   );
 }
+
+LiveRoom.propTypes = {
+  gameName: PropTypes.string,
+  pastGameName: PropTypes.string,
+  liveGameRoutes: PropTypes.array,
+};
 
 export default LiveRoom;

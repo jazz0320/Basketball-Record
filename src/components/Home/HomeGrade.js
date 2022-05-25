@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const TeamGradeBox = styled.div`
   width: 37vw;
@@ -131,5 +132,9 @@ function HomeGrade(props) {
     </TeamGradeBox>
   );
 }
+
+HomeGrade.propTypes = {
+  teamGrade: PropTypes.array,
+};
 
 export default HomeGrade;

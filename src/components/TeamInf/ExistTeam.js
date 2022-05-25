@@ -10,6 +10,7 @@ import {
   getDoc,
 } from "../../utils/firebase";
 import styled from "styled-components/macro";
+import PropTypes from "prop-types";
 
 const PopupDiv = styled.div`
   position: fixed;
@@ -208,7 +209,7 @@ function ExistTeam(props) {
     const file = e.target.files[0];
     const path = file.name;
     const imgRef = ref(storage, `${props.userId}/${path}`);
-    await uploadBytes(imgRef, file).then((snapshot) => {});
+    await uploadBytes(imgRef, file);
     await getDownloadURL(ref(storage, `${props.userId}/${path}`))
       .then((url) => {
         setTeamLogo(url);
@@ -223,7 +224,9 @@ function ExistTeam(props) {
         };
         picUpload();
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -333,13 +336,15 @@ function ModifyPlayer(props) {
     const file = e.target.files[0];
     const path = file.name;
     const imgRef = ref(storage, `${props.userId}/${path}`);
-    await uploadBytes(imgRef, file).then((snapshot) => {});
+    await uploadBytes(imgRef, file);
     await getDownloadURL(ref(storage, `${props.userId}/${path}`))
       .then((url) => {
         data.pic = url;
         setNewPlayer(data);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   };
   let data = { ...newPlayer };
   const writePlayers = function (e) {
@@ -394,5 +399,19 @@ function ModifyPlayer(props) {
     </>
   );
 }
+
+ExistTeam.propTypes = {
+  memberTeamExist: PropTypes.string,
+  userId: PropTypes.string,
+};
+ModifyPlayer.propTypes = {
+  player: PropTypes.object,
+  userId: PropTypes.string,
+  setTeamPlayers: PropTypes.func,
+  setRevisePlayer: PropTypes.func,
+  memberTeamExist: PropTypes.string,
+  playerOrder: PropTypes.number,
+  teamPlayers: PropTypes.array,
+};
 
 export default ExistTeam;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { getDoc, doc, getDocs, collection, db } from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -394,8 +395,8 @@ const TimeContainer = styled.div`
 function TimeBox(props) {
   const [timeDate, setTimeDate] = useState([]);
   useEffect(() => {
-    let a = props.time.split("-");
-    setTimeDate(a);
+    let time = props.time.split("-");
+    setTimeDate(time);
   }, []);
 
   const months = {
@@ -436,3 +437,16 @@ function TimeBox(props) {
     </TimeContainer>
   );
 }
+
+BoxEnd.propTypes = {
+  data: PropTypes.object,
+};
+
+BoxComing.propTypes = {
+  data: PropTypes.object,
+};
+TimeBox.propTypes = {
+  time: PropTypes.string,
+  weekday: PropTypes.number,
+  gameTimeCount: PropTypes.number,
+};

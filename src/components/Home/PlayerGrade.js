@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const gradeType = [
   ["to", "失誤"],
@@ -114,7 +115,6 @@ function PlayerGrade(props) {
       setCheckDataType={setCheckDataType}
       gradeType={gradeType}
       playerGrade={props.playerGrade}
-      checkDataType={checkDataType}
     />
   );
 }
@@ -164,3 +164,14 @@ function GradeOutCome(props) {
     </GradeBox>
   );
 }
+
+PlayerGrade.propTypes = {
+  playerGrade: PropTypes.array,
+};
+
+GradeOutCome.propTypes = {
+  playerGrade: PropTypes.array,
+  checkDataType: PropTypes.string,
+  setCheckDataType: PropTypes.func,
+  gradeType: PropTypes.array,
+};

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
 import { getDoc, doc, db } from "../../utils/firebase";
 import styled from "styled-components/macro";
 
@@ -191,43 +192,43 @@ function AppGameSetting(props) {
   const bTeamPlayersName = useRef();
   const five = [1, 2, 3, 4, 5];
 
+  async function selectTeam() {
+    const docSnap = await getDoc(doc(db, "team_data", props.aTeam));
+    let data = docSnap.data().players;
+    let logo = docSnap.data().logo;
+    let winLoss = docSnap.data().winLoss;
+    let newData = [];
+    for (let i = 0; i < data.length; i++) {
+      data[i].min = 0;
+      data[i].fgm = 0;
+      data[i].fga = 0;
+      data[i].fgRate = 0;
+      data[i].threePtm = 0;
+      data[i].threePta = 0;
+      data[i].threePtRate = 0;
+      data[i].ftm = 0;
+      data[i].fta = 0;
+      data[i].ftRate = 0;
+      data[i].oreb = 0;
+      data[i].dreb = 0;
+      data[i].reb = 0;
+      data[i].ast = 0;
+      data[i].stl = 0;
+      data[i].blk = 0;
+      data[i].to = 0;
+      data[i].pf = 0;
+      data[i].pts = 0;
+      data[i].start = false;
+      data[i].position = 6;
+      newData.push(data[i]);
+    }
+    props.setATeamPlayers(newData);
+    props.setATeamWinLoss(winLoss);
+    aTeamPlayersName.current = newData.map((player) => player.name);
+    props.setATeamLogo(logo);
+  }
   useEffect(() => {
     if (props.wantToBackLiveGame === false) {
-      async function selectTeam() {
-        const docSnap = await getDoc(doc(db, "team_data", props.aTeam));
-        let data = docSnap.data().players;
-        let logo = docSnap.data().logo;
-        let winLoss = docSnap.data().winLoss;
-        let newData = [];
-        for (let i = 0; i < data.length; i++) {
-          data[i].min = 0;
-          data[i].fgm = 0;
-          data[i].fga = 0;
-          data[i].fgRate = 0;
-          data[i].threePtm = 0;
-          data[i].threePta = 0;
-          data[i].threePtRate = 0;
-          data[i].ftm = 0;
-          data[i].fta = 0;
-          data[i].ftRate = 0;
-          data[i].oreb = 0;
-          data[i].dreb = 0;
-          data[i].reb = 0;
-          data[i].ast = 0;
-          data[i].stl = 0;
-          data[i].blk = 0;
-          data[i].to = 0;
-          data[i].pf = 0;
-          data[i].pts = 0;
-          data[i].start = false;
-          data[i].position = 6;
-          newData.push(data[i]);
-        }
-        props.setATeamPlayers(newData);
-        props.setATeamWinLoss(winLoss);
-        aTeamPlayersName.current = newData.map((player) => player.name);
-        props.setATeamLogo(logo);
-      }
       if (props.aTeam !== "default") {
         selectTeam();
       }
@@ -268,46 +269,46 @@ function AppGameSetting(props) {
     setTeamsData();
   }, [props.quarter]);
 
+  async function selectBTeam() {
+    const docRef = doc(db, "team_data", props.bTeam);
+    const docSnap = await getDoc(docRef);
+    let data = docSnap.data().players;
+    let logo = docSnap.data().logo;
+    let winLoss = docSnap.data().winLoss;
+    let newData = [];
+    for (let i = 0; i < data.length; i++) {
+      data[i].min = 0;
+      data[i].fgm = 0;
+      data[i].fga = 0;
+      data[i].fgRate = 0;
+      data[i].threePtm = 0;
+      data[i].threePta = 0;
+      data[i].threePtRate = 0;
+      data[i].ftm = 0;
+      data[i].fta = 0;
+      data[i].ftRate = 0;
+      data[i].oreb = 0;
+      data[i].dreb = 0;
+      data[i].reb = 0;
+      data[i].ast = 0;
+      data[i].stl = 0;
+      data[i].blk = 0;
+      data[i].to = 0;
+      data[i].pf = 0;
+      data[i].pts = 0;
+      data[i].start = false;
+      data[i].position = 6;
+      newData.push(data[i]);
+    }
+    props.setBTeamPlayers(newData);
+    props.setBTeamWinLoss(winLoss);
+    bTeamPlayersName.current = newData.map((player) => player.name);
+    props.setBTeamLogo(logo);
+  }
   useEffect(() => {
     if (props.wantToBackLiveGame === false) {
-      async function selectTeam() {
-        const docRef = doc(db, "team_data", props.bTeam);
-        const docSnap = await getDoc(docRef);
-        let data = docSnap.data().players;
-        let logo = docSnap.data().logo;
-        let winLoss = docSnap.data().winLoss;
-        let newData = [];
-        for (let i = 0; i < data.length; i++) {
-          data[i].min = 0;
-          data[i].fgm = 0;
-          data[i].fga = 0;
-          data[i].fgRate = 0;
-          data[i].threePtm = 0;
-          data[i].threePta = 0;
-          data[i].threePtRate = 0;
-          data[i].ftm = 0;
-          data[i].fta = 0;
-          data[i].ftRate = 0;
-          data[i].oreb = 0;
-          data[i].dreb = 0;
-          data[i].reb = 0;
-          data[i].ast = 0;
-          data[i].stl = 0;
-          data[i].blk = 0;
-          data[i].to = 0;
-          data[i].pf = 0;
-          data[i].pts = 0;
-          data[i].start = false;
-          data[i].position = 6;
-          newData.push(data[i]);
-        }
-        props.setBTeamPlayers(newData);
-        props.setBTeamWinLoss(winLoss);
-        bTeamPlayersName.current = newData.map((player) => player.name);
-        props.setBTeamLogo(logo);
-      }
       if (props.bTeam !== "default") {
-        selectTeam();
+        selectBTeam();
       }
     }
   }, [props.bTeam]);
@@ -661,5 +662,32 @@ function AppGameSetting(props) {
     </DivBeforeGameRecord>
   );
 }
+
+AppGameSetting.propTypes = {
+  wantToBackLiveGame: PropTypes.bool,
+  aTeam: PropTypes.string,
+  bTeam: PropTypes.string,
+  quarter: PropTypes.number,
+  setATeamPlayers: PropTypes.func,
+  aTeamPlayers: PropTypes.array,
+  bTeamPlayers: PropTypes.array,
+  liveGameName: PropTypes.object,
+  setBTeamPlayers: PropTypes.func,
+  setATeamWinLoss: PropTypes.func,
+  setBTeamWinLoss: PropTypes.func,
+  setATeamLogo: PropTypes.func,
+  setBTeamLogo: PropTypes.func,
+  aTeamLogo: PropTypes.string,
+  bTeamLogo: PropTypes.string,
+  setATeamData: PropTypes.func,
+  setBTeamData: PropTypes.func,
+  setATeam: PropTypes.func,
+  setBTeam: PropTypes.func,
+  finishGameSetting: PropTypes.func,
+  setQuarter: PropTypes.func,
+  setTimerMinutes: PropTypes.func,
+  eachQuarterTime: PropTypes.object,
+  scheduleGames: PropTypes.array,
+};
 
 export default AppGameSetting;

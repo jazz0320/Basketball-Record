@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -134,5 +135,12 @@ function LiveRoomScore(props) {
     </>
   );
 }
+
+LiveRoomScore.propTypes = {
+  aTeam: PropTypes.string,
+  aTeamPlayers: PropTypes.array,
+  bTeamPlayers: PropTypes.array,
+  bTeam: PropTypes.string,
+};
 
 export default LiveRoomScore;

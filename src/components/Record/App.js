@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useState, useRef } from "react";
 import { doc, db, setDoc } from "../../utils/firebase";
 import styled from "styled-components";
@@ -276,5 +277,12 @@ function App(props) {
     </>
   );
 }
+
+App.propTypes = {
+  everyLiveGames: PropTypes.array,
+  liveGameName: PropTypes.object,
+  scheduleGames: PropTypes.array,
+  setIsGameStart: PropTypes.func,
+};
 
 export default App;

@@ -1,6 +1,7 @@
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const TeamOnTheGround = styled.div`
   height: 700px;
@@ -150,5 +151,13 @@ function TeamBox(props) {
     </DragDropContext>
   );
 }
+
+TeamBox.propTypes = {
+  exchangePlayer: PropTypes.bool,
+  teamPlayers: PropTypes.array,
+  setTeamPlayers: PropTypes.func,
+  activePlayer: PropTypes.string,
+  selectTeam: PropTypes.bool,
+};
 
 export default TeamBox;

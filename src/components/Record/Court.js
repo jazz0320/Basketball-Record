@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import "./Court.css";
 import { useRef } from "react";
 import { flushSync } from "react-dom";
@@ -800,5 +801,12 @@ function Court(props) {
     </CourtContainer>
   );
 }
+
+Court.propTypes = {
+  setPlayerAxis: PropTypes.func,
+  setPlayerLocation: PropTypes.func,
+  setPlayerLocationScoreNumber: PropTypes.func,
+  dispatchPlayerActions: PropTypes.func,
+};
 
 export default Court;

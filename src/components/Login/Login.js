@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   auth,
   signInWithEmailAndPassword,
@@ -96,7 +97,6 @@ function Login(props) {
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   let redirect = useNavigate();
-
   useEffect(() => {
     if (props.logStatus === true) {
       redirect("/");
@@ -201,4 +201,12 @@ function Login(props) {
     </>
   );
 }
+
+Login.propTypes = {
+  logStatus: PropTypes.bool,
+  setUserId: PropTypes.func,
+  setLogFirstTime: PropTypes.func,
+  setNavActive: PropTypes.func,
+};
+
 export default Login;
