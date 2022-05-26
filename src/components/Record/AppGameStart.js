@@ -663,6 +663,137 @@ function AppGameStart(props) {
       props.setBTeamWinLoss(bTeamGrade);
       whoWin.current = props.bTeam;
     }
+
+    const calculatePlayerGrade = function (
+      team,
+      players,
+      playersPastData,
+      teamWinLoss
+    ) {
+      let newGameData = [...players];
+      let pastGameData = [...playersPastData];
+      const pastGameNum = teamWinLoss[0] + teamWinLoss[1];
+      function round(num) {
+        var m = Number((Math.abs(num) * 100).toPrecision(15));
+        return (Math.round(m) / 100) * Math.sign(num);
+      }
+      for (let j = 0; j < newGameData.length; j++) {
+        for (let i = 0; i < pastGameData.length; i++) {
+          if (newGameData[j].id === pastGameData[i].id) {
+            pastGameData[i].min = round(
+              (pastGameData[i].min * pastGameNum + newGameData[j].min) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].fgm = round(
+              (pastGameData[i].fgm * pastGameNum + newGameData[j].fgm) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].fga = round(
+              (pastGameData[i].fga * pastGameNum + newGameData[j].fga) /
+                (pastGameNum + 1)
+            );
+            if (pastGameData[i].fga > 0) {
+              pastGameData[i].fgRate = round(
+                (pastGameData[i].fgm / pastGameData[i].fga) * 100
+              );
+            } else {
+              pastGameData[i].fgRate = 0;
+            }
+
+            pastGameData[i].threePtm = round(
+              (pastGameData[i].threePtm * pastGameNum +
+                newGameData[j].threePtm) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].threePta = round(
+              (pastGameData[i].threePta * pastGameNum +
+                newGameData[j].threePta) /
+                (pastGameNum + 1)
+            );
+            if (pastGameData[i].threePta > 0) {
+              pastGameData[i].threePtRate = round(
+                (pastGameData[i].threePtm / pastGameData[i].threePta) * 100
+              );
+            } else {
+              pastGameData[i].threePtRate = 0;
+            }
+            pastGameData[i].ftm = round(
+              (pastGameData[i].ftm * pastGameNum + newGameData[j].ftm) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].fta = round(
+              (pastGameData[i].fta * pastGameNum + newGameData[j].fta) /
+                (pastGameNum + 1)
+            );
+            if (pastGameData[i].fta > 0) {
+              pastGameData[i].ftRate = round(
+                (pastGameData[i].ftm / pastGameData[i].fta) * 100
+              );
+            } else {
+              pastGameData[i].ftRate = 0;
+            }
+
+            pastGameData[i].oreb = round(
+              (pastGameData[i].oreb * pastGameNum + newGameData[j].oreb) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].dreb = round(
+              (pastGameData[i].dreb * pastGameNum + newGameData[j].dreb) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].reb = round(
+              (pastGameData[i].reb * pastGameNum + newGameData[j].reb) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].ast = round(
+              (pastGameData[i].ast * pastGameNum + newGameData[j].ast) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].stl = round(
+              (pastGameData[i].stl * pastGameNum + newGameData[j].stl) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].blk = round(
+              (pastGameData[i].blk * pastGameNum + newGameData[j].blk) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].to = round(
+              (pastGameData[i].to * pastGameNum + newGameData[j].to) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].pf = round(
+              (pastGameData[i].pf * pastGameNum + newGameData[j].pf) /
+                (pastGameNum + 1)
+            );
+            pastGameData[i].pts = round(
+              (pastGameData[i].pts * pastGameNum + newGameData[j].pts) /
+                (pastGameNum + 1)
+            );
+          }
+        }
+      }
+      setDoc(
+        doc(db, "team_data", team),
+        {
+          players: pastGameData,
+        },
+        { merge: true }
+      );
+    };
+
+    calculatePlayerGrade(
+      props.aTeam,
+      props.aTeamPlayers,
+      props.aTeamPlayersPastData,
+      props.aTeamWinLoss
+    );
+    calculatePlayerGrade(
+      props.bTeam,
+      props.bTeamPlayers,
+      props.bTeamPlayersPastData,
+      props.bTeamWinLoss
+    );
+
     await setDoc(
       doc(db, "live_game", props.liveGameName.current),
       {
@@ -991,6 +1122,8 @@ AppGameStart.propTypes = {
   setIsGameStart: PropTypes.func,
   eachQuarterTime: PropTypes.object,
   pageSize: PropTypes.array,
+  aTeamPlayersPastData: PropTypes.array,
+  bTeamPlayersPastData: PropTypes.array,
 };
 PopupEndGameBlock.propTypes = {
   setWantToCloseGame: PropTypes.func,
@@ -998,20 +1131,3 @@ PopupEndGameBlock.propTypes = {
 };
 
 export default AppGameStart;
-
-// wantToBackLiveGame: PropTypes.bool,
-
-//
-//
-//   setATeamLogo: PropTypes.func,
-//   setBTeamLogo: PropTypes.func,
-
-//   setATeamData: PropTypes.func,
-//   setBTeamData: PropTypes.func,
-//   setATeam: PropTypes.func,
-//   setBTeam: PropTypes.func,
-
-//   setQuarter: PropTypes.func,
-//   setTimerMinutes: PropTypes.func,
-//   eachQuarterTime: PropTypes.object,
-//   scheduleGames: PropTypes.array,

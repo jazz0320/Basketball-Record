@@ -66,7 +66,8 @@ function App(props) {
   const [backToChooseGameBlock, setBackToChooseGameBlock] = useState(false);
   const [pageSize, setPageSize] = useState([]);
   const [aTeam, setATeam] = useState("default");
-
+  const [aTeamPlayersPastData, setATeamPlayersPastData] = useState();
+  const [bTeamPlayersPastData, setBTeamPlayersPastData] = useState();
   const [aTeamLogo, setATeamLogo] = useState();
   const [aTeamWinLoss, setATeamWinLoss] = useState([]);
   const [aTeamPlayers, setATeamPlayers] = useState();
@@ -237,6 +238,8 @@ function App(props) {
             scheduleGames={props.scheduleGames}
             liveGameName={props.liveGameName}
             wantToBackLiveGame={wantToBackLiveGame}
+            setATeamPlayersPastData={setATeamPlayersPastData}
+            setBTeamPlayersPastData={setBTeamPlayersPastData}
           />
         ) : (
           <AppGameStart
@@ -271,6 +274,8 @@ function App(props) {
             setLiveAction={setLiveAction}
             liveAction={liveAction}
             setIsGameStart={props.setIsGameStart}
+            aTeamPlayersPastData={aTeamPlayersPastData}
+            bTeamPlayersPastData={bTeamPlayersPastData}
           />
         )}
       </Div_Record>

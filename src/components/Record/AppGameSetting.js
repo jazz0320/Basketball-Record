@@ -195,6 +195,7 @@ function AppGameSetting(props) {
   async function selectTeam() {
     const docSnap = await getDoc(doc(db, "team_data", props.aTeam));
     let data = docSnap.data().players;
+    props.setATeamPlayersPastData(docSnap.data().players);
     let logo = docSnap.data().logo;
     let winLoss = docSnap.data().winLoss;
     let newData = [];
@@ -273,6 +274,7 @@ function AppGameSetting(props) {
     const docRef = doc(db, "team_data", props.bTeam);
     const docSnap = await getDoc(docRef);
     let data = docSnap.data().players;
+    props.setBTeamPlayersPastData(docSnap.data().players);
     let logo = docSnap.data().logo;
     let winLoss = docSnap.data().winLoss;
     let newData = [];
@@ -688,6 +690,8 @@ AppGameSetting.propTypes = {
   setTimerMinutes: PropTypes.func,
   eachQuarterTime: PropTypes.object,
   scheduleGames: PropTypes.array,
+  setATeamPlayersPastData: PropTypes.func,
+  setBTeamPlayersPastData: PropTypes.func,
 };
 
 export default AppGameSetting;
