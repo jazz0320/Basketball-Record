@@ -52,6 +52,12 @@ const LinkComponet = styled(Link)`
   border-radius: 100%;
   color: ${(props) => (props.$focus ? "#343a40" : "#cccccc")};
   text-decoration: none;
+  @media (max-width: 768px) {
+    width: 90px;
+  }
+  @media (max-width: 414px) {
+    width: 60px;
+  }
 `;
 
 const LinkImg = styled.img`
@@ -70,6 +76,12 @@ const LogoImg = styled.img`
     props.$focus ? "drop-shadow(-10px 10px 2px rgba(0, 0, 0, 0.5))" : null};
   width: 60px;
   height: 60px;
+`;
+
+const RecordDiv = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const IconComponet = styled.div`
@@ -99,6 +111,9 @@ const MemberId = styled.div`
   height: 60px;
   color: black;
   font-size: 22px;
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const RightSideContainer = styled.div`
@@ -110,6 +125,12 @@ const RightSideContainer = styled.div`
 
 const NavText = styled.div`
   margin: 5px;
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+  @media (max-width: 414px) {
+    display: none;
+  }
 `;
 
 function Nav() {
@@ -225,20 +246,22 @@ function Nav() {
           {logStatus ? (
             <>
               {userId === "test@test.com" && (
-                <LinkComponet
-                  $focus={navActive === 0}
-                  onClick={() => setNavActive(0)}
-                  to="/record"
-                >
-                  <LinkImg1
-                    src={
-                      navActive === 0
-                        ? require("../img/basketball.png")
-                        : require("../img/basketballG.png")
-                    }
-                  />
-                  <NavText>記錄</NavText>
-                </LinkComponet>
+                <RecordDiv>
+                  <LinkComponet
+                    $focus={navActive === 0}
+                    onClick={() => setNavActive(0)}
+                    to="/record"
+                  >
+                    <LinkImg1
+                      src={
+                        navActive === 0
+                          ? require("../img/basketball.png")
+                          : require("../img/basketballG.png")
+                      }
+                    />
+                    <NavText>記錄</NavText>
+                  </LinkComponet>
+                </RecordDiv>
               )}
 
               {userId !== "test@test.com" && (

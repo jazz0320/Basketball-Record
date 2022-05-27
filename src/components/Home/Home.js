@@ -13,7 +13,7 @@ const CenterDiv = styled.div`
 `;
 
 const FullPageContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   background-color: #e9ecef;
@@ -21,6 +21,13 @@ const FullPageContainer = styled.div`
 
 const ContentContainer = styled.div`
   width: 80vw;
+  @media (max-width: 1024px) {
+    width: 90vw;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+  }
   background-color: #f8f9fa;
   padding: 0.5vh 1vw 3vh 1vw;
   display: flex;
@@ -29,10 +36,13 @@ const ContentContainer = styled.div`
   box-shadow: 0px 0px 3px 5px rgba(0, 0, 0, 0.3); ;
 `;
 const PlayerTeamContainer = styled.div`
-  width: 76vw;
+  width: 98%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  @media (max-width: 768px) {
+    justify-content: space-around;
+  }
 `;
 
 function Home() {
@@ -153,9 +163,26 @@ export default Home;
 
 const CarousellContainer = styled.div`
   margin: 105px 1vw 3vh 0vw;
-  height: 250px;
-  width: 80vw;
   padding: 10px;
+  height: 250px;
+  @media (max-width: 1280px) {
+    margin: 105px 1vw 2vh 0vw;
+    padding: 0 10px;
+  }
+  @media (max-width: 1024px) {
+    margin: 100px 1vw 1vh 0vw;
+  }
+  @media (max-width: 768px) {
+    margin: 105px 1vw 0.5vh 0vw;
+    height: 230px;
+    align-items: flex-start;
+  }
+  @media (max-width: 414px) {
+    margin: 105px 1vw 0vh 0vw;
+  }
+
+  width: 100%;
+
   display: inline-flex;
   overflow: scroll;
   color: #495057;
@@ -177,6 +204,11 @@ const GameContainerL1 = styled.div`
   flex-wrap: wrap;
   border: 1px solid #ced4da;
   box-shadow: -5px 5px 3px rgba(0, 0, 0, 0.2);
+  @media (max-width: 768px) {
+    padding: 0px;
+    width: fit-content;
+    height: 205px;
+  }
 `;
 
 const GameContainerL2 = styled.div`
@@ -383,6 +415,9 @@ const TimeContainer = styled.div`
   flex-wrap: nowrap;
   justify-content: center;
   background-color: #343a40;
+  @media (max-width: 768px) {
+    height: 218px;
+  }
   div {
     color: white;
     margin-top: 50px;

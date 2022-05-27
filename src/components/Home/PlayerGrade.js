@@ -21,75 +21,117 @@ const GradeBox = styled.div`
   border: 2px solid #adb5bd;
   box-shadow: 0px 2px 5px 3px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-  width: 37vw;
+  width: 44.68%;
   height: calc(100vh - 200px);
+  @media (max-width: 768px) {
+    width: 97%;
+    margin-bottom: 1vh;
+    height: 400px;
+  }
 `;
 
 const GradeTitle = styled.div`
   div {
     font-size: 20px;
+    @media (max-width: 1280px) {
+      font-size: 16px;
+    }
+    @media (max-width: 1024px) {
+      font-size: 12px;
+    }
+    @media (max-width: 768px) {
+      font-size: 18px;
+    }
+    @media (max-width: 414px) {
+      font-size: 14px;
+    }
   }
   display: flex;
+  align-items: center;
   background-color: #343a40;
   color: #f8f9fa;
   padding: 0 10px;
   justify-content: space-around;
   border-radius: 6px 6px 0 0;
-  height: 36px;
+  height: 4vh;
 `;
 
 const GradeTitleRank = styled.div`
   width: 60px;
-  text-align: center;
-  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: auto 0;
   font-size: ${(props) =>
     props.index < 3 ? `${20 + (3 - props.index) * 7}px` : "20px"};
   font-weight: ${(props) =>
     props.index < 3 ? `${400 + (3 - props.index) * 50}` : "400"};
+  height: 100%;
 `;
 const GradeTitlePlayer = styled.div`
   width: 330px;
   text-align: center;
-  height: 30px;
   margin: auto 0;
+  @media (max-width: 1280px) {
+    width: 240px;
+  }
+  @media (max-width: 768px) {
+    width: 260px;
+  }
 `;
 
 const PlayerName = styled.div`
-  width: 250px;
+  padding-right: 10px;
+  width: 200px;
   text-align: center;
-  font-size: 20px;
 `;
 const GradeTitleTeam = styled.div`
   width: 120px;
-  height: 30px;
   margin: auto;
 `;
 const TeamName = styled.div`
   width: 120px;
-  font-size: 20px;
 `;
 
 const GradeTitleData = styled.div`
   width: 80px;
-  height: 30px;
   margin: auto 0;
 `;
 
 const PlayerData = styled.div`
   width: 120px;
   text-align: center;
-  font-size: 20px;
 `;
 
 const InfSelector = styled.div`
   padding: 5px 10px;
   font-size: 20px;
+  @media (max-width: 1280px) {
+    font-size: 16px;
+  }
+  @media (max-width: 1024px) {
+    font-size: 12px;
+  }
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+  @media (max-width: 414px) {
+    font-size: 14px;
+  }
 `;
 
 const PlayerGradeContainer = styled.div`
   height: calc(100vh - 280px);
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+    /* Chrome Safari */
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  @media (max-width: 768px) {
+    height: 300px;
+  }
 `;
 
 const EachPlayerBox = styled.div`
@@ -97,14 +139,73 @@ const EachPlayerBox = styled.div`
   align-items: center;
   margin-bottom: 10px;
   justify-content: space-around;
+  div {
+    font-size: 20px;
+    margin-bottom: 5px;
+    @media (max-width: 1280px) {
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+    @media (max-width: 1024px) {
+      font-size: 12px;
+      margin-bottom: 0px;
+    }
+    @media (max-width: 768px) {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+    @media (max-width: 414px) {
+      font-size: 14px;
+      margin-bottom: 0px;
+    }
+  }
 `;
 
 const PlayerImg = styled.img`
   filter: drop-shadow(-10px 6px 3px rgba(0, 0, 0, 0.5));
   height: ${(props) =>
-    props.index < 3 ? `${90 + (3 - props.index) * 8}px` : "80px"};
+    props.index < 3 ? `${65 + (3 - props.index) * 8}px` : "55px"};
   width: ${(props) =>
-    props.index < 3 ? `${136 + (3 - props.index) * 11}px` : "109px"};
+    props.index < 3 ? `${120 + (3 - props.index) * 11}px` : "109px"};
+  @media (max-width: 1280px) {
+    height: ${(props) =>
+      props.index < 3 ? `${50 + (3 - props.index) * 6}px` : "45px"};
+    width: ${(props) =>
+      props.index < 3 ? `${100 + (3 - props.index) * 8.3}px` : "90px"};
+  }
+  @media (max-width: 1024px) {
+    height: ${(props) =>
+      props.index < 3 ? `${40 + (3 - props.index) * 3}px` : "35px"};
+    width: ${(props) =>
+      props.index < 3 ? `${86 + (3 - props.index) * 5.5}px` : "70px"};
+  }
+  @media (max-width: 768px) {
+    height: ${(props) =>
+      props.index < 3 ? `${65 + (3 - props.index) * 8}px` : "55px"};
+    width: ${(props) =>
+      props.index < 3 ? `${120 + (3 - props.index) * 11}px` : "109px"};
+  }
+  @media (max-width: 414px) {
+    height: ${(props) =>
+      props.index < 3 ? `${50 + (3 - props.index) * 8}px` : "50px"};
+    width: ${(props) =>
+      props.index < 3 ? `${90 + (3 - props.index) * 11}px` : "80px"};
+  }
+`;
+const PlayerImgDiv = styled.div`
+  width: 120px;
+  @media (max-width: 1280px) {
+    width: 100px;
+  }
+  @media (max-width: 1024px) {
+    width: 80px;
+  }
+  @media (max-width: 768px) {
+    width: 120px;
+  }
+  @media (max-width: 414px) {
+    font-size: 80px;
+  }
 `;
 
 function PlayerGrade(props) {
@@ -152,9 +253,9 @@ function GradeOutCome(props) {
         {sortData?.map((data, index) => (
           <EachPlayerBox key={data.name}>
             <GradeTitleRank index={index}>{index + 1}</GradeTitleRank>
-            <div>
+            <PlayerImgDiv>
               <PlayerImg index={index} src={data.pic} />
-            </div>
+            </PlayerImgDiv>
             <PlayerName>{data.name}</PlayerName>
             <TeamName>{data.team}</TeamName>
             <PlayerData>{data[props.checkDataType]}</PlayerData>

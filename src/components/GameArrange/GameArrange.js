@@ -22,6 +22,12 @@ const FullPageContainer = styled.div`
 
 const ContentContainer = styled.div`
   width: 80vw;
+  @media (max-width: 1024px) {
+    width: 90vw;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   background-color: #f8f9fa;
   padding: 110px 2vw 1vh 2vw;
   box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.5);
@@ -29,13 +35,17 @@ const ContentContainer = styled.div`
 
 const EachGameSetting = styled.div`
   display: flex;
-  justify-content: cneter;
+  justify-content: space-around;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.5);
   align-items: center;
   height: 170px;
   border-radius: 10px;
   padding: 0 10px;
   margin-bottom: 15px;
+
+  @media (max-width: 768px) {
+    padding: 0;
+  }
 `;
 const GameTimeBox = styled.div`
   width: 18vw;
@@ -44,15 +54,50 @@ const GameTimeBox = styled.div`
   align-items: center;
   justify-content: center;
   height: 150px;
+  @media (max-width: 1280px) {
+    width: 300px;
+  }
+  @media (max-width: 414px) {
+    width: 110px;
+  }
 `;
 
 const GameTimeInput = styled.input`
   width: 230px;
-  padding: 2px 10px;
+  padding: 0px 10px;
   border: 1px solid #adb5bd;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 28px;
+  @media (max-width: 1280px) {
+    font-size: 18px;
+  }
+  @media (max-width: 768px) {
+    padding: 0px 3px;
+    font-size: 14px;
+    width: 115px;
+    height: 25px;
+    margin: 5px;
+  }
+  @media (max-width: 414px) {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 1px;
+  }
+`;
+
+const TwoTeamDivs = styled.div`
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  @media (max-width: 1280px) {
+    width: 400px;
+  }
+  @media (max-width: 414px) {
+    width: 250px;
+  }
 `;
 
 const TeamsBox = styled.div`
@@ -60,12 +105,30 @@ const TeamsBox = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 28vw;
+  @media (max-width: 1280px) {
+    width: 50vw;
+  }
+  @media (max-width: 768px) {
+    width: 60vw;
+  }
+  @media (max-width: 768px) {
+    width: 65vw;
+  }
 `;
 
 const TeamSelect = styled.select`
   border-radius: 5px;
   border: 1px solid #adb5bd;
   font-size: 24px;
+  @media (max-width: 1280px) {
+    font-size: 18px;
+  }
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+  @media (max-width: 414px) {
+    font-size: 12px;
+  }
 `;
 
 const LogoBox = styled.div`
@@ -75,6 +138,23 @@ const LogoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 1280px) {
+    width: 82px;
+    height: 82px;
+  }
+`;
+
+const ForWebDiv = styled.div`
+  @media (max-width: 1280px) {
+    display: none;
+  }
+`;
+
+const ForMobileDiv = styled.div`
+  display: none;
+  @media (max-width: 1280px) {
+    display: flex;
+  }
 `;
 
 const LogoImg = styled.img`
@@ -83,6 +163,10 @@ const LogoImg = styled.img`
   width: ${(props) => (props.teamLogo !== "default" ? "120px" : "80px")};
   transform: ${(props) =>
     props.teamLogo !== "default" ? null : "rotate(10deg)"};
+  @media (max-width: 1280px) {
+    height: ${(props) => (props.teamLogo !== "default" ? "80px" : "80px")};
+    width: ${(props) => (props.teamLogo !== "default" ? "80px" : "50px")};
+  }
 `;
 
 const AddOneMoreGameDiv = styled.div`
@@ -92,6 +176,12 @@ const AddOneMoreGameDiv = styled.div`
   border-radius: 10px;
   margin-bottom: 15px;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.5);
+  @media (max-width: 768px) {
+    height: 60px;
+  }
+  @media (max-width: 414px) {
+    height: 40px;
+  }
 `;
 
 const AddOneMoreGameButton = styled.button`
@@ -127,6 +217,14 @@ const SubmitButton = styled.button`
     color: #212529;
     box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
   }
+  @media (max-width: 768px) {
+    height: 40px;
+    font-size: 24px;
+  }
+  @media (max-width: 414px) {
+    height: 30px;
+    font-size: 20px;
+  }
 `;
 
 const PopupBlur = styled.div`
@@ -141,10 +239,10 @@ const PopupBlur = styled.div`
 `;
 
 const PopupDiv = styled.div`
-  width: 41vw;
-  height: 45vh;
+  width: 500px;
+  height: 400px;
   top: 20vh;
-  left: 30vw;
+  left: calc(50vw - 250px);
   border-radius: 10px;
   box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.5);
   &:hover {
@@ -159,14 +257,24 @@ const PopupDiv = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  border-radius: 6%;
+  border-radius: 10px;
+  @media (max-width: 768px) {
+    width: 400px;
+    left: calc(50vw - 200px);
+    font-size: 28px;
+  }
+  @media (max-width: 414px) {
+    width: 100%;
+    left: 0;
+    font-size: 20px;
+  }
 `;
 
 const CheckEachGame = styled.div`
-  margin-top: 2vh;
   overflow-y: scroll;
-  height: 32vh;
-  width: 40vw;
+  height: 80%;
+  width: 90%;
+  padding: 0 5px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -186,13 +294,20 @@ const CheckButton = styled.button`
     color: #212529;
     box-shadow: 0px 0px 10px 7px rgba(255, 255, 255, 0.5);
   }
+  @media (max-width: 768px) {
+    font-size: 20px;
+    height: 40px;
+  }
+  @media (max-width: 414px) {
+    font-size: 16px;
+  }
 `;
 
 const EachGameBlock = styled.div`
   box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, 0.5);
   padding: 10px;
   margin: 10px 0;
-  width: 35vw;
+  width: 100%;
   border-radius: 10px;
   margin-bottom: 10px;
   display: flex;
@@ -212,10 +327,16 @@ const TeamName = styled.div`
   font-size: 24px;
   text-align: center;
   max-width: 140px;
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+  @media (max-width: 414px) {
+    font-size: 16px;
+  }
 `;
 
 const TeamLogoImg = styled.img`
-  height: 130px;
+  max-height: 130px;
   width: 130px;
   filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.5));
 `;
@@ -226,8 +347,21 @@ const EachGameTimeDiv = styled.div`
   align-items: flex-end;
   flex-wrap: wrap;
   justify-content: center;
+  @media (max-width: 768px) {
+    width: 300px;
+  }
+  @media (max-width: 414px) {
+    font-size: 14px;
+    width: 250px;
+  }
   div {
     font-size: 22px;
+    @media (max-width: 768px) {
+      font-size: 18px;
+    }
+    @media (max-width: 414px) {
+      font-size: 14px;
+    }
   }
 `;
 
@@ -359,85 +493,101 @@ function GameArrange() {
                   }}
                 />
               </GameTimeBox>
-              <TeamsBox>
-                <TeamSelect
-                  value={aTeam[num]}
-                  onChange={(e) => {
-                    let a = [...aTeam];
-                    a[num] = e.target.value;
-                    setATeam(a);
-                    let b = [...aTeamLogo];
-                    b[num] = teamsLogo[e.target.value];
-                    setATeamLogo(b);
-                    let c = [...aTeamWinLoss];
-                    c[num] = winLoss[e.target.value];
-                    setATeamWinLoss(c);
-                  }}
-                >
-                  <option disabled value="default">
-                    Select team
-                  </option>
-                  {teams.map((team, index) =>
-                    team === bTeam[num] ? (
-                      <option disabled key={index}>
-                        {team}
-                      </option>
-                    ) : (
-                      <option key={index}>{team}</option>
-                    )
-                  )}
-                </TeamSelect>
+              <TwoTeamDivs>
+                <TeamsBox>
+                  <TeamSelect
+                    value={aTeam[num]}
+                    onChange={(e) => {
+                      let a = [...aTeam];
+                      a[num] = e.target.value;
+                      setATeam(a);
+                      let b = [...aTeamLogo];
+                      b[num] = teamsLogo[e.target.value];
+                      setATeamLogo(b);
+                      let c = [...aTeamWinLoss];
+                      c[num] = winLoss[e.target.value];
+                      setATeamWinLoss(c);
+                    }}
+                  >
+                    <option disabled value="default">
+                      Select team
+                    </option>
+                    {teams.map((team, index) =>
+                      team === bTeam[num] ? (
+                        <option disabled key={index}>
+                          {team}
+                        </option>
+                      ) : (
+                        <option key={index}>{team}</option>
+                      )
+                    )}
+                  </TeamSelect>
 
-                <LogoBox>
-                  <LogoImg
-                    teamLogo={aTeamLogo[num]}
-                    src={
-                      aTeamLogo[num] !== "default"
-                        ? aTeamLogo[num]
-                        : require("../../img/flag/flagG.png")
-                    }
-                  />
-                </LogoBox>
-              </TeamsBox>
-              <TeamsBox>
-                <LogoBox>
-                  <LogoImg
-                    teamLogo={bTeamLogo[num]}
-                    src={
-                      bTeamLogo[num] !== "default"
-                        ? bTeamLogo[num]
-                        : require("../../img/flag/flagG.png")
-                    }
-                  />
-                </LogoBox>
-                <TeamSelect
-                  value={bTeam[num]}
-                  onChange={(e) => {
-                    let b = [...bTeam];
-                    b[num] = e.target.value;
-                    setBTeam(b);
-                    let a = [...bTeamLogo];
-                    a[num] = teamsLogo[e.target.value];
-                    setBTeamLogo(a);
-                    let c = [...bTeamWinLoss];
-                    c[num] = winLoss[e.target.value];
-                    setBTeamWinLoss(c);
-                  }}
-                >
-                  <option disabled value="default">
-                    Select team
-                  </option>
-                  {teams.map((team, index) =>
-                    team === aTeam[num] ? (
-                      <option disabled key={index}>
-                        {team}
-                      </option>
-                    ) : (
-                      <option key={index}>{team}</option>
-                    )
-                  )}
-                </TeamSelect>
-              </TeamsBox>
+                  <LogoBox>
+                    <LogoImg
+                      teamLogo={aTeamLogo[num]}
+                      src={
+                        aTeamLogo[num] !== "default"
+                          ? aTeamLogo[num]
+                          : require("../../img/flag/flagG.png")
+                      }
+                    />
+                  </LogoBox>
+                </TeamsBox>
+                <TeamsBox>
+                  <ForWebDiv>
+                    <LogoBox>
+                      <LogoImg
+                        teamLogo={bTeamLogo[num]}
+                        src={
+                          bTeamLogo[num] !== "default"
+                            ? bTeamLogo[num]
+                            : require("../../img/flag/flagG.png")
+                        }
+                      />
+                    </LogoBox>
+                  </ForWebDiv>
+                  <TeamSelect
+                    value={bTeam[num]}
+                    onChange={(e) => {
+                      let b = [...bTeam];
+                      b[num] = e.target.value;
+                      setBTeam(b);
+                      let a = [...bTeamLogo];
+                      a[num] = teamsLogo[e.target.value];
+                      setBTeamLogo(a);
+                      let c = [...bTeamWinLoss];
+                      c[num] = winLoss[e.target.value];
+                      setBTeamWinLoss(c);
+                    }}
+                  >
+                    <option disabled value="default">
+                      Select team
+                    </option>
+                    {teams.map((team, index) =>
+                      team === aTeam[num] ? (
+                        <option disabled key={index}>
+                          {team}
+                        </option>
+                      ) : (
+                        <option key={index}>{team}</option>
+                      )
+                    )}
+                  </TeamSelect>
+                  <ForMobileDiv>
+                    <LogoBox>
+                      <LogoImg
+                        teamLogo={bTeamLogo[num]}
+                        src={
+                          bTeamLogo[num] !== "default"
+                            ? bTeamLogo[num]
+                            : require("../../img/flag/flagG.png")
+                        }
+                      />
+                    </LogoBox>
+                  </ForMobileDiv>
+                </TeamsBox>
+              </TwoTeamDivs>
             </EachGameSetting>
           ))}
           <AddOneMoreGameDiv>

@@ -2,11 +2,14 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const TeamGradeBox = styled.div`
-  width: 37vw;
+  width: 52.68%;
   height: calc(100vh - 200px);
   border: 2px solid #adb5bd;
   border-radius: 10px;
   box-shadow: 0px 2px 5px 3px rgba(0, 0, 0, 0.3);
+  @media (max-width: 768px) {
+    width: 97%;
+  }
 `;
 
 const TeamGradeTitle = styled.div`
@@ -18,22 +21,70 @@ const TeamGradeTitle = styled.div`
   color: #f8f9fa;
   border-radius: 6px 6px 0 0;
   padding: 0 10px;
+
+  @media (max-width: 1024px) {
+    padding: 0px 5px;
+  }
+  @media (max-width: 768px) {
+    padding-left: 10px;
+  }
+  @media (max-width: 414px) {
+    padding-left: 10px;
+  }
+
   div {
     font-size: 20px;
+    @media (max-width: 1280px) {
+      font-size: 16px;
+    }
+    @media (max-width: 1024px) {
+      font-size: 12px;
+    }
+    @media (max-width: 768px) {
+      font-size: 18px;
+      padding: 0px;
+    }
+    @media (max-width: 414px) {
+      font-size: 14px;
+    }
   }
 `;
 
 const TeamGradeTitleRank = styled.div`
-  width: 40px;
+  width: 4vw;
   text-align: center;
+  @media (max-width: 768px) {
+    width: 10vw;
+  }
+  @media (max-width: 414px) {
+    width: 9.5vw;
+  }
 `;
 const TeamGradeTitleTeam = styled.div`
   width: 190px;
   text-align: center;
+  @media (max-width: 768px) {
+    width: 30vw;
+  }
+  @media (max-width: 414px) {
+    width: 34vw;
+  }
 `;
 const TeamLogo = styled.img`
   width: 80px;
   height: 80px;
+  @media (max-width: 1024px) {
+    width: 60px;
+    height: 60px;
+  }
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 80px;
+  }
+  @media (max-width: 414px) {
+    width: 50px;
+    height: 50px;
+  }
   filter: drop-shadow(-10px 10px 3px rgba(0, 0, 0, 0.3));
 `;
 
@@ -62,6 +113,12 @@ const TeamGradeTitleWinDif = styled.div`
 const TeamGradeContent = styled.div`
   height: calc(100vh - 240px);
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+    /* Chrome Safari */
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   padding: 0 10px;
 `;
 
@@ -71,6 +128,18 @@ const EachTeamBlock = styled.div`
   justify-content: space-around;
   div {
     font-size: 20px;
+    @media (max-width: 1280px) {
+      font-size: 16px;
+    }
+    @media (max-width: 1024px) {
+      font-size: 12px;
+    }
+    @media (max-width: 1024px) {
+      font-size: 18px;
+    }
+    @media (max-width: 414px) {
+      font-size: 14px;
+    }
   }
 `;
 

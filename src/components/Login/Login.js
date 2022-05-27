@@ -15,6 +15,13 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 80vw;
+  @media (max-width: 1024px) {
+    width: 90vw;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+  }
   height: 100vh;
 `;
 
@@ -22,6 +29,9 @@ const FormDiv = styled.div`
   box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.3);
   margin: 0 auto;
   width: 100%;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
   max-width: 450px;
   padding: 1.3rem;
   display: flex;
@@ -78,6 +88,10 @@ const ButtonSubmit = styled.button`
   border-radius: 0.5rem;
   user-select: none;
   width: 180px;
+
+  @media (max-width: 768px) {
+    width: 40%;
+  }
   height: 50px;
   transition: all 0.1s ease-in;
   ::-moz-focus-inner {
