@@ -28,12 +28,12 @@ https://basketball-record.web.app/
 
 ## Test Account
 
-| Recorder |
+| Recorder |               |
 | -------- | :-----------: |
 | Account  | test@test.com |
 | password |   testtest    |
 
-| Player   |
+| Player   |                |
 | -------- | :------------: |
 | Account  | test2@test.com |
 | password |    testtest    |
