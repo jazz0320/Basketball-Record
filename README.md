@@ -1,3 +1,53 @@
+# Basketball Record
+
+## Intro
+
+An interactive basketball game record website, allow users to record basketball game information like video game
+operation and show literal Livestream immediately, arrange the games schedule, organize team, and record grades.
+
+## Link
+
+https://basketball-record.web.app/
+
+## Tech
+
+1. Applied DOM (mouse event), SVG, and Canvas to record players’ locations.
+1. Applied DOM (keyboards event) for recording players’ actions.
+1. Applied react-beautiful-dnd to create a better UX when exchanging players.
+1. Applied Firebase Services:
+   1. Authentication for members management.
+   1. Hosting for website hosting.
+   1. Firebase and Storage for team and players’ data storage.
+1. Applied React / React Router for SPA.
+1. Applied ESLint, and PropTypes for code quality and type checking.
+1. Applied Responsive Web Design to Adjust website for different screen sizes.
+
+## Flow chart
+
+## Test Account
+
+| Recorder |               |
+| -------- | :-----------: |
+| Account  | test@test.com |
+| password |   testtest    |
+
+| Player   |                |
+| -------- | :------------: |
+| Account  | test2@test.com |
+| password |    testtest    |
+
+## Demo(gif)
+
+## Future Features
+
+Add each players every game results.
+Add each players shooting location and hit rate.
+Add Contest season feture.
+
+## Contact
+
+e-mail:jazz19910320@gmail.com
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
