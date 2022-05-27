@@ -40,6 +40,25 @@ const FormDiv = styled.div`
   position: relative;
 `;
 
+const RoleDivContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+`;
+
+const RoleDiv = styled.div`
+  cursor: pointer;
+  border-radius: 5px;
+  width: 50%;
+  font-size: 30px;
+  text-align: center;
+  background-color: ${(props) => (props.userRoleRecorder ? "#6c757d" : null)};
+  color: ${(props) => (props.userRoleRecorder ? "white" : null)};
+`;
+
+const InfContainer = styled.div`
+  border-radius: 5px;
+`;
 const Input = styled.input`
   width: 100%;
   max-width: 400px;
@@ -107,10 +126,13 @@ const ButtonSubmit = styled.button`
 `;
 
 function Login(props) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("test@test.com");
+  const [password, setPassword] = useState("testtest");
   const [error, setError] = useState();
+  const [userRoleRecorder, setUserRoleRecorder] = useState(true);
+
   let redirect = useNavigate();
+
   useEffect(() => {
     if (props.logStatus === true) {
       redirect("/");
@@ -171,38 +193,50 @@ function Login(props) {
       <FullPageContainer>
         <Wrapper>
           <FormDiv>
-            <div>
-              <TitleBox>信箱</TitleBox>
-              <div>
-                <Input
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                ></Input>
-              </div>
-              <span
-                css={`
-                  color: #f8f9fa;
-                `}
+            <RoleDivContainer>
+              <RoleDiv
+                userRoleRecorder={userRoleRecorder}
+                onClick={() => {
+                  setUserRoleRecorder(true),
+                    setEmail("test@test.com"),
+                    setPassword("testtest");
+                }}
               >
-                test@test.com
-              </span>
-            </div>
-            <div>
-              <TitleBox>密碼</TitleBox>
-              <div>
-                <Input
-                  type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                ></Input>
-              </div>
-              <span
-                css={`
-                  color: #f8f9fa;
-                `}
+                主辦方
+              </RoleDiv>
+              <RoleDiv
+                userRoleRecorder={!userRoleRecorder}
+                onClick={() => {
+                  setUserRoleRecorder(false),
+                    setEmail("test2@test.com"),
+                    setPassword("testtest");
+                }}
               >
-                testtest
-              </span>
-            </div>
+                參賽者
+              </RoleDiv>
+            </RoleDivContainer>
+            <InfContainer>
+              <div>
+                <TitleBox>信箱</TitleBox>
+                <div>
+                  <Input
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                  ></Input>
+                </div>
+              </div>
+              <div>
+                <TitleBox>密碼</TitleBox>
+                <div>
+                  <Input
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  ></Input>
+                </div>
+              </div>
+            </InfContainer>
             <ButtonContainer>
               <ButtonSubmit onClick={loginEmailPassword}>登入</ButtonSubmit>
 
