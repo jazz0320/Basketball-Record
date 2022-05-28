@@ -18,6 +18,9 @@ const LiveGameSelect = styled.select`
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
+  @media (max-width: 1024px) {
+    font-size: 12px;
+  }
 `;
 
 const ButtonSubmit = styled.button`
@@ -46,6 +49,9 @@ const ButtonSubmit = styled.button`
   &:active {
     background-color: ${() => "#212529"};
   }
+  @media (max-width: 1024px) {
+    width: 120px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -67,6 +73,11 @@ const PopupDiv = styled.div`
   height: 30vh;
   top: 30vh;
   width: 40vw;
+  @media (max-width: 1024px) {
+    font-size: 30px;
+    left: 25vw;
+    width: 50vw;
+  }
   z-index: 99;
   left: 30vw;
 `;

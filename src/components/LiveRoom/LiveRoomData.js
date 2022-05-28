@@ -2,6 +2,27 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+const gradeType = {
+  pf: "犯規",
+  ftRate: "罰球命中率",
+  dreb: "防守籃板",
+  pts: "得分",
+  threePtm: "三分命中數",
+  to: "失誤",
+  stl: "抄截",
+  threePtRate: "三分命中率",
+  ast: "助攻",
+  fgm: "出手次數",
+  blk: "火鍋",
+  oreb: "進攻籃板",
+  fta: "罰球命中數",
+  threePta: "三分命中數",
+  reb: "籃板",
+  ftm: "罰球數",
+  fgRate: "命中率",
+  fga: "命中數",
+};
+
 const QuarterContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -32,8 +53,6 @@ const TeamDataContainer = styled.div`
   }
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  border: 1px solid black;
-  border-radius: 10px;
   padding: 1vh 0;
   margin: 1vh 0;
 `;
@@ -122,6 +141,9 @@ const EachBarContainer = styled.div`
 const EachBar = styled.div`
   display: flex;
   max-width: 90vw;
+  @media (max-width: 1024px) {
+    max-width: 95vw;
+  }
 `;
 
 const BarDataNum = styled.div`
@@ -136,7 +158,13 @@ const BarDataBackgroundATeam = styled.div`
   justify-content: flex-end;
   margin-right: 10px;
   background-color: #dee2e6;
-  width: 25vw;
+  width: 30vw;
+  @media (max-width: 1440px) {
+    width: 27vw;
+  }
+  @media (max-width: 1024px) {
+    width: 30vw;
+  }
 `;
 
 const BarDataGradeATeam = styled.div`
@@ -147,7 +175,13 @@ const BarDataGradeATeam = styled.div`
 const BarDataBackgroundBTeam = styled.div`
   margin-left: 10px;
   background-color: #dee2e6;
-  width: 25vw;
+  width: 30vw;
+  @media (max-width: 1440px) {
+    width: 27vw;
+  }
+  @media (max-width: 1024px) {
+    width: 30vw;
+  }
 `;
 
 const BarDataGradeBTeam = styled.div`
@@ -173,7 +207,7 @@ function Bar(props) {
         <BarDataBackgroundATeam>
           <BarDataGradeATeam widthA={props.widthA} />
         </BarDataBackgroundATeam>
-        <BarDataName>{props.label}</BarDataName>
+        <BarDataName>{gradeType[props.label]}</BarDataName>
         <BarDataBackgroundBTeam>
           <BarDataGradeBTeam widthB={props.widthB} />
         </BarDataBackgroundBTeam>
@@ -195,7 +229,7 @@ function BarPercent(props) {
         <BarDataBackgroundATeam>
           <BarDataGradeATeam widthA={props.widthA * 100} />
         </BarDataBackgroundATeam>
-        <BarDataName>{props.label}</BarDataName>
+        <BarDataName>{gradeType[props.label]}</BarDataName>
         <BarDataBackgroundBTeam>
           <BarDataGradeBTeam widthB={props.widthB * 100} />
         </BarDataBackgroundBTeam>

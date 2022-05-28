@@ -79,7 +79,7 @@ const LogoImg = styled.img`
 `;
 
 const RecordDiv = styled.div`
-  @media (max-width: 768px) {
+  @media (max-width: 1023px) {
     display: none;
   }
 `;

@@ -91,7 +91,7 @@ function App(props) {
 
   const restartGameTime = useRef();
   const restartGameShotTime = useRef();
-  const [wantToBackLiveGame, setWantToBackLiveGame] = useState(true);
+  const [wantToBackLiveGame, setWantToBackLiveGame] = useState(false);
 
   const getPageSize = function () {
     const pageWidth = document.documentElement.scrollWidth;
@@ -208,6 +208,7 @@ function App(props) {
       <Div_Record>
         {finishSetting === false ? (
           <AppGameSetting
+            setWantToBackLiveGame={setWantToBackLiveGame}
             aTeam={aTeam}
             setATeam={setATeam}
             aTeamLogo={aTeamLogo}

@@ -30,6 +30,9 @@ const LiveActionContainer = styled.div`
 const LiveActionlines = styled.div`
   display: flex;
   margin-top: 14px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const LiveRoomLines = styled.div`
@@ -51,25 +54,82 @@ const LinesForATeam = styled.div`
   justify-content: flex-end;
   align-items: center;
   width: 33vw;
+  @media (max-width: 1024px) {
+    width: 37vw;
+  }
+  @media (max-width: 768px) {
+    width: 65vw;
+  }
+  @media (max-width: 414px) {
+    width: 80vw;
+  }
+
   background-color: #e9ecef;
   box-shadow: 0px 2px 2px 3px rgba(0, 0, 0, 0.2);
 `;
+
+const RWDTimeDiv = styled.div`
+  display: none;
+  font-size: 14px;
+  color: #6c757d;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+const RWDTimeDivBteam = styled.div`
+  display: none;
+  text-align: end;
+  font-size: 14px;
+  color: #6c757d;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
 const LinesForBTeam = styled.div`
   border-radius: 5px;
   display: flex;
   align-items: center;
   width: 33vw;
+  @media (max-width: 1024px) {
+    width: 37vw;
+  }
+  @media (max-width: 768px) {
+    width: 65vw;
+  }
+  @media (max-width: 414px) {
+    width: 80vw;
+  }
+
   background-color: #e9ecef;
   box-shadow: 0px 2px 2px 3px rgba(0, 0, 0, 0.2);
 `;
 
 const SpaceDiv = styled.div`
   width: 33vw;
+  @media (max-width: 1024px) {
+    width: 37vw;
+  }
+  @media (max-width: 768px) {
+    width: 31.5%;
+  }
+  @media (max-width: 640px) {
+    width: 31%;
+  }
+  @media (max-width: 500px) {
+    width: 30%;
+  }
+  @media (max-width: 414px) {
+    width: 14.3%;
+  }
 `;
 
 const TimeDiv = styled.div`
   width: 8vw;
   display: flex;
+  @media (max-width: 768px) {
+    display: none;
+  }
   flex-wrap: wrap;
   justify-content: center;
   background-color: #ced4da;
@@ -134,21 +194,28 @@ function LiveRoomStream(props) {
                 <>
                   <LiveActionlines key={index}>
                     {item.team === true ? (
-                      <LinesForATeam>
-                        <LiveRoomLines>
-                          <span>{item.team ? props.aTeam : props.bTeam}</span>
-                          <span> , </span>
-                          <span>{item.playerId}</span>
-                          <span> , </span>
-                          <span>{item.location}</span>
-                          <span> , </span>
-                          <span>
-                            {item.actionWord}+{item.count}
-                          </span>
-                        </LiveRoomLines>
+                      <div>
+                        <LinesForATeam>
+                          <LiveRoomLines>
+                            <span>{item.team ? props.aTeam : props.bTeam}</span>
+                            <span> , </span>
+                            <span>{item.playerId}</span>
+                            <span> , </span>
+                            <span>{item.location}</span>
+                            <span> , </span>
+                            <span>
+                              {item.actionWord}+{item.count}
+                            </span>
+                          </LiveRoomLines>
 
-                        <LinesPlayerPic src={`${item.playerPic}`} />
-                      </LinesForATeam>
+                          <LinesPlayerPic src={`${item.playerPic}`} />
+                        </LinesForATeam>
+                        <RWDTimeDiv>
+                          第{item.quarterNow}節,{item.minutes}:
+                          {item.seconds < 10 ? "0" : null}
+                          {item.seconds}
+                        </RWDTimeDiv>
+                      </div>
                     ) : (
                       <SpaceDiv />
                     )}
@@ -162,20 +229,27 @@ function LiveRoomStream(props) {
                     </TimeDiv>
 
                     {item.team === false ? (
-                      <LinesForBTeam>
-                        <LinesPlayerPic src={`${item.playerPic}`} />
-                        <LiveRoomLines>
-                          <span>{item.team ? props.aTeam : props.bTeam}</span>
-                          <span> , </span>
-                          <span>{item.playerId}</span>
-                          <span> , </span>
-                          <span>{item.location}</span>
-                          <span> , </span>
-                          <span>
-                            {item.actionWord}+{item.count}
-                          </span>
-                        </LiveRoomLines>
-                      </LinesForBTeam>
+                      <div>
+                        <LinesForBTeam>
+                          <LinesPlayerPic src={`${item.playerPic}`} />
+                          <LiveRoomLines>
+                            <span>{item.team ? props.aTeam : props.bTeam}</span>
+                            <span> , </span>
+                            <span>{item.playerId}</span>
+                            <span> , </span>
+                            <span>{item.location}</span>
+                            <span> , </span>
+                            <span>
+                              {item.actionWord}+{item.count}
+                            </span>
+                          </LiveRoomLines>
+                        </LinesForBTeam>
+                        <RWDTimeDivBteam>
+                          第{item.quarterNow}節,{item.minutes}:
+                          {item.seconds < 10 ? "0" : null}
+                          {item.seconds}
+                        </RWDTimeDivBteam>
+                      </div>
                     ) : (
                       <SpaceDiv />
                     )}

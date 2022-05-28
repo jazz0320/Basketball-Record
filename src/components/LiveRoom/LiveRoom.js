@@ -16,6 +16,12 @@ const FullPageContainer = styled.div`
 
 const ContentContainer = styled.div`
   width: 80vw;
+  @media (max-width: 1024px) {
+    width: 90vw;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   background-color: #f8f9fa;
   padding: 105px 1vw 3vh 1vw;
   display: flex;
@@ -32,6 +38,8 @@ const TeamInfContainer = styled.div`
 `;
 
 const LogoBox = styled.div`
+  display: flex;
+  align-items: center;
   height: 170px;
   width: 170px;
 `;
@@ -79,6 +87,11 @@ const WactchContentBox = styled.div`
   max-height: 150vh;
   overflow-y: scroll;
   width: 100%;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 
 function LiveRoom(props) {

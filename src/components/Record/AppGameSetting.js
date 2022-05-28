@@ -13,7 +13,39 @@ const DivBeforeGameRecord = styled.div`
   color: #212529;
   font-size: 30px;
 `;
-
+const BackToGameDiv = styled.div`
+  z-index: 10;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 100%;
+  display: block;
+  position: fixed;
+  right: 5px;
+  top: 110px;
+  height: 50px;
+  width: 50px;
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  span {
+    position: absolute;
+    right: 0px;
+    visibility: hidden;
+    font-size: 14px;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  }
+  &:hover {
+    span {
+      visibility: visible;
+    }
+  }
+`;
 const SelectGame = styled.select`
   cursor: pointer;
   backdrop-filter: blur(3px);
@@ -70,6 +102,12 @@ const ButtonSubmit = styled.button`
 
 const TeamBlock = styled.div`
   width: 40vw;
+  @media (max-width: 1280px) {
+    width: 45vw;
+  }
+  @media (max-width: 1024px) {
+    width: 50vw;
+  }
   height: calc(100vh - 100px);
   display: flex;
   &:nth-child(2) {
@@ -87,15 +125,36 @@ const LogoBlur = styled.div`
   height: 100%;
   left: 10vw;
   width: 80vw;
+  @media (max-width: 1280px) {
+    left: 5vw;
+    width: 90vw;
+  }
+  @media (max-width: 1024px) {
+    left: 0vw;
+    width: 100vw;
+  }
 `;
 
 const TeamBlockDetail = styled.div`
   background-color: #f8f9fa;
   background-image: ${(props) => props.backgroundImage};
   background-position: ${(props) => props.backgroundPosition};
-  background-size: cover;
+  background-size: 120%;
+  @media (max-width: 1560px) {
+    background-size: 140%;
+  }
+  @media (max-width: 1440px) {
+    background-size: 150%;
+  }
+
   background-repeat: no-repeat;
   width: 40vw;
+  @media (max-width: 1280px) {
+    width: 45vw;
+  }
+  @media (max-width: 1024px) {
+    width: 50vw;
+  }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -421,6 +480,13 @@ function AppGameSetting(props) {
 
   return (
     <DivBeforeGameRecord>
+      <BackToGameDiv onClick={() => props.setWantToBackLiveGame(true)}>
+        <img
+          src={require("../../img/continue/continue.png")}
+          alt="Watch Record"
+        />
+        <span>恢復比賽</span>
+      </BackToGameDiv>
       <RegulationBlock>
         <RegulationBlockCell>
           <SelectGame onChange={(e) => chooseSpecifiedGame(e.target.value)}>
@@ -473,7 +539,7 @@ function AppGameSetting(props) {
         <LogoBlur />
         <TeamBlockDetail
           backgroundImage={`url(${props.aTeamLogo})`}
-          backgroundPosition="200%"
+          backgroundPosition="-25vw"
         >
           <TeamBlockDetailPlayer
             css={`
@@ -571,7 +637,7 @@ function AppGameSetting(props) {
       <TeamBlock>
         <TeamBlockDetail
           backgroundImage={`url(${props.bTeamLogo})`}
-          backgroundPosition="-100%"
+          backgroundPosition="5vw"
         >
           <TeamBlockDetailPlayer>
             {props.bTeam && (
