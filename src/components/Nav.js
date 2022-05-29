@@ -25,7 +25,7 @@ const SideBar = styled.div`
   width: 80px;
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: 0px;
 `;
 
 const NavBar = styled.div`
@@ -96,10 +96,26 @@ const IconComponet = styled.div`
   color: ${(props) => (props.$focus ? "#adb5bd" : "white")};
   border: ${(props) => (props.$focus ? "5px solid black" : null)};
   text-decoration: none;
-  :hover {
+  span {
+    position: absolute;
+    right: 70px;
+    visibility: hidden;
+    font-size: 14px;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  }
+  &:hover {
     width: 70px;
     height: 70px;
+    span {
+      visibility: visible;
+    }
   }
+
   :active {
     background-color: rgb(41, 41, 41);
   }
@@ -224,6 +240,7 @@ function Nav() {
               src={require("../img/logout/logout1.png")}
               alt="Watch Record"
             />
+            <span>回到首頁</span>
           </IconComponet>
         </SideBar>
       ) : (

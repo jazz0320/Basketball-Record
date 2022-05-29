@@ -758,6 +758,7 @@ AppGameSetting.propTypes = {
   scheduleGames: PropTypes.array,
   setATeamPlayersPastData: PropTypes.func,
   setBTeamPlayersPastData: PropTypes.func,
+  setWantToBackLiveGame: PropTypes.func,
 };
 
 export default AppGameSetting;

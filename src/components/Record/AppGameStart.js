@@ -1059,6 +1059,8 @@ function AppGameStart(props) {
           timerMinutes={props.timerMinutes}
           pageSize={props.pageSize}
           setOpenGradeButton={setOpenGradeButton}
+          // openReadMe={openReadMe}
+          // setOpenReadMe={setOpenReadMe}
         />
       </DivGameStart_Container>
       <DivGameStartLogo
