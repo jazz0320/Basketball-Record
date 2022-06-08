@@ -11,6 +11,9 @@ import RecordRoom from "./RecordRoom";
 const DivGameStartLogo = styled.div`
   pointer-events: none;
   width: 10vw;
+  @media (max-width: 1024px) {
+    width: 0vw;
+  }
   height: 100%;
   background-size: cover;
   transition-duration: 0.5s;
@@ -30,6 +33,9 @@ const DivGameStartRecord = styled.div`
 
 const DivGameStart_Container = styled.div`
   width: 80vw;
+  @media (max-width: 1024px) {
+    width: 100vw;
+  }
   background-color: #f8f9fa;
   display: flex;
   flex-wrap: wrap;
@@ -1059,8 +1065,6 @@ function AppGameStart(props) {
           timerMinutes={props.timerMinutes}
           pageSize={props.pageSize}
           setOpenGradeButton={setOpenGradeButton}
-          // openReadMe={openReadMe}
-          // setOpenReadMe={setOpenReadMe}
         />
       </DivGameStart_Container>
       <DivGameStartLogo

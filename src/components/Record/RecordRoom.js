@@ -17,21 +17,24 @@ const PopupDiv = styled.div`
   position: fixed;
   background-color: #495057;
   color: #f8f9fa;
-  font-size: 30px;
+  font-size: 24px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   border-radius: 5px;
-  height: 60vh;
-  top: 20vh;
-  width: 70vw;
+  height: 60%;
+  top: 20%;
+  width: 80%;
+  left: 10%;
+  @media (max-width: 1440px) {
+    font-size: 18px;
+  }
   @media (max-width: 1024px) {
-    font-size: 30px;
-    left: 25vw;
-    width: 50vw;
+    font-size: 18px;
+    width: 90%;
+    left: 5%;
   }
   z-index: 99;
-  left: 15vw;
 `;
 
 const ScoreTable = styled.table`
@@ -78,6 +81,13 @@ const ScoreBox = styled.div`
   flex-direction: column;
   bottom: 5px;
   right: 5px;
+  @media (max-width: 1024px) {
+    top: 5px;
+    left: 5px;
+    flex-direction: row;
+    height: 70px;
+    width: 150px;
+  }
   transition-duration: 0.5s;
   display: flex;
   z-index: 4;
@@ -98,6 +108,10 @@ const IconComponet = styled.div`
   span {
     position: absolute;
     right: 70px;
+    @media (max-width: 1024px) {
+      top: 60px;
+      left: 60px;
+    }
     visibility: hidden;
     font-size: 14px;
     width: 100px;
@@ -108,8 +122,6 @@ const IconComponet = styled.div`
     padding: 5px 0;
   }
   &:hover {
-    width: 70px;
-    height: 70px;
     span {
       visibility: visible;
     }
@@ -121,6 +133,9 @@ const IconComponet = styled.div`
 const IconComponetForReadMe = styled.div`
   cursor: pointer;
   margin-bottom: 10px;
+  @media (max-width: 1024px) {
+    margin-right: 10px;
+  }
   width: 60px;
   height: 60px;
   display: flex;
@@ -134,6 +149,10 @@ const IconComponetForReadMe = styled.div`
   span {
     position: absolute;
     right: 70px;
+    @media (max-width: 1024px) {
+      top: 60px;
+      left: 0px;
+    }
     visibility: hidden;
     font-size: 14px;
     width: 100px;
@@ -273,7 +292,7 @@ function RecordRoom(props) {
             src={require("../../img/read/read.png")}
             alt="Watch Record"
           />
-          <span>查看分數</span>
+          <span>使用說明書</span>
         </IconComponetForReadMe>
         <IconComponet onClick={() => props.setOpenGradeButton((pre) => !pre)}>
           <ScoreIcon

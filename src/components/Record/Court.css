@@ -1,6 +1,27 @@
+
+#cvs{
+  z-index: 100;
+  object-fit: cover;
+  position: absolute;
+  pointer-events: none;
+  
+}
+svg{
+  height:700px;
+}
+
+@media (max-width: 1024px) {
+  svg{
+    height:580px;
+  }
+}
+
+
+
 path {
   fill: transparent;
   cursor: pointer;
+  
 }
 rect {
   cursor: pointer;
@@ -8,6 +29,7 @@ rect {
 
 .st0 {
   fill: white;
+  
 }
 .st4 {
   opacity: 0.9;
@@ -31,6 +53,7 @@ rect {
   opacity: 0.6;
   fill: white;
   enable-background: new;
+  
 }
 
 .st11 {

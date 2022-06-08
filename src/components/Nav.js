@@ -109,8 +109,6 @@ const IconComponet = styled.div`
     padding: 5px 0;
   }
   &:hover {
-    width: 70px;
-    height: 70px;
     span {
       visibility: visible;
     }

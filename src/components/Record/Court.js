@@ -80,19 +80,13 @@ function Court(props) {
     <CourtContainer>
       <CourtBorder>
         <CourtLine id="svgDiv">
-          <canvas
-            width={700}
-            height={700}
-            id="cvs"
-            style={{ position: "absolute", pointerEvents: "none" }}
-          ></canvas>
+          <canvas width={2400} height={2400} id="cvs"></canvas>
           <svg
             onClick={(e) => {
               getCursorPosition(e.currentTarget, e);
             }}
             version="1.1"
             id="myObj"
-            style={{ height: "700px" }}
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
             x="0px"

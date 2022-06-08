@@ -10,6 +10,26 @@ const Div_Record = styled.div`
   display: fiexd;
 `;
 
+const PopupBlur = styled.div`
+  display: none;
+  color: white;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 6;
+
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0);
+  opacity: 0.7;
+  @media (max-width: 1023px) {
+    display: flex;
+  }
+  div {
+    color: white;
+  }
+`;
+
 const PopupDiv = styled.div`
   top: 40vh;
   left: 42vw;
@@ -168,6 +188,9 @@ function App(props) {
 
   return (
     <>
+      <PopupBlur>
+        <div>請使用電腦並其解析度於1024以上</div>
+      </PopupBlur>
       {backToChooseGameBlock && (
         <PopupDiv>
           <ButtonSubmit onClick={finishGameSetting}>確認</ButtonSubmit>
