@@ -49,14 +49,19 @@ const LinkComponet = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
-  color: ${(props) => (props.$focus ? "#343a40" : "#cccccc")};
+  color: ${(props) => (props.$focus ? "#343a40" : "#495057")};
   text-decoration: none;
   @media (max-width: 768px) {
     width: 90px;
   }
   @media (max-width: 414px) {
     width: 60px;
+  }
+  &:hover > div {
+    border-bottom: 2px solid #cccccc;
+  }
+  div {
+    border-bottom: ${(props) => props.$focus && "2px solid #343a40"};
   }
 `;
 
