@@ -6,8 +6,10 @@ const BoxScoreContainer = styled.div`
   width: 100%;
   overflow-x: scroll;
   display: flex;
-
   justify-content: center;
+  @media (max-width: 1440px) {
+    justify-content: start;
+  }
 `;
 const ChooseTeamScore = styled.span`
   border-radius: 5px;
@@ -21,6 +23,9 @@ const ChooseTeamScore = styled.span`
     background-color: #bbb;
     color: #fff;
   }
+`;
+const RadioDiv = styled.div`
+  width: 100%;
 `;
 
 const TableDiv = styled.div``;
@@ -39,7 +44,7 @@ function LiveRoomScore(props) {
     <>
       <BoxScoreContainer>
         <TableDiv>
-          <div id="radio">
+          <RadioDiv id="radio">
             <ChooseTeamScore
               selectTeam={selectTeam === "ateam"}
               onClick={() => {
@@ -48,7 +53,6 @@ function LiveRoomScore(props) {
             >
               {props.aTeam}
             </ChooseTeamScore>
-
             <ChooseTeamScore
               selectTeam={selectTeam === "bteam"}
               onClick={() => {
@@ -57,7 +61,7 @@ function LiveRoomScore(props) {
             >
               {props.bTeam}
             </ChooseTeamScore>
-          </div>
+          </RadioDiv>
           <ScoreTable cellPadding="5" border="1">
             <thead>
               <tr>

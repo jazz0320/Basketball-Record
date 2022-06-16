@@ -17,6 +17,7 @@ import styled from "styled-components";
 import { useEffect, useState, useRef } from "react";
 import GameSchedule from "./GameSchedule/GameSchedule";
 import GameArrange from "./GameArrange/GameArrange";
+import NotFoundPage from "./404/NotFoundPage";
 
 const SideBar = styled.div`
   padding: 5px;
@@ -417,6 +418,7 @@ function Nav() {
             />
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

@@ -6,6 +6,12 @@ import LiveRoomData from "./LiveRoomData";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+const ContainDiv = styled.div`
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
 const FullPageContainer = styled.div`
   width: 100vw;
   padding: 1vh 1vw 0 1vw;
@@ -81,8 +87,6 @@ const WatchSpan = styled.span`
 `;
 
 const WactchContentBox = styled.div`
-  display: flex;
-  justify-content: center;
   min-height: 70vh;
   max-height: 150vh;
   overflow-y: scroll;
@@ -252,24 +256,22 @@ function LiveRoom(props) {
             </WatchSpanBox>
             <WactchContentBox>
               {watchBox === "boxscore" ? (
-                <div>
-                  <LiveRoomScore
-                    aTeam={aTeam}
-                    bTeam={bTeam}
-                    aTeamPlayers={aTeamPlayers}
-                    bTeamPlayers={bTeamPlayers}
-                  />
-                </div>
+                <LiveRoomScore
+                  aTeam={aTeam}
+                  bTeam={bTeam}
+                  aTeamPlayers={aTeamPlayers}
+                  bTeamPlayers={bTeamPlayers}
+                />
               ) : null}
               {watchBox === "livestream" ? (
-                <div>
+                <ContainDiv>
                   <LiveRoomStream
                     quarter={quarter}
                     liveAction={liveAction}
                     aTeam={aTeam}
                     bTeam={bTeam}
                   />
-                </div>
+                </ContainDiv>
               ) : null}
               {watchBox === "teamdata" ? (
                 <div>
