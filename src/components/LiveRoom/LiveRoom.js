@@ -3,6 +3,7 @@ import { doc, onSnapshot, getDoc, db } from "../../utils/firebase";
 import LiveRoomScore from "./LiveRoomScore";
 import LiveRoomStream from "./LiveRoomStream";
 import LiveRoomData from "./LiveRoomData";
+// import LoadingPage from "../LoadingPage/LoadingPage";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -112,6 +113,7 @@ function LiveRoom(props) {
   const [finishSetting, setFinishSetting] = useState();
   const [endGame, setEndGame] = useState();
   const [watchBox, setWatchBox] = useState("livestream");
+
   async function loading() {
     const docSnap = await getDoc(doc(db, "past_data", `${props.gameName}`));
     const data = docSnap.data();
@@ -128,6 +130,7 @@ function LiveRoom(props) {
     setFinishSetting(data.finishSetting);
     setEndGame(data.endGame);
   }
+
   useEffect(() => {
     if (props.liveGameRoutes?.includes(props.gameName)) {
       onSnapshot(doc(db, "live_game", `${props.gameName}`), (doc) => {
@@ -147,6 +150,7 @@ function LiveRoom(props) {
     } else if (props.pastGameName !== undefined) {
       loading();
     }
+    props.setIsLoading(false);
   }, [props.gameName]);
 
   return (
@@ -291,6 +295,7 @@ function LiveRoom(props) {
 }
 
 LiveRoom.propTypes = {
+  setIsLoading: PropTypes.func,
   gameName: PropTypes.string,
   pastGameName: PropTypes.string,
   liveGameRoutes: PropTypes.array,

@@ -3,6 +3,7 @@ import TeamInf from "./TeamInf/TeamInf";
 import Login from "./Login/Login";
 import App from "./Record/App";
 import Home from "./Home/Home";
+import LoadingPage from "./LoadingPage/LoadingPage";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import {
   auth,
@@ -154,12 +155,12 @@ const NavText = styled.div`
 `;
 
 function Nav() {
+  const [isLoading, setIsLoading] = useState(true);
   const [isGameStart, setIsGameStart] = useState(false);
   const [navActive, setNavActive] = useState(-1);
   const [logStatus, setLogStatus] = useState(false);
   const [logFirstTime, setLogFirstTime] = useState(false);
   const [userId, setUserId] = useState();
-
   const [scheduleGames, setScheduleGames] = useState([]);
   const [everyLiveGames, setEveryLiveGames] = useState([]);
   const [pastGameRoutes, setPastGameRoutes] = useState();
@@ -232,6 +233,7 @@ function Nav() {
 
   return (
     <>
+      {isLoading && <LoadingPage />}
       {isGameStart ? (
         <SideBar>
           <IconComponet
@@ -373,13 +375,18 @@ function Nav() {
         <Route path="/" element={<Home />}></Route>
 
         {liveGameRoutes?.map((gameName, index) => (
-          <Route
-            key={index}
-            path={`live-now/${encodeURI(gameName)}`}
-            element={
-              <LiveRoom gameName={gameName} liveGameRoutes={liveGameRoutes} />
-            }
-          />
+          <Route key={index} path="live-now">
+            <Route
+              path={gameName}
+              element={
+                <LiveRoom
+                  setIsLoading={setIsLoading}
+                  gameName={gameName}
+                  liveGameRoutes={liveGameRoutes}
+                />
+              }
+            />
+          </Route>
         ))}
         {pastGameRoutes?.map((gameName, index) => (
           <Route
