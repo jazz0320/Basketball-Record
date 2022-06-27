@@ -233,7 +233,7 @@ function Nav() {
 
   return (
     <>
-      {/* {isLoading && <LoadingPage />} */}
+      {isLoading && <LoadingPage />}
       {isGameStart ? (
         <SideBar>
           <IconComponet
