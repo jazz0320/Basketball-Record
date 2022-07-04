@@ -292,6 +292,7 @@ function ExistTeam(props) {
                     修改
                   </CheckButton>
                   <CheckButton
+                    style={{ display: "none" }}
                     $check={revisePlayer === index}
                     onClick={() => {
                       setCheckDelete(true);

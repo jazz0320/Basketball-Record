@@ -150,7 +150,7 @@ function LiveRoom(props) {
     } else if (props.pastGameName !== undefined) {
       loading();
     }
-    props.setIsLoading(false);
+    // props.setIsLoading(false);
   }, [props.gameName]);
 
   return (

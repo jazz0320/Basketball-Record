@@ -37,7 +37,7 @@ const DetailLeaveDiv = styled.div`
 export default function NotFoundPage() {
   return (
     <>
-      {/* <NotFoundDiv>
+      <NotFoundDiv>
         <div>
           <DetailDiv>Sorry, 此網頁不存在。</DetailDiv>
           <img src={require("../../img/404/4quarters-mutombo-404.gif")} />
@@ -51,7 +51,7 @@ export default function NotFoundPage() {
       </NotFoundDiv>
       <Routes>
         <Route path="/" element={<Home />}></Route>
-      </Routes> */}
+      </Routes>
     </>
   );
 }
